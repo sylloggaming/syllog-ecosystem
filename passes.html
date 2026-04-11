@@ -397,6 +397,23 @@ function toggleFaq(el) {
   document.querySelectorAll('.faq-item').forEach(function(i) { i.classList.remove('open'); });
   if (!wasOpen) item.classList.add('open');
 }
+  async function checkoutPass(priceId) {
+  try {
+    var response = await fetch('https://syllog-checkout.syllog-gaming.workers.dev', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        priceId: priceId,
+        mode: 'subscription',
+        origin: window.location.origin
+      })
+    });
+    var session = await response.json();
+    if (session.url) { window.location.href = session.url; }
+  } catch(err) {
+    alert('Checkout error — please try again.');
+  }
+}
 </script>
 </body>
 </html>
