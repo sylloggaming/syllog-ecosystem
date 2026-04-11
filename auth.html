@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Syllog — Sign In</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#000;color:#fff;font-family:'Inter',sans-serif;min-height:100vh;display:flex;flex-direction:column;}
+nav{background:rgba(0,0,0,0.97);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:54px;}
+.logo{font-size:1rem;font-weight:900;letter-spacing:6px;background:linear-gradient(135deg,#fff 0%,#c0c0c0 60%,#777 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none;}
+.back{font-size:0.65rem;color:rgba(255,255,255,0.3);text-decoration:none;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s;}
+.back:hover{color:#fff;}
+.main{flex:1;display:flex;align-items:center;justify-content:center;padding:2rem;}
+.card{width:100%;max-width:400px;background:#060606;border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:2rem;position:relative;}
+.card-title{font-size:1.4rem;font-weight:900;letter-spacing:-0.5px;margin-bottom:0.35rem;}
+.card-sub{font-size:0.72rem;color:#333;margin-bottom:1.75rem;line-height:1.5;}
+.tabs{display:flex;gap:0;margin-bottom:1.5rem;background:#0a0a0a;border-radius:8px;padding:3px;}
+.tab{flex:1;padding:0.5rem;border:none;background:transparent;color:#333;font-size:0.7rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border-radius:6px;transition:all 0.2s;font-family:'Inter',sans-serif;}
+.tab.active{background:#fff;color:#000;}
+.field{margin-bottom:1rem;}
+.field label{display:block;font-size:0.62rem;color:#333;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:0.4rem;}
+.field input{width:100%;background:#0a0a0a;border:1px solid rgba(255,255,255,0.07);border-radius:6px;padding:0.65rem 0.85rem;color:#fff;font-size:0.82rem;font-family:'Inter',sans-serif;outline:none;transition:border-color 0.2s;}
+.field input:focus{border-color:rgba(255,255,255,0.2);}
+.field input::placeholder{color:#222;}
+.submit-btn{width:100%;background:#fff;color:#000;border:none;padding:0.75rem;border-radius:6px;font-size:0.75rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;margin-top:0.5rem;transition:background 0.2s;font-family:'Inter',sans-serif;}
+.submit-btn:hover{background:#c0c0c0;}
+.submit-btn:disabled{background:#1a1a1a;color:#333;cursor:not-allowed;}
+.msg{font-size:0.72rem;padding:0.65rem 0.85rem;border-radius:6px;margin-top:1rem;display:none;line-height:1.5;}
+.msg.error{background:rgba(255,60,60,0.08);border:1px solid rgba(255,60,60,0.15);color:#ff6b6b;display:block;}
+.msg.success{background:rgba(192,192,192,0.06);border:1px solid rgba(192,192,192,0.15);color:#c0c0c0;display:block;}
+.divider{height:1px;background:rgba(255,255,255,0.04);margin:1.25rem 0;}
+.fine-print{font-size:0.62rem;color:#1e1e1e;text-align:center;line-height:1.6;}
+#signup-fields{display:none;}
+.username-hint{font-size:0.6rem;color:#222;margin-top:0.3rem;line-height:1.4;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">SYLLOG</a>
+  <a href="index.html" class="back">&#8592; Back to Portal</a>
+</nav>
+
+<div class="main">
+  <div class="card">
+    <div class="card-title">Welcome Back</div>
+    <div class="card-sub">Sign in to your Universal Syllog ID and pick up exactly where you left off — across every game.</div>
+
+    <div class="tabs">
+      <button class="tab active" id="tab-signin" onclick="switchTab('signin')">Sign In</button>
+      <button class="tab" id="tab-signup" onclick="switchTab('signup')">Create Account</button>
+    </div>
+
+    <div id="signin-fields">
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="si-email" placeholder="your@email.com">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="si-password" placeholder="••••••••">
+      </div>
+      <button class="submit-btn" id="si-btn" onclick="signIn()">Sign In</button>
+    </div>
+
+    <div id="signup-fields">
+      <div class="field">
+        <label>Username — Your Syllog ID</label>
+        <input type="text" id="su-username" placeholder="ChooseYourName" maxlength="20">
+        <div class="username-hint">This is your permanent identity across all 20 games. Choose wisely — it cannot be changed.</div>
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="su-email" placeholder="your@email.com">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="su-password" placeholder="Min 8 characters">
+      </div>
+      <button class="submit-btn" id="su-btn" onclick="signUp()">Create My Syllog ID</button>
+    </div>
+
+    <div class="msg" id="msg"></div>
+
+    <div class="divider"></div>
+    <div class="fine-print">By continuing you agree to Syllog's Terms of Service and Privacy Policy. Every game is free to play.</div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// REPLACE THESE WITH YOUR REAL SUPABASE KEYS
+// ============================================================
+var SUPABASE_URL = 'YOUR_SUPABASE_PROJECT_URL';
+var SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
+// ============================================================
+
+var sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+function switchTab(tab) {
+  var isSignin = tab === 'signin';
+  document.getElementById('tab-signin').classList.toggle('active', isSignin);
+  document.getElementById('tab-signup').classList.toggle('active', !isSignin);
+  document.getElementById('signin-fields').style.display = isSignin ? 'block' : 'none';
+  document.getElementById('signup-fields').style.display = isSignin ? 'none' : 'block';
+  document.getElementById('msg').className = 'msg';
+  document.getElementById('card-title') && (document.getElementById('card-title').textContent = isSignin ? 'Welcome Back' : 'Join the Universe');
+}
+switchTab('signin');
+
+function showMsg(text, type) {
+  var el = document.getElementById('msg');
+  el.textContent = text;
+  el.className = 'msg ' + type;
+}
+
+function setLoading(btnId, loading) {
+  var btn = document.getElementById(btnId);
+  btn.disabled = loading;
+  btn.textContent = loading ? 'Please wait...' : (btnId === 'si-btn' ? 'Sign In' : 'Create My Syllog ID');
+}
+
+async function signIn() {
+  var email    = document.getElementById('si-email').value.trim();
+  var password = document.getElementById('si-password').value;
+  if(!email || !password) { showMsg('Please fill in all fields.', 'error'); return; }
+  setLoading('si-btn', true);
+  var result = await sb.auth.signInWithPassword({ email, password });
+  if(result.error) {
+    showMsg(result.error.message, 'error');
+    setLoading('si-btn', false);
+  } else {
+    showMsg('Signed in! Entering the universe...', 'success');
+    setTimeout(function(){ window.location.href = 'index.html'; }, 1200);
+  }
+}
+
+async function signUp() {
+  var username = document.getElementById('su-username').value.trim();
+  var email    = document.getElementById('su-email').value.trim();
+  var password = document.getElementById('su-password').value;
+  if(!username || !email || !password) { showMsg('Please fill in all fields.', 'error'); return; }
+  if(username.length < 3)  { showMsg('Username must be at least 3 characters.', 'error'); return; }
+  if(password.length < 8)  { showMsg('Password must be at least 8 characters.', 'error'); return; }
+  if(!/^[a-zA-Z0-9_]+$/.test(username)) { showMsg('Username can only contain letters, numbers, and underscores.', 'error'); return; }
+  setLoading('su-btn', true);
+  var result = await sb.auth.signUp({
+    email, password,
+    options: { data: { username } }
+  });
+  if(result.error) {
+    showMsg(result.error.message, 'error');
+    setLoading('su-btn', false);
+  } else {
+    showMsg('Account created! Check your email to confirm, then sign in.', 'success');
+    setLoading('su-btn', false);
+  }
+}
+</script>
+</body>
+</html>
