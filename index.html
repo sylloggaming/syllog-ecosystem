@@ -875,6 +875,39 @@ function closeTrailer() {
   fStartProgress();
 }
 document.getElementById('video-modal').addEventListener('click', function(e) { if (e.target === this) closeTrailer(); });
+  // ── PASS BILLING TOGGLE ──
+var pAnnual = false;
+function switchBilling(){
+  pAnnual = !pAnnual;
+  document.getElementById('ptoggle').style.background = pAnnual ? 'rgba(255,255,255,0.1)' : '#1a1a1a';
+  document.getElementById('pthumb').style.left = pAnnual ? '23px' : '3px';
+  document.getElementById('pthumb').style.background = pAnnual ? '#fff' : '#444';
+  document.getElementById('lbl-m').style.color = pAnnual ? '#333' : '#fff';
+  document.getElementById('lbl-a').style.color = pAnnual ? '#fff' : '#333';
+  if(pAnnual){
+    document.getElementById('p-gold-price').innerHTML='$79.99 <span class="pc-per">/ year</span>';
+    document.getElementById('p-gold-note').textContent='$6.67 / month \u00b7 billed annually';
+    document.getElementById('p-gold-save').style.opacity='1';
+    document.getElementById('p-gold-sc').textContent='12,000 SC across the year \u00b7 +10% bonus \u00b7 credits never expire';
+    document.getElementById('p-gold-btn').textContent='Get Gold \u2014 Annual';
+    document.getElementById('p-plat-price').innerHTML='$149.99 <span class="pc-per">/ year</span>';
+    document.getElementById('p-plat-note').textContent='$12.50 / month \u00b7 billed annually';
+    document.getElementById('p-plat-save').style.opacity='1';
+    document.getElementById('p-plat-sc').textContent='30,000 SC across the year \u00b7 +20% bonus \u00b7 credits never expire';
+    document.getElementById('p-plat-btn').textContent='Get Platinum \u2014 Annual';
+  } else {
+    document.getElementById('p-gold-price').innerHTML='$7.99 <span class="pc-per">/ month</span>';
+    document.getElementById('p-gold-note').textContent='\u00a0';
+    document.getElementById('p-gold-save').style.opacity='0';
+    document.getElementById('p-gold-sc').textContent='1,000 SC monthly \u00b7 ~$8.30 value \u00b7 +10% bonus';
+    document.getElementById('p-gold-btn').textContent='Get Gold Pass';
+    document.getElementById('p-plat-price').innerHTML='$14.99 <span class="pc-per">/ month</span>';
+    document.getElementById('p-plat-note').textContent='\u00a0';
+    document.getElementById('p-plat-save').style.opacity='0';
+    document.getElementById('p-plat-sc').textContent='2,500 SC monthly \u00b7 ~$20.83 value \u00b7 +20% bonus';
+    document.getElementById('p-plat-btn').textContent='Get Platinum Pass';
+  }
+}
 </script>
 </body>
 </html>
