@@ -560,6 +560,37 @@ var GAMES = [
 // INIT
 // ============================================================
 document.getElementById('live-count').textContent = LIVE_TITLE_COUNT;
+// ============================================================
+// AUTH STATE — show player identity in nav when logged in
+// ============================================================
+var sb = supabase.createClient(
+  'https://mlstrkqefyqoczusewrm.supabase.co',
+  'YOUR_PUBLISHABLE_KEY_HERE'
+);
+
+sb.auth.getSession().then(function(result){
+  var session = result.data.session;
+  if(session){
+    sb.from('players').select('username').eq('id', session.user.id).single()
+    .then(function(res){
+      var username = res.data ? res.data.username : 'Player';
+      var navBtns = document.querySelector('.nav-btns');
+      navBtns.innerHTML =
+        '<div style="display:flex;align-items:center;gap:0.5rem;">' +
+          '<div style="font-size:0.65rem;color:rgba(255,255,255,0.5);letter-spacing:1px;text-transform:uppercase;border:1px solid rgba(255,255,255,0.1);padding:0.3rem 0.9rem;border-radius:4px;display:flex;align-items:center;gap:0.5rem;">' +
+            '<span style="color:#c0c0c0;font-weight:700;">&#9679;</span> ' + username +
+          '</div>' +
+          '<button class="btn-g" onclick="signOut()">Sign Out</button>' +
+        '</div>';
+    });
+  }
+});
+
+function signOut(){
+  sb.auth.signOut().then(function(){
+    window.location.reload();
+  });
+}
 
 // ============================================================
 // FEATURED BANNER
