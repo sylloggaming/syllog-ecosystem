@@ -907,7 +907,7 @@ function switchBilling(){
     document.getElementById('p-plat-btn').textContent='Get Platinum Pass';
   }
 }
-  async function portalCheckout(priceId) {
+ async function portalCheckout(priceId) {
   try {
     var response = await fetch('https://syllog-checkout.syllog-gaming.workers.dev', {
       method: 'POST',
