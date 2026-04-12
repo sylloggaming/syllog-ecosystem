@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8"> 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Syllog — Instant-Play Gaming Universe</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -445,7 +445,7 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
         <li class="on"><span class="ck">&#10003;</span>Early game access</li>
         <li class="off"><span class="ck">&#8212;</span>Beta access</li>
       </ul>
-      <button class="pc-btn pb-g" id="p-gold-btn" onclick="window.location.href='credits.html'">Get Gold Pass</button>
+      <button class="pc-btn pb-g" id="p-gold-btn" onclick="portalCheckout(isAnnual?'price_1TL3YxGWlT3VHhyEBidgxx2F':'price_1TL3S4GWlT3VHhyEzyYE29FW')">Get Gold Pass</button>
     </div>
     <div class="pc">
       <div class="pc-tier">Platinum Pass</div>
@@ -464,7 +464,7 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
         <li class="on"><span class="ck">&#10003;</span>Early game access</li>
         <li class="on"><span class="ck">&#10003;</span>Beta access + monthly skin</li>
       </ul>
-      <button class="pc-btn pb-p" id="p-plat-btn" onclick="window.location.href='credits.html'">Get Platinum Pass</button>
+      <button class="pc-btn pb-p" id="p-plat-btn" onclick="portalCheckout(isAnnual?'price_1TL3apGWlT3VHhyETb5ibI1F':'price_1TL3SVGWlT3VHhyEtrv13hP8')">Get Platinum Pass</button>
     </div>
   </div>
 </div>
@@ -905,6 +905,23 @@ function switchBilling(){
     document.getElementById('p-plat-save').style.opacity='0';
     document.getElementById('p-plat-sc').textContent='2,500 SC monthly \u00b7 ~$20.83 value \u00b7 +20% bonus';
     document.getElementById('p-plat-btn').textContent='Get Platinum Pass';
+  }
+}
+  async function portalCheckout(priceId) {
+  try {
+    var response = await fetch('https://syllog-checkout.syllog-gaming.workers.dev', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        priceId: priceId,
+        mode: 'subscription',
+        origin: window.location.origin
+      })
+    });
+    var session = await response.json();
+    if(session.url){ window.location.href = session.url; }
+  } catch(err) {
+    alert('Checkout error — please try again.');
   }
 }
 </script>
