@@ -6,7 +6,65 @@
 <title>Syllog — Instant-Play Gaming Universe</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+// ── PASS BILLING TOGGLE (PORTAL) ──
+var pAnnual = false;
+function switchBilling(){
+  pAnnual = !pAnnual;
+  document.getElementById('ptoggle').style.background = pAnnual ? 'rgba(255,255,255,0.1)' : '#1a1a1a';
+  document.getElementById('pthumb').style.left = pAnnual ? '23px' : '3px';
+  document.getElementById('pthumb').style.background = pAnnual ? '#fff' : '#444';
+  document.getElementById('lbl-m').style.color = pAnnual ? '#333' : '#fff';
+  document.getElementById('lbl-a').style.color = pAnnual ? '#fff' : '#333';
+  if(pAnnual){
+    document.getElementById('p-gold-price').innerHTML='$79.99 <span class="pc-per">/ year</span>';
+    document.getElementById('p-gold-note').textContent='$6.67 / month · billed annually';
+    document.getElementById('p-gold-save').style.opacity='1';
+    document.getElementById('p-gold-sc').textContent='12,000 SC across the year · +10% bonus · credits never expire';
+    document.getElementById('p-gold-btn').textContent='Get Gold — Annual';
+    document.getElementById('p-gold-btn').onclick=function(){portalCheckout('price_1TLCP6GTo6XxsJZO9oN1Unyo');};
+    document.getElementById('p-plat-price').innerHTML='$149.99 <span class="pc-per">/ year</span>';
+    document.getElementById('p-plat-note').textContent='$12.50 / month · billed annually';
+    document.getElementById('p-plat-save').style.opacity='1';
+    document.getElementById('p-plat-sc').textContent='30,000 SC across the year · +20% bonus · credits never expire';
+    document.getElementById('p-plat-btn').textContent='Get Platinum — Annual';
+    document.getElementById('p-plat-btn').onclick=function(){portalCheckout('price_1TLCP3GTo6XxsJZO2uFrdyXr');};
+  } else {
+    document.getElementById('p-gold-price').innerHTML='$7.99 <span class="pc-per">/ month</span>';
+    document.getElementById('p-gold-note').textContent=' ';
+    document.getElementById('p-gold-save').style.opacity='0';
+    document.getElementById('p-gold-sc').textContent='1,000 SC monthly · ~$8.30 value · +10% bonus';
+    document.getElementById('p-gold-btn').textContent='Get Gold Pass';
+    document.getElementById('p-gold-btn').onclick=function(){portalCheckout('price_1TLCP7GTo6XxsJZOTvZqDd0X');};
+    document.getElementById('p-plat-price').innerHTML='$14.99 <span class="pc-per">/ month</span>';
+    document.getElementById('p-plat-note').textContent=' ';
+    document.getElementById('p-plat-save').style.opacity='0';
+    document.getElementById('p-plat-sc').textContent='2,500 SC monthly · ~$20.83 value · +20% bonus';
+    document.getElementById('p-plat-btn').textContent='Get Platinum Pass';
+    document.getElementById('p-plat-btn').onclick=function(){portalCheckout('price_1TLCP4GTo6XxsJZOGwxQbPGD');};
+  }
+}
+
+// ── PORTAL CHECKOUT ──
+async function portalCheckout(priceId) {
+  try {
+    var response = await fetch('https://syllog-checkout.syllog-gaming.workers.dev', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        priceId: priceId,
+        mode: 'subscription',
+        origin: window.location.origin
+      })
+    });
+    var session = await response.json();
+    if(session.url){ window.location.href = session.url; }
+    else { alert('Checkout error - please try again.'); }
+  } catch(err) {
+    alert('Checkout error - please try again.');
+  }
+}
+</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden;}
@@ -397,12 +455,24 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
 
 <!-- ══════════ PASSES ══════════ -->
 <div class="pass-wrap">
-  <div class="sec-label">Membership</div>
-  <div class="sec-head">Choose Your Pass</div>
+  <div style="text-align:center;margin-bottom:1.25rem;">
+    <div class="sec-label">Membership</div>
+    <div class="sec-head">Choose Your Pass</div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:0.75rem;margin-top:0.85rem;">
+      <span style="font-size:0.68rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;color:#fff;transition:color 0.2s;" id="lbl-m" onclick="switchBilling()">Monthly</span>
+      <div style="width:40px;height:22px;background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);border-radius:11px;position:relative;cursor:pointer;transition:all 0.2s;flex-shrink:0;" id="ptoggle" onclick="switchBilling()">
+        <div style="position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:#444;transition:all 0.25s cubic-bezier(0.25,0.46,0.45,0.94);" id="pthumb"></div>
+      </div>
+      <span style="font-size:0.68rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;color:#333;transition:color 0.2s;" id="lbl-a" onclick="switchBilling()">Annual</span>
+      <span style="background:rgba(192,192,192,0.1);border:1px solid rgba(192,192,192,0.2);color:#c0c0c0;font-size:0.55rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:0.18rem 0.6rem;border-radius:20px;">2 Months Free</span>
+    </div>
+  </div>
   <div class="pass-cards">
     <div class="pc">
       <div class="pc-tier">Free Player</div>
-      <div class="pc-price">$0 <span class="pc-per">/ forever</span></div>
+      <div style="min-height:52px;">
+        <div class="pc-price">$0 <span class="pc-per">/ forever</span></div>
+      </div>
       <div class="pc-sc">All games &middot; Always free</div>
       <ul class="pc-list">
         <li class="on"><span class="ck">&#10003;</span>All games, free forever</li>
@@ -413,14 +483,18 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
         <li class="off"><span class="ck">&#8212;</span>Early game access</li>
         <li class="off"><span class="ck">&#8212;</span>Beta access</li>
       </ul>
-      <button class="pc-btn pb-f">Start Free</button>
+      <button class="pc-btn pb-f" onclick="window.location.href='auth.html?tab=signup'">Start Free</button>
     </div>
     <div class="pc featured">
       <div class="hot-badge">Most Popular</div>
       <div style="margin-top:0.6rem;"></div>
       <div class="pc-tier">Gold Pass</div>
-      <div class="pc-price" style="color:#ddd;">$7.99 <span class="pc-per">/ month</span></div>
-      <div class="pc-sc" style="color:#777;">1,000 SC monthly &middot; ~$8.30 value &middot; +10% bonus</div>
+      <div style="min-height:52px;">
+        <div class="pc-price" id="p-gold-price" style="color:#ddd;">$7.99 <span class="pc-per">/ month</span></div>
+        <div style="font-size:0.6rem;color:#555;margin-top:0.2rem;min-height:1rem;" id="p-gold-note">&nbsp;</div>
+        <div style="display:inline-block;background:rgba(192,192,192,0.08);border:1px solid rgba(192,192,192,0.15);color:#c0c0c0;font-size:0.52rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:0.15rem 0.5rem;border-radius:10px;margin-top:0.2rem;opacity:0;transition:opacity 0.3s;" id="p-gold-save">Save $15.89 &mdash; 2 months free</div>
+      </div>
+      <div class="pc-sc" id="p-gold-sc" style="color:#777;">1,000 SC monthly &middot; ~$8.30 value &middot; +10% bonus</div>
       <ul class="pc-list">
         <li class="on"><span class="ck">&#10003;</span>All games, free forever</li>
         <li class="on"><span class="ck">&#10003;</span>Universal Syllog ID</li>
@@ -430,12 +504,16 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
         <li class="on"><span class="ck">&#10003;</span>Early game access</li>
         <li class="off"><span class="ck">&#8212;</span>Beta access</li>
       </ul>
-      <button class="pc-btn pb-g">Get Gold Pass</button>
+      <button class="pc-btn pb-g" id="p-gold-btn" onclick="portalCheckout('price_1TLCP7GTo6XxsJZOTvZqDd0X')">Get Gold Pass</button>
     </div>
     <div class="pc">
       <div class="pc-tier">Platinum Pass</div>
-      <div class="pc-price">$14.99 <span class="pc-per">/ month</span></div>
-      <div class="pc-sc">2,500 SC monthly &middot; ~$20.83 value &middot; +20% bonus</div>
+      <div style="min-height:52px;">
+        <div class="pc-price" id="p-plat-price">$14.99 <span class="pc-per">/ month</span></div>
+        <div style="font-size:0.6rem;color:#555;margin-top:0.2rem;min-height:1rem;" id="p-plat-note">&nbsp;</div>
+        <div style="display:inline-block;background:rgba(192,192,192,0.08);border:1px solid rgba(192,192,192,0.15);color:#c0c0c0;font-size:0.52rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:0.15rem 0.5rem;border-radius:10px;margin-top:0.2rem;opacity:0;transition:opacity 0.3s;" id="p-plat-save">Save $29.89 &mdash; 2 months free</div>
+      </div>
+      <div class="pc-sc" id="p-plat-sc">2,500 SC monthly &middot; ~$20.83 value &middot; +20% bonus</div>
       <ul class="pc-list">
         <li class="on"><span class="ck">&#10003;</span>All games, free forever</li>
         <li class="on"><span class="ck">&#10003;</span>Universal Syllog ID</li>
@@ -445,7 +523,7 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
         <li class="on"><span class="ck">&#10003;</span>Early game access</li>
         <li class="on"><span class="ck">&#10003;</span>Beta access + monthly skin</li>
       </ul>
-      <button class="pc-btn pb-p">Get Platinum Pass</button>
+      <button class="pc-btn pb-p" id="p-plat-btn" onclick="portalCheckout('price_1TLCP4GTo6XxsJZOGwxQbPGD')">Get Platinum Pass</button>
     </div>
   </div>
 </div>
