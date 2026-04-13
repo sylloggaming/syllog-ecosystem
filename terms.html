@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Syllog — Terms of Service</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#000;color:#fff;font-family:'Inter',sans-serif;}
+nav{background:rgba(0,0,0,0.97);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:100;}
+.logo{font-size:1rem;font-weight:900;letter-spacing:6px;background:linear-gradient(135deg,#fff 0%,#c0c0c0 60%,#777 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;cursor:pointer;text-decoration:none;}
+.nav-links{display:flex;gap:1.75rem;list-style:none;}
+.nav-links a{color:rgba(255,255,255,0.28);text-decoration:none;font-size:0.68rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:color 0.2s;}
+.nav-links a:hover{color:#fff;}
+.nav-btns{display:flex;gap:0.5rem;}
+.btn-g{background:transparent;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);padding:0.3rem 0.9rem;border-radius:4px;font-size:0.65rem;font-weight:600;letter-spacing:1px;cursor:pointer;text-transform:uppercase;font-family:'Inter',sans-serif;}
+.btn-w{background:#fff;border:none;color:#000;padding:0.3rem 0.9rem;border-radius:4px;font-size:0.65rem;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;font-family:'Inter',sans-serif;}
+.page-hero{padding:3rem 2rem 2rem;border-bottom:1px solid rgba(255,255,255,0.05);}
+.page-tag{font-size:0.56rem;letter-spacing:4px;text-transform:uppercase;color:#444;border:1px solid rgba(255,255,255,0.05);padding:0.25rem 0.85rem;border-radius:20px;display:inline-block;margin-bottom:0.9rem;}
+.page-title{font-size:2.5rem;font-weight:900;letter-spacing:-1px;background:linear-gradient(160deg,#fff 0%,#c0c0c0 60%,#888 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:0.5rem;}
+.page-sub{font-size:0.78rem;color:#666;line-height:1.6;}
+.content{max-width:760px;margin:0 auto;padding:3rem 2rem;}
+.section{margin-bottom:2.5rem;}
+.section h2{font-size:1rem;font-weight:700;color:#fff;margin-bottom:0.85rem;padding-bottom:0.5rem;border-bottom:1px solid rgba(255,255,255,0.06);}
+.section p{font-size:0.8rem;color:#666;line-height:1.8;margin-bottom:0.75rem;}
+.section ul{list-style:none;margin-bottom:0.75rem;}
+.section ul li{font-size:0.8rem;color:#666;line-height:1.8;padding-left:1rem;position:relative;}
+.section ul li::before{content:'·';position:absolute;left:0;color:#444;}
+.last-updated{font-size:0.65rem;color:#333;margin-bottom:2rem;letter-spacing:1px;text-transform:uppercase;}
+.highlight{color:#c0c0c0;font-weight:600;}
+footer{display:flex;align-items:center;justify-content:space-between;padding:0.8rem 2rem;border-top:1px solid rgba(255,255,255,0.04);margin-top:2rem;}
+.fl{font-size:0.7rem;font-weight:900;letter-spacing:5px;color:#444;}
+.flinks{display:flex;gap:1.25rem;}
+.flinks a{font-size:0.58rem;color:#888;text-decoration:none;letter-spacing:1px;text-transform:uppercase;}
+.flinks a:hover{color:#fff;}
+.fc{font-size:0.58rem;color:#444;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="logo">SYLLOG</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Games</a></li>
+    <li><a href="index.html">Universe</a></li>
+    <li><a href="credits.html">Credits &amp; Passes</a></li>
+    <li><a href="index.html">Leaderboards</a></li>
+  </ul>
+  <div class="nav-btns" id="nav-btns">
+    <button class="btn-g" onclick="window.location.href='auth.html?tab=signin'">Sign In</button>
+    <button class="btn-w" onclick="window.location.href='auth.html?tab=signup'">Create Account</button>
+  </div>
+</nav>
+<div class="page-hero">
+  <div class="page-tag">Legal</div>
+  <div class="page-title">Terms of Service</div>
+  <div class="page-sub">The rules and agreements that govern your use of the Syllog gaming platform.</div>
+</div>
+<div class="content">
+  <div class="last-updated">Last updated: April 13, 2026</div>
+  <div class="section"><h2>1. Acceptance of Terms</h2><p>By accessing or using Syllog at <span class="highlight">sylloggames.com</span>, creating a Universal Syllog ID, or purchasing any products or services, you agree to be bound by these Terms of Service.</p></div>
+  <div class="section"><h2>2. Eligibility</h2><p>You must be at least <span class="highlight">13 years of age</span> to use Syllog. If you are under 18, you must have parental consent.</p></div>
+  <div class="section"><h2>3. Universal Syllog ID &amp; Accounts</h2><ul><li>Provide accurate and complete registration information</li><li>Keep your password secure and not share it with others</li><li>Be responsible for all activity that occurs under your account</li><li>Notify us immediately of any unauthorized use of your account</li><li>Not create multiple accounts to circumvent suspensions or bans</li></ul></div>
+  <div class="section"><h2>4. Syllog Credits (SC) &amp; Payments</h2><ul><li>All purchases are final and non-refundable unless required by applicable law</li><li>SC has no real-world monetary value and cannot be exchanged for cash</li><li>SC balances are stored server-side and cannot be transferred between accounts</li><li>Inactive free accounts may have SC forfeited after 12 months of no login activity</li><li>Pass subscriptions renew automatically until cancelled</li></ul></div>
+  <div class="section"><h2>5. Pass Memberships</h2><ul><li>You authorize us to charge your payment method on a recurring basis</li><li>You may cancel at any time — cancellation takes effect at end of billing period</li><li>Monthly SC gifts are deposited at the start of each billing cycle</li><li>Pass benefits apply immediately upon subscription and are removed upon cancellation</li></ul></div>
+  <div class="section"><h2>6. Acceptable Use</h2><p>You agree not to:</p><ul><li>Cheat, hack, or use unauthorized software to gain an unfair advantage</li><li>Attempt to manipulate SC balances, leaderboards, or game economies</li><li>Harass, abuse, or threaten other players</li><li>Use the platform for any unlawful purpose</li><li>Attempt to reverse engineer or extract game code</li><li>Use bots, scripts, or automated tools to interact with the platform</li><li>Share, sell, or transfer your account to another person</li></ul></div>
+  <div class="section"><h2>7. Intellectual Property</h2><p>All content on Syllog — including games, graphics, logos, code, and the Syllog name — is the property of Syllog Games and is protected by intellectual property laws.</p></div>
+  <div class="section"><h2>8. Limitation of Liability</h2><p>Syllog is provided "as is" without warranties of any kind. We are not liable for any loss of SC, game progress, or data resulting from technical failures, account suspension, or service discontinuation.</p></div>
+  <div class="section"><h2>9. Termination</h2><p>We reserve the right to suspend or terminate your account at any time for violations of these Terms. You may delete your account by contacting us at <span class="highlight">support@sylloggames.com</span>.</p></div>
+  <div class="section"><h2>10. Contact</h2><p>For questions about these Terms, contact us at <span class="highlight">support@sylloggames.com</span>.</p></div>
+</div>
+<footer>
+  <div class="fl">SYLLOG</div>
+  <div class="flinks">
+    <a href="privacy.html">Privacy</a>
+    <a href="terms.html">Terms</a>
+    <a href="contact.html">Support</a>
+    <a href="contact.html">Press</a>
+  </div>
+  <div class="fc">&copy; 2026 Syllog Games.</div>
+</footer>
+<script>
+window.addEventListener('load',function(){
+  var _u='https://mlstrkqefyqoczusewrm.supabase.co';
+  var _k='sb_publishable_g7_BTnT_cTqaIk19Kx9FEw_iP1I7Df7';
+  var _c=supabase.createClient(_u,_k,{auth:{persistSession:true,storageKey:'syllog-auth',storage:window.localStorage,autoRefreshToken:true}});
+  _c.auth.getSession().then(function(r){
+    if(!r.data||!r.data.session)return;
+    _c.from('players').select('username').eq('id',r.data.session.user.id).single().then(function(d){
+      if(!d.data)return;
+      var nb=document.getElementById('nav-btns');
+      if(!nb)return;
+      nb.innerHTML='<button onclick="window.location.href=\'index.html\'" style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;padding:0.28rem 0.75rem;border-radius:5px;border:1px solid rgba(255,255,255,0.08);background:transparent;font-family:Inter,sans-serif;"><span style="width:6px;height:6px;border-radius:50%;background:#c0c0c0;display:inline-block;flex-shrink:0;"></span><span style="font-size:0.63rem;font-weight:700;color:rgba(255,255,255,0.65);letter-spacing:1px;text-transform:uppercase;">'+d.data.username+'</span><span style="font-size:0.55rem;color:rgba(255,255,255,0.2);">&#9660;</span></button>';
+    });
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Syllog — Contact Us</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#000;color:#fff;font-family:'Inter',sans-serif;}
+nav{background:rgba(0,0,0,0.97);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:100;}
+.logo{font-size:1rem;font-weight:900;letter-spacing:6px;background:linear-gradient(135deg,#fff 0%,#c0c0c0 60%,#777 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;cursor:pointer;text-decoration:none;}
+.nav-links{display:flex;gap:1.75rem;list-style:none;}
+.nav-links a{color:rgba(255,255,255,0.28);text-decoration:none;font-size:0.68rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:color 0.2s;}
+.nav-links a:hover{color:#fff;}
+.nav-btns{display:flex;gap:0.5rem;}
+.btn-g{background:transparent;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);padding:0.3rem 0.9rem;border-radius:4px;font-size:0.65rem;font-weight:600;letter-spacing:1px;cursor:pointer;text-transform:uppercase;font-family:'Inter',sans-serif;}
+.btn-w{background:#fff;border:none;color:#000;padding:0.3rem 0.9rem;border-radius:4px;font-size:0.65rem;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;font-family:'Inter',sans-serif;}
+.page-hero{padding:3rem 2rem 2rem;border-bottom:1px solid rgba(255,255,255,0.05);}
+.page-tag{font-size:0.56rem;letter-spacing:4px;text-transform:uppercase;color:#444;border:1px solid rgba(255,255,255,0.05);padding:0.25rem 0.85rem;border-radius:20px;display:inline-block;margin-bottom:0.9rem;}
+.page-title{font-size:2.5rem;font-weight:900;letter-spacing:-1px;background:linear-gradient(160deg,#fff 0%,#c0c0c0 60%,#888 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:0.5rem;}
+.page-sub{font-size:0.78rem;color:#666;line-height:1.6;}
+.content{max-width:760px;margin:0 auto;padding:3rem 2rem;}
+.section{margin-bottom:2.5rem;}
+.section h2{font-size:1rem;font-weight:700;color:#fff;margin-bottom:0.85rem;padding-bottom:0.5rem;border-bottom:1px solid rgba(255,255,255,0.06);}
+.section p{font-size:0.8rem;color:#666;line-height:1.8;margin-bottom:0.75rem;}
+.section ul{list-style:none;margin-bottom:0.75rem;}
+.section ul li{font-size:0.8rem;color:#666;line-height:1.8;padding-left:1rem;position:relative;}
+.section ul li::before{content:'·';position:absolute;left:0;color:#444;}
+.last-updated{font-size:0.65rem;color:#333;margin-bottom:2rem;letter-spacing:1px;text-transform:uppercase;}
+.highlight{color:#c0c0c0;font-weight:600;}
+footer{display:flex;align-items:center;justify-content:space-between;padding:0.8rem 2rem;border-top:1px solid rgba(255,255,255,0.04);margin-top:2rem;}
+.fl{font-size:0.7rem;font-weight:900;letter-spacing:5px;color:#444;}
+.flinks{display:flex;gap:1.25rem;}
+.flinks a{font-size:0.58rem;color:#888;text-decoration:none;letter-spacing:1px;text-transform:uppercase;}
+.flinks a:hover{color:#fff;}
+.fc{font-size:0.58rem;color:#444;}
+.page-hero{padding:3rem 2rem 2rem;border-bottom:1px solid rgba(255,255,255,0.05);text-align:center;}
+.content{max-width:900px;margin:0 auto;padding:3rem 2rem;}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2.5rem;}
+.contact-card{background:#080808;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:1.75rem;}
+.contact-card-icon{font-size:1.5rem;margin-bottom:1rem;}
+.contact-card-title{font-size:0.85rem;font-weight:700;color:#fff;margin-bottom:0.4rem;}
+.contact-card-desc{font-size:0.75rem;color:#666;line-height:1.6;margin-bottom:1rem;}
+.contact-card-email{font-size:0.78rem;color:#c0c0c0;font-weight:600;text-decoration:none;}
+.contact-card-email:hover{color:#fff;}
+.contact-card-time{font-size:0.65rem;color:#333;margin-top:0.4rem;letter-spacing:1px;text-transform:uppercase;}
+.form-section{background:#080808;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:2rem;}
+.form-title{font-size:1rem;font-weight:800;color:#fff;margin-bottom:0.35rem;}
+.form-sub{font-size:0.75rem;color:#666;margin-bottom:1.5rem;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+.form-group{margin-bottom:1rem;}
+.form-group label{display:block;font-size:0.6rem;color:#444;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.4rem;}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:#0a0a0a;border:1px solid rgba(255,255,255,0.07);border-radius:6px;padding:0.65rem 0.85rem;color:#fff;font-size:0.8rem;font-family:'Inter',sans-serif;outline:none;}
+.form-group input::placeholder,.form-group textarea::placeholder{color:#222;}
+.form-group select option{background:#0a0a0a;color:#fff;}
+.form-group textarea{resize:vertical;min-height:120px;line-height:1.6;}
+.submit-btn{background:#fff;color:#000;border:none;padding:0.75rem 2.5rem;border-radius:6px;font-size:0.75rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;}
+.submit-btn:hover{background:#c0c0c0;}
+.faq-strip{margin-top:2rem;border-top:1px solid rgba(255,255,255,0.05);padding-top:2rem;}
+.faq-strip-title{font-size:0.85rem;font-weight:700;color:#fff;margin-bottom:1rem;}
+.faq-items{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.faq-item{background:#060606;border:1px solid rgba(255,255,255,0.05);border-radius:8px;padding:1rem;}
+.faq-q{font-size:0.75rem;font-weight:600;color:#ccc;margin-bottom:0.35rem;}
+.faq-a{font-size:0.7rem;color:#555;line-height:1.5;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="logo">SYLLOG</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Games</a></li>
+    <li><a href="index.html">Universe</a></li>
+    <li><a href="credits.html">Credits &amp; Passes</a></li>
+    <li><a href="index.html">Leaderboards</a></li>
+  </ul>
+  <div class="nav-btns" id="nav-btns">
+    <button class="btn-g" onclick="window.location.href='auth.html?tab=signin'">Sign In</button>
+    <button class="btn-w" onclick="window.location.href='auth.html?tab=signup'">Create Account</button>
+  </div>
+</nav>
+<div class="page-hero">
+  <div class="page-tag">Support</div>
+  <div class="page-title">Contact Us</div>
+  <div class="page-sub">We're here to help. Reach out for support, billing questions, press inquiries, or anything else.</div>
+</div>
+<div class="content">
+  <div class="contact-grid">
+    <div class="contact-card"><div class="contact-card-icon">&#127942;</div><div class="contact-card-title">Player Support</div><div class="contact-card-desc">Account issues, gameplay questions, bug reports, and general help.</div><a href="mailto:support@sylloggames.com" class="contact-card-email">support@sylloggames.com</a><div class="contact-card-time">Response within 24 hours</div></div>
+    <div class="contact-card"><div class="contact-card-icon">&#128142;</div><div class="contact-card-title">Billing &amp; Payments</div><div class="contact-card-desc">Questions about Syllog Credits, Pass subscriptions, charges, or refund requests.</div><a href="mailto:support@sylloggames.com" class="contact-card-email">support@sylloggames.com</a><div class="contact-card-time">Response within 24 hours</div></div>
+    <div class="contact-card"><div class="contact-card-icon">&#128240;</div><div class="contact-card-title">Press &amp; Media</div><div class="contact-card-desc">Media inquiries, press kits, partnership opportunities, and coverage requests.</div><a href="mailto:support@sylloggames.com" class="contact-card-email">support@sylloggames.com</a><div class="contact-card-time">Response within 48 hours</div></div>
+    <div class="contact-card"><div class="contact-card-icon">&#128737;&#65039;</div><div class="contact-card-title">Report a Player</div><div class="contact-card-desc">Report cheating, harassment, account theft, or Terms of Service violations.</div><a href="mailto:support@sylloggames.com" class="contact-card-email">support@sylloggames.com</a><div class="contact-card-time">Reviewed within 48 hours</div></div>
+  </div>
+  <div class="form-section">
+    <div class="form-title">Send Us a Message</div>
+    <div class="form-sub">Fill out the form below and we'll get back to you as soon as possible.</div>
+    <div class="form-row">
+      <div class="form-group"><label>Your Name</label><input type="text" id="f-name" placeholder="Your name"></div>
+      <div class="form-group"><label>Email Address</label><input type="email" id="f-email" placeholder="your@email.com"></div>
+    </div>
+    <div class="form-group"><label>Syllog Username (optional)</label><input type="text" id="f-user" placeholder="Your Syllog ID"></div>
+    <div class="form-group"><label>Subject</label>
+      <select id="f-sub">
+        <option value="">Select a topic</option>
+        <option value="account">Account Issue</option>
+        <option value="billing">Billing &amp; Payments</option>
+        <option value="bug">Bug Report</option>
+        <option value="gameplay">Gameplay Question</option>
+        <option value="report">Report a Player</option>
+        <option value="press">Press &amp; Media</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Message</label><textarea id="f-msg" placeholder="Describe your issue or question in detail..."></textarea></div>
+    <button class="submit-btn" onclick="sendMsg()">Send Message</button>
+  </div>
+  <div class="faq-strip">
+    <div class="faq-strip-title">Quick Answers</div>
+    <div class="faq-items">
+      <div class="faq-item"><div class="faq-q">How do I reset my password?</div><div class="faq-a">On the Sign In page, click "Forgot password" and enter your email. A reset link will be sent to you.</div></div>
+      <div class="faq-item"><div class="faq-q">Can I get a refund on SC Credits?</div><div class="faq-a">All purchases are generally final. Contact us within 48 hours of purchase for exceptional circumstances.</div></div>
+      <div class="faq-item"><div class="faq-q">How do I cancel my Pass?</div><div class="faq-a">Email support@sylloggames.com with your account details and we'll process the cancellation immediately.</div></div>
+      <div class="faq-item"><div class="faq-q">My progress isn't saving — what do I do?</div><div class="faq-a">Make sure you're signed in to your Syllog ID. Progress only saves for logged-in players.</div></div>
+    </div>
+  </div>
+</div>
+<footer>
+  <div class="fl">SYLLOG</div>
+  <div class="flinks">
+    <a href="privacy.html">Privacy</a>
+    <a href="terms.html">Terms</a>
+    <a href="contact.html">Support</a>
+    <a href="contact.html">Press</a>
+  </div>
+  <div class="fc">&copy; 2026 Syllog Games.</div>
+</footer>
+<script>
+function sendMsg(){
+  var n=document.getElementById('f-name').value.trim();
+  var e=document.getElementById('f-email').value.trim();
+  var s=document.getElementById('f-sub').value;
+  var m=document.getElementById('f-msg').value.trim();
+  if(!n||!e||!s||!m){alert('Please fill in all required fields.');return;}
+  window.location.href='mailto:support@sylloggames.com?subject='+encodeURIComponent('[Syllog] '+s)+'&body='+encodeURIComponent('Name: '+n+'\nEmail: '+e+'\nUsername: '+document.getElementById('f-user').value+'\n\n'+m);
+}
+</script>
+<script>
+window.addEventListener('load',function(){
+  var _u='https://mlstrkqefyqoczusewrm.supabase.co';
+  var _k='sb_publishable_g7_BTnT_cTqaIk19Kx9FEw_iP1I7Df7';
+  var _c=supabase.createClient(_u,_k,{auth:{persistSession:true,storageKey:'syllog-auth',storage:window.localStorage,autoRefreshToken:true}});
+  _c.auth.getSession().then(function(r){
+    if(!r.data||!r.data.session)return;
+    _c.from('players').select('username').eq('id',r.data.session.user.id).single().then(function(d){
+      if(!d.data)return;
+      var nb=document.getElementById('nav-btns');
+      if(!nb)return;
+      nb.innerHTML='<button onclick="window.location.href=\'index.html\'" style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;padding:0.28rem 0.75rem;border-radius:5px;border:1px solid rgba(255,255,255,0.08);background:transparent;font-family:Inter,sans-serif;"><span style="width:6px;height:6px;border-radius:50%;background:#c0c0c0;display:inline-block;flex-shrink:0;"></span><span style="font-size:0.63rem;font-weight:700;color:rgba(255,255,255,0.65);letter-spacing:1px;text-transform:uppercase;">'+d.data.username+'</span><span style="font-size:0.55rem;color:rgba(255,255,255,0.2);">&#9660;</span></button>';
+    });
+  });
+});
+</script>
+</body>
+</html>

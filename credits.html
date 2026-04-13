@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Syllog — Credits & Passes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://js.stripe.com/v3/"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#000;color:#fff;font-family:'Inter',sans-serif;}
+
+nav{background:rgba(0,0,0,0.97);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:100;}
+.logo{font-size:1rem;font-weight:900;letter-spacing:6px;background:linear-gradient(135deg,#fff 0%,#c0c0c0 60%,#777 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;cursor:pointer;}
+.nav-links{display:flex;gap:1.75rem;list-style:none;}
+.nav-links a{color:rgba(255,255,255,0.28);text-decoration:none;font-size:0.68rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:color 0.2s;}
+.nav-links a:hover,.nav-links a.active{color:#fff;}
+.nav-btns{display:flex;gap:0.5rem;}
+.btn-g{background:transparent;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);padding:0.3rem 0.9rem;border-radius:4px;font-size:0.65rem;font-weight:600;letter-spacing:1px;cursor:pointer;text-transform:uppercase;transition:all 0.2s;font-family:'Inter',sans-serif;}
+.btn-g:hover{border-color:rgba(255,255,255,0.3);color:#fff;}
+.btn-w{background:#fff;border:none;color:#000;padding:0.3rem 0.9rem;border-radius:4px;font-size:0.65rem;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;font-family:'Inter',sans-serif;}
+
+.page-hero{padding:3rem 2rem 2rem;text-align:center;border-bottom:1px solid rgba(255,255,255,0.05);}
+.page-tag{font-size:0.56rem;letter-spacing:4px;text-transform:uppercase;color:#444;border:1px solid rgba(255,255,255,0.05);padding:0.25rem 0.85rem;border-radius:20px;display:inline-block;margin-bottom:0.9rem;}
+.page-title{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-1px;background:linear-gradient(160deg,#fff 0%,#c0c0c0 50%,#888 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:0.5rem;}
+.page-sub{font-size:0.78rem;color:#666;max-width:480px;margin:0 auto;line-height:1.6;}
+
+.section{padding:2rem 2rem 1rem;max-width:1100px;margin:0 auto;}
+.sec-label{font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:#333;margin-bottom:0.3rem;}
+.sec-head{font-size:1rem;font-weight:800;letter-spacing:-0.3px;color:#fff;margin-bottom:1.25rem;}
+
+/* SC CREDIT PACKS */
+.packs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.pack-card{background:#080808;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:1.25rem;display:flex;flex-direction:column;position:relative;transition:border-color 0.2s,transform 0.2s;}
+.pack-card:hover{border-color:rgba(255,255,255,0.15);transform:translateY(-2px);}
+.pack-card.best{border-color:rgba(192,192,192,0.2);background:#0a0a0a;}
+.pack-best-badge{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#c0c0c0,#fff);color:#000;font-size:0.5rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:0.18rem 0.65rem;border-radius:0 0 7px 7px;white-space:nowrap;}
+.pack-name{font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;color:#444;margin-bottom:0.5rem;}
+.pack-sc{font-size:1.8rem;font-weight:900;letter-spacing:-1px;color:#fff;line-height:1;}
+.pack-sc-label{font-size:0.6rem;color:#444;margin-bottom:0.6rem;}
+.pack-price{font-size:1.1rem;font-weight:700;color:#c0c0c0;margin-bottom:0.3rem;}
+.pack-value{font-size:0.6rem;color:#444;margin-bottom:1rem;}
+.pack-value.hi{color:#888;}
+.pack-divider{height:1px;background:rgba(255,255,255,0.05);margin-bottom:1rem;}
+.pack-bonus{font-size:0.65rem;color:#555;margin-bottom:1rem;min-height:1.2rem;}
+.pack-bonus span{color:#c0c0c0;font-weight:600;}
+.pack-btn{width:100%;padding:0.6rem;border-radius:6px;font-size:0.65rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border:1px solid rgba(255,255,255,0.1);background:transparent;color:rgba(255,255,255,0.5);transition:all 0.2s;font-family:'Inter',sans-serif;margin-top:auto;}
+.pack-btn:hover{background:rgba(255,255,255,0.06);color:#fff;border-color:rgba(255,255,255,0.25);}
+.pack-btn.featured-btn{background:#fff;color:#000;border:none;}
+.pack-btn.featured-btn:hover{background:#c0c0c0;}
+
+/* BILLING TOGGLE */
+.billing-toggle{display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;}
+.toggle-label{font-size:0.68rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:color 0.2s;}
+.toggle-label.active{color:#fff;}
+.toggle-label.inactive{color:#333;}
+.toggle-track{width:40px;height:22px;background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);border-radius:11px;position:relative;cursor:pointer;transition:all 0.2s;flex-shrink:0;}
+.toggle-track.on{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);}
+.toggle-thumb{position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:#444;transition:all 0.25s cubic-bezier(0.25,0.46,0.45,0.94);}
+.toggle-track.on .toggle-thumb{left:21px;background:#fff;}
+.save-pill{background:rgba(192,192,192,0.1);border:1px solid rgba(192,192,192,0.2);color:#c0c0c0;font-size:0.55rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:0.18rem 0.6rem;border-radius:20px;}
+
+/* PASS CARDS */
+.pass-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.pass-card{background:#080808;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:1.25rem;position:relative;display:flex;flex-direction:column;transition:border-color 0.2s;}
+.pass-card.featured{background:#0c0c0c;border-color:rgba(255,255,255,0.14);}
+.pass-hot{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:#fff;color:#000;font-size:0.5rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:0.18rem 0.65rem;border-radius:0 0 7px 7px;white-space:nowrap;}
+.pass-tier{font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:#333;margin-bottom:0.35rem;}
+.pass-price-wrap{min-height:54px;margin-bottom:0.2rem;}
+.pass-price{font-size:2rem;font-weight:900;letter-spacing:-1.5px;color:#fff;line-height:1;}
+.pass-per{font-size:0.65rem;color:#2a2a2a;font-weight:400;}
+.pass-note{font-size:0.6rem;color:#555;margin-top:0.2rem;min-height:1rem;}
+.pass-save{display:inline-block;background:rgba(192,192,192,0.08);border:1px solid rgba(192,192,192,0.15);color:#c0c0c0;font-size:0.52rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:0.15rem 0.5rem;border-radius:10px;margin-top:0.25rem;opacity:0;transition:opacity 0.3s;}
+.pass-save.show{opacity:1;}
+.pass-sc{font-size:0.63rem;color:#555;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05);margin-bottom:0.75rem;margin-top:0.5rem;min-height:2.2rem;}
+.pass-features{list-style:none;flex:1;margin-bottom:1rem;}
+.pass-features li{font-size:0.68rem;padding:0.25rem 0;border-bottom:1px solid rgba(255,255,255,0.025);display:flex;gap:0.4rem;align-items:center;}
+.pass-features li.on{color:rgba(255,255,255,0.6);}
+.pass-features li.off{color:#1e1e1e;}
+.ck{font-size:0.55rem;flex-shrink:0;}
+.pass-btn{width:100%;padding:0.6rem;border-radius:6px;font-size:0.65rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border:none;margin-top:auto;transition:all 0.2s;font-family:'Inter',sans-serif;}
+.pb-f{background:rgba(255,255,255,0.03);color:#1e1e1e;border:1px solid rgba(255,255,255,0.05);}
+.pb-g{background:#fff;color:#000;}
+.pb-g:hover{background:#d0d0d0;}
+.pb-p{background:linear-gradient(135deg,#b0b0b0,#fff);color:#000;}
+.pb-p:hover{opacity:0.85;}
+
+/* COMPARISON TABLE */
+.compare-section{padding:2rem 2rem 1rem;max-width:1100px;margin:0 auto;border-top:1px solid rgba(255,255,255,0.05);}
+.compare-table{width:100%;border-collapse:collapse;border:1px solid rgba(255,255,255,0.05);border-radius:12px;overflow:hidden;margin-top:1rem;}
+.compare-table thead tr{background:#0a0a0a;}
+.compare-table th{padding:0.85rem 1rem;text-align:left;font-size:0.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#333;border-bottom:1px solid rgba(255,255,255,0.05);}
+.compare-table th:not(:first-child){text-align:center;}
+.compare-table td{padding:0.75rem 1rem;font-size:0.75rem;border-bottom:1px solid rgba(255,255,255,0.03);color:#555;}
+.compare-table td:first-child{color:#666;font-weight:500;}
+.compare-table td:not(:first-child){text-align:center;}
+.compare-table tr:last-child td{border-bottom:none;}
+.compare-table tr:hover td{background:rgba(255,255,255,0.01);}
+.compare-table tbody tr:nth-child(odd) td{background:rgba(255,255,255,0.005);}
+.tick{color:#c0c0c0;font-size:0.85rem;font-weight:700;}
+.cross{color:#1e1e1e;font-size:0.85rem;}
+.val{color:rgba(255,255,255,0.6);font-weight:600;}
+.col-gold{color:#d0d0d0;font-weight:700;}
+.col-plat{color:#fff;font-weight:700;}
+.col-head-gold{color:#c0c0c0 !important;}
+.col-head-plat{color:#fff !important;}
+
+/* FAQ */
+.faq-section{padding:2rem 2rem 1rem;max-width:1100px;margin:0 auto;border-top:1px solid rgba(255,255,255,0.05);}
+.faq-list{display:flex;flex-direction:column;gap:1px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.05);border-radius:12px;overflow:hidden;margin-top:1rem;}
+.faq-item{background:#000;cursor:pointer;}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;transition:background 0.15s;}
+.faq-q:hover{background:#060606;}
+.faq-q-text{font-size:0.82rem;font-weight:600;color:rgba(255,255,255,0.65);}
+.faq-arrow{font-size:0.7rem;color:#333;transition:transform 0.25s;}
+.faq-item.open .faq-arrow{transform:rotate(180deg);}
+.faq-a{display:none;padding:0 1.25rem 1rem;font-size:0.75rem;color:#666;line-height:1.7;border-top:1px solid rgba(255,255,255,0.03);}
+.faq-item.open .faq-a{display:block;}
+.faq-a span{color:#888;}
+
+/* INFO STRIP */
+.info-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.05);border-radius:12px;overflow:hidden;margin:1.5rem auto;max-width:1100px;}
+.info-item{background:#000;padding:1rem 1.25rem;display:flex;align-items:flex-start;gap:0.6rem;}
+.info-icon{font-size:1rem;flex-shrink:0;margin-top:0.1rem;}
+.info-title{font-size:0.72rem;font-weight:700;color:#ccc;margin-bottom:0.2rem;}
+.info-desc{font-size:0.62rem;color:#444;line-height:1.4;}
+
+/* CTA STRIP */
+.cta-strip{padding:2rem 2rem;text-align:center;border-top:1px solid rgba(255,255,255,0.05);}
+.cta-strip-title{font-size:1.1rem;font-weight:800;letter-spacing:-0.3px;color:#fff;margin-bottom:0.5rem;}
+.cta-strip-sub{font-size:0.75rem;color:#444;margin-bottom:1.5rem;}
+.cta-strip-btns{display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;}
+.cta-primary{background:#fff;color:#000;border:none;padding:0.7rem 2rem;border-radius:6px;font-size:0.75rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:background 0.2s;font-family:'Inter',sans-serif;}
+.cta-primary:hover{background:#c0c0c0;}
+.cta-secondary{background:transparent;color:rgba(255,255,255,0.35);border:1px solid rgba(255,255,255,0.1);padding:0.7rem 2rem;border-radius:6px;font-size:0.75rem;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;}
+.cta-secondary:hover{color:#fff;border-color:rgba(255,255,255,0.25);}
+
+/* LOADING + TOAST */
+.loading-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:999;align-items:center;justify-content:center;flex-direction:column;gap:1rem;}
+.loading-overlay.show{display:flex;}
+.loading-spinner{width:36px;height:36px;border:2px solid rgba(255,255,255,0.1);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading-text{font-size:0.72rem;color:rgba(255,255,255,0.4);letter-spacing:2px;text-transform:uppercase;}
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);background:#111;border:1px solid rgba(255,255,255,0.1);color:#c0c0c0;font-size:0.72rem;padding:0.75rem 1.5rem;border-radius:8px;letter-spacing:0.5px;transition:transform 0.3s;z-index:1000;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.error{border-color:rgba(255,60,60,0.3);color:#ff6b6b;}
+
+footer{display:flex;align-items:center;justify-content:space-between;padding:0.8rem 2rem;border-top:1px solid rgba(255,255,255,0.04);margin-top:1rem;}
+.fl{font-size:0.7rem;font-weight:900;letter-spacing:5px;color:#444;}
+.flinks{display:flex;gap:1.25rem;}
+.flinks a{font-size:0.58rem;color:#888;text-decoration:none;letter-spacing:1px;text-transform:uppercase;}
+.fc{font-size:0.58rem;color:#444;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo" onclick="window.location.href='index.html'">SYLLOG</div>
+  <ul class="nav-links">
+    <li><a href="index.html">Games</a></li>
+    <li><a href="index.html">Universe</a></li>
+    <li><a href="credits.html" class="active">Credits &amp; Passes</a></li>
+    <li><a href="index.html">Leaderboards</a></li>
+  </ul>
+  <div class="nav-btns">
+    <button class="btn-g" onclick="window.location.href='auth.html?tab=signin'">Sign In</button>
+    <button class="btn-w" onclick="window.location.href='auth.html?tab=signup'">Create Account</button>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="page-tag">Syllog Store</div>
+  <div class="page-title">Credits &amp; Passes</div>
+  <div class="page-sub">Purchase Syllog Credits once — spend them across every game. Or upgrade your Pass for monthly SC gifts and platform-wide benefits.</div>
+</div>
+
+<!-- SC CREDIT PACKS -->
+<div class="section">
+  <div class="sec-label">Syllog Credits</div>
+  <div class="sec-head">One Purchase. Every Game.</div>
+  <div class="packs-grid">
+    <div class="pack-card">
+      <div class="pack-name">Starter</div>
+      <div class="pack-sc">500</div>
+      <div class="pack-sc-label">Syllog Credits</div>
+      <div class="pack-price">$4.99</div>
+      <div class="pack-value">100 SC per $1</div>
+      <div class="pack-divider"></div>
+      <div class="pack-bonus">Standard rate</div>
+      <button class="pack-btn" onclick="checkout('price_1TLCP3GTo6XxsJZOUF2M2H2G','payment')">Buy Starter Pack</button>
+    </div>
+    <div class="pack-card">
+      <div class="pack-name">Plus</div>
+      <div class="pack-sc">1,200</div>
+      <div class="pack-sc-label">Syllog Credits</div>
+      <div class="pack-price">$9.99</div>
+      <div class="pack-value">120 SC per $1</div>
+      <div class="pack-divider"></div>
+      <div class="pack-bonus"><span>+200 SC</span> bonus included</div>
+      <button class="pack-btn" onclick="checkout('price_1TLCP6GTo6XxsJZO6YW1n0ky','payment')">Buy Plus Pack</button>
+    </div>
+    <div class="pack-card best">
+      <div class="pack-best-badge">Best Value</div>
+      <div style="margin-top:0.5rem;"></div>
+      <div class="pack-name">Pro</div>
+      <div class="pack-sc">2,750</div>
+      <div class="pack-sc-label">Syllog Credits</div>
+      <div class="pack-price">$19.99</div>
+      <div class="pack-value hi">138 SC per $1</div>
+      <div class="pack-divider"></div>
+      <div class="pack-bonus"><span>+750 SC</span> bonus included</div>
+      <button class="pack-btn featured-btn" onclick="checkout('price_1TLCP5GTo6XxsJZOS2AzoXrW','payment')">Buy Pro Pack</button>
+    </div>
+    <div class="pack-card">
+      <div class="pack-name">Elite</div>
+      <div class="pack-sc">6,500</div>
+      <div class="pack-sc-label">Syllog Credits</div>
+      <div class="pack-price">$39.99</div>
+      <div class="pack-value hi">163 SC per $1</div>
+      <div class="pack-divider"></div>
+      <div class="pack-bonus"><span>+2,000 SC</span> bonus included</div>
+      <button class="pack-btn" onclick="checkout('price_1TLCP5GTo6XxsJZO62XF3KTM','payment')">Buy Elite Pack</button>
+    </div>
+  </div>
+</div>
+
+<!-- PASS SECTION -->
+<div class="section" style="padding-top:1rem;">
+  <div class="sec-label">Membership</div>
+  <div class="sec-head">Upgrade Your Pass</div>
+  <div class="billing-toggle">
+    <span class="toggle-label active" id="lbl-m" onclick="switchBilling()">Monthly</span>
+    <div class="toggle-track" id="ctoggle" onclick="switchBilling()"><div class="toggle-thumb"></div></div>
+    <span class="toggle-label inactive" id="lbl-a" onclick="switchBilling()">Annual</span>
+    <span class="save-pill">2 Months Free</span>
+  </div>
+  <div class="pass-grid">
+    <div class="pass-card">
+      <div class="pass-tier">Free Player</div>
+      <div class="pass-price-wrap">
+        <div class="pass-price">$0 <span class="pass-per">/ forever</span></div>
+      </div>
+      <div class="pass-sc">All games &middot; Always free &middot; No card needed</div>
+      <ul class="pass-features">
+        <li class="on"><span class="ck">&#10003;</span>All games free forever</li>
+        <li class="on"><span class="ck">&#10003;</span>Universal Syllog ID</li>
+        <li class="on"><span class="ck">&#10003;</span>Cross-title progression</li>
+        <li class="on"><span class="ck">&#10003;</span>Global XP &amp; leaderboards</li>
+        <li class="off"><span class="ck">&#8212;</span>Monthly SC gift</li>
+        <li class="off"><span class="ck">&#8212;</span>Ad removal</li>
+        <li class="off"><span class="ck">&#8212;</span>Early access</li>
+        <li class="off"><span class="ck">&#8212;</span>Beta access</li>
+      </ul>
+      <button class="pass-btn pb-f" onclick="window.location.href='auth.html?tab=signup'">Start Free</button>
+    </div>
+    <div class="pass-card featured">
+      <div class="pass-hot">Most Popular</div>
+      <div style="margin-top:0.5rem;"></div>
+      <div class="pass-tier">Gold Pass</div>
+      <div class="pass-price-wrap">
+        <div class="pass-price" id="c-gold-price" style="color:#ddd;">$7.99 <span class="pass-per">/ month</span></div>
+        <div class="pass-note" id="c-gold-note">&nbsp;</div>
+        <div class="pass-save" id="c-gold-save">Save $15.89 &mdash; 2 months free</div>
+      </div>
+      <div class="pass-sc" id="c-gold-sc" style="color:#777;">1,000 SC monthly &middot; ~$8.30 value &middot; +10% bonus</div>
+      <ul class="pass-features">
+        <li class="on"><span class="ck">&#10003;</span>All games free forever</li>
+        <li class="on"><span class="ck">&#10003;</span>Universal Syllog ID</li>
+        <li class="on"><span class="ck">&#10003;</span>Cross-title progression</li>
+        <li class="on"><span class="ck">&#10003;</span>1,000 SC monthly gift</li>
+        <li class="on"><span class="ck">&#10003;</span>+10% on all SC purchases</li>
+        <li class="on"><span class="ck">&#10003;</span>Ads removed &mdash; 3 games</li>
+        <li class="on"><span class="ck">&#10003;</span>Early game access</li>
+        <li class="off"><span class="ck">&#8212;</span>Beta access</li>
+      </ul>
+      <button class="pass-btn pb-g" id="c-gold-btn" onclick="checkout(isAnnual?'price_1TLCP6GTo6XxsJZO9oN1Unyo':'price_1TLCP7GTo6XxsJZOTvZqDd0X','subscription')">Get Gold Pass</button>
+    </div>
+    <div class="pass-card">
+      <div class="pass-tier">Platinum Pass</div>
+      <div class="pass-price-wrap">
+        <div class="pass-price" id="c-plat-price">$14.99 <span class="pass-per">/ month</span></div>
+        <div class="pass-note" id="c-plat-note">&nbsp;</div>
+        <div class="pass-save" id="c-plat-save">Save $29.89 &mdash; 2 months free</div>
+      </div>
+      <div class="pass-sc" id="c-plat-sc">2,500 SC monthly &middot; ~$20.83 value &middot; +20% bonus</div>
+      <ul class="pass-features">
+        <li class="on"><span class="ck">&#10003;</span>All games free forever</li>
+        <li class="on"><span class="ck">&#10003;</span>Universal Syllog ID</li>
+        <li class="on"><span class="ck">&#10003;</span>Cross-title progression</li>
+        <li class="on"><span class="ck">&#10003;</span>2,500 SC monthly gift</li>
+        <li class="on"><span class="ck">&#10003;</span>+20% on all SC purchases</li>
+        <li class="on"><span class="ck">&#10003;</span>Ads removed &mdash; ALL games</li>
+        <li class="on"><span class="ck">&#10003;</span>Early game access</li>
+        <li class="on"><span class="ck">&#10003;</span>Beta access + monthly skin</li>
+      </ul>
+      <button class="pass-btn pb-p" id="c-plat-btn" onclick="checkout(isAnnual?'price_1TLCP3GTo6XxsJZO2uFrdyXr':'price_1TLCP4GTo6XxsJZOGwxQbPGD','subscription')">Get Platinum Pass</button>
+    </div>
+  </div>
+</div>
+
+<!-- COMPARISON TABLE -->
+<div class="compare-section">
+  <div class="sec-label">Full Breakdown</div>
+  <div class="sec-head">Everything Side by Side</div>
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>Free</th>
+        <th class="col-head-gold">Gold Pass</th>
+        <th class="col-head-plat">Platinum Pass</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Monthly price</td><td class="val">$0</td><td class="col-gold">$7.99 / mo</td><td class="col-plat">$14.99 / mo</td></tr>
+      <tr><td>Annual price</td><td class="val">$0</td><td class="col-gold">$79.99 / yr</td><td class="col-plat">$149.99 / yr</td></tr>
+      <tr><td>All games free</td><td><span class="tick">&#10003;</span></td><td><span class="tick">&#10003;</span></td><td><span class="tick">&#10003;</span></td></tr>
+      <tr><td>Universal Syllog ID</td><td><span class="tick">&#10003;</span></td><td><span class="tick">&#10003;</span></td><td><span class="tick">&#10003;</span></td></tr>
+      <tr><td>Cross-title progression</td><td><span class="tick">&#10003;</span></td><td><span class="tick">&#10003;</span></td><td><span class="tick">&#10003;</span></td></tr>
+      <tr><td>Global XP &amp; leaderboards</td><td><span class="tick">&#10003;</span></td><td><span class="tick">&#10003;</span></td><td><span class="tick">&#10003;</span></td></tr>
+      <tr><td>Monthly SC gift</td><td><span class="cross">&#8212;</span></td><td class="col-gold">1,000 SC</td><td class="col-plat">2,500 SC</td></tr>
+      <tr><td>SC purchase bonus</td><td><span class="cross">&#8212;</span></td><td class="col-gold">+10%</td><td class="col-plat">+20%</td></tr>
+      <tr><td>SC credits expire</td><td class="val">12 months inactive</td><td class="col-gold">Never</td><td class="col-plat">Never</td></tr>
+      <tr><td>Ad removal</td><td><span class="cross">&#8212;</span></td><td class="col-gold">3 games of choice</td><td class="col-plat">ALL games</td></tr>
+      <tr><td>Profile cosmetic frame</td><td><span class="cross">&#8212;</span></td><td class="col-gold">Gold frame</td><td class="col-plat">Animated Platinum</td></tr>
+      <tr><td>Early game access</td><td><span class="cross">&#8212;</span></td><td><span class="tick">&#10003;</span></td><td><span class="tick">&#10003;</span></td></tr>
+      <tr><td>Beta &amp; unreleased games</td><td><span class="cross">&#8212;</span></td><td><span class="cross">&#8212;</span></td><td><span class="tick">&#10003;</span></td></tr>
+      <tr><td>Monthly free skin</td><td><span class="cross">&#8212;</span></td><td><span class="cross">&#8212;</span></td><td><span class="tick">&#10003;</span></td></tr>
+      <tr><td>Priority support</td><td><span class="cross">&#8212;</span></td><td><span class="cross">&#8212;</span></td><td><span class="tick">&#10003;</span></td></tr>
+      <tr><td>Founder&rsquo;s banner (early)</td><td><span class="tick">&#10003;</span></td><td><span class="tick">&#10003;</span></td><td><span class="tick">&#10003;</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- FAQ -->
+<div class="faq-section">
+  <div class="sec-label">Questions</div>
+  <div class="sec-head">Frequently Asked</div>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">Are all games really free to play?</span><span class="faq-arrow">&#9660;</span></div>
+      <div class="faq-a">Yes — every single Syllog title is <span>free to play forever</span>, with no exceptions. Passes add bonus value on top of the free experience. Revenue comes from player choice, never compulsion.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">What are Syllog Credits (SC)?</span><span class="faq-arrow">&#9660;</span></div>
+      <div class="faq-a">Syllog Credits are a single premium currency purchased once and valid across <span>all Syllog games</span>. Your balance is never locked to one game — it travels with your Universal Syllog ID everywhere.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">How does the annual plan work?</span><span class="faq-arrow">&#9660;</span></div>
+      <div class="faq-a">You pay once upfront for the full year and get <span>2 months free</span> compared to monthly billing. Gold Annual is $79.99 (vs $95.88 monthly). Platinum Annual is $149.99 (vs $179.88 monthly). Your SC gift is distributed monthly throughout the year.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">Can I cancel my Pass at any time?</span><span class="faq-arrow">&#9660;</span></div>
+      <div class="faq-a">Yes. Monthly passes can be cancelled any time and remain active until the end of your billing period. Annual passes can be cancelled and remain active for the remainder of the year you paid for. <span>No penalties, no questions.</span></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">Do SC Credits expire?</span><span class="faq-arrow">&#9660;</span></div>
+      <div class="faq-a">Free player credits expire after <span>12 months of inactivity</span>. Gold and Platinum subscribers&rsquo; credits <span>never expire</span> while the subscription is active.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">What happens to my Pass if I miss a payment?</span><span class="faq-arrow">&#9660;</span></div>
+      <div class="faq-a">If a payment fails, Stripe will automatically retry. If unsuccessful, your Pass will downgrade to Free Player. <span>Your SC balance, XP, and progress are never deleted</span> — you keep everything you earned.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">Is Gold Pass really worth it?</span><span class="faq-arrow">&#9660;</span></div>
+      <div class="faq-a">At $7.99/month you receive 1,000 SC which has a retail value of <span>~$8.30</span> — the pass pays for itself in credits alone before ad removal, early access, or the purchase bonus are counted.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-text">Can I upgrade from Gold to Platinum later?</span><span class="faq-arrow">&#9660;</span></div>
+      <div class="faq-a">Yes — you can upgrade at any time. The price difference will be prorated and you will be charged only for the remaining time in your billing period. <span>Your benefits upgrade immediately.</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- INFO STRIP -->
+<div class="info-strip">
+  <div class="info-item"><div class="info-icon">&#128274;</div><div><div class="info-title">Secure Checkout</div><div class="info-desc">All payments processed by Stripe. Your card details never touch Syllog servers.</div></div></div>
+  <div class="info-item"><div class="info-icon">&#128142;</div><div><div class="info-title">Credits Never Lock</div><div class="info-desc">SC purchased here is valid across every Syllog game. Spend anywhere, anytime.</div></div></div>
+  <div class="info-item"><div class="info-icon">&#10227;</div><div><div class="info-title">Cancel Anytime</div><div class="info-desc">Pass subscriptions can be cancelled at any time with no penalties or fees.</div></div></div>
+  <div class="info-item"><div class="info-icon">&#127942;</div><div><div class="info-title">Instant Delivery</div><div class="info-desc">Credits and Pass benefits are applied to your account immediately after payment.</div></div></div>
+</div>
+
+<!-- CTA STRIP -->
+<div class="cta-strip">
+  <div class="cta-strip-title">Ready to enter the universe?</div>
+  <div class="cta-strip-sub">Create your Universal Syllog ID for free and start playing instantly.</div>
+  <div class="cta-strip-btns">
+    <button class="cta-primary" onclick="window.location.href='auth.html?tab=signup'">Create Account &mdash; Free</button>
+    <button class="cta-secondary" onclick="window.location.href='index.html'">Back to Portal</button>
+  </div>
+</div>
+
+<footer>
+  <div class="fl">SYLLOG</div>
+  <div class="flinks"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="contact.html">Support</a><a href="contact.html">Press</a></div>
+  <div class="fc">&copy; 2026 Syllog Games.</div>
+</footer>
+
+<div class="loading-overlay" id="loading">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">Redirecting to secure checkout...</div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+var WORKER_URL = 'https://syllog-checkout.syllog-gaming.workers.dev';
+var isAnnual = false;
+
+// Check redirect params
+var params = new URLSearchParams(window.location.search);
+if(params.get('success')==='true') showToast('Payment successful! Your credits are on their way.', false);
+if(params.get('cancelled')==='true') showToast('Checkout cancelled. No charge was made.', true);
+
+async function checkout(priceId, mode) {
+  document.getElementById('loading').classList.add('show');
+  try {
+    var response = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ priceId: priceId, mode: mode, origin: window.location.origin })
+    });
+    var session = await response.json();
+    if(session.url){ window.location.href = session.url; }
+    else { throw new Error('No URL'); }
+  } catch(err) {
+    document.getElementById('loading').classList.remove('show');
+    showToast('Checkout error — please try again.', true);
+  }
+}
+
+function showToast(msg, isError) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (isError ? ' error' : '');
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 4000);
+}
+
+function switchBilling() {
+  isAnnual = !isAnnual;
+  var track = document.getElementById('ctoggle');
+  track.classList.toggle('on', isAnnual);
+  document.getElementById('lbl-m').className = 'toggle-label ' + (isAnnual ? 'inactive' : 'active');
+  document.getElementById('lbl-a').className  = 'toggle-label ' + (isAnnual ? 'active' : 'inactive');
+  if(isAnnual){
+    document.getElementById('c-gold-price').innerHTML  = '$79.99 <span class="pass-per">/ year</span>';
+    document.getElementById('c-gold-note').textContent  = '$6.67 / month \u00b7 billed annually';
+    document.getElementById('c-gold-save').classList.add('show');
+    document.getElementById('c-gold-sc').textContent    = '12,000 SC across the year \u00b7 +10% bonus \u00b7 credits never expire';
+    document.getElementById('c-gold-btn').textContent   = 'Get Gold \u2014 Annual';
+    document.getElementById('c-plat-price').innerHTML  = '$149.99 <span class="pass-per">/ year</span>';
+    document.getElementById('c-plat-note').textContent  = '$12.50 / month \u00b7 billed annually';
+    document.getElementById('c-plat-save').classList.add('show');
+    document.getElementById('c-plat-sc').textContent    = '30,000 SC across the year \u00b7 +20% bonus \u00b7 credits never expire';
+    document.getElementById('c-plat-btn').textContent   = 'Get Platinum \u2014 Annual';
+  } else {
+    document.getElementById('c-gold-price').innerHTML  = '$7.99 <span class="pass-per">/ month</span>';
+    document.getElementById('c-gold-note').textContent  = '\u00a0';
+    document.getElementById('c-gold-save').classList.remove('show');
+    document.getElementById('c-gold-sc').textContent    = '1,000 SC monthly \u00b7 ~$8.30 value \u00b7 +10% bonus';
+    document.getElementById('c-gold-btn').textContent   = 'Get Gold Pass';
+    document.getElementById('c-plat-price').innerHTML  = '$14.99 <span class="pass-per">/ month</span>';
+    document.getElementById('c-plat-note').textContent  = '\u00a0';
+    document.getElementById('c-plat-save').classList.remove('show');
+    document.getElementById('c-plat-sc').textContent    = '2,500 SC monthly \u00b7 ~$20.83 value \u00b7 +20% bonus';
+    document.getElementById('c-plat-btn').textContent   = 'Get Platinum Pass';
+  }
+}
+
+function toggleFaq(el) {
+  var item = el.parentElement;
+  var wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(function(i){ i.classList.remove('open'); });
+  if(!wasOpen) item.classList.add('open');
+}
+</script>
+<script>
+window.addEventListener('load',function(){
+  var _u='https://mlstrkqefyqoczusewrm.supabase.co';
+  var _k='sb_publishable_g7_BTnT_cTqaIk19Kx9FEw_iP1I7Df7';
+  var _c=supabase.createClient(_u,_k,{auth:{persistSession:true,storageKey:'syllog-auth',storage:window.localStorage,autoRefreshToken:true}});
+  _c.auth.getSession().then(function(r){
+    if(!r.data||!r.data.session)return;
+    _c.from('players').select('username').eq('id',r.data.session.user.id).single().then(function(d){
+      if(!d.data)return;
+      var nb=document.getElementById('nav-btns');
+      if(!nb)return;
+      nb.innerHTML='<button onclick="window.location.href=\'index.html\'" style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;padding:0.28rem 0.75rem;border-radius:5px;border:1px solid rgba(255,255,255,0.08);background:transparent;font-family:Inter,sans-serif;"><span style="width:6px;height:6px;border-radius:50%;background:#c0c0c0;display:inline-block;flex-shrink:0;"></span><span style="font-size:0.63rem;font-weight:700;color:rgba(255,255,255,0.65);letter-spacing:1px;text-transform:uppercase;">'+d.data.username+'</span><span style="font-size:0.55rem;color:rgba(255,255,255,0.2);">&#9660;</span></button>';
+    });
+  });
+});
+</script>
+</body>
+</html>
