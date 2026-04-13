@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>VOID RIFT — 150 LEVELS</title>
@@ -912,7 +913,7 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
           <!-- Slot ID: ${isRewarded ? this._rewardedSlot : this._interstitialSlot} -->
           <div style="font-size:20px;">📺</div>
           <div style="font-size:7px;letter-spacing:3px;color:rgba(255,255,255,.3);">ADVERTISEMENT</div>
-          <div style="font-size:6px;letter-spacing:2px;color:rgba(255,160,0,.4);">syllog.com</div>
+          <div style="font-size:6px;letter-spacing:2px;color:rgba(255,160,0,.4);">sylloggames.com</div>
         </div>
         <div id="sadTimer" style="font-size:9px;letter-spacing:3px;color:rgba(255,255,255,.4);margin-top:14px;">
           ${isRewarded ? 'Watch full ad to earn reward' : `Ad ends in ${dur}s`}
@@ -1095,7 +1096,7 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
       <div id="adPlaceholder" style="text-align:center;padding:20px;">
         <div style="font-size:36px;margin-bottom:10px;">📺</div>
         <div style="font-size:9px;letter-spacing:3px;color:rgba(255,255,255,.4);margin-bottom:6px;">AD SLOT READY</div>
-        <div style="font-size:7px;letter-spacing:2px;color:rgba(0,180,255,.5);">syllog.com</div>
+        <div style="font-size:7px;letter-spacing:2px;color:rgba(0,180,255,.5);">sylloggames.com</div>
         <!-- SYLLOG AD SDK: replace placeholder with real ad unit -->
         <!-- <div id="syllog-ad-unit" data-pub="ca-pub-XXXXXXXXXXXXXXXX" data-slot="XXXXXXXXXX"></div> -->
       </div>
@@ -2027,6 +2028,33 @@ const SPEED_BASE=295;
 
 // ── SHOP SYSTEM ────────────────────────────────────────────────
 let syllogCredits=0;       // player's Syllog Credit balance
+
+// ── SUPABASE SC INTEGRATION ─────────────────────────────────────
+const SB_URL = 'https://mlstrkqefyqoczusewrm.supabase.co';
+const SB_KEY = 'sb_publishable_g7_BTnT_cTqaIk19Kx9FEw_iP1I7Df7';
+const _sb = supabase.createClient(SB_URL, SB_KEY);
+let _sbUser = null;
+
+async function loadSCFromSupabase() {
+  try {
+    const { data: { session } } = await _sb.auth.getSession();
+    if (!session) return;
+    _sbUser = session.user;
+    const { data } = await _sb.from('players').select('sc_balance').eq('id', _sbUser.id).single();
+    if (data) {
+      syllogCredits = data.sc_balance || 0;
+      const el = document.getElementById('shopCreditsVal');
+      if (el) el.textContent = syllogCredits.toLocaleString();
+    }
+  } catch(e) { console.log('SC load error:', e); }
+}
+
+async function saveSCToSupabase() {
+  if (!_sbUser) return;
+  try {
+    await _sb.from('players').update({ sc_balance: syllogCredits }).eq('id', _sbUser.id);
+  } catch(e) { console.log('SC save error:', e); }
+}
 let ownedShips=['default']; // ships player owns
 let equippedShip='default'; // currently active ship
 let adsRemoved=false;       // whether player bought
@@ -12531,7 +12559,7 @@ function renderShopTab(tab){
 
   if(tab==='ships'){
     let html2 = `<div class="sh-credits-info">
-      <p>Syllog Credits purchased at <a href="#" onclick="return false;">syllog.com</a> · Ships permanently unlock on your account.</p>
+      <p>Syllog Credits purchased at <a href="#" onclick="return false;">sylloggames.com</a> · Ships permanently unlock on your account.</p>
     </div>
     <div class="sh-section-title">SELECT YOUR VESSEL</div>`;
 
@@ -12635,7 +12663,7 @@ function renderShopTab(tab){
 
   } else if(tab==='boosts'){
     const items = SHOP_ITEMS.filter(i=>i.tab==='boosts');
-    let html2 = `<div class="sh-credits-info"><p>Boosts activate for one session and reset on game over.<br>Purchase credits at <a href="#" onclick="return false;">syllog.com</a></p></div>
+    let html2 = `<div class="sh-credits-info"><p>Boosts activate for one session and reset on game over.<br>Purchase credits at <a href="#" onclick="return false;">sylloggames.com</a></p></div>
     <div class="sh-section-title">SESSION BOOSTS</div>`;
     for(const item of items){
       html2 += renderShopItem(item);
@@ -13268,12 +13296,13 @@ function buyShip(id){
   const ship = SHIP_DEFS.find(s=>s.id===id);
   if(!ship||ownedShips.includes(id)) return;
   if(syllogCredits < ship.price){
-    showShopToast('Not enough Syllog Credits — visit syllog.com');
+    showShopToast('Not enough Syllog Credits — visit sylloggames.com');
     return;
   }
   syllogCredits -= ship.price;
   ownedShips.push(id);
   document.getElementById('shopCreditsVal').textContent = syllogCredits.toLocaleString();
+  saveSCToSupabase();
   renderShopTab('ships');
   showShopToast(`${ship.name} unlocked!`);
 }
@@ -13316,7 +13345,7 @@ function buyItem(id){
   const item = SHOP_ITEMS.find(i=>i.id===id);
   if(!item) return;
   if(syllogCredits < item.price){
-    showShopToast('Not enough Syllog Credits — visit syllog.com');
+    showShopToast('Not enough Syllog Credits — visit sylloggames.com');
     return;
   }
   syllogCredits -= item.price;
@@ -13324,6 +13353,7 @@ function buyItem(id){
   else if(id==='xp_boost') xpBoosterActive=true;
   else if(id.startsWith('skin_')) ownedSkins.push(id);
   document.getElementById('shopCreditsVal').textContent = syllogCredits.toLocaleString();
+  saveSCToSupabase();
   const tab = item.tab;
   renderShopTab(tab);
   showShopToast(`${item.name} purchased!`);
@@ -14908,6 +14938,12 @@ if(window._introComplete && !musicStarted){
 
 
 
+<script>
+// Load SC credits from Supabase when game starts
+window.addEventListener('load', function() {
+  loadSCFromSupabase();
+});
+</script>
 </body>
 </htmlfunction drawSkinArmorBars(px, py){
   if(!equippedSkin || skinArmorMax===0) return;
