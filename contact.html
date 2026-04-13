@@ -86,28 +86,28 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
       <div class="contact-card-icon">&#127942;</div>
       <div class="contact-card-title">Player Support</div>
       <div class="contact-card-desc">Account issues, gameplay questions, bug reports, and general help with the Syllog platform.</div>
-      <a href="mailto:support@sylloggames.com" class="contact-card-email">support@sylloggames.com</a>
+      <a href="/cdn-cgi/l/email-protection#e3909693938c9197a3909a8f8f8c8484828e8690cd808c8e" class="contact-card-email"><span class="__cf_email__" data-cfemail="4c3f393c3c233e380c3f352020232b2b2d21293f622f2321">[email&#160;protected]</span></a>
       <div class="contact-card-time">Response within 24 hours</div>
     </div>
     <div class="contact-card">
       <div class="contact-card-icon">&#128142;</div>
       <div class="contact-card-title">Billing &amp; Payments</div>
       <div class="contact-card-desc">Questions about Syllog Credits, Pass subscriptions, charges, or refund requests.</div>
-      <a href="mailto:support@sylloggames.com" class="contact-card-email">support@sylloggames.com</a>
+      <a href="/cdn-cgi/l/email-protection#aad9dfdadac5d8deead9d3c6c6c5cdcdcbc7cfd984c9c5c7" class="contact-card-email"><span class="__cf_email__" data-cfemail="50232520203f22241023293c3c3f3737313d35237e333f3d">[email&#160;protected]</span></a>
       <div class="contact-card-time">Response within 24 hours</div>
     </div>
     <div class="contact-card">
       <div class="contact-card-icon">&#128240;</div>
       <div class="contact-card-title">Press &amp; Media</div>
       <div class="contact-card-desc">Media inquiries, press kits, partnership opportunities, and coverage requests.</div>
-      <a href="mailto:support@sylloggames.com" class="contact-card-email">support@sylloggames.com</a>
+      <a href="/cdn-cgi/l/email-protection#d2a1a7a2a2bda0a692a1abbebebdb5b5b3bfb7a1fcb1bdbf" class="contact-card-email"><span class="__cf_email__" data-cfemail="cab9bfbabaa5b8be8ab9b3a6a6a5adadaba7afb9e4a9a5a7">[email&#160;protected]</span></a>
       <div class="contact-card-time">Response within 48 hours</div>
     </div>
     <div class="contact-card">
       <div class="contact-card-icon">&#128737;&#65039;</div>
       <div class="contact-card-title">Report a Player</div>
       <div class="contact-card-desc">Report cheating, harassment, account theft, or any conduct that violates our Terms of Service.</div>
-      <a href="mailto:support@sylloggames.com" class="contact-card-email">support@sylloggames.com</a>
+      <a href="/cdn-cgi/l/email-protection#592a2c2929362b2d192a203535363e3e38343c2a773a3634" class="contact-card-email"><span class="__cf_email__" data-cfemail="83f0f6f3f3ecf1f7c3f0faefefece4e4e2eee6f0ade0ecee">[email&#160;protected]</span></a>
       <div class="contact-card-time">Reviewed within 48 hours</div>
     </div>
   </div>
@@ -162,7 +162,7 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
       </div>
       <div class="faq-item">
         <div class="faq-q">How do I cancel my Pass subscription?</div>
-        <div class="faq-a">Email us at support@sylloggames.com with your account details and we'll process the cancellation immediately.</div>
+        <div class="faq-a">Email us at <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2c5f595c5c435e586c5f554040434b4b4d41495f024f4341">[email&#160;protected]</a> with your account details and we'll process the cancellation immediately.</div>
       </div>
       <div class="faq-item">
         <div class="faq-q">My game progress isn't saving — what do I do?</div>
@@ -183,7 +183,7 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
   <div class="fc">&copy; 2026 Syllog Games.</div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 function submitForm(){
   var name=document.getElementById('f-name').value.trim();
   var email=document.getElementById('f-email').value.trim();
@@ -201,14 +201,4 @@ function submitForm(){
   var _c=supabase.createClient(_u,_k);
   _c.auth.getSession().then(function(r){
     if(!r.data||!r.data.session)return;
-    _c.from('players').select('username').eq('id',r.data.session.user.id).single().then(function(d){
-      if(!d.data)return;
-      var nb=document.getElementById('nav-btns');
-      if(!nb)return;
-      nb.innerHTML='<button onclick="window.location.href=\'index.html\'" style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;padding:0.28rem 0.75rem;border-radius:5px;border:1px solid rgba(255,255,255,0.08);background:transparent;font-family:Inter,sans-serif;"><span style="width:6px;height:6px;border-radius:50%;background:#c0c0c0;display:inline-block;flex-shrink:0;"></span><span style="font-size:0.63rem;font-weight:700;color:rgba(255,255,255,0.65);letter-spacing:1px;text-transform:uppercase;">'+d.data.username+'</span><span style="font-size:0.55rem;color:rgba(255,255,255,0.2);">&#9660;</span></button>';
-    });
-  });
-})();
-</script>
-</body>
-</html>
+    _c.from('players').select('username').eq('id',r.data.sessi
