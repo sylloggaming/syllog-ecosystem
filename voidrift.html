@@ -40,7 +40,6 @@ body{
   user-select:none;
   pointer-events:none;
 }
-
 /* ── SYLLOG INTRO ── */
 #syllog-intro{
   position:fixed;top:0;left:0;width:100%;height:100%;
@@ -76,13 +75,11 @@ body{
   overflow:hidden;cursor:pointer;
 }
 #storyCrawl.hidden{display:none;}
-
 /* Animated starfield background */
 #crawlStars{
   position:absolute;top:0;left:0;width:100%;height:100%;
   pointer-events:none;z-index:0;
 }
-
 /* Nebula glow layers */
 #storyCrawl .crawl-nebula{
   position:absolute;top:0;left:0;width:100%;height:100%;
@@ -93,8 +90,6 @@ body{
     radial-gradient(ellipse 40% 60% at 50% 50%, rgba(10,0,30,0.5) 0%, transparent 80%);
   animation:nebulaPulse 8s ease-in-out infinite alternate;
 }
-
-
 .crawl-perspective{
   position:relative;z-index:1;
   width:100%;height:100%;
@@ -185,13 +180,11 @@ body{
   z-index:5;pointer-events:none;
 }
 #wrap{position:relative;width:480px;height:700px;overflow:hidden;flex:0 0 480px;}
-
 /* ── AUTO SCALE TO FIT SCREEN ───────────────────────────────── */
 #wrap{
   transform-origin: top center;
   transition: none;
 }
-
 canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
 #ui{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:30;}
 .hud-top{display:flex;justify-content:space-between;align-items:center;padding:10px 14px 6px;background:linear-gradient(180deg,rgba(0,4,22,.96) 0%,transparent 100%);}
@@ -276,7 +269,6 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
 #continueScr .cs-ad-note{
   font-size:7px;letter-spacing:2px;color:rgba(255,160,0,.55);margin-top:2px;
 }
-
 /* ══════════════════════════════════════════════
    SHOP SCREEN
 ══════════════════════════════════════════════ */
@@ -288,7 +280,6 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
   overflow:hidden;
 }
 #shopScr.hide{display:none;}
-
 /* Header */
 #shopHeader{
   display:flex;align-items:center;justify-content:space-between;
@@ -320,7 +311,6 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
 #shopHeader .sh-back:hover{
   border-color:rgba(167,139,250,.7);color:#a78bfa;
 }
-
 /* Tab bar */
 #shopTabs{
   display:flex;border-bottom:1px solid rgba(120,80,255,.15);
@@ -338,19 +328,16 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
   color:#a78bfa;border-bottom-color:#a78bfa;
   background:rgba(120,80,255,.06);
 }
-
 /* Scroll area */
 #shopBody{
   flex:1;overflow-y:auto;padding:12px 12px 20px;
   scrollbar-width:thin;scrollbar-color:rgba(120,80,255,.3) transparent;
 }
-
 /* Section header */
 .sh-section-title{
   font-size:8px;letter-spacing:4px;color:rgba(167,139,250,.5);
   margin:8px 0 10px;text-transform:uppercase;
 }
-
 /* Ship cards */
 .sh-ship-card{
   background:rgba(10,5,30,.8);
@@ -362,7 +349,6 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
 .sh-ship-card:hover{border-color:rgba(120,80,255,.45);}
 .sh-ship-card.owned{border-color:rgba(0,255,100,.3);background:rgba(0,20,10,.7);}
 .sh-ship-card.active-ship{border-color:rgba(0,255,200,.5);background:rgba(0,30,20,.8);}
-
 .sh-ship-canvas{
   flex-shrink:0;width:70px;height:70px;
   border-radius:6px;background:rgba(0,0,20,.6);
@@ -443,7 +429,6 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
 .sh-stat-bar{flex:1;height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;}
 .sh-stat-fill{height:100%;border-radius:2px;transition:width .4s;}
 .sh-stat-val{font-size:7px;color:rgba(255,255,255,.6);width:24px;text-align:right;flex-shrink:0;font-family:'Share Tech Mono',monospace;}
-
 .sh-ship-footer{display:flex;align-items:center;justify-content:space-between;}
 .sh-price{font-size:10px;font-weight:900;color:#fbbf24;letter-spacing:2px;}
 .sh-price-label{font-size:7px;color:rgba(251,191,36,.5);letter-spacing:1px;}
@@ -471,7 +456,6 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
   opacity:.35;cursor:not-allowed;
   background:rgba(80,80,80,.1);border-color:rgba(80,80,80,.3);color:#888;
 }
-
 /* Consumable / misc items */
 .sh-item-row{
   background:rgba(10,5,30,.7);border:1px solid rgba(120,80,255,.18);
@@ -485,14 +469,12 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
 .sh-item-desc{font-size:7px;letter-spacing:1px;color:rgba(167,139,250,.55);line-height:1.5;}
 .sh-item-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0;}
 .sh-item-price{font-size:10px;font-weight:900;color:#fbbf24;letter-spacing:1px;}
-
 /* Coming soon badge */
 .sh-coming-soon{
   font-size:7px;letter-spacing:2px;color:rgba(251,191,36,.5);
   background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.15);
   padding:3px 8px;border-radius:3px;
 }
-
 /* Syllog credits info box */
 .sh-credits-info{
   background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.15);
@@ -501,7 +483,6 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
 .sh-credits-info p{font-size:7px;letter-spacing:2px;color:rgba(251,191,36,.65);line-height:1.8;}
 .sh-credits-info a{color:#fbbf24;text-decoration:none;}
 .sh-credits-info a:hover{text-decoration:underline;}
-
 /* ── CUSTOM CONFIRM MODAL ── */
 #confirmModal{
   position:absolute;top:0;left:0;width:100%;height:100%;
@@ -562,14 +543,12 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
   background:rgba(0,60,120,.7);border-color:rgba(68,170,255,.65);
   box-shadow:0 0 16px rgba(0,150,255,.25);
 }
-
 /* ── CONTINUE BUTTON PULSE ── */
 @keyframes continuePulse{
   0%,100%{box-shadow:0 0 15px rgba(0,200,80,.3),0 0 0 rgba(0,255,100,0);}
   50%{box-shadow:0 0 25px rgba(0,200,80,.6),0 0 40px rgba(0,255,100,.2);}
 }
 #continueBtn{animation:continuePulse 2s ease-in-out infinite;}
-
 /* ── HP TOKEN BAR ── */
 #hpTokenBar{position:absolute;left:0;right:0;top:58px;height:4px;background:rgba(0,255,80,.08);}
 #hpTokenFill{height:100%;width:0%;background:linear-gradient(90deg,#0f4,#4f8,#0ff);
@@ -721,7 +700,6 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
 #pwrPickup{position:absolute;top:55%;left:50%;transform:translate(-50%,-50%);z-index:36;pointer-events:none;opacity:0;transition:opacity .3s;text-align:center;font-size:14px;font-weight:700;letter-spacing:4px;}
 #pwrPickup.show{opacity:1;}
 #scan{position:absolute;top:0;left:0;width:100%;height:100%;z-index:29;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.05) 2px,rgba(0,0,0,.05) 4px);}
-
 /* ── PREMIUM STATS SCREEN ───────────────────────────────────────── */
 .stats-title{font-size:50px;font-weight:900;letter-spacing:4px;text-align:center;color:#fff;line-height:1;margin-bottom:2px;text-shadow:0 0 40px currentColor,0 0 80px currentColor;}
 .stats-sub{font-size:8px;letter-spacing:8px;text-align:center;margin-bottom:8px;text-transform:uppercase;opacity:0.7;}
@@ -759,51 +737,25 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
 .rh-meta{font-size:8px;color:rgba(120,160,220,.55);flex:1;line-height:1.6;}
 .rh-grade{font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;background:rgba(60,100,180,.18);color:rgba(160,200,255,.8);flex-shrink:0;}
 .rh-empty{font-size:8px;letter-spacing:2px;color:rgba(80,120,180,.45);text-align:center;padding:10px 0;}
-
 /* ══════════════════════════════════════════════════════════════════
    MOBILE VIRTUAL CONTROLLER
    Only shows on touch devices, always landscape
 ══════════════════════════════════════════════════════════════════ */
-
-
-
 /* Rotate notice for portrait mode */
-
-
-
-
-
-
 /* Controller overlay */
-
-
-
 /* Shoulder buttons */
-
-
 #vL1{left:12px;}
 #vL2{left:82px;}
 #vR1{right:12px;}
 #vR2{right:82px;}
-
 /* Joystick */
-
-
 /* Directional arrows on joystick base */
-
-
-
-
-
-
 /* Action buttons - right side */
 #vbtns-right{
   position:absolute;bottom:16px;right:16px;
   width:140px;height:130px;
   pointer-events:none;
 }
-
-
 /* Triangle - top center */
 #vbtn-tri{
   top:0;left:50%;transform:translateX(-50%);
@@ -845,15 +797,7 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
   font-family:'Orbitron',sans-serif;letter-spacing:2px;
   pointer-events:all;touch-action:none;
 }
-
 </style>
-  <!-- ═══════════════════════════════════════════════════════
-       SYLLOG ADS SDK — Plug-and-play ad system
-       Replace src with real network SDK when ready:
-       • Google Ad Manager: https://securepubads.g.doubleclick.net/tag/js/gpt.js
-       • IronSource: https://game-cdn.pswplayer.com/game-sdk/adinplay.js  
-       • CrazyGames: https://sdk.crazygames.com/crazygames-sdk-v3.js
-  ════════════════════════════════════════════════════════════ -->
   <script>window.SyllogAds = {
 _pubId: 'ca-pub-REPLACE_WITH_YOUR_ID',
 _interstitialSlot: 'REPLACE_WITH_SLOT_ID',
@@ -897,9 +841,6 @@ ${isRewarded ? '▶ REWARDED AD' : 'AD BREAK'}
 border:1px solid rgba(255,160,0,.2);border-radius:8px;
 display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;
 position:relative;overflow:hidden;">
-<!-- AD SLOT: ${isRewarded ? 'rewarded-video-30s' : 'interstitial-15s'} -->
-<!-- Publisher ID: ${this._pubId} -->
-<!-- Slot ID: ${isRewarded ? this._rewardedSlot : this._interstitialSlot} -->
 <div style="font-size:20px;">📺</div>
 <div style="font-size:7px;letter-spacing:3px;color:rgba(255,255,255,.3);">ADVERTISEMENT</div>
 <div style="font-size:6px;letter-spacing:2px;color:rgba(255,160,0,.4);">sylloggames.com</div>
@@ -951,16 +892,11 @@ if(cb) cb(true);
 }
 };
 window.addEventListener('DOMContentLoaded', ()=>{ SyllogAds.init(); });</script>
-
 <script>(function(){var _x1=document.createElement('div');_x1.style.display='none';document.body&&document.body.appendChild(_x1);})();</script>
-
 <script>(function(){var _cfg={v:'2.1.4',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
-
 <script>(function(){try{var _s=window.performance.now();}catch(e){}})();</script>
 </head>
 <body>
-
-<!-- ── SYLLOG COMPANY INTRO ── -->
 <div id="syllog-intro">
   <video id="syllog-vid" playsinline
     src="https://syllog-cdn.b-cdn.net/Void-Rift/Syllog%20Official%20Logo%20Reveal.mp4">
@@ -1008,8 +944,6 @@ wrap.addEventListener('click', function(e){
 e.stopPropagation();
 });
 })();</script>
-
-<!-- ── STORY CRAWL OVERLAY ─────────────────────────────────────── -->
 <div id="storyCrawl" class="hidden">
   <div class="crawl-nebula"></div>
   <canvas id="crawlStars"></canvas>
@@ -1018,7 +952,6 @@ e.stopPropagation();
   </div>
   <div class="crawl-skip">CLICK TO SKIP</div>
 </div>
-
 <div class="syllog-panel left">
   <img src="https://syllog-cdn.b-cdn.net/Void-Rift/Syllog%20Official%20Logo%20Side.png" alt="Syllog">
 </div>
@@ -1047,15 +980,12 @@ e.stopPropagation();
       <span id="pwrName">POWER-UP</span>
     </div>
   </div>
-  <!-- Cinematic upgrade notification -->
   <div id="upgradeNotif" class="un-hide">
     <div class="un-box">
       <span class="un-title">UPGRADE</span>
       <span class="un-sub">—</span>
     </div>
   </div>
-  <!-- CONTINUE SCREEN — shown between death and game over -->
-  <!-- ═══ AD BREAK SCREEN ═══ -->
   <div id="adScr" style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,8,0.97);z-index:8000;flex-direction:column;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;display:none;">
     <div style="position:absolute;top:16px;left:0;right:0;text-align:center;">
       <div style="font-size:9px;letter-spacing:4px;color:rgba(255,255,255,.25);">PRESENTED BY</div>
@@ -1067,8 +997,6 @@ e.stopPropagation();
         <div style="font-size:36px;margin-bottom:10px;">📺</div>
         <div style="font-size:9px;letter-spacing:3px;color:rgba(255,255,255,.4);margin-bottom:6px;">AD SLOT READY</div>
         <div style="font-size:7px;letter-spacing:2px;color:rgba(0,180,255,.5);">sylloggames.com</div>
-        <!-- SYLLOG AD SDK: replace placeholder with real ad unit -->
-        <!-- <div id="syllog-ad-unit" data-pub="ca-pub-XXXXXXXXXXXXXXXX" data-slot="XXXXXXXXXX"></div> -->
       </div>
       <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,.1);">
         <div id="adProgressBar" style="height:100%;width:0%;background:linear-gradient(90deg,#4af,#08f);transition:width 0.15s linear;"></div>
@@ -1084,7 +1012,6 @@ e.stopPropagation();
     </div>
     <div style="position:absolute;bottom:14px;font-size:7px;letter-spacing:2px;color:rgba(255,255,255,.15);">VOID RIFT — SYLLOG.COM</div>
   </div>
-
   <div id="continueScr" class="hide">
     <div class="cs-title">YOU DIED</div>
     <div class="cs-wave" id="csCurWave">WAVE 1</div>
@@ -1105,7 +1032,6 @@ e.stopPropagation();
       <button class="cs-btn-quit" id="csBtnQuit">GIVE UP</button>
     </div>
   </div>
-  <!-- CUSTOM CONFIRM MODAL -->
   <div id="confirmModal" class="hide">
     <div class="cm-box">
       <div class="cm-icon">⚠</div>
@@ -1118,7 +1044,6 @@ e.stopPropagation();
       </div>
     </div>
   </div>
-  <!-- SHOP SCREEN -->
   <div id="shopScr" class="hide">
     <div id="shopHeader">
       <div class="sh-title">✦ SHOP</div>
@@ -1136,14 +1061,12 @@ e.stopPropagation();
     </div>
     <div id="shopBody"></div>
   </div>
-  <!-- HANGAR OVERLAY -->
   <div id="hangarScr" class="hide" style="
     position:absolute;top:0;left:0;width:100%;height:100%;
     background:linear-gradient(180deg,rgba(0,4,20,0.97) 0%,rgba(0,8,30,0.98) 100%);
     z-index:7000;flex-direction:column;overflow:hidden;
     font-family:'Orbitron',sans-serif;
   ">
-    <!-- Header -->
     <div style="
       display:flex;align-items:center;justify-content:space-between;
       padding:14px 16px 10px;border-bottom:1px solid rgba(0,180,255,.15);
@@ -1160,44 +1083,32 @@ e.stopPropagation();
         font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;cursor:pointer;
       ">✕ CLOSE</button>
     </div>
-
-    <!-- Main bay - ship preview -->
     <div style="flex-shrink:0;position:relative;height:200px;overflow:hidden;
       border-bottom:1px solid rgba(0,180,255,.1);">
       <canvas id="hangarBayCanvas" width="360" height="200"
         style="width:100%;height:200px;display:block;"></canvas>
-      <!-- Ship name overlay -->
       <div style="position:absolute;bottom:10px;left:0;right:0;text-align:center;">
         <div id="hangarShipName" style="font-size:11px;font-weight:900;letter-spacing:4px;
           color:#fff;text-shadow:0 0 20px rgba(0,180,255,.8);">VOID FIGHTER</div>
         <div id="hangarShipClass" style="font-size:7px;letter-spacing:3px;
           color:rgba(0,180,255,.5);margin-top:2px;">STANDARD CLASS</div>
       </div>
-      <!-- Active skin badge -->
       <div id="hangarSkinBadge" style="position:absolute;top:10px;right:10px;
         font-size:7px;letter-spacing:2px;padding:3px 8px;border-radius:10px;
         background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);
         display:none;"></div>
     </div>
-
-    <!-- Scrollable content -->
     <div style="flex:1;overflow-y:auto;padding:10px 12px 16px;">
-
-      <!-- Ships section -->
       <div style="font-size:7px;letter-spacing:4px;color:rgba(0,180,255,.5);
         margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid rgba(0,180,255,.08);">
         SHIPS
       </div>
       <div id="hangarShipsRow" style="display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;"></div>
-
-      <!-- Skins section -->
       <div style="font-size:7px;letter-spacing:4px;color:rgba(160,80,255,.5);
         margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid rgba(160,80,255,.08);">
         SKINS
       </div>
       <div id="hangarSkinsRow" style="display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;"></div>
-
-      <!-- Equip button -->
       <button onclick="hangarEquip()" id="hangarEquipBtn" style="
         width:100%;padding:14px 0;
         background:linear-gradient(135deg,rgba(0,100,200,.85),rgba(0,60,140,.95));
@@ -1208,8 +1119,6 @@ e.stopPropagation();
       ">⚡ EQUIP SELECTION</button>
     </div>
   </div>
-
-  <!-- Upgrade panel OUTSIDE #ui — pointer-events work here -->
   <div id="upgradePanel" style="display:none">
     <div class="up-hp">
       <div class="up-hp-label">HP <span id="livesCount" style="color:#0ff;font-weight:900;">3</span></div>
@@ -1247,7 +1156,6 @@ e.stopPropagation();
   <div id="bossAlert" class="hide"><div class="ba1">⚠ BOSS INCOMING ⚠</div><div class="ba2" id="bossName">DARK SOVEREIGN</div></div>
   <div id="newEnemyAlert" class="hide"><div class="ne1">⚠ NEW ENEMY TYPE ⚠</div><div class="ne2" id="newEnemyName">VOID STALKER</div></div>
   <div id="pwrPickup" class="hide"></div>
-
   <div class="scr" id="titleScr">
     <div class="T1">VOID<br>RIFT</div>
     <div class="T2">GALACTIC ANNIHILATION FORCE</div>
@@ -1279,7 +1187,6 @@ e.stopPropagation();
 <div class="syllog-panel right">
   <img src="https://syllog-cdn.b-cdn.net/Void-Rift/Syllog%20Official%20Logo%20Side.png" alt="Syllog">
 </div>
-
 <script>'use strict';
 let OPENING_STORY = `
 <div class="crawl-logo">VOID<br>RIFT</div>
@@ -10572,10 +10479,8 @@ background:${active?dimCol:'rgba(0,0,20,0.5)'};
 box-shadow:${active?'0 0 20px '+ac+'0.15)':'none'};
 transition:all .3s;
 ">
-<!-- Wide preview canvas -->
 <div style="position:relative;height:110px;background:rgba(0,2,24,1);border-bottom:1px solid ${active?glowCol:'rgba(120,80,255,0.12)'};">
 <canvas id="${previewId}" width="280" height="110" style="width:100%;height:110px;display:block;"></canvas>
-<!-- Skin name overlay bottom-left -->
 <div style="position:absolute;bottom:0;left:0;right:0;padding:6px 10px;
 background:linear-gradient(transparent,rgba(0,0,20,0.85));
 display:flex;align-items:center;justify-content:space-between;">
@@ -10587,9 +10492,7 @@ ${active?`<div style="font-size:6px;letter-spacing:2px;color:${solidCol};font-fa
 text-shadow:0 0 8px ${glowCol};">● ACTIVE</div>`:''}
 </div>
 </div>
-<!-- Info + button row -->
 <div style="padding:10px;display:flex;align-items:center;gap:10px;">
-<!-- Armor info left -->
 <div style="flex:1;">
 <div style="font-size:6px;letter-spacing:2px;color:rgba(255,255,255,0.4);
 font-family:'Orbitron',sans-serif;margin-bottom:5px;">HULL ARMOR</div>
@@ -10598,7 +10501,6 @@ font-family:'Orbitron',sans-serif;margin-bottom:5px;">HULL ARMOR</div>
 ${item.armorHits} hit${item.armorHits>1?'s':''} blocked per wave • recharges each wave
 </div>
 </div>
-<!-- Button right -->
 <div style="min-width:88px;text-align:center;">${btnHtml}</div>
 </div>
 </div>
@@ -12465,10 +12367,6 @@ fetch(MUSIC_URLS['void'],{mode:'cors',credentials:'omit'})
 }
 }, 2000);
 }</script>
-
-
-
-
 <script>async function injectPlayerName() {
 try {
 const { data: { session } } = await _sb.auth.getSession();
@@ -12479,7 +12377,6 @@ window._syllogPlayerName = data.username;
 }
 } catch(e) { console.log('Name inject error:', e); }
 }</script>
-
 <script>window.addEventListener('load', async function() {
 try {
 const { data: { session } } = await _sb.auth.getSession();
@@ -12568,7 +12465,6 @@ panelArr[1].style.zIndex = '1';
 }
 window.addEventListener('resize', scaleGame);
 document.addEventListener('DOMContentLoaded', scaleGame);</script>
-
 </body>
 </htmlfunction drawSkinArmorBars(px, py){
   if(!equippedSkin || skinArmorMax===0) return;
@@ -12593,5 +12489,4 @@ document.addEventListener('DOMContentLoaded', scaleGame);</script>
   }
   xG.restore();
 }
-
 >
