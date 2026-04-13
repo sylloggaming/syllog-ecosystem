@@ -185,7 +185,11 @@ body{
 }
 #wrap{position:relative;width:480px;height:700px;overflow:hidden;flex:0 0 480px;}
 
-/* ── MOBILE SCALING ──────────────────────────────────────────── */
+/* ── AUTO SCALE TO FIT SCREEN ───────────────────────────────── */
+#wrap{
+  transform-origin: top center;
+  transition: none;
+}
 
 canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
 #ui{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:30;}
@@ -14962,6 +14966,60 @@ async function injectPlayerName() {
 }
 injectPlayerName();
 </script>
+
+<script>
+// ── AUTO SCALE GAME TO FIT ANY SCREEN ──────────────────────────
+(function() {
+  var GAME_W = 480;
+  var GAME_H = 700;
+
+  function scaleGame() {
+    var wrap = document.getElementById('wrap');
+    if (!wrap) return;
+
+    var availW = window.innerWidth;
+    var availH = window.innerHeight;
+
+    // Calculate scale based on height first (most constrained dimension)
+    var scaleH = availH / GAME_H;
+    var scaleW = availW / GAME_W;
+
+    // Use the smaller scale so game fits entirely on screen
+    // But cap at 1.0 so we never upscale beyond native on large screens
+    var scale = Math.min(scaleH, scaleW);
+
+    // Apply scale via CSS transform
+    wrap.style.transform = 'scale(' + scale + ')';
+    wrap.style.transformOrigin = 'top center';
+
+    // Center the wrap horizontally
+    var scaledW = GAME_W * scale;
+    var marginL = (availW - scaledW) / 2;
+    wrap.style.marginLeft = marginL + 'px';
+    wrap.style.marginRight = '0px';
+
+    // Adjust body/panels layout
+    var body = document.body;
+    body.style.alignItems = 'flex-start';
+    body.style.justifyContent = 'flex-start';
+
+    // Hide side panels if screen is too narrow
+    var panels = document.querySelectorAll('.syllog-panel');
+    panels.forEach(function(p) {
+      var remainingW = (availW - scaledW) / 2;
+      p.style.display = remainingW < 80 ? 'none' : '';
+      p.style.width = remainingW + 'px';
+    });
+  }
+
+  // Run on load and resize
+  window.addEventListener('load', scaleGame);
+  window.addEventListener('resize', scaleGame);
+  // Also run immediately
+  document.addEventListener('DOMContentLoaded', scaleGame);
+})();
+</script>
+
 </body>
 </htmlfunction drawSkinArmorBars(px, py){
   if(!equippedSkin || skinArmorMax===0) return;
