@@ -14980,35 +14980,32 @@ injectPlayerName();
     var availW = window.innerWidth;
     var availH = window.innerHeight;
 
-    // Calculate scale based on height first (most constrained dimension)
     var scaleH = availH / GAME_H;
     var scaleW = availW / GAME_W;
-
-    // Use the smaller scale so game fits entirely on screen
-    // But cap at 1.0 so we never upscale beyond native on large screens
     var scale = Math.min(scaleH, scaleW);
 
-    // Apply scale via CSS transform
-    wrap.style.transform = 'scale(' + scale + ')';
-    wrap.style.transformOrigin = 'top center';
-
-    // Center the wrap horizontally
     var scaledW = GAME_W * scale;
-    var marginL = (availW - scaledW) / 2;
-    wrap.style.marginLeft = marginL + 'px';
-    wrap.style.marginRight = '0px';
+    var scaledH = GAME_H * scale;
 
-    // Adjust body/panels layout
-    var body = document.body;
-    body.style.alignItems = 'flex-start';
-    body.style.justifyContent = 'flex-start';
+    // Position wrap absolutely centered on screen
+    wrap.style.position = 'fixed';
+    wrap.style.top = '0';
+    wrap.style.left = '50%';
+    wrap.style.transform = 'translateX(-50%) scale(' + scale + ')';
+    wrap.style.transformOrigin = 'top center';
+    wrap.style.margin = '0';
 
-    // Hide side panels if screen is too narrow
+    // Adjust body
+    document.body.style.alignItems = 'flex-start';
+    document.body.style.justifyContent = 'center';
+    document.body.style.overflow = 'hidden';
+
+    // Hide side panels if not enough room
     var panels = document.querySelectorAll('.syllog-panel');
+    var sideW = (availW - scaledW) / 2;
     panels.forEach(function(p) {
-      var remainingW = (availW - scaledW) / 2;
-      p.style.display = remainingW < 80 ? 'none' : '';
-      p.style.width = remainingW + 'px';
+      p.style.display = sideW < 100 ? 'none' : '';
+      p.style.width = sideW + 'px';
     });
   }
 
