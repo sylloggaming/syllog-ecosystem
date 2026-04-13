@@ -263,6 +263,8 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
   <div class="stats">
     <div class="s"><div class="sn" id="live-count">1</div><div class="sl">Live Titles</div></div>
     <div class="s"><div class="sn" id="player-count">—</div><div class="sl">Accounts</div></div>
+    <div class="s"><div class="sn" id="online-count">—</div><div class="sl">Online Now</div></div>
+    <div class="s"><div class="sn" id="guest-count">—</div><div class="sl">Guests</div></div>
     <div class="s"><div class="sn">0</div><div class="sl">Downloads</div></div>
     <div class="s"><div class="sn">&#8734;</div><div class="sl">Free Play</div></div>
   </div>
@@ -569,12 +571,73 @@ sb.auth.getSession().then(function(result) {
   }
 });
 
-// Load live player count from Supabase
+// ── LIVE STATS SYSTEM ──────────────────────────────────────────
+
+// 1. Total registered accounts
 sb.from('players').select('id', { count: 'exact', head: true }).then(function(res) {
-  var count = res.count || 0;
   var el = document.getElementById('player-count');
-  if (el) el.textContent = count.toLocaleString();
+  if (el) el.textContent = (res.count || 0).toLocaleString();
 });
+
+// 2. Online players (last seen within 5 minutes)
+sb.rpc('count_online_players').then(function(res) {
+  var el = document.getElementById('online-count');
+  if (el) el.textContent = (res.data || 0).toLocaleString();
+});
+
+// 3. Guest tracking — upsert session into guest_sessions table
+(function() {
+  // Generate or retrieve a unique session ID for this browser
+  var gid = sessionStorage.getItem('syllog_gid');
+  if (!gid) {
+    gid = 'g_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    sessionStorage.setItem('syllog_gid', gid);
+  }
+
+  // Upsert guest session into Supabase
+  sb.from('guest_sessions').upsert(
+    { session_id: gid, last_seen: new Date().toISOString() },
+    { onConflict: 'session_id' }
+  ).then(function() {
+    // Now count active guests
+    sb.rpc('count_online_guests').then(function(res) {
+      var el = document.getElementById('guest-count');
+      if (el) el.textContent = (res.data || 0).toLocaleString();
+    });
+  });
+
+  // Keep guest session alive every 2 minutes
+  setInterval(function() {
+    sb.from('guest_sessions').upsert(
+      { session_id: gid, last_seen: new Date().toISOString() },
+      { onConflict: 'session_id' }
+    ).then(function() {
+      sb.rpc('count_online_guests').then(function(res) {
+        var el = document.getElementById('guest-count');
+        if (el) el.textContent = (res.data || 0).toLocaleString();
+      });
+    });
+  }, 120000);
+})();
+
+// 4. Update last_seen for logged-in players every 2 minutes
+function updateLastSeen() {
+  if (!currentUser) return;
+  sb.from('players').update({ last_seen: new Date().toISOString() })
+    .eq('id', currentUser.id).then(function() {
+      // Refresh online count after update
+      sb.rpc('count_online_players').then(function(res) {
+        var el = document.getElementById('online-count');
+        if (el) el.textContent = (res.data || 0).toLocaleString();
+      });
+    });
+}
+
+// Update last_seen on load and every 2 minutes
+setTimeout(function() {
+  updateLastSeen();
+  setInterval(updateLastSeen, 120000);
+}, 3000);
 
 function showLoggedInNav(player) {
   var nb = document.getElementById('nav-btns');
