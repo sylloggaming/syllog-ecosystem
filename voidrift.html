@@ -2057,8 +2057,14 @@ async function loadSCFromSupabase() {
     if (data) {
       // Load SC balance
       syllogCredits = data.sc_balance || 0;
-      const el = document.getElementById('shopCreditsVal');
-      if (el) el.textContent = syllogCredits.toLocaleString();
+      // Update shop display immediately and again after short delay
+      function updateSCDisplay() {
+        var el = document.getElementById('shopCreditsVal');
+        if (el) el.textContent = syllogCredits.toLocaleString();
+      }
+      updateSCDisplay();
+      setTimeout(updateSCDisplay, 500);
+      setTimeout(updateSCDisplay, 1500);
 
       // Load owned ships
       if (data.owned_ships) {
@@ -15083,11 +15089,10 @@ window.addEventListener('load', async function() {
 });
 
 // ── AUTO SCALE GAME TO FIT ANY SCREEN ──────────────────────────
-(function() {
-  var GAME_W = 480;
-  var GAME_H = 700;
+var GAME_W = 480;
+var GAME_H = 700;
 
-  function scaleGame() {
+function scaleGame() {
     var wrap = document.getElementById('wrap');
     if (!wrap) return;
 
@@ -15142,12 +15147,9 @@ window.addEventListener('load', async function() {
     }
   }
 
-  // Run on load and resize
-  window.addEventListener('load', scaleGame);
-  window.addEventListener('resize', scaleGame);
-  // Also run immediately
-  document.addEventListener('DOMContentLoaded', scaleGame);
-})();
+// Run on resize
+window.addEventListener('resize', scaleGame);
+document.addEventListener('DOMContentLoaded', scaleGame);
 </script>
 
 </body>
