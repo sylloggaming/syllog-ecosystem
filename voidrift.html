@@ -15000,13 +15000,32 @@ injectPlayerName();
     document.body.style.justifyContent = 'center';
     document.body.style.overflow = 'hidden';
 
-    // Hide side panels if not enough room
+    // Position side panels correctly on each side
     var panels = document.querySelectorAll('.syllog-panel');
     var sideW = (availW - scaledW) / 2;
-    panels.forEach(function(p) {
-      p.style.display = sideW < 100 ? 'none' : '';
-      p.style.width = sideW + 'px';
-    });
+    var panelArr = Array.from(panels);
+    if (sideW < 80) {
+      panelArr.forEach(function(p) { p.style.display = 'none'; });
+    } else {
+      if (panelArr[0]) {
+        panelArr[0].style.display = 'flex';
+        panelArr[0].style.position = 'fixed';
+        panelArr[0].style.left = '0';
+        panelArr[0].style.top = '0';
+        panelArr[0].style.width = sideW + 'px';
+        panelArr[0].style.height = '100vh';
+        panelArr[0].style.zIndex = '1';
+      }
+      if (panelArr[1]) {
+        panelArr[1].style.display = 'flex';
+        panelArr[1].style.position = 'fixed';
+        panelArr[1].style.right = '0';
+        panelArr[1].style.top = '0';
+        panelArr[1].style.width = sideW + 'px';
+        panelArr[1].style.height = '100vh';
+        panelArr[1].style.zIndex = '1';
+      }
+    }
   }
 
   // Run on load and resize
