@@ -2,6 +2,19 @@
 <html lang="en">
 <head>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ── DOMAIN LOCK ─────────────────────────────────────────────────
+(function(){
+  var allowed = ['sylloggames.com', 'www.sylloggames.com'];
+  var host = window.location.hostname.toLowerCase();
+  if(allowed.indexOf(host) === -1 && host !== 'localhost' && host !== '127.0.0.1') {
+    document.documentElement.innerHTML = '';
+    document.write('<style>*{margin:0;padding:0;}body{background:#000;}</style>');
+    window.stop();
+    throw new Error('');
+  }
+})();
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>VOID RIFT — 150 LEVELS</title>
@@ -15080,6 +15093,13 @@ window.addEventListener('load', async function() {
       if (data.username) window._syllogPlayerName = data.username;
 
       console.log('Syllog loaded — SC:', syllogCredits, 'Ships:', ownedShips, 'Skins:', ownedSkins);
+
+      // Pre-warm ship renders so no lag when game starts
+      setTimeout(function() {
+        if (typeof renderHangarShips === 'function') {
+          try { renderHangarShips(); } catch(e) {}
+        }
+      }, 100);
     }
   } catch(e) {
     console.log('Syllog init error:', e);
