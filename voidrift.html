@@ -1315,7 +1315,7 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
 //  STORY CRAWL SYSTEM
 // ══════════════════════════════════════════════════════════════════
 
-const OPENING_STORY = `
+let OPENING_STORY = `
   <div class="crawl-logo">VOID<br>RIFT</div>
   <div class="crawl-sub">GALACTIC ANNIHILATION FORCE</div>
   <div class="crawl-divider"></div>
@@ -1520,7 +1520,12 @@ function showStoryCrawl(type, onComplete){
   const content = document.getElementById('crawlContent');
   overlay.classList.remove('hidden');
   content.className = 'crawl-content' + (type==='ending'?' ending':'');
-  content.innerHTML = type==='ending' ? ENDING_STORY : OPENING_STORY;
+  // Inject player Syllog ID into opening story
+  let storyToShow = type==='ending' ? ENDING_STORY : OPENING_STORY;
+  if (type === 'opening' && window._syllogPlayerName) {
+    storyToShow = storyToShow.replace(/Commander Vael Rhynn/g, window._syllogPlayerName);
+  }
+  content.innerHTML = storyToShow;
   // Pre-fetch zone 0 music during story crawl so it's ready when game starts
   if(type==='opening' && MUSIC_URLS['void'] && !_waBufs['void']){
     fetch(MUSIC_URLS['void'],{mode:'cors',credentials:'omit'})
@@ -14951,10 +14956,7 @@ async function injectPlayerName() {
     if (!session) return;
     const { data } = await _sb.from('players').select('username').eq('id', session.user.id).single();
     if (data && data.username) {
-      var n1 = document.getElementById('story-player-name');
-      var n2 = document.getElementById('story-player-name-2');
-      if (n1) n1.textContent = data.username;
-      if (n2) n2.textContent = data.username;
+      window._syllogPlayerName = data.username;
     }
   } catch(e) { console.log('Name inject error:', e); }
 }
