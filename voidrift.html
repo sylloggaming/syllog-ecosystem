@@ -1355,7 +1355,7 @@ const OPENING_STORY = `
   <div class="crawl-divider"></div>
 
   <div class="crawl-text">
-    You are <span class="crawl-highlight">Commander Vael Rhynn</span> —
+    You are <span class="crawl-highlight" id="story-player-name">Commander Vael Rhynn</span> —
     the last pilot. The last ship. The last hope left
     in a universe that has run out of them.
     Your fleet is gone. Your home world is ash.
@@ -1450,7 +1450,7 @@ const ENDING_STORY = `
   <div class="crawl-text">
     In the cockpit of a battered ship,
     alone in the wreckage of the collapsed Void Rift,
-    <span class="crawl-highlight">Commander Vael Rhynn</span>
+    <span class="crawl-highlight" id="story-player-name-2">Commander Vael Rhynn</span>
     sat in silence. No fleet to report to.
     No home world to return to.
     No one left who remembered what had been sacrificed
@@ -14939,10 +14939,26 @@ if(window._introComplete && !musicStarted){
 
 
 <script>
-// Load SC credits from Supabase when game starts
+// Load SC credits and player name from Supabase when game starts
 window.addEventListener('load', function() {
   loadSCFromSupabase();
 });
+
+// Inject player Syllog ID into story crawl
+async function injectPlayerName() {
+  try {
+    const { data: { session } } = await _sb.auth.getSession();
+    if (!session) return;
+    const { data } = await _sb.from('players').select('username').eq('id', session.user.id).single();
+    if (data && data.username) {
+      var n1 = document.getElementById('story-player-name');
+      var n2 = document.getElementById('story-player-name-2');
+      if (n1) n1.textContent = data.username;
+      if (n2) n2.textContent = data.username;
+    }
+  } catch(e) { console.log('Name inject error:', e); }
+}
+injectPlayerName();
 </script>
 </body>
 </htmlfunction drawSkinArmorBars(px, py){
