@@ -574,9 +574,9 @@ sb.auth.getSession().then(function(result) {
 // ── LIVE STATS SYSTEM ──────────────────────────────────────────
 
 // 1. Total registered accounts
-sb.from('players').select('id', { count: 'exact', head: true }).then(function(res) {
+sb.rpc('count_total_players').then(function(res) {
   var el = document.getElementById('player-count');
-  if (el) el.textContent = (res.count || 0).toLocaleString();
+  if (el) el.textContent = (res.data || 0).toLocaleString();
 });
 
 // 2. Online players (last seen within 5 minutes)
