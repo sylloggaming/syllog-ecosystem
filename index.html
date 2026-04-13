@@ -262,7 +262,7 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
   </div>
   <div class="stats">
     <div class="s"><div class="sn" id="live-count">1</div><div class="sl">Live Titles</div></div>
-    <div class="s"><div class="sn">1</div><div class="sl">Account</div></div>
+    <div class="s"><div class="sn" id="player-count">—</div><div class="sl">Accounts</div></div>
     <div class="s"><div class="sn">0</div><div class="sl">Downloads</div></div>
     <div class="s"><div class="sn">&#8734;</div><div class="sl">Free Play</div></div>
   </div>
@@ -443,8 +443,8 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
 
 <footer>
   <div class="fl">SYLLOG</div>
-  <div class="flinks"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="contact.html">Support</a><a href="contact.html">Press</a></div>
-  <div class="fc">&copy; 2026 Syllog Games.</div>
+  <div class="flinks"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Support</a><a href="#">Press</a></div>
+  <div class="fc">&copy; 2025 Syllog Inc.</div>
 </footer>
 
 <div class="dash-overlay" id="dash-overlay" onclick="toggleDash()"></div>
@@ -489,7 +489,7 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
   </div>
   <div class="dash-footer">
     <button class="dash-signout" onclick="signOut()">Sign Out</button>
-    <div class="dash-member-since" id="dash-since">Syllog Games.</div>
+    <div class="dash-member-since" id="dash-since">Syllog Inc.</div>
   </div>
 </div>
 
@@ -538,7 +538,7 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
 <script>
 var LIVE_TITLE_COUNT = 1;
 var SUPABASE_URL = 'https://mlstrkqefyqoczusewrm.supabase.co';
-var SUPABASE_KEY = 'sb_publishable_g7_BTnT_cTqaIk19Kx9FEw_iP1I7Df7';
+var SUPABASE_KEY = 'YOUR_SUPABASE_KEY_HERE';
 
 var GAMES = [
   {name:'Void Rift',      icon:'🌌', genre:'Action · Space',    desc:'Navigate the collapsing edges of reality. High-intensity browser action built natively in HTML5.',   status:'live', color:'#0a0f1e', url:'voidrift.html'},
@@ -567,6 +567,13 @@ sb.auth.getSession().then(function(result) {
       }
     });
   }
+});
+
+// Load live player count from Supabase
+sb.from('players').select('id', { count: 'exact', head: true }).then(function(res) {
+  var count = res.count || 0;
+  var el = document.getElementById('player-count');
+  if (el) el.textContent = count.toLocaleString();
 });
 
 function showLoggedInNav(player) {
