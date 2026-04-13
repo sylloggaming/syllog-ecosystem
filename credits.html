@@ -393,7 +393,7 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
 
 <footer>
   <div class="fl">SYLLOG</div>
-  <div class="flinks"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="contact.html">Support</a></div>
+  <div class="flinks"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Support</a></div>
   <div class="fc">&copy; 2026 Syllog Games.</div>
 </footer>
 
@@ -474,6 +474,36 @@ function toggleFaq(el) {
   document.querySelectorAll('.faq-item').forEach(function(i){ i.classList.remove('open'); });
   if(!wasOpen) item.classList.add('open');
 }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  var SB_URL = 'https://mlstrkqefyqoczusewrm.supabase.co';
+  var SB_KEY = 'sb_publishable_g7_BTnT_cTqaIk19Kx9FEw_iP1I7Df7';
+  var _sb = supabase.createClient(SB_URL, SB_KEY);
+
+  function showLoggedInNav(username) {
+    var nb = document.getElementById('nav-btns');
+    if (!nb) return;
+    nb.innerHTML =
+      '<button style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;padding:0.28rem 0.75rem;border-radius:5px;border:1px solid rgba(255,255,255,0.08);background:transparent;color:rgba(255,255,255,0.65);font-size:0.63rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-family:Inter,sans-serif;" onclick="window.location.href=\'index.html\'">' +
+        '<span style="width:6px;height:6px;border-radius:50%;background:#c0c0c0;display:inline-block;flex-shrink:0;"></span>' +
+        username +
+        '<span style="font-size:0.55rem;color:rgba(255,255,255,0.2);">&#9660;</span>' +
+      '</button>';
+  }
+
+  _sb.auth.getSession().then(function(result) {
+    var session = result.data.session;
+    if (session) {
+      _sb.from('players').select('username').eq('id', session.user.id).single().then(function(res) {
+        if (res.data && res.data.username) {
+          showLoggedInNav(res.data.username);
+        }
+      });
+    }
+  });
+})();
 </script>
 </body>
 </html>
