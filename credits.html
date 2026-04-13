@@ -477,21 +477,19 @@ function toggleFaq(el) {
 }
 </script>
 <script>
-window.addEventListener('load', function(){
-  (function(){
-    var _u='https://mlstrkqefyqoczusewrm.supabase.co';
-    var _k='sb_publishable_g7_BTnT_cTqaIk19Kx9FEw_iP1I7Df7';
-    var _c=supabase.createClient(_u,_k);
-    _c.auth.getSession().then(function(r){
-      if(!r.data||!r.data.session)return;
-      _c.from('players').select('username').eq('id',r.data.session.user.id).single().then(function(d){
-        if(!d.data)return;
-        var nb=document.getElementById('nav-btns');
-        if(!nb)return;
-        nb.innerHTML='<button onclick="window.location.href=\'index.html\'" style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;padding:0.28rem 0.75rem;border-radius:5px;border:1px solid rgba(255,255,255,0.08);background:transparent;font-family:Inter,sans-serif;"><span style="width:6px;height:6px;border-radius:50%;background:#c0c0c0;display:inline-block;flex-shrink:0;"></span><span style="font-size:0.63rem;font-weight:700;color:rgba(255,255,255,0.65);letter-spacing:1px;text-transform:uppercase;">'+d.data.username+'</span><span style="font-size:0.55rem;color:rgba(255,255,255,0.2);">&#9660;</span></button>';
-      });
+window.addEventListener('load',function(){
+  var _u='https://mlstrkqefyqoczusewrm.supabase.co';
+  var _k='sb_publishable_g7_BTnT_cTqaIk19Kx9FEw_iP1I7Df7';
+  var _c=supabase.createClient(_u,_k,{auth:{persistSession:true,storageKey:'syllog-auth',storage:window.localStorage,autoRefreshToken:true}});
+  _c.auth.getSession().then(function(r){
+    if(!r.data||!r.data.session)return;
+    _c.from('players').select('username').eq('id',r.data.session.user.id).single().then(function(d){
+      if(!d.data)return;
+      var nb=document.getElementById('nav-btns');
+      if(!nb)return;
+      nb.innerHTML='<button onclick="window.location.href=\'index.html\'" style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;padding:0.28rem 0.75rem;border-radius:5px;border:1px solid rgba(255,255,255,0.08);background:transparent;font-family:Inter,sans-serif;"><span style="width:6px;height:6px;border-radius:50%;background:#c0c0c0;display:inline-block;flex-shrink:0;"></span><span style="font-size:0.63rem;font-weight:700;color:rgba(255,255,255,0.65);letter-spacing:1px;text-transform:uppercase;">'+d.data.username+'</span><span style="font-size:0.55rem;color:rgba(255,255,255,0.2);">&#9660;</span></button>';
     });
-  })();
+  });
 });
 </script>
 </body>
