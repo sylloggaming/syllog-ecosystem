@@ -2049,11 +2049,46 @@ async function loadSCFromSupabase() {
     const { data: { session } } = await _sb.auth.getSession();
     if (!session) return;
     _sbUser = session.user;
-    const { data } = await _sb.from('players').select('sc_balance').eq('id', _sbUser.id).single();
+    const { data } = await _sb.from('players')
+      .select('sc_balance, owned_ships, owned_skins, equipped_ship, equipped_skin')
+      .eq('id', _sbUser.id).single();
     if (data) {
+      // Load SC balance
       syllogCredits = data.sc_balance || 0;
       const el = document.getElementById('shopCreditsVal');
       if (el) el.textContent = syllogCredits.toLocaleString();
+
+      // Load owned ships
+      if (data.owned_ships) {
+        try {
+          var ships = JSON.parse(data.owned_ships);
+          if (Array.isArray(ships) && ships.length > 0) {
+            ownedShips = ships;
+          }
+        } catch(e) { ownedShips = ['default']; }
+      }
+
+      // Load owned skins
+      if (data.owned_skins) {
+        try {
+          var skins = JSON.parse(data.owned_skins);
+          if (Array.isArray(skins)) {
+            ownedSkins = skins;
+          }
+        } catch(e) { ownedSkins = []; }
+      }
+
+      // Load equipped ship
+      if (data.equipped_ship && data.equipped_ship !== 'default') {
+        equippedShip = data.equipped_ship;
+      }
+
+      // Load equipped skin
+      if (data.equipped_skin) {
+        equippedSkin = data.equipped_skin;
+      }
+
+      console.log('Inventory loaded — Ships:', ownedShips, 'Skins:', ownedSkins);
     }
   } catch(e) { console.log('SC load error:', e); }
 }
@@ -2061,7 +2096,14 @@ async function loadSCFromSupabase() {
 async function saveSCToSupabase() {
   if (!_sbUser) return;
   try {
-    await _sb.from('players').update({ sc_balance: syllogCredits }).eq('id', _sbUser.id);
+    await _sb.from('players').update({
+      sc_balance: syllogCredits,
+      owned_ships: JSON.stringify(ownedShips),
+      owned_skins: JSON.stringify(ownedSkins),
+      equipped_ship: equippedShip || 'default',
+      equipped_skin: equippedSkin || ''
+    }).eq('id', _sbUser.id);
+    console.log('Inventory saved — Ships:', ownedShips, 'Skins:', ownedSkins);
   } catch(e) { console.log('SC save error:', e); }
 }
 let ownedShips=['default']; // ships player owns
@@ -13324,6 +13366,7 @@ function equipSkin(id){
   const item = SHOP_ITEMS.find(i=>i.id===id);
   if(!item || !ownedSkins.includes(id)) return;
   equippedSkin = id;
+  saveSCToSupabase();
   skinArmorMax = item.armorHits||0;
   skinArmorHits = skinArmorMax;
   renderShopTab('cosmetics');
@@ -13341,6 +13384,7 @@ function equipShip(id){
   const ship = SHIP_DEFS.find(s=>s.id===id);
   if(!ship||!ownedShips.includes(id)) return;
   equippedShip = id;
+  saveSCToSupabase();
   // Apply ship bonuses
   maxLives = 3 + ship.hpBonus;
   lives = Math.min(lives, maxLives);
