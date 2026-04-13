@@ -979,10 +979,11 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
 
 <!-- ── SYLLOG COMPANY INTRO ── -->
 <div id="syllog-intro">
+  <div id="syllog-loading-msg" style="position:absolute;bottom:80px;left:50%;transform:translateX(-50%);font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:4px;color:rgba(68,170,255,0.5);text-transform:uppercase;white-space:nowrap;transition:opacity 0.5s;">LOADING PROFILE...</div>
   <video id="syllog-vid" playsinline
     src="https://syllog-cdn.b-cdn.net/Void-Rift/Syllog%20Official%20Logo%20Reveal.mp4">
   </video>
-  <button id="syllog-intro-btn">&#9654; ENTER</button>
+  <button id="syllog-intro-btn" style="opacity:0;pointer-events:none;transition:opacity 0.5s;">&#9654; ENTER</button>
 </div>
 <script>
 (function(){
@@ -15084,7 +15085,16 @@ window.addEventListener('load', async function() {
     console.log('Syllog init error:', e);
   }
 
-  // Step 3: Scale game
+  // Step 3: Hide loading message and show ENTER button
+  var loadMsg = document.getElementById('syllog-loading-msg');
+  if (loadMsg) loadMsg.style.opacity = '0';
+  var introBtn = document.getElementById('syllog-intro-btn');
+  if (introBtn) {
+    introBtn.style.opacity = '1';
+    introBtn.style.pointerEvents = 'auto';
+  }
+
+  // Step 4: Scale game
   scaleGame();
 });
 
