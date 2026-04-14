@@ -550,7 +550,7 @@ var GAMES = [
 ];
 
 document.getElementById('live-count').textContent = LIVE_TITLE_COUNT;
-var sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+var sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {auth:{persistSession:true,storageKey:'syllog-auth',storage:window.localStorage,autoRefreshToken:true}});
 var currentUser = null;
 var currentPlayer = null;
 
