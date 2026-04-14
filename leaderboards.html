@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Syllog — Hall of Fame</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden;}
+nav{background:rgba(0,0,0,0.97);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:100;}
+.logo{font-size:1rem;font-weight:900;letter-spacing:6px;background:linear-gradient(135deg,#fff 0%,#c0c0c0 60%,#777 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;cursor:pointer;text-decoration:none;}
+.nav-links{display:flex;gap:1.75rem;list-style:none;}
+.nav-links a{color:rgba(255,255,255,0.28);text-decoration:none;font-size:0.68rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;}
+.nav-links a:hover,.nav-links a.active{color:#fff;}
+.nav-btns{display:flex;gap:0.5rem;}
+.btn-g{background:transparent;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);padding:0.3rem 0.9rem;border-radius:4px;font-size:0.65rem;font-weight:600;letter-spacing:1px;cursor:pointer;text-transform:uppercase;font-family:'Inter',sans-serif;}
+.btn-w{background:#fff;border:none;color:#000;padding:0.3rem 0.9rem;border-radius:4px;font-size:0.65rem;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;font-family:'Inter',sans-serif;}
+.nav-user{display:flex;align-items:center;gap:0.5rem;cursor:pointer;padding:0.28rem 0.75rem;border-radius:5px;border:1px solid rgba(255,255,255,0.08);transition:all 0.2s;background:transparent;}
+.nav-user:hover{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.15);}
+.nav-dot{width:6px;height:6px;border-radius:50%;background:#c0c0c0;flex-shrink:0;}
+.nav-name{font-size:0.63rem;font-weight:700;color:rgba(255,255,255,0.65);letter-spacing:1px;text-transform:uppercase;}
+.nav-arrow{font-size:0.55rem;color:rgba(255,255,255,0.2);}
+.page-hero{padding:3rem 2rem 2.5rem;text-align:center;position:relative;overflow:hidden;border-bottom:1px solid rgba(255,255,255,0.05);}
+.page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(192,192,192,0.04) 0%,transparent 70%);pointer-events:none;}
+.hero-tag{font-size:0.56rem;letter-spacing:4px;text-transform:uppercase;color:#444;border:1px solid rgba(255,255,255,0.05);padding:0.25rem 0.85rem;border-radius:20px;display:inline-block;margin-bottom:0.9rem;}
+.hero-title{font-size:3.5rem;font-weight:900;letter-spacing:-2px;background:linear-gradient(160deg,#fff 0%,#c0c0c0 40%,#888 70%,#c0c0c0 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:0.5rem;}
+.hero-sub{font-size:0.78rem;color:#444;line-height:1.6;max-width:480px;margin:0 auto;}
+.monthly-section{padding:2.5rem 2rem;border-bottom:1px solid rgba(255,255,255,0.05);}
+.section-eyebrow{font-size:0.55rem;letter-spacing:4px;text-transform:uppercase;color:#444;margin-bottom:0.4rem;}
+.section-title{font-size:1.1rem;font-weight:800;color:#fff;margin-bottom:1.75rem;letter-spacing:-0.3px;}
+.section-title span{color:#333;}
+.featured-banner{border-radius:16px;overflow:hidden;position:relative;background:linear-gradient(135deg,#000 0%,#050818 50%,#0a0f2e 100%);border:1px solid rgba(255,255,255,0.08);margin-bottom:2rem;}
+.featured-banner-inner{padding:2.5rem 3rem;position:relative;z-index:2;}
+.featured-bg-icon{position:absolute;right:2rem;top:50%;transform:translateY(-50%);font-size:12rem;opacity:0.05;pointer-events:none;z-index:1;}
+.featured-overlay{position:absolute;inset:0;background:linear-gradient(90deg,#000 0%,transparent 60%);z-index:1;}
+.featured-meta{display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;}
+.featured-badge{background:rgba(255,215,0,0.12);border:1px solid rgba(255,215,0,0.25);color:#ffd700;font-size:0.58rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:0.25rem 0.85rem;border-radius:20px;}
+.featured-month{font-size:0.6rem;color:rgba(255,255,255,0.25);letter-spacing:2px;text-transform:uppercase;}
+.featured-game-title{font-size:2.5rem;font-weight:900;letter-spacing:-1px;color:#fff;margin-bottom:0.4rem;}
+.featured-game-title span{background:linear-gradient(135deg,#fff 0%,#c0c0c0 60%,#888 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.featured-desc{font-size:0.78rem;color:rgba(255,255,255,0.3);margin-bottom:1.25rem;max-width:420px;}
+.prize-row{display:flex;gap:0.75rem;flex-wrap:wrap;}
+.prize-chip{display:flex;align-items:center;gap:0.4rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:0.4rem 0.85rem;}
+.prize-chip-rank{font-size:0.75rem;}
+.prize-chip-val{font-size:0.72rem;font-weight:800;color:#ffd700;}
+.prize-chip-lbl{font-size:0.58rem;color:#444;letter-spacing:1px;}
+.countdown-wrap{display:flex;align-items:center;gap:1rem;margin-top:1.25rem;}
+.countdown-label{font-size:0.58rem;color:#333;letter-spacing:2px;text-transform:uppercase;}
+.countdown-timer{display:flex;gap:0.5rem;align-items:center;}
+.cd-block{text-align:center;}
+.cd-num{font-size:1.1rem;font-weight:900;color:#c0c0c0;font-family:'Share Tech Mono',monospace;min-width:2ch;display:block;}
+.cd-lbl{font-size:0.48rem;color:#333;letter-spacing:1.5px;text-transform:uppercase;}
+.cd-sep{color:#222;font-size:1rem;font-weight:300;margin-bottom:1rem;}
+.podium-wrap{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:1rem;align-items:end;}
+.podium-card{border-radius:14px;padding:1.5rem 1rem 1.25rem;text-align:center;position:relative;border:1px solid rgba(255,255,255,0.06);background:#060606;}
+.podium-card.first{background:linear-gradient(180deg,#0d0d0d 0%,#080808 100%);border-color:rgba(255,215,0,0.2);}
+.podium-card.second{border-color:rgba(192,192,192,0.12);}
+.podium-card.third{border-color:rgba(205,127,50,0.12);}
+.podium-rank{font-size:1.8rem;margin-bottom:0.75rem;}
+.podium-avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#1a1a1a,#0a0a0a);border:2px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin:0 auto 0.75rem;overflow:hidden;}
+.podium-avatar.first-av{border-color:rgba(255,215,0,0.3);}
+.podium-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.podium-username{font-size:0.82rem;font-weight:800;color:#fff;margin-bottom:0.2rem;letter-spacing:-0.2px;}
+.podium-score{font-size:0.65rem;color:#444;letter-spacing:1px;font-family:'Share Tech Mono',monospace;margin-bottom:0.6rem;}
+.podium-prize{display:inline-flex;align-items:center;gap:0.3rem;background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.15);border-radius:20px;padding:0.2rem 0.65rem;}
+.podium-prize-val{font-size:0.68rem;font-weight:800;color:#ffd700;}
+.podium-prize-lbl{font-size:0.55rem;color:#555;}
+.first-glow{position:absolute;top:0;left:50%;transform:translateX(-50%);width:80%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,215,0,0.4),transparent);}
+.champions-section{padding:2.5rem 2rem;border-bottom:1px solid rgba(255,255,255,0.05);}
+.champions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;}
+.champion-card{background:#060606;border:1px solid rgba(255,255,255,0.06);border-radius:14px;overflow:hidden;position:relative;}
+.champion-card-header{padding:1.25rem 1.25rem 1rem;position:relative;min-height:80px;}
+.champion-game-bg{position:absolute;inset:0;opacity:0.15;}
+.champion-game-icon{font-size:3rem;position:absolute;right:1rem;top:50%;transform:translateY(-50%);opacity:0.2;z-index:1;}
+.champion-game-label{font-size:0.52rem;letter-spacing:3px;text-transform:uppercase;color:#444;margin-bottom:0.25rem;position:relative;z-index:2;}
+.champion-game-name{font-size:1rem;font-weight:800;color:#fff;position:relative;z-index:2;}
+.champion-card-body{padding:1rem 1.25rem 1.25rem;border-top:1px solid rgba(255,255,255,0.04);}
+.champion-player{display:flex;align-items:center;gap:0.85rem;}
+.champion-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#1a1a1a,#0a0a0a);border:1px solid rgba(255,215,0,0.2);display:flex;align-items:center;justify-content:center;font-size:1.1rem;overflow:hidden;flex-shrink:0;}
+.champion-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.champion-info{flex:1;}
+.champion-crown{font-size:0.65rem;margin-bottom:0.1rem;}
+.champion-name{font-size:0.88rem;font-weight:800;color:#fff;letter-spacing:-0.2px;}
+.champion-score{font-size:0.62rem;color:#444;font-family:'Share Tech Mono',monospace;margin-top:0.1rem;}
+.champion-empty{color:#1e1e1e;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;padding:0.5rem 0;}
+.top10-section{padding:2.5rem 2rem;}
+.lb-row{display:grid;grid-template-columns:48px 1fr 140px 100px;align-items:center;padding:0.7rem 1rem;border-radius:8px;transition:background 0.15s;}
+.lb-row:hover{background:rgba(255,255,255,0.02);}
+.lb-row.header{padding:0.4rem 1rem;margin-bottom:0.25rem;}
+.lb-row.top3{background:rgba(255,255,255,0.02);}
+.lb-rank{font-size:0.7rem;font-weight:800;color:#333;text-align:center;font-family:'Share Tech Mono',monospace;}
+.lb-rank.r1{color:#ffd700;}.lb-rank.r2{color:#c0c0c0;}.lb-rank.r3{color:#cd7f32;}
+.lb-player{display:flex;align-items:center;gap:0.75rem;}
+.lb-avatar{width:34px;height:34px;border-radius:50%;background:#0a0a0a;border:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;font-size:0.85rem;overflow:hidden;flex-shrink:0;}
+.lb-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.lb-username{font-size:0.78rem;font-weight:700;color:#fff;}
+.lb-pass{font-size:0.5rem;color:#333;letter-spacing:1px;text-transform:uppercase;margin-top:0.1rem;}
+.lb-xp{font-size:0.72rem;font-weight:700;color:#c0c0c0;font-family:'Share Tech Mono',monospace;text-align:right;}
+.lb-score{font-size:0.65rem;color:#444;font-family:'Share Tech Mono',monospace;text-align:right;}
+.lb-header-lbl{font-size:0.52rem;color:#222;letter-spacing:2px;text-transform:uppercase;}
+.lb-divider{height:1px;background:rgba(255,255,255,0.03);margin:0.15rem 0;}
+.lb-empty{text-align:center;padding:3rem;color:#1a1a1a;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;}
+footer{display:flex;align-items:center;justify-content:space-between;padding:0.8rem 2rem;border-top:1px solid rgba(255,255,255,0.04);margin-top:2rem;}
+footer a{font-size:0.58rem;color:#888;text-decoration:none;letter-spacing:1px;text-transform:uppercase;}
+footer a:hover{color:#fff;}
+
+
+.nav-user{display:flex;align-items:center;gap:0.5rem;cursor:pointer;padding:0.28rem 0.75rem;border-radius:5px;border:1px solid rgba(255,255,255,0.08);transition:all 0.2s;background:transparent;}
+.nav-user:hover{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.15);}
+.nav-dot{width:6px;height:6px;border-radius:50%;background:#c0c0c0;flex-shrink:0;}
+.nav-name{font-size:0.63rem;font-weight:700;color:rgba(255,255,255,0.65);letter-spacing:1px;text-transform:uppercase;}
+.nav-arrow{font-size:0.55rem;color:rgba(255,255,255,0.2);}
+.dash-overlay{position:fixed;inset:0;background:rgba(0,0,0,0);transition:background 0.4s ease;pointer-events:none;z-index:300;}
+.dash-overlay.open{background:rgba(0,0,0,0.65);pointer-events:auto;}
+.dash-panel{position:fixed;top:0;right:0;bottom:0;width:320px;background:#060606;border-left:1px solid rgba(255,255,255,0.07);transform:translateX(100%);transition:transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94);z-index:400;display:flex;flex-direction:column;overflow-y:auto;}
+.dash-panel.open{transform:translateX(0);}
+.dash-header{padding:1.25rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.dash-header-title{font-size:0.58rem;letter-spacing:3px;text-transform:uppercase;color:#2a2a2a;}
+.dash-close{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);color:rgba(255,255,255,0.3);width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:0.75rem;display:flex;align-items:center;justify-content:center;transition:all 0.2s;font-family:'Inter',sans-serif;}
+.dash-close:hover{background:rgba(255,255,255,0.08);color:#fff;}
+.dash-avatar-section{padding:1.5rem;display:flex;flex-direction:column;align-items:center;gap:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05);}
+.dash-avatar-wrap{position:relative;width:80px;height:80px;}
+.dash-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#1a1a1a,#0a0a0a);border:2px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:2rem;overflow:hidden;}
+.dash-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.dash-avatar-upload{position:absolute;bottom:0;right:0;width:24px;height:24px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:2px solid #060606;transition:background 0.2s;}
+.dash-avatar-upload:hover{background:#c0c0c0;}
+.dash-avatar-upload svg{width:11px;height:11px;}
+.dash-upload-hint{font-size:0.55rem;color:#1e1e1e;letter-spacing:0.5px;}
+.dash-username{font-size:1.1rem;font-weight:900;letter-spacing:-0.3px;color:#fff;}
+.dash-id-label{font-size:0.55rem;color:#222;letter-spacing:2px;text-transform:uppercase;}
+.dash-founder{background:linear-gradient(135deg,rgba(192,192,192,0.1),rgba(255,255,255,0.05));border:1px solid rgba(192,192,192,0.2);color:#c0c0c0;font-size:0.52rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.18rem 0.6rem;border-radius:20px;}
+.dash-pass-banner{margin:1rem 1.5rem 0;background:#0a0a0a;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:0.85rem 1rem;display:flex;align-items:center;justify-content:space-between;}
+.dash-pass-label{font-size:0.5rem;color:#666;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.2rem;}
+.dash-pass-name{font-size:0.85rem;font-weight:800;color:#fff;}
+.dash-upgrade-btn{font-size:0.55rem;color:#333;letter-spacing:1px;text-transform:uppercase;background:none;border:1px solid rgba(255,255,255,0.07);padding:0.22rem 0.6rem;border-radius:4px;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;}
+.dash-upgrade-btn:hover{border-color:rgba(255,255,255,0.2);color:#fff;}
+.dash-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:1rem 1.5rem;}
+.dash-stat{background:#0a0a0a;border:1px solid rgba(255,255,255,0.05);border-radius:8px;padding:0.85rem;}
+.dash-stat-label{font-size:0.5rem;color:#2a2a2a;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.3rem;}
+.dash-stat-value{font-size:1.3rem;font-weight:900;color:#c0c0c0;letter-spacing:-0.5px;}
+.dash-stat-sub{font-size:0.52rem;color:#1e1e1e;margin-top:0.15rem;}
+.dash-divider{height:1px;background:rgba(255,255,255,0.04);margin:0 1.5rem;}
+.dash-links{padding:1rem 1.5rem;display:flex;flex-direction:column;gap:2px;}
+.dash-links-label{font-size:0.5rem;color:#222;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.4rem;}
+.dash-link-item{display:flex;align-items:center;justify-content:space-between;padding:0.55rem 0.75rem;border-radius:6px;cursor:pointer;transition:background 0.15s;}
+.dash-link-item:hover{background:rgba(255,255,255,0.03);}
+.dash-link-left{display:flex;align-items:center;gap:0.6rem;font-size:0.72rem;color:rgba(255,255,255,0.4);}
+.dash-link-icon{width:22px;height:22px;background:#0d0d0d;border:1px solid rgba(255,255,255,0.05);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;}
+.dash-link-arrow{font-size:0.6rem;color:#1e1e1e;}
+.dash-footer{padding:1rem 1.5rem;border-top:1px solid rgba(255,255,255,0.04);margin-top:auto;flex-shrink:0;}
+.dash-signout{width:100%;padding:0.6rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:6px;color:#2a2a2a;font-size:0.63rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;}
+.dash-signout:hover{background:rgba(255,60,60,0.06);border-color:rgba(255,60,60,0.15);color:#ff6b6b;}
+.dash-member-since{font-size:0.5rem;color:#181818;text-align:center;margin-top:0.6rem;letter-spacing:1px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">SYLLOG</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Games</a></li>
+    <li><a href="index.html">Universe</a></li>
+    <li><a href="credits.html">Credits &amp; Passes</a></li>
+    <li><a href="leaderboards.html" class="active">Leaderboards</a></li>
+  </ul>
+  <div class="nav-btns" id="nav-btns">
+    <button class="btn-g" onclick="window.location.href='auth.html?tab=signin'">Sign In</button>
+    <button class="btn-w" onclick="window.location.href='auth.html?tab=signup'">Create Account</button>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="hero-tag">Hall of Fame</div>
+  <div class="hero-title">Leaderboards</div>
+  <div class="hero-sub">The best players in the Syllog universe. Monthly champions earn SC Credits. Every run counts.</div>
+</div>
+
+<div class="monthly-section">
+  <div class="section-eyebrow">Monthly Competition</div>
+  <div class="section-title">April 2026 Featured Game <span>&middot; Championship</span></div>
+  <div class="featured-banner">
+    <div class="featured-overlay"></div>
+    <div class="featured-bg-icon">&#127756;</div>
+    <div class="featured-banner-inner">
+      <div class="featured-meta">
+        <span class="featured-badge">&#127942; Monthly Championship</span>
+        <span class="featured-month">April 2026</span>
+      </div>
+      <div class="featured-game-title"><span>Void</span> Rift</div>
+      <div class="featured-desc">Top 3 players by highest single-run score this month win Syllog Credits. Every run is your shot at the top.</div>
+      <div class="prize-row">
+        <div class="prize-chip"><span class="prize-chip-rank">&#129351;</span><span class="prize-chip-val">5,000 SC</span><span class="prize-chip-lbl">1st Place</span></div>
+        <div class="prize-chip"><span class="prize-chip-rank">&#129352;</span><span class="prize-chip-val">2,500 SC</span><span class="prize-chip-lbl">2nd Place</span></div>
+        <div class="prize-chip"><span class="prize-chip-rank">&#129353;</span><span class="prize-chip-val">1,000 SC</span><span class="prize-chip-lbl">3rd Place</span></div>
+      </div>
+      <div class="countdown-wrap">
+        <span class="countdown-label">Ends in</span>
+        <div class="countdown-timer">
+          <div class="cd-block"><span class="cd-num" id="cd-d">00</span><span class="cd-lbl">Days</span></div>
+          <span class="cd-sep">:</span>
+          <div class="cd-block"><span class="cd-num" id="cd-h">00</span><span class="cd-lbl">Hrs</span></div>
+          <span class="cd-sep">:</span>
+          <div class="cd-block"><span class="cd-num" id="cd-m">00</span><span class="cd-lbl">Min</span></div>
+          <span class="cd-sep">:</span>
+          <div class="cd-block"><span class="cd-num" id="cd-s">00</span><span class="cd-lbl">Sec</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="podium-wrap">
+    <div class="podium-card second">
+      <div class="podium-rank">&#129352;</div>
+      <div class="podium-avatar" id="pod-2-av">&#128100;</div>
+      <div class="podium-username" id="pod-2-name">Open</div>
+      <div class="podium-score" id="pod-2-score">No score yet</div>
+      <div class="podium-prize"><span class="podium-prize-val">2,500</span><span class="podium-prize-lbl">SC</span></div>
+    </div>
+    <div class="podium-card first">
+      <div class="first-glow"></div>
+      <div class="podium-rank">&#129351;</div>
+      <div class="podium-avatar first-av" id="pod-1-av">&#128100;</div>
+      <div class="podium-username" id="pod-1-name">Open</div>
+      <div class="podium-score" id="pod-1-score">No score yet</div>
+      <div class="podium-prize"><span class="podium-prize-val">5,000</span><span class="podium-prize-lbl">SC</span></div>
+    </div>
+    <div class="podium-card third">
+      <div class="podium-rank">&#129353;</div>
+      <div class="podium-avatar" id="pod-3-av">&#128100;</div>
+      <div class="podium-username" id="pod-3-name">Open</div>
+      <div class="podium-score" id="pod-3-score">No score yet</div>
+      <div class="podium-prize"><span class="podium-prize-val">1,000</span><span class="podium-prize-lbl">SC</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="champions-section">
+  <div class="section-eyebrow">Per Game</div>
+  <div class="section-title">#1 Champion <span>&middot; Each Title</span></div>
+  <div class="champions-grid">
+    <div class="champion-card">
+      <div class="champion-card-header">
+        <div class="champion-game-bg" style="background:linear-gradient(135deg,#0a0f2e,#000);"></div>
+        <div class="champion-game-icon">&#127756;</div>
+        <div class="champion-game-label">Game 01</div>
+        <div class="champion-game-name">Void Rift</div>
+      </div>
+      <div class="champion-card-body">
+        <div class="champion-player" id="voidrift-champion">
+          <div class="champion-empty">Loading...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="top10-section">
+  <div class="section-eyebrow">All Time</div>
+  <div class="section-title">Top 10 <span>&middot; Global XP</span></div>
+  <div class="lb-row header">
+    <div class="lb-header-lbl" style="text-align:center;">Rank</div>
+    <div class="lb-header-lbl">Player</div>
+    <div class="lb-header-lbl" style="text-align:right;">Void Rift Score</div>
+    <div class="lb-header-lbl" style="text-align:right;">Global XP</div>
+  </div>
+  <div class="lb-divider"></div>
+  <div id="top10-list"><div class="lb-empty">Loading champions...</div></div>
+</div>
+
+<footer>
+  <div style="font-size:0.7rem;font-weight:900;letter-spacing:5px;color:#444;">SYLLOG</div>
+  <div style="display:flex;gap:1.25rem;">
+    <a href="privacy.html">Privacy</a>
+    <a href="terms.html">Terms</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <div style="font-size:0.58rem;color:#444;">&copy; 2026 Syllog Games.</div>
+</footer>
+
+<div class="dash-overlay" id="dash-overlay" onclick="toggleDash()"></div>
+<div class="dash-panel" id="dash-panel">
+  <div class="dash-header">
+    <div class="dash-header-title">Player Profile</div>
+    <button class="dash-close" onclick="toggleDash()">&#10005;</button>
+  </div>
+  <div class="dash-avatar-section">
+    <div class="dash-avatar-wrap">
+      <div class="dash-avatar" id="dash-avatar">&#128100;</div>
+      <label class="dash-avatar-upload" title="Upload photo">
+        <input type="file" accept="image/*" style="display:none;" id="avatar-input" onchange="uploadAvatar(this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      </label>
+    </div>
+    <div class="dash-upload-hint">Click arrow to upload your photo</div>
+    <div class="dash-username" id="dash-username">Player</div>
+    <div class="dash-id-label">Universal Syllog ID</div>
+    <div class="dash-founder" id="dash-founder" style="display:none;">&#11088; Founder</div>
+  </div>
+  <div class="dash-pass-banner">
+    <div>
+      <div class="dash-pass-label">Current Pass</div>
+      <div class="dash-pass-name" id="dash-pass">Free Player</div>
+    </div>
+    <button class="dash-upgrade-btn" onclick="window.location.href='credits.html'">Upgrade &#8594;</button>
+  </div>
+  <div class="dash-stats">
+    <div class="dash-stat"><div class="dash-stat-label">SC Balance</div><div class="dash-stat-value" id="dash-sc">0</div><div class="dash-stat-sub">Syllog Credits</div></div>
+    <div class="dash-stat"><div class="dash-stat-label">Global XP</div><div class="dash-stat-value" id="dash-xp">0</div><div class="dash-stat-sub">Across all games</div></div>
+    <div class="dash-stat"><div class="dash-stat-label">Games Played</div><div class="dash-stat-value">1</div><div class="dash-stat-sub">Of all titles</div></div>
+    <div class="dash-stat"><div class="dash-stat-label">Achievements</div><div class="dash-stat-value">0</div><div class="dash-stat-sub">Unlocked</div></div>
+  </div>
+  <div class="dash-divider"></div>
+  <div class="dash-links">
+    <div class="dash-links-label">Quick Links</div>
+    <div class="dash-link-item" onclick="window.location.href='index.html'"><div class="dash-link-left"><div class="dash-link-icon">&#127942;</div>My Achievements</div><div class="dash-link-arrow">&#8250;</div></div>
+    <div class="dash-link-item" onclick="window.location.href='credits.html'"><div class="dash-link-left"><div class="dash-link-icon">&#128142;</div>Buy SC Credits</div><div class="dash-link-arrow">&#8250;</div></div>
+    <div class="dash-link-item" onclick="window.location.href='credits.html'"><div class="dash-link-left"><div class="dash-link-icon">&#127775;</div>Upgrade Pass</div><div class="dash-link-arrow">&#8250;</div></div>
+    <div class="dash-link-item"><div class="dash-link-left"><div class="dash-link-icon">&#9881;&#65039;</div>Settings</div><div class="dash-link-arrow">&#8250;</div></div>
+  </div>
+  <div class="dash-footer">
+    <button class="dash-signout" onclick="signOut()">Sign Out</button>
+    <div class="dash-member-since" id="dash-since">Syllog Games</div>
+  </div>
+</div>
+<script>
+(function(){
+  var _u='https://mlstrkqefyqoczusewrm.supabase.co';
+  var _k='sb_publishable_g7_BTnT_cTqaIk19Kx9FEw_iP1I7Df7';
+  var _sb=supabase.createClient(_u,_k);
+  var _user=null;
+
+  function showNav(p){
+    var nb=document.getElementById('nav-btns');
+    if(!nb)return;
+    nb.innerHTML='<button class="nav-user" onclick="toggleDash()"><div class="nav-dot"></div><div class="nav-name">'+p.username+'</div><div class="nav-arrow">&#9660;</div></button>';
+  }
+  function fillDash(p){
+    document.getElementById('dash-username').textContent=p.username;
+    document.getElementById('dash-sc').textContent=(p.sc_balance||0).toLocaleString();
+    document.getElementById('dash-xp').textContent=(p.global_xp||0).toLocaleString();
+    var pn={free:'Free Player',gold:'Gold Pass',platinum:'Platinum Pass'};
+    document.getElementById('dash-pass').textContent=pn[p.pass_tier]||'Free Player';
+    if(p.is_founder)document.getElementById('dash-founder').style.display='inline-block';
+    if(p.avatar_url)document.getElementById('dash-avatar').innerHTML='<img src="'+p.avatar_url+'" alt="avatar">';
+    var d=new Date(p.created_at);
+    var m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    document.getElementById('dash-since').textContent='Member since '+m[d.getMonth()]+' '+d.getFullYear()+' · Syllog Games';
+  }
+  _sb.auth.getSession().then(function(r){
+    if(!r.data||!r.data.session)return;
+    _user=r.data.session.user;
+    _sb.from('players').select('*').eq('id',_user.id).single().then(function(res){
+      if(!res.data)return;
+      showNav(res.data);
+      fillDash(res.data);
+    });
+  });
+  var _open=false;
+  window.toggleDash=function(){
+    _open=!_open;
+    document.getElementById('dash-panel').classList.toggle('open',_open);
+    document.getElementById('dash-overlay').classList.toggle('open',_open);
+    document.body.style.overflow=_open?'hidden':'';
+  };
+  window.signOut=function(){_sb.auth.signOut().then(function(){window.location.reload();});};
+  window.uploadAvatar=async function(input){
+    if(!input.files||!input.files[0]||!_user)return;
+    var file=input.files[0];
+    var ext=file.name.split('.').pop();
+    var path='avatars/'+_user.id+'.'+ext;
+    var reader=new FileReader();
+    reader.onload=function(e){document.getElementById('dash-avatar').innerHTML='<img src="'+e.target.result+'" alt="avatar">';};
+    reader.readAsDataURL(file);
+    var up=await _sb.storage.from('player-avatars').upload(path,file,{upsert:true});
+    if(!up.error){var url=_sb.storage.from('player-avatars').getPublicUrl(path).data.publicUrl;await _sb.from('players').update({avatar_url:url}).eq('id',_user.id);}
+  };
+
+  function fmt(n){if(!n||n===0)return'000000';n=parseInt(n);if(n>=1000000)return(n/1000000).toFixed(1)+'M';if(n>=1000)return(n/1000).toFixed(0)+'K';return String(n).padStart(6,'0');}
+  function avHTML(p,size){
+    var s=size||34;
+    if(p&&p.avatar_url)return'<img src="'+p.avatar_url+'" alt="av" style="width:'+s+'px;height:'+s+'px;object-fit:cover;border-radius:50%;">';
+    return'&#128100;';
+  }
+
+  _sb.from('players').select('username,voidrift_highscore,avatar_url').order('voidrift_highscore',{ascending:false}).limit(3).then(function(res){
+    var players=res.data||[];
+    [1,2,3].forEach(function(pos){
+      var p=players[pos-1];
+      var ne=document.getElementById('pod-'+pos+'-name');
+      var se=document.getElementById('pod-'+pos+'-score');
+      var ae=document.getElementById('pod-'+pos+'-av');
+      if(p&&p.voidrift_highscore>0){
+        if(ne)ne.textContent=p.username;
+        if(se)se.textContent=fmt(p.voidrift_highscore)+' pts';
+        if(ae)ae.innerHTML=avHTML(p,64);
+      }
+    });
+  });
+
+  _sb.from('players').select('username,voidrift_highscore,avatar_url').order('voidrift_highscore',{ascending:false}).limit(1).then(function(res){
+    var el=document.getElementById('voidrift-champion');
+    if(!el)return;
+    var p=res.data&&res.data[0];
+    if(p&&p.voidrift_highscore>0){
+      el.innerHTML='<div class="champion-avatar">'+avHTML(p,44)+'</div><div class="champion-info"><div class="champion-crown">&#127775; Champion</div><div class="champion-name">'+p.username+'</div><div class="champion-score">'+fmt(p.voidrift_highscore)+' pts</div></div>';
+    }else{el.innerHTML='<div class="champion-empty">No champion yet &mdash; be the first!</div>';}
+  });
+
+  _sb.from('players').select('username,global_xp,voidrift_highscore,avatar_url,pass_tier').order('global_xp',{ascending:false}).limit(10).then(function(res){
+    var list=document.getElementById('top10-list');
+    if(!list)return;
+    var players=res.data||[];
+    if(!players.length){list.innerHTML='<div class="lb-empty">No players yet</div>';return;}
+    var rc=['','r1','r2','r3'];
+    var ri=['','&#129351;','&#129352;','&#129353;'];
+    var pt={free:'Free',gold:'Gold Pass',platinum:'Platinum Pass'};
+    var html='';
+    players.forEach(function(p,i){
+      var rank=i+1;
+      var t3=rank<=3?' top3':'';
+      html+='<div class="lb-row'+t3+'"><div class="lb-rank '+(rc[rank]||'')+'">'+( rank<=3?ri[rank]:rank)+'</div><div class="lb-player"><div class="lb-avatar">'+avHTML(p,34)+'</div><div><div class="lb-username">'+p.username+'</div><div class="lb-pass">'+(pt[p.pass_tier]||'Free')+'</div></div></div><div class="lb-score">'+(p.voidrift_highscore>0?fmt(p.voidrift_highscore)+' pts':'&mdash;')+'</div><div class="lb-xp">'+((p.global_xp||0).toLocaleString())+' XP</div></div>'+(rank<players.length?'<div class="lb-divider"></div>':'');
+    });
+    list.innerHTML=html;
+  });
+
+  function updateCountdown(){
+    var now=new Date();
+    var end=new Date(now.getFullYear(),now.getMonth()+1,1,0,0,0);
+    var diff=Math.max(0,end-now);
+    var d=Math.floor(diff/86400000);
+    var h=Math.floor((diff%86400000)/3600000);
+    var m=Math.floor((diff%3600000)/60000);
+    var s=Math.floor((diff%60000)/1000);
+    document.getElementById('cd-d').textContent=String(d).padStart(2,'0');
+    document.getElementById('cd-h').textContent=String(h).padStart(2,'0');
+    document.getElementById('cd-m').textContent=String(m).padStart(2,'0');
+    document.getElementById('cd-s').textContent=String(s).padStart(2,'0');
+  }
+  updateCountdown();
+  setInterval(updateCountdown,1000);
+})();
+</script>
+</body>
+</html>
