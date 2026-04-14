@@ -86,7 +86,7 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
     <li><a href="index.html">Games</a></li>
     <li><a href="index.html">Universe</a></li>
     <li><a href="credits.html">Credits &amp; Passes</a></li>
-    <li><a href="index.html">Leaderboards</a></li>
+    <li><a href="leaderboards.html">Leaderboards</a></li>
   </ul>
   <div class="nav-btns" id="nav-btns">
     <button class="btn-g" onclick="window.location.href='auth.html?tab=signin'">Sign In</button>
@@ -101,7 +101,7 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
 <div class="sec"><h2>4. Syllog Credits</h2><ul><li>All purchases are final and non-refundable unless required by law</li><li>SC has no real-world monetary value</li><li>Pass subscriptions renew automatically until cancelled</li></ul></div>
 <div class="sec"><h2>5. Acceptable Use</h2><ul><li>No cheating, hacking, or unauthorized software</li><li>No manipulation of SC balances or leaderboards</li><li>No harassment or abuse of other players</li><li>No reverse engineering or extracting game code</li></ul></div>
 <div class="sec"><h2>6. Intellectual Property</h2><p>All Syllog content is property of Syllog Games and protected by law.</p></div>
-<div class="sec"><h2>7. Contact</h2><p>Questions? Email <span class="hi">support@sylloggames.com</span></p></div></div>
+<div class="sec"><h2>7. Contact</h2><p>Questions? Email <span class="hi"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2a595f5a5a45585e6a59534646454d4d4b474f5904494547">[email&#160;protected]</a></span></p></div></div>
 <footer>
   <div style="font-size:0.7rem;font-weight:900;letter-spacing:5px;color:#444;">SYLLOG</div>
   <div style="display:flex;gap:1.25rem;">
@@ -156,7 +156,7 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
     <div class="dash-member-since" id="dash-since">Syllog Games</div>
   </div>
 </div>
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 (function(){
   var _u='https://mlstrkqefyqoczusewrm.supabase.co';
   var _k='sb_publishable_g7_BTnT_cTqaIk19Kx9FEw_iP1I7Df7';
@@ -212,13 +212,4 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
     var reader=new FileReader();
     reader.onload=function(e){document.getElementById('dash-avatar').innerHTML='<img src="'+e.target.result+'" alt="avatar">';};
     reader.readAsDataURL(file);
-    var up=await _sb.storage.from('player-avatars').upload(path,file,{upsert:true});
-    if(!up.error){
-      var url=_sb.storage.from('player-avatars').getPublicUrl(path).data.publicUrl;
-      await _sb.from('players').update({avatar_url:url}).eq('id',_user.id);
-    }
-  };
-})();
-</script>
-</body>
-</html>
+    var up=await _sb.storage.from('player-avatars').upload(path,file,{up

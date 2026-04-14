@@ -86,7 +86,7 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
     <li><a href="index.html">Games</a></li>
     <li><a href="index.html">Universe</a></li>
     <li><a href="credits.html">Credits &amp; Passes</a></li>
-    <li><a href="index.html">Leaderboards</a></li>
+    <li><a href="leaderboards.html">Leaderboards</a></li>
   </ul>
   <div class="nav-btns" id="nav-btns">
     <button class="btn-g" onclick="window.location.href='auth.html?tab=signin'">Sign In</button>
@@ -100,8 +100,8 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
 <div class="sec"><h2>3. How We Use Your Information</h2><ul><li>Create and manage your Universal Syllog ID and player profile</li><li>Deliver and maintain the Syllog gaming platform</li><li>Process payments for Syllog Credits and Pass memberships</li><li>Track XP, achievements, and leaderboard rankings</li><li>Detect and prevent fraud and cheating</li></ul></div>
 <div class="sec"><h2>4. Data Security</h2><p>Your data is stored using <span class="hi">Supabase</span> with row-level security. We use Cloudflare WAF and SSL encryption to protect all data.</p></div>
 <div class="sec"><h2>5. Advertising</h2><p>Free-tier players may see ads via AdinPlay. Gold and Platinum subscribers have ads removed. We do not sell your personal data.</p></div>
-<div class="sec"><h2>6. Your Rights</h2><ul><li>Access the data we hold about you</li><li>Request correction of inaccurate data</li><li>Request deletion of your account and data</li></ul><p>Contact us at <span class="hi">support@sylloggames.com</span>.</p></div>
-<div class="sec"><h2>7. Contact</h2><p>Email: <span class="hi">support@sylloggames.com</span></p></div></div>
+<div class="sec"><h2>6. Your Rights</h2><ul><li>Access the data we hold about you</li><li>Request correction of inaccurate data</li><li>Request deletion of your account and data</li></ul><p>Contact us at <span class="hi"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d2a1a7a2a2bda0a692a1abbebebdb5b5b3bfb7a1fcb1bdbf">[email&#160;protected]</a></span>.</p></div>
+<div class="sec"><h2>7. Contact</h2><p>Email: <span class="hi"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="added8ddddc2dfd9edded4c1c1c2cacaccc0c8de83cec2c0">[email&#160;protected]</a></span></p></div></div>
 <footer>
   <div style="font-size:0.7rem;font-weight:900;letter-spacing:5px;color:#444;">SYLLOG</div>
   <div style="display:flex;gap:1.25rem;">
@@ -156,7 +156,7 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
     <div class="dash-member-since" id="dash-since">Syllog Games</div>
   </div>
 </div>
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 (function(){
   var _u='https://mlstrkqefyqoczusewrm.supabase.co';
   var _k='sb_publishable_g7_BTnT_cTqaIk19Kx9FEw_iP1I7Df7';
@@ -210,15 +210,4 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
     var ext=file.name.split('.').pop();
     var path='avatars/'+_user.id+'.'+ext;
     var reader=new FileReader();
-    reader.onload=function(e){document.getElementById('dash-avatar').innerHTML='<img src="'+e.target.result+'" alt="avatar">';};
-    reader.readAsDataURL(file);
-    var up=await _sb.storage.from('player-avatars').upload(path,file,{upsert:true});
-    if(!up.error){
-      var url=_sb.storage.from('player-avatars').getPublicUrl(path).data.publicUrl;
-      await _sb.from('players').update({avatar_url:url}).eq('id',_user.id);
-    }
-  };
-})();
-</script>
-</body>
-</html>
+    reader.onload=function(e){document.getElementById('dash-avatar').innerHTML='<img src="'+e.target.result
