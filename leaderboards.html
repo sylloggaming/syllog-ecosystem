@@ -23,15 +23,21 @@ nav{background:rgba(0,0,0,0.97);border-bottom:1px solid rgba(255,255,255,0.06);p
 .nav-dot{width:6px;height:6px;border-radius:50%;background:#c0c0c0;flex-shrink:0;}
 .nav-name{font-size:0.63rem;font-weight:700;color:rgba(255,255,255,0.65);letter-spacing:1px;text-transform:uppercase;}
 .nav-arrow{font-size:0.55rem;color:rgba(255,255,255,0.2);}
+
+/* HERO */
 .page-hero{padding:3rem 2rem 2.5rem;text-align:center;position:relative;overflow:hidden;border-bottom:1px solid rgba(255,255,255,0.05);}
 .page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(192,192,192,0.04) 0%,transparent 70%);pointer-events:none;}
 .hero-tag{font-size:0.56rem;letter-spacing:4px;text-transform:uppercase;color:#444;border:1px solid rgba(255,255,255,0.05);padding:0.25rem 0.85rem;border-radius:20px;display:inline-block;margin-bottom:0.9rem;}
 .hero-title{font-size:3.5rem;font-weight:900;letter-spacing:-2px;background:linear-gradient(160deg,#fff 0%,#c0c0c0 40%,#888 70%,#c0c0c0 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:0.5rem;}
 .hero-sub{font-size:0.78rem;color:#444;line-height:1.6;max-width:480px;margin:0 auto;}
+
+/* SECTIONS */
 .monthly-section{padding:2.5rem 2rem;border-bottom:1px solid rgba(255,255,255,0.05);}
 .section-eyebrow{font-size:0.55rem;letter-spacing:4px;text-transform:uppercase;color:#444;margin-bottom:0.4rem;}
 .section-title{font-size:1.1rem;font-weight:800;color:#fff;margin-bottom:1.75rem;letter-spacing:-0.3px;}
 .section-title span{color:#333;}
+
+/* FEATURED BANNER */
 .featured-banner{border-radius:16px;overflow:hidden;position:relative;background:linear-gradient(135deg,#000 0%,#050818 50%,#0a0f2e 100%);border:1px solid rgba(255,255,255,0.08);margin-bottom:2rem;}
 .featured-banner-inner{padding:2.5rem 3rem;position:relative;z-index:2;}
 .featured-bg-icon{position:absolute;right:2rem;top:50%;transform:translateY(-50%);font-size:12rem;opacity:0.05;pointer-events:none;z-index:1;}
@@ -54,6 +60,47 @@ nav{background:rgba(0,0,0,0.97);border-bottom:1px solid rgba(255,255,255,0.06);p
 .cd-num{font-size:1.1rem;font-weight:900;color:#c0c0c0;font-family:'Share Tech Mono',monospace;min-width:2ch;display:block;}
 .cd-lbl{font-size:0.48rem;color:#333;letter-spacing:1.5px;text-transform:uppercase;}
 .cd-sep{color:#222;font-size:1rem;font-weight:300;margin-bottom:1rem;}
+
+/* LIVE STANDINGS */
+.standings-section{padding:2.5rem 2rem;border-bottom:1px solid rgba(255,255,255,0.05);}
+.standings-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
+.standings-title-wrap{}
+.live-badge{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(255,60,60,0.08);border:1px solid rgba(255,60,60,0.15);border-radius:20px;padding:0.18rem 0.65rem;margin-left:0.6rem;vertical-align:middle;}
+.live-dot{width:6px;height:6px;border-radius:50%;background:#ff3c3c;animation:livepulse 1.2s ease-in-out infinite;}
+@keyframes livepulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.7);}}
+.live-txt{font-size:0.5rem;color:#ff6b6b;letter-spacing:2px;text-transform:uppercase;font-weight:700;}
+.refresh-info{font-size:0.58rem;color:#222;letter-spacing:1px;}
+.standings-grid{display:flex;flex-direction:column;gap:0.5rem;}
+.standing-row{display:grid;grid-template-columns:44px 1fr 160px 120px;align-items:center;padding:0.75rem 1rem;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:#060606;transition:all 0.2s;position:relative;overflow:hidden;}
+.standing-row.s-gold{border-color:rgba(255,215,0,0.2);background:linear-gradient(135deg,#0a0900 0%,#060600 100%);}
+.standing-row.s-silver{border-color:rgba(192,192,192,0.15);background:linear-gradient(135deg,#080808 0%,#060606 100%);}
+.standing-row.s-bronze{border-color:rgba(205,127,50,0.15);background:linear-gradient(135deg,#080604 0%,#060606 100%);}
+.standing-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px;}
+.standing-row.s-gold::before{background:#ffd700;}
+.standing-row.s-silver::before{background:#c0c0c0;}
+.standing-row.s-bronze::before{background:#cd7f32;}
+.st-rank{font-size:0.85rem;font-weight:900;text-align:center;font-family:'Share Tech Mono',monospace;}
+.st-rank.r1{color:#ffd700;}
+.st-rank.r2{color:#c0c0c0;}
+.st-rank.r3{color:#cd7f32;}
+.st-rank.rn{color:#2a2a2a;}
+.st-player{display:flex;align-items:center;gap:0.75rem;}
+.st-avatar{width:36px;height:36px;border-radius:50%;background:#0a0a0a;border:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;font-size:0.9rem;overflow:hidden;flex-shrink:0;}
+.st-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.st-name{font-size:0.78rem;font-weight:700;color:#fff;}
+.st-pass{font-size:0.5rem;color:#2a2a2a;letter-spacing:1px;text-transform:uppercase;margin-top:0.1rem;}
+.st-score{font-size:0.78rem;font-weight:800;color:#c0c0c0;font-family:'Share Tech Mono',monospace;text-align:right;}
+.st-score.sc-gold{color:#ffd700;}
+.st-score.sc-silver{color:#c0c0c0;}
+.st-score.sc-bronze{color:#cd7f32;}
+.st-gap{font-size:0.6rem;color:#1e1e1e;text-align:right;margin-top:0.1rem;font-family:'Share Tech Mono',monospace;}
+.st-prize{display:inline-flex;align-items:center;gap:0.25rem;background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.12);border-radius:12px;padding:0.15rem 0.5rem;}
+.st-prize-val{font-size:0.62rem;font-weight:800;color:#ffd700;}
+.st-prize-lbl{font-size:0.5rem;color:#444;}
+.st-no-prize{font-size:0.58rem;color:#1a1a1a;text-align:right;}
+.standings-empty{text-align:center;padding:3rem;color:#1a1a1a;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;}
+
+/* PODIUM */
 .podium-wrap{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:1rem;align-items:end;}
 .podium-card{border-radius:14px;padding:1.5rem 1rem 1.25rem;text-align:center;position:relative;border:1px solid rgba(255,255,255,0.06);background:#060606;}
 .podium-card.first{background:linear-gradient(180deg,#0d0d0d 0%,#080808 100%);border-color:rgba(255,215,0,0.2);}
@@ -69,9 +116,11 @@ nav{background:rgba(0,0,0,0.97);border-bottom:1px solid rgba(255,255,255,0.06);p
 .podium-prize-val{font-size:0.68rem;font-weight:800;color:#ffd700;}
 .podium-prize-lbl{font-size:0.55rem;color:#555;}
 .first-glow{position:absolute;top:0;left:50%;transform:translateX(-50%);width:80%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,215,0,0.4),transparent);}
+
+/* CHAMPIONS */
 .champions-section{padding:2.5rem 2rem;border-bottom:1px solid rgba(255,255,255,0.05);}
 .champions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;}
-.champion-card{background:#060606;border:1px solid rgba(255,255,255,0.06);border-radius:14px;overflow:hidden;position:relative;}
+.champion-card{background:#060606;border:1px solid rgba(255,255,255,0.06);border-radius:14px;overflow:hidden;}
 .champion-card-header{padding:1.25rem 1.25rem 1rem;position:relative;min-height:80px;}
 .champion-game-bg{position:absolute;inset:0;opacity:0.15;}
 .champion-game-icon{font-size:3rem;position:absolute;right:1rem;top:50%;transform:translateY(-50%);opacity:0.2;z-index:1;}
@@ -83,9 +132,11 @@ nav{background:rgba(0,0,0,0.97);border-bottom:1px solid rgba(255,255,255,0.06);p
 .champion-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
 .champion-info{flex:1;}
 .champion-crown{font-size:0.65rem;margin-bottom:0.1rem;}
-.champion-name{font-size:0.88rem;font-weight:800;color:#fff;letter-spacing:-0.2px;}
+.champion-name{font-size:0.88rem;font-weight:800;color:#fff;}
 .champion-score{font-size:0.62rem;color:#444;font-family:'Share Tech Mono',monospace;margin-top:0.1rem;}
-.champion-empty{color:#1e1e1e;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;padding:0.5rem 0;}
+.champion-empty{color:#1e1e1e;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;}
+
+/* TOP 10 */
 .top10-section{padding:2.5rem 2rem;}
 .lb-row{display:grid;grid-template-columns:48px 1fr 140px 100px;align-items:center;padding:0.7rem 1rem;border-radius:8px;transition:background 0.15s;}
 .lb-row:hover{background:rgba(255,255,255,0.02);}
@@ -103,6 +154,7 @@ nav{background:rgba(0,0,0,0.97);border-bottom:1px solid rgba(255,255,255,0.06);p
 .lb-header-lbl{font-size:0.52rem;color:#222;letter-spacing:2px;text-transform:uppercase;}
 .lb-divider{height:1px;background:rgba(255,255,255,0.03);margin:0.15rem 0;}
 .lb-empty{text-align:center;padding:3rem;color:#1a1a1a;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;}
+
 footer{display:flex;align-items:center;justify-content:space-between;padding:0.8rem 2rem;border-top:1px solid rgba(255,255,255,0.04);margin-top:2rem;}
 footer a{font-size:0.58rem;color:#888;text-decoration:none;letter-spacing:1px;text-transform:uppercase;}
 footer a:hover{color:#fff;}
@@ -178,6 +230,7 @@ footer a:hover{color:#fff;}
   <div class="hero-sub">The best players in the Syllog universe. Monthly champions earn SC Credits. Every run counts.</div>
 </div>
 
+<!-- MONTHLY CHAMPIONSHIP BANNER -->
 <div class="monthly-section">
   <div class="section-eyebrow">Monthly Competition</div>
   <div class="section-title">April 2026 Featured Game <span>&middot; Championship</span></div>
@@ -192,9 +245,9 @@ footer a:hover{color:#fff;}
       <div class="featured-game-title"><span>Void</span> Rift</div>
       <div class="featured-desc">Top 3 players by highest single-run score this month win Syllog Credits. Every run is your shot at the top.</div>
       <div class="prize-row">
-        <div class="prize-chip"><span class="prize-chip-rank">&#129351;</span><span class="prize-chip-val">5,000 SC</span><span class="prize-chip-lbl">1st Place</span></div>
-        <div class="prize-chip"><span class="prize-chip-rank">&#129352;</span><span class="prize-chip-val">2,500 SC</span><span class="prize-chip-lbl">2nd Place</span></div>
-        <div class="prize-chip"><span class="prize-chip-rank">&#129353;</span><span class="prize-chip-val">1,000 SC</span><span class="prize-chip-lbl">3rd Place</span></div>
+        <div class="prize-chip"><span class="prize-chip-rank">&#129351;</span><span class="prize-chip-val">2,000 SC</span><span class="prize-chip-lbl">1st Place</span></div>
+        <div class="prize-chip"><span class="prize-chip-rank">&#129352;</span><span class="prize-chip-val">1,000 SC</span><span class="prize-chip-lbl">2nd Place</span></div>
+        <div class="prize-chip"><span class="prize-chip-rank">&#129353;</span><span class="prize-chip-val">500 SC</span><span class="prize-chip-lbl">3rd Place</span></div>
       </div>
       <div class="countdown-wrap">
         <span class="countdown-label">Ends in</span>
@@ -210,14 +263,35 @@ footer a:hover{color:#fff;}
       </div>
     </div>
   </div>
+</div>
 
+<!-- LIVE STANDINGS -->
+<div class="standings-section">
+  <div class="standings-header">
+    <div class="standings-title-wrap">
+      <div class="section-eyebrow">Monthly Competition</div>
+      <div class="section-title" style="margin-bottom:0;">Live Standings
+        <span class="live-badge"><span class="live-dot"></span><span class="live-txt">Live</span></span>
+      </div>
+    </div>
+    <div class="refresh-info" id="refresh-info">Updates every 60s</div>
+  </div>
+  <div class="standings-grid" id="standings-grid">
+    <div class="standings-empty">Loading standings...</div>
+  </div>
+</div>
+
+<!-- PODIUM -->
+<div class="monthly-section" style="border-top:none;padding-top:0;">
+  <div class="section-eyebrow">Current Leaders</div>
+  <div class="section-title">Championship Podium <span>&middot; Top 3</span></div>
   <div class="podium-wrap">
     <div class="podium-card second">
       <div class="podium-rank">&#129352;</div>
       <div class="podium-avatar" id="pod-2-av">&#128100;</div>
       <div class="podium-username" id="pod-2-name">Open</div>
       <div class="podium-score" id="pod-2-score">No score yet</div>
-      <div class="podium-prize"><span class="podium-prize-val">2,500</span><span class="podium-prize-lbl">SC</span></div>
+      <div class="podium-prize"><span class="podium-prize-val">1,000</span><span class="podium-prize-lbl">SC</span></div>
     </div>
     <div class="podium-card first">
       <div class="first-glow"></div>
@@ -225,18 +299,19 @@ footer a:hover{color:#fff;}
       <div class="podium-avatar first-av" id="pod-1-av">&#128100;</div>
       <div class="podium-username" id="pod-1-name">Open</div>
       <div class="podium-score" id="pod-1-score">No score yet</div>
-      <div class="podium-prize"><span class="podium-prize-val">5,000</span><span class="podium-prize-lbl">SC</span></div>
+      <div class="podium-prize"><span class="podium-prize-val">2,000</span><span class="podium-prize-lbl">SC</span></div>
     </div>
     <div class="podium-card third">
       <div class="podium-rank">&#129353;</div>
       <div class="podium-avatar" id="pod-3-av">&#128100;</div>
       <div class="podium-username" id="pod-3-name">Open</div>
       <div class="podium-score" id="pod-3-score">No score yet</div>
-      <div class="podium-prize"><span class="podium-prize-val">1,000</span><span class="podium-prize-lbl">SC</span></div>
+      <div class="podium-prize"><span class="podium-prize-val">500</span><span class="podium-prize-lbl">SC</span></div>
     </div>
   </div>
 </div>
 
+<!-- GAME CHAMPIONS -->
 <div class="champions-section">
   <div class="section-eyebrow">Per Game</div>
   <div class="section-title">#1 Champion <span>&middot; Each Title</span></div>
@@ -257,6 +332,7 @@ footer a:hover{color:#fff;}
   </div>
 </div>
 
+<!-- GLOBAL TOP 10 -->
 <div class="top10-section">
   <div class="section-eyebrow">All Time</div>
   <div class="section-title">Top 10 <span>&middot; Global XP</span></div>
@@ -385,30 +461,71 @@ footer a:hover{color:#fff;}
     return'&#128100;';
   }
 
-  _sb.from('players').select('username,voidrift_highscore,avatar_url').order('voidrift_highscore',{ascending:false}).limit(3).then(function(res){
-    var players=res.data||[];
-    [1,2,3].forEach(function(pos){
-      var p=players[pos-1];
-      var ne=document.getElementById('pod-'+pos+'-name');
-      var se=document.getElementById('pod-'+pos+'-score');
-      var ae=document.getElementById('pod-'+pos+'-av');
-      if(p&&p.voidrift_highscore>0){
-        if(ne)ne.textContent=p.username;
-        if(se)se.textContent=fmt(p.voidrift_highscore)+' pts';
-        if(ae)ae.innerHTML=avHTML(p,64);
+  var PRIZES=[2000,1000,500];
+
+  function loadStandings(){
+    _sb.from('players').select('username,voidrift_highscore,avatar_url,pass_tier').order('voidrift_highscore',{ascending:false}).limit(10).then(function(res){
+      var grid=document.getElementById('standings-grid');
+      if(!grid)return;
+      var players=(res.data||[]).filter(function(p){return p.voidrift_highscore>0;});
+      if(!players.length){grid.innerHTML='<div class="standings-empty">No scores yet &mdash; be the first to play!</div>';return;}
+      var rowClasses=['s-gold','s-silver','s-bronze'];
+      var rankClasses=['r1','r2','r3'];
+      var rankIcons=['&#129351;','&#129352;','&#129353;'];
+      var scoreClasses=['sc-gold','sc-silver','sc-bronze'];
+      var pt={free:'Free',gold:'Gold Pass',platinum:'Platinum Pass'};
+      var top=players[0].voidrift_highscore;
+      var html='';
+      players.forEach(function(p,i){
+        var rank=i+1;
+        var rc=rowClasses[i]||'';
+        var rk=rankClasses[i]||'rn';
+        var ri=rank<=3?rankIcons[i]:rank;
+        var sc=scoreClasses[i]||'';
+        var gap=rank>1?(players[i-1].voidrift_highscore-p.voidrift_highscore):0;
+        var gapStr=rank>1?('-'+fmt(gap)+' from #'+(rank-1)):'';
+        var prizeHtml=rank<=3
+          ?'<div class="st-prize"><span class="st-prize-val">'+PRIZES[i].toLocaleString()+'</span><span class="st-prize-lbl"> SC</span></div>'
+          :'<div class="st-no-prize">&mdash;</div>';
+        html+='<div class="standing-row '+rc+'">';
+        html+='<div class="st-rank '+rk+'">'+ri+'</div>';
+        html+='<div class="st-player"><div class="st-avatar">'+avHTML(p,36)+'</div><div><div class="st-name">'+p.username+'</div><div class="st-pass">'+(pt[p.pass_tier]||'Free')+'</div></div></div>';
+        html+='<div><div class="st-score '+sc+'">'+fmt(p.voidrift_highscore)+' pts</div><div class="st-gap">'+gapStr+'</div></div>';
+        html+=prizeHtml;
+        html+='</div>';
+      });
+      grid.innerHTML=html;
+
+      // Update podium
+      [1,2,3].forEach(function(pos){
+        var p=players[pos-1];
+        var ne=document.getElementById('pod-'+pos+'-name');
+        var se=document.getElementById('pod-'+pos+'-score');
+        var ae=document.getElementById('pod-'+pos+'-av');
+        if(p){
+          if(ne)ne.textContent=p.username;
+          if(se)se.textContent=fmt(p.voidrift_highscore)+' pts';
+          if(ae)ae.innerHTML=avHTML(p,64);
+        }
+      });
+
+      // Update champion card
+      var champ=document.getElementById('voidrift-champion');
+      if(champ&&players[0]){
+        var c=players[0];
+        champ.innerHTML='<div class="champion-avatar">'+avHTML(c,44)+'</div><div class="champion-info"><div class="champion-crown">&#127775; Champion</div><div class="champion-name">'+c.username+'</div><div class="champion-score">'+fmt(c.voidrift_highscore)+' pts</div></div>';
+      }
+
+      // Update refresh time
+      var ri=document.getElementById('refresh-info');
+      if(ri){
+        var now=new Date();
+        ri.textContent='Last updated '+now.getHours()+':'+String(now.getMinutes()).padStart(2,'0')+':'+String(now.getSeconds()).padStart(2,'0');
       }
     });
-  });
+  }
 
-  _sb.from('players').select('username,voidrift_highscore,avatar_url').order('voidrift_highscore',{ascending:false}).limit(1).then(function(res){
-    var el=document.getElementById('voidrift-champion');
-    if(!el)return;
-    var p=res.data&&res.data[0];
-    if(p&&p.voidrift_highscore>0){
-      el.innerHTML='<div class="champion-avatar">'+avHTML(p,44)+'</div><div class="champion-info"><div class="champion-crown">&#127775; Champion</div><div class="champion-name">'+p.username+'</div><div class="champion-score">'+fmt(p.voidrift_highscore)+' pts</div></div>';
-    }else{el.innerHTML='<div class="champion-empty">No champion yet &mdash; be the first!</div>';}
-  });
-
+  // Load global top 10 by XP
   _sb.from('players').select('username,global_xp,voidrift_highscore,avatar_url,pass_tier').order('global_xp',{ascending:false}).limit(10).then(function(res){
     var list=document.getElementById('top10-list');
     if(!list)return;
@@ -426,6 +543,7 @@ footer a:hover{color:#fff;}
     list.innerHTML=html;
   });
 
+  // Countdown to end of month
   function updateCountdown(){
     var now=new Date();
     var end=new Date(now.getFullYear(),now.getMonth()+1,1,0,0,0);
@@ -441,6 +559,10 @@ footer a:hover{color:#fff;}
   }
   updateCountdown();
   setInterval(updateCountdown,1000);
+
+  // Load standings immediately then refresh every 60 seconds
+  loadStandings();
+  setInterval(loadStandings,60000);
 })();
 </script>
 </body>
