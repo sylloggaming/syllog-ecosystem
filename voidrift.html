@@ -1804,6 +1804,17 @@ async function saveSCToSupabase() {
     console.log('Inventory saved — Ships:', ownedShips, 'Skins:', ownedSkins);
   } catch(e) { console.log('SC save error:', e); }
 }
+async function saveHighScore() {
+  if (!_sbUser) return;
+  try {
+    const res = await _sb.from('players').select('voidrift_highscore').eq('id', _sbUser.id).single();
+    const stored = (res.data && res.data.voidrift_highscore) ? res.data.voidrift_highscore : 0;
+    if (hiScore > stored) {
+      await _sb.from('players').update({ voidrift_highscore: hiScore }).eq('id', _sbUser.id);
+      console.log('New Void Rift high score saved:', hiScore);
+    }
+  } catch(e) { console.log('High score save error:', e); }
+}
 async function pingLastSeen() {
   if (!_sbUser) return;
   try {
@@ -11797,6 +11808,7 @@ function winGame(){
   });
   runStats.endTime=Date.now();
   if(score>hiScore)hiScore=score;
+  saveHighScore();
   const acc=runStats.shotsFired>0?Math.round(runStats.shotsHit/runStats.shotsFired*100):0;
   let gs=4;
   gs+=acc>=90?4:acc>=70?3:acc>=50?2:acc>=30?1:0;
