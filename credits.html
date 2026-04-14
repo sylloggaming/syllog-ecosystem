@@ -155,54 +155,7 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
 </style>
 </head>
 <body>
-<script>
-(function(){
-  // Run immediately when script is parsed
-  function initNav(){
-    var _u='https://mlstrkqefyqoczusewrm.supabase.co';
-    var _k='sb_publishable_g7_BTnT_cTqaIk19Kx9FEw_iP1I7Df7';
-    var _c=supabase.createClient(_u,_k,{
-      auth:{
-        persistSession:true,
-        storageKey:'syllog-auth',
-        storage:window.localStorage,
-        autoRefreshToken:true,
-        detectSessionInUrl:false
-      }
-    });
-    _c.auth.getSession().then(function(r){
-      if(!r||!r.data||!r.data.session) return;
-      var username = null;
-      _c.from('players').select('username').eq('id',r.data.session.user.id).single().then(function(d){
-        if(!d||!d.data) return;
-        username = d.data.username;
-        // Replace nav buttons
-        var nb=document.getElementById('nav-btns');
-        if(nb){
-          nb.innerHTML=
-            '<button onclick="window.location.href=\'index.html\'" style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;padding:0.28rem 0.75rem;border-radius:5px;border:1px solid rgba(255,255,255,0.08);background:transparent;font-family:Inter,sans-serif;">' +
-            '<span style="width:6px;height:6px;border-radius:50%;background:#c0c0c0;display:inline-block;flex-shrink:0;"></span>' +
-            '<span style="font-size:0.63rem;font-weight:700;color:rgba(255,255,255,0.65);letter-spacing:1px;text-transform:uppercase;">' + username + '</span>' +
-            '<span style="font-size:0.55rem;color:rgba(255,255,255,0.2);">&#9660;</span>' +
-            '</button>';
-        }
-        // Hide any create account / sign in buttons in page content
-        document.querySelectorAll('a[href*="signup"],a[href*="signin"],button').forEach(function(el){
-          var txt = el.textContent.toLowerCase();
-          if(txt.indexOf('create account')>-1 || txt.indexOf('sign in')>-1 || txt.indexOf('sign up')>-1){
-            if(!el.closest('nav')) el.style.display='none';
-          }
-        });
-      });
-    });
-  }
-  if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded', initNav);
-  } else {
-    initNav();
-  }
-})();
-</script>
+
 
 <nav>
   <div class="logo" onclick="window.location.href='index.html'">SYLLOG</div>
@@ -442,7 +395,7 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
 
 <footer>
   <div class="fl">SYLLOG</div>
-  <div class="flinks"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="contact.html">Support</a><a href="contact.html">Press</a></div>
+  <div class="flinks"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="contact.html" style="font-size:0.58rem;color:#888;text-decoration:none;letter-spacing:1px;text-transform:uppercase;">Contact</a></div>
   <div class="fc">&copy; 2026 Syllog Games.</div>
 </footer>
 
@@ -524,11 +477,15 @@ function toggleFaq(el) {
   if(!wasOpen) item.classList.add('open');
 }
 </script>
+
+
+
+
 <script>
 (function(){
   var u='https://mlstrkqefyqoczusewrm.supabase.co';
   var k='sb_publishable_g7_BTnT_cTqaIk19Kx9FEw_iP1I7Df7';
-  var c=supabase.createClient(u,k,{auth:{persistSession:true,storageKey:'syllog-auth',storage:window.localStorage,autoRefreshToken:true}});
+  var c=supabase.createClient(u,k);
   c.auth.getSession().then(function(r){
     if(!r.data||!r.data.session)return;
     c.from('players').select('username').eq('id',r.data.session.user.id).single().then(function(d){
@@ -536,15 +493,9 @@ function toggleFaq(el) {
       var nb=document.getElementById('nav-btns');
       if(!nb)return;
       nb.innerHTML='<button onclick="window.location.href=\'index.html\'" style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;padding:0.28rem 0.75rem;border-radius:5px;border:1px solid rgba(255,255,255,0.08);background:transparent;font-family:Inter,sans-serif;"><span style="width:6px;height:6px;border-radius:50%;background:#c0c0c0;display:inline-block;flex-shrink:0;"></span><span style="font-size:0.63rem;font-weight:700;color:rgba(255,255,255,0.65);letter-spacing:1px;text-transform:uppercase;">'+d.data.username+'</span><span style="font-size:0.55rem;color:rgba(255,255,255,0.2);">&#9660;</span></button>';
-      document.querySelectorAll('button,a').forEach(function(el){
-        if(el.closest('nav'))return;
-        var t=(el.textContent||'').toLowerCase().trim();
-        if(t==='create account — free'||t==='sign in'||t==='create account'){el.style.display='none';}
-      });
     });
   });
 })();
 </script>
-
 </body>
 </html>
