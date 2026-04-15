@@ -1981,7 +1981,7 @@ async function loadSCFromSupabase() {
     if (!session) return;
     _sbUser = session.user;
     const { data } = await _sb.from('players')
-      .select('sc_balance, owned_ships, owned_skins, equipped_ship, equipped_skin')
+      .select('sc_balance, owned_ships, owned_skins, equipped_ship, equipped_skin, current_run')
       .eq('id', _sbUser.id).single();
     if (data) {
       
@@ -2319,7 +2319,12 @@ function saveRunState(){
     speedTier, equippedShip,
     ts: Date.now()
   };
-  _storeSet(LS_KEY_SAVE, JSON.stringify(state));
+  const stateStr = JSON.stringify(state);
+  _storeSet(LS_KEY_SAVE, stateStr);
+  
+  if(_sbUser){
+    _sb.from('players').update({ current_run: state }).eq('id', _sbUser.id).then(function(){});
+  }
   console.log('[VoidRift] Saved: level', state.level, 'score', state.score);
 }
 function loadRunState(){
@@ -2329,8 +2334,29 @@ function loadRunState(){
     return JSON.parse(raw);
   }catch(e){ return null; }
 }
+async function loadRunStateFromSupabase(){
+  
+  if(!_sbUser) return;
+  try{
+    const res = await _sb.from('players').select('current_run').eq('id', _sbUser.id).single();
+    if(res.data && res.data.current_run){
+      const sbState = res.data.current_run;
+      const localRaw = _storeGet(LS_KEY_SAVE);
+      const localState = localRaw ? JSON.parse(localRaw) : null;
+      
+      if(!localState || sbState.ts > localState.ts){
+        _storeSet(LS_KEY_SAVE, JSON.stringify(sbState));
+        console.log('[VoidRift] Run state loaded from Supabase: level', sbState.level);
+      }
+    }
+  }catch(e){ console.log('Run state load error:', e); }
+}
 function clearRunState(){
   _storeDel(LS_KEY_SAVE);
+  
+  if(_sbUser){
+    _sb.from('players').update({ current_run: null }).eq('id', _sbUser.id).then(function(){});
+  }
 }
 function hasSavedRun(){
   return loadRunState() !== null;
@@ -14893,6 +14919,17 @@ window.addEventListener('load', async function() {
       if (data.username) window._syllogPlayerName = data.username;
 
       console.log('Syllog loaded — SC:', syllogCredits, 'Ships:', ownedShips, 'Skins:', ownedSkins);
+
+      
+      if (data.current_run) {
+        const sbState = data.current_run;
+        const localRaw = _storeGet(LS_KEY_SAVE);
+        const localState = localRaw ? JSON.parse(localRaw) : null;
+        if (!localState || sbState.ts > localState.ts) {
+          _storeSet(LS_KEY_SAVE, JSON.stringify(sbState));
+          console.log('[VoidRift] Run state synced from Supabase: level', sbState.level);
+        }
+      }
 
       
       await _sb.from('players').update({ last_seen: new Date().toISOString() }).eq('id', _sbUser.id);
