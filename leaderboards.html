@@ -464,7 +464,7 @@ footer a:hover{color:#fff;}
   var PRIZES=[2000,1000,500];
 
   function loadStandings(){
-    fetch('https://mlstrkqefyqoczusewrm.supabase.co/rest/v1/players?select=username,voidrift_highscore,avatar_url,pass_tier&order=voidrift_highscore.desc&limit=10',{
+    fetch('https://mlstrkqefyqoczusewrm.supabase.co/rest/v1/players?select=username,voidrift_highscore,pass_tier&order=voidrift_highscore.desc&limit=10',{
       headers:{'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sc3Rya3FlZnlxb2N6dXNld3JtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU4NTcyMDQsImV4cCI6MjA5MTQzMzIwNH0.BQosznYhRwsj6_b4YmdOSXmMW8YmV-d7ekiawv4xL90','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sc3Rya3FlZnlxb2N6dXNld3JtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU4NTcyMDQsImV4cCI6MjA5MTQzMzIwNH0.BQosznYhRwsj6_b4YmdOSXmMW8YmV-d7ekiawv4xL90','Content-Type':'application/json'}
     }).then(function(r){return r.json();}).then(function(data){
       console.log('Standings data:',data);
