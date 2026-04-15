@@ -2047,14 +2047,13 @@ async function saveSCToSupabase() {
 
 
 async function saveHighScore() {
-  if (!_sbUser || !hiScore || hiScore <= 0) return;
+  if (!_sbUser) return;
+  
+  var best = Math.max(hiScore, score);
+  if (best <= 0) return;
   try {
-    const res = await _sb.from('players').select('voidrift_highscore').eq('id', _sbUser.id).single();
-    const stored = (res.data && res.data.voidrift_highscore) ? res.data.voidrift_highscore : 0;
-    if (hiScore > stored) {
-      await _sb.from('players').update({ voidrift_highscore: hiScore }).eq('id', _sbUser.id);
-      console.log('New Void Rift high score saved:', hiScore);
-    }
+    await _sb.from('players').update({ voidrift_highscore: best }).eq('id', _sbUser.id);
+    console.log('Void Rift score saved:', best);
   } catch(e) { console.log('High score save error:', e); }
 }
 
