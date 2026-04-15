@@ -529,7 +529,7 @@ footer a:hover{color:#fff;}
   }
 
   // Load global top 10 by XP
-  _sb.from('players').select('username,global_xp,voidrift_highscore,avatar_url,pass_tier').order('global_xp',{ascending:false}).limit(10).then(function(res){
+  _sb.from('players').select('username,global_xp,voidrift_highscore,pass_tier').order('global_xp',{ascending:false}).limit(10).then(function(res){
     var list=document.getElementById('top10-list');
     if(!list)return;
     var players=res.data||[];
