@@ -464,12 +464,10 @@ footer a:hover{color:#fff;}
   var PRIZES=[2000,1000,500];
 
   function loadStandings(){
-    var _SURL='https://mlstrkqefyqoczusewrm.supabase.co';
-    var _SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sc3Rya3FlZnlxb2N6dXNld3JtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU4NTcyMDQsImV4cCI6MjA5MTQzMzIwNH0.BQosznYhRwsj6_b4YmdOSXmMW8YmV-d7ekiawv4xL90';
-    fetch(_SURL+'/rest/v1/players?select=username,voidrift_highscore,avatar_url,pass_tier&order=voidrift_highscore.desc&limit=10',{
-      headers:{'apikey':_SKEY,'Authorization':'Bearer '+_SKEY,'Content-Type':'application/json'}
+    fetch('https://mlstrkqefyqoczusewrm.supabase.co/rest/v1/players?select=username,voidrift_highscore,avatar_url,pass_tier&order=voidrift_highscore.desc&limit=10',{
+      headers:{'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sc3Rya3FlZnlxb2N6dXNld3JtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU4NTcyMDQsImV4cCI6MjA5MTQzMzIwNH0.BQosznYhRwsj6_b4YmdOSXmMW8YmV-d7ekiawv4xL90','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sc3Rya3FlZnlxb2N6dXNld3JtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU4NTcyMDQsImV4cCI6MjA5MTQzMzIwNH0.BQosznYhRwsj6_b4YmdOSXmMW8YmV-d7ekiawv4xL90','Content-Type':'application/json'}
     }).then(function(r){return r.json();}).then(function(data){
-      console.log('Standings raw:',data);
+      console.log('Standings data:',data);
       var grid=document.getElementById('standings-grid');
       if(!grid)return;
       var players=(Array.isArray(data)?data:[]).filter(function(p){return p.voidrift_highscore>0;});
@@ -546,7 +544,6 @@ footer a:hover{color:#fff;}
       html+='<div class="lb-row'+t3+'"><div class="lb-rank '+(rc[rank]||'')+'">'+( rank<=3?ri[rank]:rank)+'</div><div class="lb-player"><div class="lb-avatar">'+avHTML(p,34)+'</div><div><div class="lb-username">'+p.username+'</div><div class="lb-pass">'+(pt[p.pass_tier]||'Free')+'</div></div></div><div class="lb-score">'+(p.voidrift_highscore>0?fmt(p.voidrift_highscore)+' pts':'&mdash;')+'</div><div class="lb-xp">'+((p.global_xp||0).toLocaleString())+' XP</div></div>'+(rank<players.length?'<div class="lb-divider"></div>':'');
     });
     list.innerHTML=html;
-    }).catch(function(e){console.error('Fetch error:',e);});
   });
 
   // Countdown to end of month
