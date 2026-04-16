@@ -578,7 +578,7 @@ function toggleFaq(el) {
   function showNav(p){
     var nb=document.getElementById('nav-btns');
     if(!nb)return;
-    nb.innerHTML='<button class="nav-user" onclick="toggleDash()"><div class="nav-dot"></div><div class="nav-name">'+p.username+'</div><div class="nav-arrow">&#9660;</div></button>';
+    nb.innerHTML='<button class="nav-user" onclick="window.location.href='profile.html';"><div class="nav-dot"></div><div class="nav-name">'+p.username+'</div><div class="nav-arrow">&#9660;</div></button>';
   }
 
   function fillDash(p){

@@ -672,7 +672,7 @@ setTimeout(function() {
 function showLoggedInNav(player) {
   var nb = document.getElementById('nav-btns');
   nb.innerHTML =
-    '<button class="nav-user" onclick="toggleDash()">' +
+    '<button class="nav-user" onclick="window.location.href='profile.html';">' +
       '<div class="nav-dot"></div>' +
       '<div class="nav-name">' + player.username + '</div>' +
       '<div class="nav-arrow">&#9660;</div>' +

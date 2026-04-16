@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Syllog — Player Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden;min-height:100vh;}
+
+.profile-bg{position:fixed;inset:0;z-index:0;pointer-events:none;}
+.profile-bg::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 0%,rgba(138,43,226,0.06) 0%,transparent 50%),radial-gradient(ellipse at 80% 100%,rgba(65,105,225,0.04) 0%,transparent 50%);}
+.profile-bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse at 50% 0%,black 0%,transparent 70%);}
+
+nav{background:rgba(0,0,0,0.95);border-bottom:1px solid rgba(255,255,255,0.05);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:200;backdrop-filter:blur(10px);}
+.logo{font-size:1rem;font-weight:900;letter-spacing:6px;background:linear-gradient(135deg,#fff 0%,#c0c0c0 60%,#777 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;cursor:pointer;text-decoration:none;}
+.nav-links{display:flex;gap:1.75rem;list-style:none;}
+.nav-links a{color:rgba(255,255,255,0.28);text-decoration:none;font-size:0.68rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:color 0.2s;}
+.nav-links a:hover{color:#fff;}
+.nav-back{display:flex;align-items:center;gap:0.5rem;color:rgba(255,255,255,0.4);font-size:0.65rem;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:color 0.2s;background:none;border:none;font-family:'Inter',sans-serif;}
+.nav-back:hover{color:#fff;}
+
+.profile-hero{position:relative;z-index:1;height:220px;overflow:hidden;}
+.profile-hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#050010 0%,#080020 40%,#0a0030 70%,#050015 100%);}
+.profile-hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 0%,rgba(0,0,0,0.85) 100%);}
+.profile-hero-pattern{position:absolute;inset:0;opacity:0.03;background-image:repeating-linear-gradient(45deg,#fff 0px,#fff 1px,transparent 1px,transparent 50%);background-size:20px 20px;}
+.profile-hero-glow{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(138,43,226,0.12) 0%,transparent 70%);top:-150px;left:50%;transform:translateX(-50%);}
+
+.profile-card{position:relative;z-index:2;max-width:1100px;margin:-80px auto 0;padding:0 2rem;}
+.profile-card-inner{background:#080808;border:1px solid rgba(255,255,255,0.07);border-radius:20px;padding:2rem;display:grid;grid-template-columns:auto 1fr auto;gap:2rem;align-items:end;position:relative;overflow:hidden;}
+.profile-card-inner::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(138,43,226,0.4),transparent);}
+
+.profile-avatar-wrap{position:relative;flex-shrink:0;}
+.profile-avatar{width:110px;height:110px;border-radius:50%;background:linear-gradient(135deg,#1a1a1a,#0a0a0a);border:3px solid rgba(138,43,226,0.2);display:flex;align-items:center;justify-content:center;font-size:2.5rem;overflow:hidden;}
+.profile-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.profile-avatar-upload{position:absolute;bottom:4px;right:4px;width:28px;height:28px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:2px solid #080808;transition:all 0.2s;}
+.profile-avatar-upload:hover{background:#c0c0c0;}
+.profile-avatar-upload svg{width:12px;height:12px;}
+.profile-online{position:absolute;top:4px;right:4px;width:14px;height:14px;border-radius:50%;background:#22c55e;border:2px solid #080808;}
+
+.profile-info{}
+.profile-badges{display:flex;gap:0.4rem;margin-bottom:0.6rem;flex-wrap:wrap;}
+.profile-badge{font-size:0.48rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.18rem 0.6rem;border-radius:20px;}
+.badge-founder{background:rgba(192,192,192,0.08);border:1px solid rgba(192,192,192,0.2);color:#c0c0c0;}
+.badge-free{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);color:#333;}
+.badge-gold{background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.2);color:#ffd700;}
+.badge-platinum{background:rgba(138,43,226,0.08);border:1px solid rgba(138,43,226,0.2);color:#a78bfa;}
+.profile-username{font-size:2rem;font-weight:900;letter-spacing:-1px;color:#fff;margin-bottom:0.2rem;}
+.profile-id-label{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:#2a2a2a;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.65rem;}
+.profile-meta{display:flex;gap:1.5rem;flex-wrap:wrap;}
+.profile-meta-item{font-size:0.62rem;color:#2a2a2a;letter-spacing:0.5px;}
+.profile-meta-item span{color:#555;}
+
+.profile-quick-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;flex-shrink:0;}
+.pqs-item{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:10px;padding:0.65rem 0.85rem;text-align:center;min-width:75px;}
+.pqs-val{font-size:1.1rem;font-weight:900;color:#c0c0c0;font-family:'Share Tech Mono',monospace;}
+.pqs-lbl{font-size:0.44rem;color:#2a2a2a;letter-spacing:2px;text-transform:uppercase;margin-top:0.15rem;}
+
+.profile-tabs{position:relative;z-index:1;max-width:1100px;margin:1.5rem auto 0;padding:0 2rem 4rem;}
+.tab-nav{display:flex;gap:0;border-bottom:1px solid rgba(255,255,255,0.06);margin-bottom:2rem;}
+.tab-btn{background:none;border:none;color:#2a2a2a;font-size:0.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.75rem 1.25rem;cursor:pointer;font-family:'Inter',sans-serif;position:relative;transition:color 0.2s;}
+.tab-btn:hover{color:#666;}
+.tab-btn.active{color:#fff;}
+.tab-btn.active::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#fff,transparent);}
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem;}
+.stat-card{background:#080808;border:1px solid rgba(255,255,255,0.05);border-radius:14px;padding:1.5rem;position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.05),transparent);}
+.stat-card-eyebrow{font-size:0.5rem;color:#2a2a2a;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.5rem;}
+.stat-card-val{font-size:2.5rem;font-weight:900;font-family:'Share Tech Mono',monospace;letter-spacing:-1px;margin-bottom:0.2rem;}
+.stat-card-sub{font-size:0.6rem;color:#1e1e1e;}
+.stat-card-icon{position:absolute;top:1.25rem;right:1.25rem;font-size:1.75rem;opacity:0.12;}
+.stat-card.sc .stat-card-val{background:linear-gradient(135deg,#ffd700,#ffaa00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.stat-card.xp .stat-card-val{background:linear-gradient(135deg,#8a2be2,#4169e1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+.game-stats-card{background:#080808;border:1px solid rgba(255,255,255,0.05);border-radius:14px;padding:1.5rem;margin-bottom:1.25rem;}
+.gsc-header{display:flex;align-items:center;gap:0.85rem;margin-bottom:1.25rem;}
+.gsc-icon{font-size:1.5rem;}
+.gsc-name{font-size:0.9rem;font-weight:800;color:#fff;}
+.gsc-live{font-size:0.48rem;color:#22c55e;letter-spacing:2px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.15);border-radius:20px;padding:0.15rem 0.5rem;}
+.gsc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;}
+.gsc-item{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:8px;padding:0.75rem;text-align:center;}
+.gsc-val{font-size:1rem;font-weight:800;color:#c0c0c0;font-family:'Share Tech Mono',monospace;}
+.gsc-lbl{font-size:0.46rem;color:#2a2a2a;letter-spacing:2px;text-transform:uppercase;margin-top:0.2rem;}
+
+.lb-pos-card{background:#080808;border:1px solid rgba(255,255,255,0.05);border-radius:14px;padding:1.5rem;display:flex;align-items:center;gap:1.5rem;}
+.lb-rank-num{font-size:2.8rem;font-weight:900;font-family:'Share Tech Mono',monospace;color:#2a2a2a;min-width:90px;text-align:center;line-height:1;}
+.lb-rank-num.r1{color:#ffd700;text-shadow:0 0 20px rgba(255,215,0,0.3);}
+.lb-rank-num.r2{color:#c0c0c0;}
+.lb-rank-num.r3{color:#cd7f32;}
+.lb-rank-info{flex:1;}
+.lb-rank-title{font-size:0.85rem;font-weight:700;color:#fff;margin-bottom:0.25rem;}
+.lb-rank-sub{font-size:0.62rem;color:#2a2a2a;}
+.lb-rank-cta{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);color:#444;padding:0.5rem 1rem;border-radius:6px;font-size:0.6rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;flex-shrink:0;}
+.lb-rank-cta:hover{background:rgba(255,255,255,0.08);color:#fff;}
+
+.inv-section{margin-bottom:2rem;}
+.inv-section-hdr{font-size:0.52rem;color:#2a2a2a;letter-spacing:3px;text-transform:uppercase;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid rgba(255,255,255,0.04);}
+.inv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:0.75rem;}
+.inv-card{background:#080808;border:1px solid rgba(255,255,255,0.05);border-radius:10px;padding:1rem;text-align:center;position:relative;transition:all 0.2s;}
+.inv-card.equipped{border-color:rgba(138,43,226,0.3);background:linear-gradient(135deg,#080020,#060010);}
+.inv-card-icon{font-size:2rem;margin-bottom:0.5rem;}
+.inv-card-name{font-size:0.63rem;font-weight:700;color:#fff;margin-bottom:0.15rem;}
+.inv-card-type{font-size:0.48rem;color:#2a2a2a;letter-spacing:2px;text-transform:uppercase;}
+.inv-equipped{position:absolute;top:0.4rem;right:0.4rem;background:rgba(138,43,226,0.15);border:1px solid rgba(138,43,226,0.25);color:#a78bfa;font-size:0.44rem;letter-spacing:1px;padding:0.1rem 0.35rem;border-radius:4px;text-transform:uppercase;}
+.inv-empty{text-align:center;padding:3rem;color:#1a1a1a;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;}
+
+.uni-unlocked-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0.75rem;}
+.uni-item{background:#080808;border:1px solid rgba(138,43,226,0.1);border-radius:10px;padding:1rem 1.25rem;display:flex;align-items:center;gap:0.85rem;}
+.uni-item-icon{font-size:1.5rem;flex-shrink:0;}
+.uni-item-name{font-size:0.72rem;font-weight:700;color:#fff;}
+.uni-item-type{font-size:0.48rem;color:#333;letter-spacing:2px;text-transform:uppercase;margin-top:0.15rem;}
+.uni-empty{text-align:center;padding:3rem;color:#1a1a1a;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;}
+.uni-empty a{color:#8a2be2;text-decoration:none;}
+
+.set-card{background:#080808;border:1px solid rgba(255,255,255,0.05);border-radius:14px;padding:1.5rem;margin-bottom:1.25rem;}
+.set-card-hdr{font-size:0.52rem;color:#2a2a2a;letter-spacing:3px;text-transform:uppercase;margin-bottom:1.25rem;padding-bottom:0.65rem;border-bottom:1px solid rgba(255,255,255,0.04);}
+.set-field{margin-bottom:0.85rem;}
+.set-label{font-size:0.55rem;color:#333;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:0.35rem;display:block;}
+.set-input{width:100%;background:#0a0a0a;border:1px solid rgba(255,255,255,0.07);border-radius:6px;padding:0.65rem 0.9rem;color:#fff;font-size:0.78rem;font-family:'Inter',sans-serif;outline:none;transition:border-color 0.2s;}
+.set-input:focus{border-color:rgba(255,255,255,0.18);}
+.set-input::placeholder{color:#1e1e1e;}
+.set-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.set-btn{padding:0.65rem 1.5rem;border-radius:6px;font-size:0.62rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;}
+.set-btn-p{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);color:rgba(255,255,255,0.4);}
+.set-btn-p:hover{background:rgba(255,255,255,0.1);color:#fff;}
+.set-btn-d{background:rgba(255,40,40,0.05);border:1px solid rgba(255,40,40,0.12);color:rgba(255,80,80,0.5);}
+.set-btn-d:hover{background:rgba(255,40,40,0.1);color:#ff6b6b;}
+.set-msg{font-size:0.63rem;margin-top:0.5rem;padding:0.45rem 0.75rem;border-radius:6px;display:none;}
+.set-msg.ok{background:rgba(0,200,100,0.05);border:1px solid rgba(0,200,100,0.12);color:rgba(0,200,100,0.65);}
+.set-msg.err{background:rgba(255,60,60,0.05);border:1px solid rgba(255,60,60,0.12);color:rgba(255,100,100,0.65);}
+.tog-row{display:flex;align-items:center;justify-content:space-between;padding:0.65rem 0;border-bottom:1px solid rgba(255,255,255,0.03);}
+.tog-row:last-child{border-bottom:none;}
+.tog-lbl{font-size:0.72rem;color:#555;}
+.tog{width:38px;height:20px;border-radius:10px;background:#0d0d0d;border:1px solid rgba(255,255,255,0.07);cursor:pointer;position:relative;transition:all 0.2s;flex-shrink:0;}
+.tog.on{background:rgba(138,43,226,0.25);border-color:rgba(138,43,226,0.3);}
+.tog::after{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:#222;top:2px;left:2px;transition:all 0.2s;}
+.tog.on::after{left:20px;background:#fff;}
+.danger-card{background:rgba(255,30,30,0.02);border:1px solid rgba(255,40,40,0.07);border-radius:14px;padding:1.5rem;margin-bottom:1.25rem;}
+.danger-hdr{font-size:0.52rem;color:rgba(255,80,80,0.35);letter-spacing:3px;text-transform:uppercase;margin-bottom:1rem;}
+.danger-desc{font-size:0.72rem;color:#2a2a2a;line-height:1.7;margin-bottom:1rem;}
+.danger-desc span{color:rgba(255,80,80,0.4);}
+.del-confirm{display:none;margin-top:0.85rem;padding-top:0.85rem;border-top:1px solid rgba(255,40,40,0.08);}
+.del-confirm.show{display:block;}
+
+footer{display:flex;align-items:center;justify-content:space-between;padding:0.8rem 2rem;border-top:1px solid rgba(255,255,255,0.04);position:relative;z-index:1;}
+footer a{font-size:0.58rem;color:#888;text-decoration:none;letter-spacing:1px;text-transform:uppercase;}
+footer a:hover{color:#fff;}
+
+.not-logged{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:65vh;text-align:center;padding:3rem;}
+.not-logged-icon{font-size:3rem;opacity:0.2;margin-bottom:1.5rem;}
+.not-logged-title{font-size:1.5rem;font-weight:900;color:#fff;margin-bottom:0.5rem;letter-spacing:-0.5px;}
+.not-logged-sub{font-size:0.75rem;color:#444;margin-bottom:2rem;}
+.not-logged-btn{background:#fff;color:#000;border:none;padding:0.75rem 2rem;border-radius:8px;font-size:0.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;}
+</style>
+</head>
+<body>
+
+<div class="profile-bg"><div class="profile-bg-grid"></div></div>
+
+<nav>
+  <a href="index.html" class="logo">SYLLOG</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Games</a></li>
+    <li><a href="universe.html">Universe</a></li>
+    <li><a href="credits.html">Credits &amp; Passes</a></li>
+    <li><a href="leaderboards.html">Leaderboards</a></li>
+  </ul>
+  <button class="nav-back" onclick="window.history.back()">&#8592; Back</button>
+</nav>
+
+<div id="not-logged" style="display:none;">
+  <div class="not-logged">
+    <div class="not-logged-icon">&#128100;</div>
+    <div class="not-logged-title">Sign In to View Profile</div>
+    <div class="not-logged-sub">Your Universal Syllog ID awaits.</div>
+    <button class="not-logged-btn" onclick="window.location.href='auth.html?tab=signin'">Sign In</button>
+  </div>
+</div>
+
+<div id="profile-content" style="display:none;">
+
+  <div class="profile-hero">
+    <div class="profile-hero-bg"></div>
+    <div class="profile-hero-pattern"></div>
+    <div class="profile-hero-overlay"></div>
+    <div class="profile-hero-glow"></div>
+  </div>
+
+  <div class="profile-card">
+    <div class="profile-card-inner">
+      <div class="profile-avatar-wrap">
+        <div class="profile-avatar" id="p-avatar">&#128100;</div>
+        <label class="profile-avatar-upload" title="Change photo">
+          <input type="file" accept="image/*" style="display:none;" onchange="uploadAvatar(this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </label>
+        <div class="profile-online"></div>
+      </div>
+      <div class="profile-info">
+        <div class="profile-badges" id="p-badges"></div>
+        <div class="profile-username" id="p-username">Loading...</div>
+        <div class="profile-id-label">&#9632; Universal Syllog ID</div>
+        <div class="profile-meta">
+          <div class="profile-meta-item">Member since <span id="p-since">—</span></div>
+          <div class="profile-meta-item">Pass: <span id="p-pass">—</span></div>
+          <div class="profile-meta-item" id="p-rank-meta" style="display:none;">VR Rank: <span id="p-rank-val">—</span></div>
+        </div>
+      </div>
+      <div class="profile-quick-stats">
+        <div class="pqs-item"><div class="pqs-val" id="pqs-sc">—</div><div class="pqs-lbl">SC Credits</div></div>
+        <div class="pqs-item"><div class="pqs-val" id="pqs-xp">—</div><div class="pqs-lbl">Global XP</div></div>
+        <div class="pqs-item"><div class="pqs-val" id="pqs-hs">—</div><div class="pqs-lbl">Best Score</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="profile-tabs">
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab('overview',this)">Overview</button>
+      <button class="tab-btn" onclick="switchTab('inventory',this)">Inventory</button>
+      <button class="tab-btn" onclick="switchTab('universe',this)">Universe</button>
+      <button class="tab-btn" onclick="switchTab('settings',this)">Settings</button>
+    </div>
+
+    <!-- OVERVIEW -->
+    <div class="tab-content active" id="tab-overview">
+      <div class="overview-grid">
+        <div class="stat-card sc">
+          <div class="stat-card-icon">&#128142;</div>
+          <div class="stat-card-eyebrow">SC Balance</div>
+          <div class="stat-card-val" id="ov-sc">0</div>
+          <div class="stat-card-sub">Syllog Credits &mdash; valid across all games &amp; Universe store</div>
+        </div>
+        <div class="stat-card xp">
+          <div class="stat-card-icon">&#9889;</div>
+          <div class="stat-card-eyebrow">Global XP</div>
+          <div class="stat-card-val" id="ov-xp">0</div>
+          <div class="stat-card-sub">Accumulated across all Syllog titles</div>
+        </div>
+      </div>
+      <div class="game-stats-card">
+        <div class="gsc-header">
+          <div class="gsc-icon">&#127756;</div>
+          <div class="gsc-name">Void Rift</div>
+          <div class="gsc-live">&#9679; Live</div>
+        </div>
+        <div class="gsc-grid">
+          <div class="gsc-item"><div class="gsc-val" id="gs-hs">—</div><div class="gsc-lbl">High Score</div></div>
+          <div class="gsc-item"><div class="gsc-val" id="gs-rank">—</div><div class="gsc-lbl">Global Rank</div></div>
+          <div class="gsc-item"><div class="gsc-val" id="gs-ships">1</div><div class="gsc-lbl">Ships</div></div>
+          <div class="gsc-item"><div class="gsc-val" id="gs-skins">0</div><div class="gsc-lbl">Skins</div></div>
+        </div>
+      </div>
+      <div class="lb-pos-card">
+        <div class="lb-rank-num" id="lb-rank-num">—</div>
+        <div class="lb-rank-info">
+          <div class="lb-rank-title" id="lb-rank-title">Leaderboard Position</div>
+          <div class="lb-rank-sub" id="lb-rank-sub">Play Void Rift to earn your rank</div>
+        </div>
+        <button class="lb-rank-cta" onclick="window.location.href='leaderboards.html'">View Leaderboards &#8250;</button>
+      </div>
+    </div>
+
+    <!-- INVENTORY -->
+    <div class="tab-content" id="tab-inventory">
+      <div class="inv-section">
+        <div class="inv-section-hdr">&#128640; Ships &mdash; Void Rift</div>
+        <div class="inv-grid" id="inv-ships"></div>
+      </div>
+      <div class="inv-section">
+        <div class="inv-section-hdr">&#10024; Skins &mdash; Void Rift</div>
+        <div class="inv-grid" id="inv-skins"></div>
+      </div>
+    </div>
+
+    <!-- UNIVERSE -->
+    <div class="tab-content" id="tab-universe">
+      <div class="inv-section">
+        <div class="inv-section-hdr">&#128274; Unlocked Universe Content</div>
+        <div id="uni-list"></div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="tab-content" id="tab-settings">
+      <div class="set-card">
+        <div class="set-card-hdr">&#128100; Account</div>
+        <div class="set-row">
+          <div class="set-field">
+            <label class="set-label">Change Username</label>
+            <input type="text" class="set-input" id="set-username" placeholder="New username">
+          </div>
+          <div style="display:flex;align-items:flex-end;">
+            <button class="set-btn set-btn-p" onclick="saveUsername()" style="width:100%;">Update</button>
+          </div>
+        </div>
+        <div class="set-msg" id="msg-user"></div>
+      </div>
+
+      <div class="set-card">
+        <div class="set-card-hdr">&#128274; Password</div>
+        <div class="set-row">
+          <div class="set-field">
+            <label class="set-label">New Password</label>
+            <input type="password" class="set-input" id="set-pw" placeholder="New password">
+          </div>
+          <div class="set-field">
+            <label class="set-label">Confirm Password</label>
+            <input type="password" class="set-input" id="set-pw2" placeholder="Confirm password">
+          </div>
+        </div>
+        <button class="set-btn set-btn-p" onclick="savePw()">Update Password</button>
+        <div class="set-msg" id="msg-pw"></div>
+        <div style="margin-top:0.85rem;padding-top:0.85rem;border-top:1px solid rgba(255,255,255,0.04);">
+          <button class="set-btn set-btn-p" onclick="sendReset()">Send Password Reset Email</button>
+          <div class="set-msg" id="msg-reset"></div>
+        </div>
+      </div>
+
+      <div class="set-card">
+        <div class="set-card-hdr">&#128276; Notifications</div>
+        <div class="tog-row"><span class="tog-lbl">Monthly championship reminders</span><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="tog-row"><span class="tog-lbl">New game announcements</span><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="tog-row"><span class="tog-lbl">SC Credit promotions</span><div class="tog" onclick="this.classList.toggle('on')"></div></div>
+        <div class="tog-row"><span class="tog-lbl">Universe store releases</span><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+      </div>
+
+      <div class="set-card">
+        <div class="set-card-hdr">&#128065; Privacy</div>
+        <div class="tog-row"><span class="tog-lbl">Show on leaderboards</span><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="tog-row"><span class="tog-lbl">Show online status</span><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="tog-row"><span class="tog-lbl">Show profile to other players</span><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+      </div>
+
+      <div class="danger-card">
+        <div class="danger-hdr">&#9888; Danger Zone</div>
+        <div class="danger-desc">Deleting your account will <span>permanently remove</span> all your SC Credits, XP, inventory, progress, and unlocked Universe content. This cannot be undone.</div>
+        <button class="set-btn set-btn-d" onclick="document.getElementById('del-confirm').classList.toggle('show')">Delete My Account</button>
+        <div class="del-confirm" id="del-confirm">
+          <div class="set-field" style="margin-top:0;"><input type="text" class="set-input" id="del-input" placeholder="Type DELETE to confirm"></div>
+          <button class="set-btn set-btn-d" onclick="deleteAccount()">Permanently Delete Account</button>
+          <div class="set-msg" id="msg-del"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div style="font-size:0.7rem;font-weight:900;letter-spacing:5px;color:#444;">SYLLOG</div>
+  <div style="display:flex;gap:1.25rem;">
+    <a href="privacy.html">Privacy</a>
+    <a href="terms.html">Terms</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <div style="font-size:0.58rem;color:#444;">&copy; 2026 Syllog Games.</div>
+</footer>
+
+<script>
+var _sb=supabase.createClient('https://mlstrkqefyqoczusewrm.supabase.co','sb_publishable_g7_BTnT_cTqaIk19Kx9FEw_iP1I7Df7');
+var _user=null,_player=null;
+
+var SHIPS={'default':{name:'Void Fighter',icon:'&#128640;'},'nova':{name:'Nova Interceptor',icon:'&#9993;&#65039;'},'dread':{name:'Dread Destroyer',icon:'&#128308;'},'phantom':{name:'Phantom Elite',icon:'&#9889;'}};
+var SKINS={'skin_aurora':{name:'Aurora',icon:'&#127752;'},'skin_inferno':{name:'Inferno',icon:'&#128293;'},'skin_nebula':{name:'Nebula',icon:'&#127756;'},'skin_celestial':{name:'Celestial Wraith',icon:'&#10024;'}};
+var UNI_ITEMS={'deep_lore':{name:'Deep Lore Archive',icon:'&#128274;',type:'Lore'},'comic_vr_001':{name:'Void Rift: Issue #1',icon:'&#128214;',type:'Comic'},'comic_vr_002':{name:'Void Rift: Issue #2',icon:'&#128214;',type:'Comic'},'music_vr_ost1':{name:'Void Rift OST Vol.1',icon:'&#127926;',type:'Music'},'book_vr_bible':{name:'The Void Bible',icon:'&#128218;',type:'Book'}};
+
+function fmt(n){if(!n||n===0)return'0';if(n>=1000000)return(n/1000000).toFixed(1)+'M';if(n>=1000)return(n/1000).toFixed(1)+'K';return n.toLocaleString();}
+function fmtS(n){if(!n||n===0)return'—';if(n>=1000000)return(n/1000000).toFixed(1)+'M';if(n>=1000)return(n/1000).toFixed(0)+'K';return String(n).padStart(6,'0');}
+
+async function init(){
+  var r=await _sb.auth.getSession();
+  if(!r.data||!r.data.session){document.getElementById('not-logged').style.display='block';return;}
+  _user=r.data.session.user;
+  var res=await _sb.from('players').select('*').eq('id',_user.id).single();
+  if(!res.data)return;
+  _player=res.data;
+  document.getElementById('profile-content').style.display='block';
+  render(_player);
+  loadRank(_player);
+}
+
+function render(p){
+  if(p.avatar_url)document.getElementById('p-avatar').innerHTML='<img src="'+p.avatar_url+'" alt="avatar">';
+  var pn={free:'Free Player',gold:'Gold Pass',platinum:'Platinum Pass'};
+  var pc={free:'badge-free',gold:'badge-gold',platinum:'badge-platinum'};
+  var b='';
+  if(p.is_founder)b+='<span class="profile-badge badge-founder">&#11088; Founder</span>';
+  b+='<span class="profile-badge '+(pc[p.pass_tier]||'badge-free')+'">'+(pn[p.pass_tier]||'Free Player')+'</span>';
+  document.getElementById('p-badges').innerHTML=b;
+  document.getElementById('p-username').textContent=p.username;
+  var d=new Date(p.created_at);
+  var mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  document.getElementById('p-since').textContent=mo[d.getMonth()]+' '+d.getFullYear();
+  document.getElementById('p-pass').textContent=pn[p.pass_tier]||'Free Player';
+  document.getElementById('pqs-sc').textContent=fmt(p.sc_balance||0);
+  document.getElementById('pqs-xp').textContent=fmt(p.global_xp||0);
+  document.getElementById('pqs-hs').textContent=fmtS(p.voidrift_highscore);
+  document.getElementById('ov-sc').textContent=(p.sc_balance||0).toLocaleString();
+  document.getElementById('ov-xp').textContent=(p.global_xp||0).toLocaleString();
+  document.getElementById('gs-hs').textContent=fmtS(p.voidrift_highscore);
+
+  var ships=[];try{ships=JSON.parse(p.owned_ships||'[]');}catch(e){ships=['default'];}
+  if(!ships.length)ships=['default'];
+  document.getElementById('gs-ships').textContent=ships.length;
+  var skins=[];try{skins=JSON.parse(p.owned_skins||'[]');}catch(e){skins=[];}
+  document.getElementById('gs-skins').textContent=skins.length;
+
+  // Ships inventory
+  var sh='';
+  Object.keys(SHIPS).forEach(function(k){
+    if(ships.indexOf(k)===-1)return;
+    var eq=p.equipped_ship===k;
+    sh+='<div class="inv-card'+(eq?' equipped':'')+'">'+
+      (eq?'<div class="inv-equipped">Equipped</div>':'')+
+      '<div class="inv-card-icon">'+SHIPS[k].icon+'</div>'+
+      '<div class="inv-card-name">'+SHIPS[k].name+'</div>'+
+      '<div class="inv-card-type">Ship</div></div>';
+  });
+  document.getElementById('inv-ships').innerHTML=sh||'<div class="inv-empty">No ships yet</div>';
+
+  // Skins inventory
+  var sk='';
+  skins.forEach(function(k){
+    if(!SKINS[k])return;
+    var eq=p.equipped_skin===k;
+    sk+='<div class="inv-card'+(eq?' equipped':'')+'">'+
+      (eq?'<div class="inv-equipped">Equipped</div>':'')+
+      '<div class="inv-card-icon">'+SKINS[k].icon+'</div>'+
+      '<div class="inv-card-name">'+SKINS[k].name+'</div>'+
+      '<div class="inv-card-type">Skin</div></div>';
+  });
+  document.getElementById('inv-skins').innerHTML=sk||'<div class="inv-empty">No skins unlocked yet</div>';
+
+  // Universe
+  var unlocks=p.unlocked_items||[];
+  if(!unlocks.length){
+    document.getElementById('uni-list').innerHTML='<div class="uni-empty">No content unlocked yet &mdash; <a href="universe.html">Visit the Universe</a></div>';
+  } else {
+    var ul='<div class="uni-unlocked-grid">';
+    unlocks.forEach(function(k){
+      if(!UNI_ITEMS[k])return;
+      var item=UNI_ITEMS[k];
+      ul+='<div class="uni-item"><div class="uni-item-icon">'+item.icon+'</div><div><div class="uni-item-name">'+item.name+'</div><div class="uni-item-type">'+item.type+'</div></div></div>';
+    });
+    ul+='</div>';
+    document.getElementById('uni-list').innerHTML=ul;
+  }
+}
+
+async function loadRank(p){
+  if(!p.voidrift_highscore||p.voidrift_highscore===0){
+    document.getElementById('lb-rank-num').textContent='—';
+    document.getElementById('lb-rank-title').textContent='Not yet ranked';
+    return;
+  }
+  var res=await _sb.from('players').select('id',{count:'exact',head:true}).gt('voidrift_highscore',p.voidrift_highscore);
+  var rank=(res.count||0)+1;
+  var el=document.getElementById('lb-rank-num');
+  el.textContent='#'+rank;
+  if(rank===1)el.className='lb-rank-num r1';
+  else if(rank===2)el.className='lb-rank-num r2';
+  else if(rank===3)el.className='lb-rank-num r3';
+  document.getElementById('lb-rank-title').textContent=rank<=3?'&#127942; Championship Contender':'Global Rank #'+rank;
+  document.getElementById('lb-rank-sub').textContent='Void Rift High Score: '+fmtS(p.voidrift_highscore)+' pts';
+  document.getElementById('gs-rank').textContent='#'+rank;
+  document.getElementById('p-rank-meta').style.display='';
+  document.getElementById('p-rank-val').textContent='#'+rank;
+}
+
+function switchTab(tab,btn){
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});
+  btn.classList.add('active');
+  document.getElementById('tab-'+tab).classList.add('active');
+}
+
+async function uploadAvatar(input){
+  if(!input.files||!input.files[0]||!_user)return;
+  var file=input.files[0];
+  var ext=file.name.split('.').pop();
+  var path='avatars/'+_user.id+'.'+ext;
+  var reader=new FileReader();
+  reader.onload=function(e){document.getElementById('p-avatar').innerHTML='<img src="'+e.target.result+'" alt="avatar">';};
+  reader.readAsDataURL(file);
+  var up=await _sb.storage.from('player-avatars').upload(path,file,{upsert:true});
+  if(!up.error){
+    var url=_sb.storage.from('player-avatars').getPublicUrl(path).data.publicUrl;
+    await _sb.from('players').update({avatar_url:url}).eq('id',_user.id);
+  }
+}
+
+function showMsg(id,msg,type){
+  var el=document.getElementById(id);
+  if(!el)return;
+  el.textContent=msg;
+  el.className='set-msg '+(type==='ok'?'ok':'err');
+  el.style.display='block';
+  setTimeout(function(){el.style.display='none';},4000);
+}
+
+async function saveUsername(){
+  var v=document.getElementById('set-username').value.trim();
+  if(!v){showMsg('msg-user','Enter a username','err');return;}
+  if(v.length<3){showMsg('msg-user','Minimum 3 characters','err');return;}
+  if(!/^[a-zA-Z0-9_]+$/.test(v)){showMsg('msg-user','Letters, numbers and underscores only','err');return;}
+  try{
+    await _sb.from('players').update({username:v}).eq('id',_user.id);
+    _player.username=v;
+    document.getElementById('p-username').textContent=v;
+    document.getElementById('set-username').value='';
+    document.getElementById('set-username').placeholder=v;
+    showMsg('msg-user','Username updated!','ok');
+  }catch(e){showMsg('msg-user','Error updating username','err');}
+}
+
+async function savePw(){
+  var p1=document.getElementById('set-pw').value;
+  var p2=document.getElementById('set-pw2').value;
+  if(!p1){showMsg('msg-pw','Enter a new password','err');return;}
+  if(p1.length<6){showMsg('msg-pw','Minimum 6 characters','err');return;}
+  if(p1!==p2){showMsg('msg-pw','Passwords do not match','err');return;}
+  try{
+    var r=await _sb.auth.updateUser({password:p1});
+    if(r.error)throw r.error;
+    document.getElementById('set-pw').value='';
+    document.getElementById('set-pw2').value='';
+    showMsg('msg-pw','Password updated!','ok');
+  }catch(e){showMsg('msg-pw','Error updating password','err');}
+}
+
+async function sendReset(){
+  if(!_user||!_user.email)return;
+  try{
+    await _sb.auth.resetPasswordForEmail(_user.email);
+    showMsg('msg-reset','Reset email sent to '+_user.email,'ok');
+  }catch(e){showMsg('msg-reset','Error sending email','err');}
+}
+
+async function deleteAccount(){
+  var v=document.getElementById('del-input').value.trim();
+  if(v!=='DELETE'){showMsg('msg-del','Type DELETE exactly','err');return;}
+  try{
+    await _sb.from('players').delete().eq('id',_user.id);
+    await _sb.auth.signOut();
+    window.location.href='index.html';
+  }catch(e){showMsg('msg-del','Error — contact support@sylloggames.com','err');}
+}
+
+init();
+</script>
+</body>
+</html>
