@@ -452,6 +452,77 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
   <div class="loading-text">Redirecting to secure checkout...</div>
 </div>
 <div class="toast" id="toast"></div>
+<script>
+var isAnnual = false;
+
+function switchBilling() {
+  isAnnual = !isAnnual;
+  var toggle = document.getElementById('ctoggle');
+  var lblM = document.getElementById('lbl-m');
+  var lblA = document.getElementById('lbl-a');
+  if (toggle) toggle.classList.toggle('on', isAnnual);
+  if (lblM) { lblM.classList.toggle('active', !isAnnual); lblM.classList.toggle('inactive', isAnnual); }
+  if (lblA) { lblA.classList.toggle('active', isAnnual); lblA.classList.toggle('inactive', !isAnnual); }
+
+  var goldPrice = document.getElementById('c-gold-price');
+  var goldNote = document.getElementById('c-gold-note');
+  var goldSave = document.getElementById('c-gold-save');
+  var goldSc = document.getElementById('c-gold-sc');
+  var platPrice = document.getElementById('c-plat-price');
+  var platNote = document.getElementById('c-plat-note');
+  var platSave = document.getElementById('c-plat-save');
+  var platSc = document.getElementById('c-plat-sc');
+
+  if (isAnnual) {
+    if (goldPrice) goldPrice.innerHTML = '$6.67 <span class="pass-per">/ month</span>';
+    if (goldNote) goldNote.textContent = 'Billed $79.99 annually';
+    if (goldSc) goldSc.textContent = '1,000 SC monthly · ~$8.30 value · +10% bonus';
+    if (platPrice) platPrice.innerHTML = '$12.50 <span class="pass-per">/ month</span>';
+    if (platNote) platNote.textContent = 'Billed $149.99 annually';
+    if (platSc) platSc.textContent = '2,500 SC monthly · ~$20.83 value · +20% bonus';
+  } else {
+    if (goldPrice) goldPrice.innerHTML = '$7.99 <span class="pass-per">/ month</span>';
+    if (goldNote) goldNote.textContent = ' ';
+    if (goldSc) goldSc.textContent = '1,000 SC monthly · ~$8.30 value · +10% bonus';
+    if (platPrice) platPrice.innerHTML = '$14.99 <span class="pass-per">/ month</span>';
+    if (platNote) platNote.textContent = ' ';
+    if (platSc) platSc.textContent = '2,500 SC monthly · ~$20.83 value · +20% bonus';
+  }
+
+  var annualBadge = document.querySelector('.annual-badge');
+  if (annualBadge) annualBadge.style.display = isAnnual ? 'none' : 'inline-flex';
+}
+
+async function checkout(priceId, mode) {
+  var overlay = document.getElementById('checkout-overlay');
+  if (overlay) overlay.style.display = 'flex';
+  try {
+    var res = await fetch('https://syllog-checkout.syllog-gaming.workers.dev/create-checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ priceId: priceId, mode: mode })
+    });
+    var data = await res.json();
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      if (overlay) overlay.style.display = 'none';
+      alert('Checkout error — please try again.');
+    }
+  } catch(e) {
+    if (overlay) overlay.style.display = 'none';
+    alert('Checkout error — please try again.');
+  }
+}
+
+function toggleFaq(el) {
+  var item = el.closest('.faq-item');
+  var isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(function(i) { i.classList.remove('open'); });
+  if (!isOpen) item.classList.add('open');
+}
+</script>
+
 <div class="dash-overlay" id="dash-overlay" onclick="toggleDash()"></div>
 <div class="dash-panel" id="dash-panel">
   <div class="dash-header">
