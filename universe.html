@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Syllog — The Universe</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden;}
+
+/* STARS */
+.stars{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.stars::before,.stars::after{content:'';position:absolute;inset:-50%;width:200%;height:200%;background-image:
+  radial-gradient(1px 1px at 10% 20%,rgba(255,255,255,0.5) 0%,transparent 100%),
+  radial-gradient(1px 1px at 30% 50%,rgba(255,255,255,0.3) 0%,transparent 100%),
+  radial-gradient(1px 1px at 60% 15%,rgba(255,255,255,0.4) 0%,transparent 100%),
+  radial-gradient(1px 1px at 80% 70%,rgba(255,255,255,0.35) 0%,transparent 100%),
+  radial-gradient(1px 1px at 45% 85%,rgba(255,255,255,0.25) 0%,transparent 100%),
+  radial-gradient(1px 1px at 90% 35%,rgba(255,255,255,0.3) 0%,transparent 100%),
+  radial-gradient(1px 1px at 20% 75%,rgba(255,255,255,0.2) 0%,transparent 100%),
+  radial-gradient(1px 1px at 70% 90%,rgba(255,255,255,0.25) 0%,transparent 100%),
+  radial-gradient(1px 1px at 55% 40%,rgba(255,255,255,0.3) 0%,transparent 100%),
+  radial-gradient(1px 1px at 15% 55%,rgba(255,255,255,0.2) 0%,transparent 100%);
+background-size:500px 500px;animation:starsDrift 100s linear infinite;}
+.stars::after{background-size:700px 700px;animation-duration:160s;animation-direction:reverse;opacity:0.4;}
+@keyframes starsDrift{from{transform:translate(0,0);}to{transform:translate(-500px,-500px);}}
+
+/* NAV */
+nav{background:rgba(0,0,0,0.95);border-bottom:1px solid rgba(255,255,255,0.05);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:200;backdrop-filter:blur(10px);}
+.logo{font-size:1rem;font-weight:900;letter-spacing:6px;background:linear-gradient(135deg,#fff 0%,#c0c0c0 60%,#777 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;cursor:pointer;text-decoration:none;}
+.nav-links{display:flex;gap:1.75rem;list-style:none;}
+.nav-links a{color:rgba(255,255,255,0.28);text-decoration:none;font-size:0.68rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:color 0.2s;}
+.nav-links a:hover,.nav-links a.active{color:#fff;}
+.nav-btns{display:flex;gap:0.5rem;}
+.btn-g{background:transparent;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);padding:0.3rem 0.9rem;border-radius:4px;font-size:0.65rem;font-weight:600;letter-spacing:1px;cursor:pointer;text-transform:uppercase;font-family:'Inter',sans-serif;}
+.btn-w{background:#fff;border:none;color:#000;padding:0.3rem 0.9rem;border-radius:4px;font-size:0.65rem;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;font-family:'Inter',sans-serif;}
+.nav-user{display:flex;align-items:center;gap:0.5rem;cursor:pointer;padding:0.28rem 0.75rem;border-radius:5px;border:1px solid rgba(255,255,255,0.08);transition:all 0.2s;background:transparent;}
+.nav-user:hover{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.15);}
+.nav-dot{width:6px;height:6px;border-radius:50%;background:#c0c0c0;flex-shrink:0;}
+.nav-name{font-size:0.63rem;font-weight:700;color:rgba(255,255,255,0.65);letter-spacing:1px;text-transform:uppercase;}
+.nav-arrow{font-size:0.55rem;color:rgba(255,255,255,0.2);}
+
+/* HERO */
+.uni-hero{position:relative;z-index:1;min-height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:5rem 2rem 3rem;overflow:hidden;}
+.uni-hero-glow{position:absolute;width:900px;height:500px;border-radius:50%;background:radial-gradient(ellipse,rgba(255,255,255,0.02) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;}
+.uni-classify{font-family:'Share Tech Mono',monospace;font-size:0.52rem;letter-spacing:6px;color:rgba(255,255,255,0.15);text-transform:uppercase;margin-bottom:1.5rem;}
+.uni-hero-eyebrow{font-size:0.62rem;letter-spacing:8px;text-transform:uppercase;color:rgba(255,255,255,0.2);font-weight:300;margin-bottom:0.75rem;}
+.uni-hero-title{font-size:clamp(4rem,12vw,8rem);font-weight:900;letter-spacing:-4px;line-height:0.9;margin-bottom:1.5rem;}
+.uni-hero-title span{background:linear-gradient(160deg,#fff 0%,#e0e0e0 30%,#a0a0a0 60%,#606060 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.uni-hero-sub{font-size:0.85rem;color:rgba(255,255,255,0.25);line-height:1.8;max-width:500px;margin:0 auto 1rem;letter-spacing:0.3px;}
+.uni-hero-divider{width:60px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);margin:2rem auto;}
+.uni-hero-count{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(255,255,255,0.15);letter-spacing:4px;}
+.scroll-cue{display:flex;flex-direction:column;align-items:center;gap:0.5rem;margin-top:3rem;opacity:0.3;}
+.scroll-cue-line{width:1px;height:50px;background:linear-gradient(180deg,transparent,rgba(255,255,255,0.5),transparent);animation:scrollBeat 2s ease-in-out infinite;}
+.scroll-cue-txt{font-size:0.48rem;letter-spacing:4px;text-transform:uppercase;color:#fff;}
+@keyframes scrollBeat{0%,100%{opacity:0.3;}50%{opacity:0.8;}}
+
+/* LIBRARY */
+.library{position:relative;z-index:1;padding:0 0 6rem;}
+.library-header{padding:3rem 2rem 2rem;text-align:center;}
+.library-eyebrow{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:rgba(255,255,255,0.2);letter-spacing:5px;text-transform:uppercase;margin-bottom:0.5rem;}
+.library-title{font-size:1.5rem;font-weight:800;color:rgba(255,255,255,0.6);letter-spacing:-0.5px;}
+
+/* WORLD CARDS */
+.world-list{display:flex;flex-direction:column;gap:0;}
+
+.world-card{position:relative;height:420px;overflow:hidden;cursor:pointer;border-top:1px solid rgba(255,255,255,0.04);}
+.world-card.coming{cursor:default;}
+.world-card-bg{position:absolute;inset:0;transition:transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94);}
+.world-card:hover .world-card-bg{transform:scale(1.03);}
+.world-card.coming:hover .world-card-bg{transform:none;}
+.world-card-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0.95) 0%,rgba(0,0,0,0.7) 40%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0.5) 100%);transition:background 0.5s;}
+.world-card:hover .world-card-overlay{background:linear-gradient(90deg,rgba(0,0,0,0.9) 0%,rgba(0,0,0,0.6) 40%,rgba(0,0,0,0.2) 70%,rgba(0,0,0,0.4) 100%);}
+.world-card-content{position:absolute;inset:0;display:flex;align-items:center;padding:0 5vw;z-index:2;}
+.world-card-left{flex:1;max-width:600px;}
+.world-card-num{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:rgba(255,255,255,0.2);letter-spacing:4px;margin-bottom:0.75rem;}
+.world-card-status{display:inline-flex;align-items:center;gap:0.4rem;border-radius:20px;padding:0.2rem 0.75rem;font-size:0.55rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.9rem;}
+.status-live{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#fff;}
+.status-soon{background:rgba(255,200,0,0.08);border:1px solid rgba(255,200,0,0.15);color:#ffc800;}
+.status-p2{background:rgba(192,192,192,0.06);border:1px solid rgba(192,192,192,0.1);color:#888;}
+.status-dot{width:5px;height:5px;border-radius:50%;background:currentColor;animation:statusPulse 2s ease-in-out infinite;}
+@keyframes statusPulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+.world-card-title{font-size:clamp(2.5rem,5vw,4rem);font-weight:900;letter-spacing:-2px;line-height:0.95;margin-bottom:0.75rem;color:#fff;}
+.world-card-genre{font-size:0.62rem;color:rgba(255,255,255,0.3);letter-spacing:3px;text-transform:uppercase;margin-bottom:1rem;}
+.world-card-desc{font-size:0.78rem;color:rgba(255,255,255,0.35);line-height:1.7;max-width:420px;margin-bottom:1.5rem;}
+.world-card-tags{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:1.75rem;}
+.world-tag{font-size:0.55rem;padding:0.18rem 0.55rem;border-radius:6px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);color:rgba(255,255,255,0.3);letter-spacing:1px;text-transform:uppercase;}
+.world-card-cta{display:flex;align-items:center;gap:1rem;}
+.world-enter-btn{display:inline-flex;align-items:center;gap:0.6rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#fff;padding:0.7rem 1.5rem;border-radius:8px;font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.3s;}
+.world-enter-btn:hover{background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.3);}
+.world-enter-btn svg{width:14px;height:14px;transition:transform 0.3s;}
+.world-enter-btn:hover svg{transform:translateX(4px);}
+.world-coming-note{font-size:0.6rem;color:rgba(255,255,255,0.15);letter-spacing:2px;text-transform:uppercase;}
+.world-card-right{display:flex;align-items:center;justify-content:flex-end;padding-right:2rem;flex-shrink:0;}
+.world-card-icon{font-size:10rem;opacity:0.07;filter:blur(1px);transition:all 0.8s;user-select:none;}
+.world-card:hover .world-card-icon{opacity:0.12;filter:blur(0px);}
+
+/* COMING SOON OVERLAY */
+.coming-veil{position:absolute;inset:0;backdrop-filter:blur(1px);z-index:3;display:flex;align-items:center;justify-content:center;}
+.coming-badge{background:rgba(0,0,0,0.7);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:1rem 2rem;text-align:center;}
+.coming-badge-title{font-size:0.6rem;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.2);margin-bottom:0.25rem;}
+.coming-badge-game{font-size:1rem;font-weight:800;color:rgba(255,255,255,0.3);}
+
+/* FOOTER */
+footer{display:flex;align-items:center;justify-content:space-between;padding:0.8rem 2rem;border-top:1px solid rgba(255,255,255,0.04);position:relative;z-index:1;}
+footer a{font-size:0.58rem;color:#888;text-decoration:none;letter-spacing:1px;text-transform:uppercase;}
+footer a:hover{color:#fff;}
+
+
+.nav-user{display:flex;align-items:center;gap:0.5rem;cursor:pointer;padding:0.28rem 0.75rem;border-radius:5px;border:1px solid rgba(255,255,255,0.08);transition:all 0.2s;background:transparent;}
+.nav-user:hover{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.15);}
+.nav-dot{width:6px;height:6px;border-radius:50%;background:#c0c0c0;flex-shrink:0;}
+.nav-name{font-size:0.63rem;font-weight:700;color:rgba(255,255,255,0.65);letter-spacing:1px;text-transform:uppercase;}
+.nav-arrow{font-size:0.55rem;color:rgba(255,255,255,0.2);}
+.dash-overlay{position:fixed;inset:0;background:rgba(0,0,0,0);transition:background 0.4s ease;pointer-events:none;z-index:300;}
+.dash-overlay.open{background:rgba(0,0,0,0.65);pointer-events:auto;}
+.dash-panel{position:fixed;top:0;right:0;bottom:0;width:320px;background:#060606;border-left:1px solid rgba(255,255,255,0.07);transform:translateX(100%);transition:transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94);z-index:400;display:flex;flex-direction:column;overflow-y:auto;}
+.dash-panel.open{transform:translateX(0);}
+.dash-header{padding:1.25rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.dash-header-title{font-size:0.58rem;letter-spacing:3px;text-transform:uppercase;color:#2a2a2a;}
+.dash-close{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);color:rgba(255,255,255,0.3);width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:0.75rem;display:flex;align-items:center;justify-content:center;transition:all 0.2s;font-family:'Inter',sans-serif;}
+.dash-close:hover{background:rgba(255,255,255,0.08);color:#fff;}
+.dash-avatar-section{padding:1.5rem;display:flex;flex-direction:column;align-items:center;gap:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05);}
+.dash-avatar-wrap{position:relative;width:80px;height:80px;}
+.dash-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#1a1a1a,#0a0a0a);border:2px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:2rem;overflow:hidden;}
+.dash-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.dash-avatar-upload{position:absolute;bottom:0;right:0;width:24px;height:24px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:2px solid #060606;transition:background 0.2s;}
+.dash-avatar-upload:hover{background:#c0c0c0;}
+.dash-avatar-upload svg{width:11px;height:11px;}
+.dash-upload-hint{font-size:0.55rem;color:#1e1e1e;letter-spacing:0.5px;}
+.dash-username{font-size:1.1rem;font-weight:900;letter-spacing:-0.3px;color:#fff;}
+.dash-id-label{font-size:0.55rem;color:#222;letter-spacing:2px;text-transform:uppercase;}
+.dash-founder{background:linear-gradient(135deg,rgba(192,192,192,0.1),rgba(255,255,255,0.05));border:1px solid rgba(192,192,192,0.2);color:#c0c0c0;font-size:0.52rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.18rem 0.6rem;border-radius:20px;}
+.dash-pass-banner{margin:1rem 1.5rem 0;background:#0a0a0a;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:0.85rem 1rem;display:flex;align-items:center;justify-content:space-between;}
+.dash-pass-label{font-size:0.5rem;color:#666;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.2rem;}
+.dash-pass-name{font-size:0.85rem;font-weight:800;color:#fff;}
+.dash-upgrade-btn{font-size:0.55rem;color:#333;letter-spacing:1px;text-transform:uppercase;background:none;border:1px solid rgba(255,255,255,0.07);padding:0.22rem 0.6rem;border-radius:4px;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;}
+.dash-upgrade-btn:hover{border-color:rgba(255,255,255,0.2);color:#fff;}
+.dash-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:1rem 1.5rem;}
+.dash-stat{background:#0a0a0a;border:1px solid rgba(255,255,255,0.05);border-radius:8px;padding:0.85rem;}
+.dash-stat-label{font-size:0.5rem;color:#2a2a2a;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.3rem;}
+.dash-stat-value{font-size:1.3rem;font-weight:900;color:#c0c0c0;letter-spacing:-0.5px;}
+.dash-stat-sub{font-size:0.52rem;color:#1e1e1e;margin-top:0.15rem;}
+.dash-divider{height:1px;background:rgba(255,255,255,0.04);margin:0 1.5rem;}
+.dash-links{padding:1rem 1.5rem;display:flex;flex-direction:column;gap:2px;}
+.dash-links-label{font-size:0.5rem;color:#222;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.4rem;}
+.dash-link-item{display:flex;align-items:center;justify-content:space-between;padding:0.55rem 0.75rem;border-radius:6px;cursor:pointer;transition:background 0.15s;}
+.dash-link-item:hover{background:rgba(255,255,255,0.03);}
+.dash-link-left{display:flex;align-items:center;gap:0.6rem;font-size:0.72rem;color:rgba(255,255,255,0.4);}
+.dash-link-icon{width:22px;height:22px;background:#0d0d0d;border:1px solid rgba(255,255,255,0.05);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;}
+.dash-link-arrow{font-size:0.6rem;color:#1e1e1e;}
+.dash-footer{padding:1rem 1.5rem;border-top:1px solid rgba(255,255,255,0.04);margin-top:auto;flex-shrink:0;}
+.dash-signout{width:100%;padding:0.6rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:6px;color:#2a2a2a;font-size:0.63rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;}
+.dash-signout:hover{background:rgba(255,60,60,0.06);border-color:rgba(255,60,60,0.15);color:#ff6b6b;}
+.dash-member-since{font-size:0.5rem;color:#181818;text-align:center;margin-top:0.6rem;letter-spacing:1px;}
+</style>
+</head>
+<body>
+<div class="stars"></div>
+
+<nav>
+  <a href="index.html" class="logo">SYLLOG</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Games</a></li>
+    <li><a href="universe.html" class="active">Universe</a></li>
+    <li><a href="credits.html">Credits &amp; Passes</a></li>
+    <li><a href="leaderboards.html">Leaderboards</a></li>
+  </ul>
+  <div class="nav-btns" id="nav-btns">
+    <button class="btn-g" onclick="window.location.href='auth.html?tab=signin'">Sign In</button>
+    <button class="btn-w" onclick="window.location.href='auth.html?tab=signup'">Create Account</button>
+  </div>
+</nav>
+
+
+<div class="uni-hero">
+  <div class="uni-hero-glow"></div>
+  <div class="uni-classify">&#9632; Syllog &mdash; Classified Universe Archive &#9632;</div>
+  <div class="uni-hero-eyebrow">Enter</div>
+  <h1 class="uni-hero-title"><span>The Universe</span></h1>
+  <p class="uni-hero-sub">Every game has a world. Every world has a story. Choose your universe.</p>
+  <div class="uni-hero-divider"></div>
+  <div class="uni-hero-count">7 Worlds &nbsp;&middot;&nbsp; 1 Live &nbsp;&middot;&nbsp; Expanding</div>
+  <div class="scroll-cue">
+    <div class="scroll-cue-line"></div>
+    <div class="scroll-cue-txt">Select a World</div>
+  </div>
+</div>
+
+<div class="library">
+<div class="library-header"><div class="library-eyebrow">&#9632; Universe Library</div><div class="library-title">Choose Your World</div></div>
+<div class="world-list">
+
+<div class="world-card" onclick="window.location.href='universe-voidrift.html'">
+  <div class="world-card-bg" style="background:linear-gradient(135deg,#000 0%,#050818 40%,#0a0f2e 70%,#080510 100%);"></div>
+  <div class="world-card-overlay"></div>
+  <div class="world-card-content">
+    <div class="world-card-left">
+      <div class="world-card-num">&#9632; Game 01</div>
+      <div class="world-card-status status-live"><span class="status-dot"></span>Live Now</div>
+      <div class="world-card-title">Void Rift</div>
+      <div class="world-card-genre">Action &nbsp;&middot;&nbsp; Space &nbsp;&middot;&nbsp; 2847 CE</div>
+      <div class="world-card-desc">The Void Gates were never technology. They were wounds. And humanity tore them open. Now the Void Sovereign is coming to correct that mistake — and Commander Kael Voss is the last thing standing between it and everything.</div>
+      <div class="world-card-tags">
+        <span class="world-tag">Lore</span>
+        <span class="world-tag">Comics</span>
+        <span class="world-tag">OST</span>
+        <span class="world-tag">Deep Lore</span>
+        <span class="world-tag">3 Endings</span>
+      </div>
+      <div class="world-card-cta">
+        <button class="world-enter-btn">
+          Enter Universe
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="world-card-right">
+      <div class="world-card-icon">&#127756;</div>
+    </div>
+  </div>
+</div>
+
+
+<div class="world-card coming">
+  <div class="world-card-bg" style="background:linear-gradient(135deg,#000 0%,#180808 40%,#2a0a0a 70%,#100000 100%);"></div>
+  <div class="world-card-overlay"></div>
+  <div class="coming-veil">
+    <div class="coming-badge">
+      <div class="coming-badge-title">Coming Soon</div>
+      <div class="coming-badge-game">Iron Throne</div>
+    </div>
+  </div>
+  <div class="world-card-content">
+    <div class="world-card-left">
+      <div class="world-card-num">&#9632; Game 02</div>
+      <div class="world-card-status status-soon">Coming Soon</div>
+      <div class="world-card-title">Iron Throne</div>
+      <div class="world-card-genre">Strategy &nbsp;&middot;&nbsp; RPG &nbsp;&middot;&nbsp; Medieval</div>
+      <div class="world-card-desc">Build your empire, forge alliances, and conquer kingdoms. A deep browser strategy RPG where every decision reshapes the world.</div>
+      <div class="world-card-tags">
+        <span class="world-tag">Strategy</span>
+        <span class="world-tag">RPG</span>
+        <span class="world-tag">Multiplayer</span>
+      </div>
+      <div class="world-card-cta">
+        <div class="world-coming-note">Lore archive unlocking soon</div>
+      </div>
+    </div>
+    <div class="world-card-right">
+      <div class="world-card-icon">&#9876;&#65039;</div>
+    </div>
+  </div>
+</div>
+
+
+<div class="world-card coming">
+  <div class="world-card-bg" style="background:linear-gradient(135deg,#000 0%,#081408 40%,#0f2010 70%,#040a04 100%);"></div>
+  <div class="world-card-overlay"></div>
+  <div class="coming-veil">
+    <div class="coming-badge">
+      <div class="coming-badge-title">In Development</div>
+      <div class="coming-badge-game">Megacity Tycoon</div>
+    </div>
+  </div>
+  <div class="world-card-content">
+    <div class="world-card-left">
+      <div class="world-card-num">&#9632; Game 03</div>
+      <div class="world-card-status status-p2">Phase 2</div>
+      <div class="world-card-title">Megacity Tycoon</div>
+      <div class="world-card-genre">Tycoon &nbsp;&middot;&nbsp; Builder &nbsp;&middot;&nbsp; Strategy</div>
+      <div class="world-card-desc">Design, build and manage a thriving megacity from the ground up. Every zoning decision, every budget call shapes your skyline and your legacy.</div>
+      <div class="world-card-tags">
+        <span class="world-tag">Tycoon</span>
+        <span class="world-tag">Builder</span>
+        <span class="world-tag">Strategy</span>
+      </div>
+    </div>
+    <div class="world-card-right">
+      <div class="world-card-icon">&#127961;&#65039;</div>
+    </div>
+  </div>
+</div>
+
+
+<div class="world-card coming">
+  <div class="world-card-bg" style="background:linear-gradient(135deg,#000 0%,#10081a 40%,#180a28 70%,#080510 100%);"></div>
+  <div class="world-card-overlay"></div>
+  <div class="coming-veil">
+    <div class="coming-badge">
+      <div class="coming-badge-title">Phase 2</div>
+      <div class="coming-badge-game">Cipher Deep</div>
+    </div>
+  </div>
+  <div class="world-card-content">
+    <div class="world-card-left">
+      <div class="world-card-num">&#9632; Game 04</div>
+      <div class="world-card-status status-p2">Phase 2</div>
+      <div class="world-card-title">Cipher Deep</div>
+      <div class="world-card-genre">Puzzle &nbsp;&middot;&nbsp; Mystery &nbsp;&middot;&nbsp; Thriller</div>
+      <div class="world-card-desc">Crack codes, unravel conspiracies, and descend into a labyrinth of mind-bending puzzles. Nothing is what it seems.</div>
+      <div class="world-card-tags">
+        <span class="world-tag">Puzzle</span>
+        <span class="world-tag">Mystery</span>
+      </div>
+    </div>
+    <div class="world-card-right">
+      <div class="world-card-icon">&#129521;</div>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+
+<footer>
+  <div style="font-size:0.7rem;font-weight:900;letter-spacing:5px;color:#444;">SYLLOG</div>
+  <div style="display:flex;gap:1.25rem;">
+    <a href="privacy.html">Privacy</a>
+    <a href="terms.html">Terms</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <div style="font-size:0.58rem;color:#444;">&copy; 2026 Syllog Games.</div>
+</footer>
+
+<div class="dash-overlay" id="dash-overlay" onclick="toggleDash()"></div>
+<div class="dash-panel" id="dash-panel">
+  <div class="dash-header">
+    <div class="dash-header-title">Player Profile</div>
+    <button class="dash-close" onclick="toggleDash()">&#10005;</button>
+  </div>
+  <div class="dash-avatar-section">
+    <div class="dash-avatar-wrap">
+      <div class="dash-avatar" id="dash-avatar">&#128100;</div>
+      <label class="dash-avatar-upload" title="Upload photo">
+        <input type="file" accept="image/*" style="display:none;" id="avatar-input" onchange="uploadAvatar(this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      </label>
+    </div>
+    <div class="dash-upload-hint">Click arrow to upload your photo</div>
+    <div class="dash-username" id="dash-username">Player</div>
+    <div class="dash-id-label">Universal Syllog ID</div>
+    <div class="dash-founder" id="dash-founder" style="display:none;">&#11088; Founder</div>
+  </div>
+  <div class="dash-pass-banner">
+    <div>
+      <div class="dash-pass-label">Current Pass</div>
+      <div class="dash-pass-name" id="dash-pass">Free Player</div>
+    </div>
+    <button class="dash-upgrade-btn" onclick="window.location.href='credits.html'">Upgrade &#8594;</button>
+  </div>
+  <div class="dash-stats">
+    <div class="dash-stat"><div class="dash-stat-label">SC Balance</div><div class="dash-stat-value" id="dash-sc">0</div><div class="dash-stat-sub">Syllog Credits</div></div>
+    <div class="dash-stat"><div class="dash-stat-label">Global XP</div><div class="dash-stat-value" id="dash-xp">0</div><div class="dash-stat-sub">Across all games</div></div>
+    <div class="dash-stat"><div class="dash-stat-label">Games Played</div><div class="dash-stat-value">1</div><div class="dash-stat-sub">Of all titles</div></div>
+    <div class="dash-stat"><div class="dash-stat-label">Achievements</div><div class="dash-stat-value">0</div><div class="dash-stat-sub">Unlocked</div></div>
+  </div>
+  <div class="dash-divider"></div>
+  <div class="dash-links">
+    <div class="dash-links-label">Quick Links</div>
+    <div class="dash-link-item" onclick="window.location.href='index.html'"><div class="dash-link-left"><div class="dash-link-icon">&#127942;</div>My Achievements</div><div class="dash-link-arrow">&#8250;</div></div>
+    <div class="dash-link-item" onclick="window.location.href='credits.html'"><div class="dash-link-left"><div class="dash-link-icon">&#128142;</div>Buy SC Credits</div><div class="dash-link-arrow">&#8250;</div></div>
+    <div class="dash-link-item" onclick="window.location.href='credits.html'"><div class="dash-link-left"><div class="dash-link-icon">&#127775;</div>Upgrade Pass</div><div class="dash-link-arrow">&#8250;</div></div>
+    <div class="dash-link-item"><div class="dash-link-left"><div class="dash-link-icon">&#9881;&#65039;</div>Settings</div><div class="dash-link-arrow">&#8250;</div></div>
+  </div>
+  <div class="dash-footer">
+    <button class="dash-signout" onclick="signOut()">Sign Out</button>
+    <div class="dash-member-since" id="dash-since">Syllog Games</div>
+  </div>
+</div>
+<script>
+(function(){
+  var _u='https://mlstrkqefyqoczusewrm.supabase.co';
+  var _k='sb_publishable_g7_BTnT_cTqaIk19Kx9FEw_iP1I7Df7';
+  var _sb=supabase.createClient(_u,_k);
+  var _user=null;
+
+  function showNav(p){
+    var nb=document.getElementById('nav-btns');
+    if(!nb)return;
+"    nb.innerHTML='<button class="nav-user" onclick="toggleDash()"><div class="nav-dot"></div><div class="nav-name">'+p.username+'</div><div class="nav-arrow">&#9660;</div></button>';
+  }
+  function fillDash(p){
+    document.getElementById('dash-username').textContent=p.username;
+    document.getElementById('dash-sc').textContent=(p.sc_balance||0).toLocaleString();
+    document.getElementById('dash-xp').textContent=(p.global_xp||0).toLocaleString();
+    var pn={free:'Free Player',gold:'Gold Pass',platinum:'Platinum Pass'};
+    document.getElementById('dash-pass').textContent=pn[p.pass_tier]||'Free Player';
+    if(p.is_founder)document.getElementById('dash-founder').style.display='inline-block';
+    if(p.avatar_url)document.getElementById('dash-avatar').innerHTML='<img src="'+p.avatar_url+'" alt="avatar">';
+    var d=new Date(p.created_at);
+    var m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    document.getElementById('dash-since').textContent='Member since '+m[d.getMonth()]+' '+d.getFullYear()+' · Syllog Games';
+  }
+  _sb.auth.getSession().then(function(r){
+    if(!r.data||!r.data.session)return;
+    _user=r.data.session.user;
+    _sb.from('players').select('*').eq('id',_user.id).single().then(function(res){
+      if(!res.data)return;
+      showNav(res.data);
+      fillDash(res.data);
+    });
+  });
+  var _open=false;
+  window.toggleDash=function(){
+    _open=!_open;
+    document.getElementById('dash-panel').classList.toggle('open',_open);
+    document.getElementById('dash-overlay').classList.toggle('open',_open);
+    document.body.style.overflow=_open?'hidden':'';
+  };
+  window.signOut=function(){_sb.auth.signOut().then(function(){window.location.reload();});};
+  window.uploadAvatar=async function(input){
+    if(!input.files||!input.files[0]||!_user)return;
+    var file=input.files[0];
+    var ext=file.name.split('.').pop();
+    var path='avatars/'+_user.id+'.'+ext;
+    var reader=new FileReader();
+    reader.onload=function(e){document.getElementById('dash-avatar').innerHTML='<img src="'+e.target.result+'" alt="avatar">';};
+    reader.readAsDataURL(file);
+    var up=await _sb.storage.from('player-avatars').upload(path,file,{upsert:true});
+    if(!up.error){var url=_sb.storage.from('player-avatars').getPublicUrl(path).data.publicUrl;await _sb.from('players').update({avatar_url:url}).eq('id',_user.id);}
+  };
+})();
+</script>
+</body>
+</html>
