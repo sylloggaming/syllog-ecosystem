@@ -174,7 +174,7 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
   function showNav(p){
     var nb=document.getElementById('nav-btns');
     if(!nb)return;
-    nb.innerHTML='<button class="nav-user" onclick="window.location.href='profile.html';"><div class="nav-dot"></div><div class="nav-name">'+p.username+'</div><div class="nav-arrow">&#9660;</div></button>';
+    nb.innerHTML='<button class="nav-user" onclick="goProfile();"><div class="nav-dot"></div><div class="nav-name">'+p.username+'</div><div class="nav-arrow">&#9660;</div></button>';
   }
 
   function fillDash(p){
