@@ -214,7 +214,7 @@ footer a:hover{color:#fff;}
   <a href="index.html" class="logo">SYLLOG</a>
   <ul class="nav-links">
     <li><a href="index.html">Games</a></li>
-    <li><a href="index.html">Universe</a></li>
+    <li><a href="universe.html">Universe</a></li>
     <li><a href="credits.html">Credits &amp; Passes</a></li>
     <li><a href="leaderboards.html" class="active">Leaderboards</a></li>
   </ul>
@@ -464,13 +464,10 @@ footer a:hover{color:#fff;}
   var PRIZES=[2000,1000,500];
 
   function loadStandings(){
-    fetch('https://mlstrkqefyqoczusewrm.supabase.co/rest/v1/players?select=username,voidrift_highscore,pass_tier&order=voidrift_highscore.desc&limit=10',{
-      headers:{'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sc3Rya3FlZnlxb2N6dXNld3JtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU4NTcyMDQsImV4cCI6MjA5MTQzMzIwNH0.BQosznYhRwsj6_b4YmdOSXmMW8YmV-d7ekiawv4xL90','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sc3Rya3FlZnlxb2N6dXNld3JtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU4NTcyMDQsImV4cCI6MjA5MTQzMzIwNH0.BQosznYhRwsj6_b4YmdOSXmMW8YmV-d7ekiawv4xL90','Content-Type':'application/json'}
-    }).then(function(r){return r.json();}).then(function(data){
-      console.log('Standings data:',data);
+    _sb.from('players').select('username,voidrift_highscore,avatar_url,pass_tier').order('voidrift_highscore',{ascending:false}).limit(10).then(function(res){
       var grid=document.getElementById('standings-grid');
       if(!grid)return;
-      var players=(Array.isArray(data)?data:[]).filter(function(p){return p.voidrift_highscore>0;});
+      var players=(res.data||[]).filter(function(p){return p.voidrift_highscore>0;});
       if(!players.length){grid.innerHTML='<div class="standings-empty">No scores yet &mdash; be the first to play!</div>';return;}
       var rowClasses=['s-gold','s-silver','s-bronze'];
       var rankClasses=['r1','r2','r3'];
@@ -525,11 +522,11 @@ footer a:hover{color:#fff;}
         var now=new Date();
         ri.textContent='Last updated '+now.getHours()+':'+String(now.getMinutes()).padStart(2,'0')+':'+String(now.getSeconds()).padStart(2,'0');
       }
-    }).catch(function(e){console.error('Standings error:',e);});
+    });
   }
 
   // Load global top 10 by XP
-  _sb.from('players').select('username,global_xp,voidrift_highscore,pass_tier').order('global_xp',{ascending:false}).limit(10).then(function(res){
+  _sb.from('players').select('username,global_xp,voidrift_highscore,avatar_url,pass_tier').order('global_xp',{ascending:false}).limit(10).then(function(res){
     var list=document.getElementById('top10-list');
     if(!list)return;
     var players=res.data||[];
