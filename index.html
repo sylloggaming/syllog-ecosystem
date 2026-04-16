@@ -234,6 +234,38 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
 .vf-game{font-size:1.4rem;font-weight:900;color:rgba(255,255,255,0.12);margin-bottom:0.5rem;letter-spacing:-0.5px;}
 .vf-label{font-size:0.65rem;color:rgba(255,255,255,0.15);letter-spacing:3px;text-transform:uppercase;margin-bottom:1.5rem;}
 .vf-hint{font-size:0.6rem;color:rgba(255,255,255,0.08);letter-spacing:2px;text-transform:uppercase;}
+
+.settings-panel{position:fixed;top:0;right:0;bottom:0;width:340px;background:#060606;border-left:1px solid rgba(255,255,255,0.07);transform:translateX(100%);transition:transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94);z-index:500;display:flex;flex-direction:column;overflow-y:auto;}
+.settings-panel.open{transform:translateX(0);}
+.settings-header{padding:1.25rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.settings-title{font-size:0.58rem;letter-spacing:3px;text-transform:uppercase;color:#2a2a2a;}
+.settings-close{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);color:rgba(255,255,255,0.3);width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:0.75rem;display:flex;align-items:center;justify-content:center;transition:all 0.2s;font-family:'Inter',sans-serif;}
+.settings-close:hover{background:rgba(255,255,255,0.08);color:#fff;}
+.settings-section{padding:1.25rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.04);}
+.settings-section-title{font-size:0.52rem;color:#2a2a2a;letter-spacing:3px;text-transform:uppercase;margin-bottom:1rem;}
+.settings-field{margin-bottom:0.85rem;}
+.settings-label{font-size:0.58rem;color:#333;letter-spacing:1px;text-transform:uppercase;margin-bottom:0.35rem;display:block;}
+.settings-input{width:100%;background:#0a0a0a;border:1px solid rgba(255,255,255,0.07);border-radius:6px;padding:0.6rem 0.85rem;color:#fff;font-size:0.78rem;font-family:'Inter',sans-serif;outline:none;transition:border-color 0.2s;}
+.settings-input:focus{border-color:rgba(255,255,255,0.2);}
+.settings-input::placeholder{color:#222;}
+.settings-btn{width:100%;padding:0.6rem;border-radius:6px;font-size:0.63rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border:none;transition:all 0.2s;font-family:'Inter',sans-serif;margin-top:0.25rem;}
+.settings-btn-primary{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);}
+.settings-btn-primary:hover{background:rgba(255,255,255,0.1);color:#fff;}
+.settings-btn-danger{background:rgba(255,40,40,0.06);border:1px solid rgba(255,40,40,0.15);color:rgba(255,80,80,0.6);}
+.settings-btn-danger:hover{background:rgba(255,40,40,0.12);border-color:rgba(255,40,40,0.3);color:#ff6b6b;}
+.settings-msg{font-size:0.65rem;margin-top:0.5rem;padding:0.5rem 0.75rem;border-radius:6px;display:none;}
+.settings-msg.success{background:rgba(0,200,100,0.06);border:1px solid rgba(0,200,100,0.15);color:rgba(0,200,100,0.7);}
+.settings-msg.error{background:rgba(255,60,60,0.06);border:1px solid rgba(255,60,60,0.15);color:rgba(255,100,100,0.7);}
+.settings-toggle-row{display:flex;align-items:center;justify-content:space-between;padding:0.5rem 0;}
+.settings-toggle-label{font-size:0.72rem;color:#555;}
+.settings-toggle{width:36px;height:20px;border-radius:10px;background:#111;border:1px solid rgba(255,255,255,0.08);cursor:pointer;position:relative;transition:background 0.2s;}
+.settings-toggle.on{background:rgba(255,255,255,0.15);}
+.settings-toggle::after{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:#333;top:2px;left:2px;transition:all 0.2s;}
+.settings-toggle.on::after{left:18px;background:#fff;}
+.settings-delete-confirm{display:none;margin-top:0.75rem;}
+.settings-delete-confirm.show{display:block;}
+.settings-delete-warn{font-size:0.68rem;color:#555;line-height:1.6;margin-bottom:0.75rem;}
+.settings-delete-warn span{color:rgba(255,80,80,0.6);}
 </style>
 </head>
 <body>
@@ -482,10 +514,10 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
   <div class="dash-divider"></div>
   <div class="dash-links">
     <div class="dash-links-label">Quick Links</div>
-    <div class="dash-link-item"><div class="dash-link-left"><div class="dash-link-icon">&#127942;</div>My Achievements</div><div class="dash-link-arrow">&#8250;</div></div>
-    <div class="dash-link-item"><div class="dash-link-left"><div class="dash-link-icon">&#128142;</div>Buy SC Credits</div><div class="dash-link-arrow">&#8250;</div></div>
-    <div class="dash-link-item"><div class="dash-link-left"><div class="dash-link-icon">&#127775;</div>Upgrade Pass</div><div class="dash-link-arrow">&#8250;</div></div>
-    <div class="dash-link-item"><div class="dash-link-left"><div class="dash-link-icon">&#9881;&#65039;</div>Settings</div><div class="dash-link-arrow">&#8250;</div></div>
+    <div class="dash-link-item" onclick="window.location.href='leaderboards.html'"><div class="dash-link-left"><div class="dash-link-icon">&#127942;</div>My Achievements</div><div class="dash-link-arrow">&#8250;</div></div>
+    <div class="dash-link-item" onclick="window.location.href='credits.html'"><div class="dash-link-left"><div class="dash-link-icon">&#128142;</div>Buy SC Credits</div><div class="dash-link-arrow">&#8250;</div></div>
+    <div class="dash-link-item" onclick="window.location.href='credits.html'"><div class="dash-link-left"><div class="dash-link-icon">&#127775;</div>Upgrade Pass</div><div class="dash-link-arrow">&#8250;</div></div>
+    <div class="dash-link-item" onclick="openSettings()"><div class="dash-link-left"><div class="dash-link-icon">&#9881;&#65039;</div>Settings</div><div class="dash-link-arrow">&#8250;</div></div>
   </div>
   <div class="dash-footer">
     <button class="dash-signout" onclick="signOut()">Sign Out</button>
@@ -674,17 +706,128 @@ async function uploadAvatar(input) {
   if (!input.files || !input.files[0] || !currentUser) return;
   var file = input.files[0];
   var ext = file.name.split('.').pop();
-  var path = 'avatars/' + currentUser.id + '.' + ext;
+  // Store directly in bucket root with user ID as filename
+  var path = currentUser.id + '.' + ext;
   var reader = new FileReader();
   reader.onload = function(e) {
     document.getElementById('dash-avatar').innerHTML = '<img src="' + e.target.result + '" alt="avatar">';
   };
   reader.readAsDataURL(file);
-  var upload = await sb.storage.from('player-avatars').upload(path, file, {upsert: true});
-  if (!upload.error) {
-    var urlResult = sb.storage.from('player-avatars').getPublicUrl(path);
-    var publicUrl = urlResult.data.publicUrl;
-    await sb.from('players').update({avatar_url: publicUrl}).eq('id', currentUser.id);
+  console.log('Uploading avatar to path:', path);
+  var upload = await sb.storage.from('player-avatars').upload(path, file, {upsert: true, contentType: file.type});
+  console.log('Upload result:', upload);
+  if (upload.error) {
+    console.log('Upload error:', upload.error);
+    alert('Avatar upload failed: ' + upload.error.message);
+    return;
+  }
+  var urlResult = sb.storage.from('player-avatars').getPublicUrl(path);
+  var publicUrl = urlResult.data.publicUrl;
+  console.log('Public URL:', publicUrl);
+  var updateResult = await sb.from('players').update({avatar_url: publicUrl}).eq('id', currentUser.id);
+  console.log('DB update result:', updateResult);
+  if (!updateResult.error) {
+    document.getElementById('dash-avatar').innerHTML = '<img src="' + publicUrl + '" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">';
+    currentPlayer.avatar_url = publicUrl;
+  }
+}
+
+
+var settingsOpen = false;
+
+function openSettings() {
+  settingsOpen = true;
+  document.getElementById('settings-panel').classList.add('open');
+  document.getElementById('dash-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  // Pre-fill username
+  if (currentPlayer) {
+    document.getElementById('set-username').placeholder = currentPlayer.username;
+  }
+}
+
+function closeSettings() {
+  settingsOpen = false;
+  document.getElementById('settings-panel').classList.remove('open');
+  if (!dashOpen) {
+    document.getElementById('dash-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
+
+function showSettingsMsg(id, msg, type) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = msg;
+  el.className = 'settings-msg ' + type;
+  el.style.display = 'block';
+  setTimeout(function() { el.style.display = 'none'; }, 4000);
+}
+
+async function saveUsername() {
+  var val = document.getElementById('set-username').value.trim();
+  if (!val) { showSettingsMsg('set-username-msg', 'Please enter a new username', 'error'); return; }
+  if (val.length < 3) { showSettingsMsg('set-username-msg', 'Username must be at least 3 characters', 'error'); return; }
+  if (!/^[a-zA-Z0-9_]+$/.test(val)) { showSettingsMsg('set-username-msg', 'Only letters, numbers and underscores', 'error'); return; }
+  try {
+    await sb.from('players').update({ username: val }).eq('id', currentUser.id);
+    currentPlayer.username = val;
+    document.getElementById('dash-username').textContent = val;
+    showLoggedInNav(currentPlayer);
+    document.getElementById('set-username').value = '';
+    document.getElementById('set-username').placeholder = val;
+    showSettingsMsg('set-username-msg', 'Username updated!', 'success');
+  } catch(e) {
+    showSettingsMsg('set-username-msg', 'Error updating username', 'error');
+  }
+}
+
+async function savePassword() {
+  var p1 = document.getElementById('set-password').value;
+  var p2 = document.getElementById('set-password-confirm').value;
+  if (!p1) { showSettingsMsg('set-password-msg', 'Please enter a new password', 'error'); return; }
+  if (p1.length < 6) { showSettingsMsg('set-password-msg', 'Password must be at least 6 characters', 'error'); return; }
+  if (p1 !== p2) { showSettingsMsg('set-password-msg', 'Passwords do not match', 'error'); return; }
+  try {
+    var res = await sb.auth.updateUser({ password: p1 });
+    if (res.error) throw res.error;
+    document.getElementById('set-password').value = '';
+    document.getElementById('set-password-confirm').value = '';
+    showSettingsMsg('set-password-msg', 'Password updated successfully!', 'success');
+  } catch(e) {
+    showSettingsMsg('set-password-msg', 'Error updating password', 'error');
+  }
+}
+
+async function sendPasswordReset() {
+  if (!currentUser || !currentUser.email) return;
+  try {
+    await sb.auth.resetPasswordForEmail(currentUser.email);
+    showSettingsMsg('set-reset-msg', 'Reset email sent to ' + currentUser.email, 'success');
+  } catch(e) {
+    showSettingsMsg('set-reset-msg', 'Error sending reset email', 'error');
+  }
+}
+
+function showDeleteConfirm() {
+  var el = document.getElementById('delete-confirm');
+  if (el) el.classList.toggle('show');
+}
+
+async function deleteAccount() {
+  var confirm = document.getElementById('delete-confirm-input').value.trim();
+  if (confirm !== 'DELETE') {
+    showSettingsMsg('set-delete-msg', 'Type DELETE exactly to confirm', 'error');
+    return;
+  }
+  try {
+    // Delete player data first
+    await sb.from('players').delete().eq('id', currentUser.id);
+    // Sign out
+    await sb.auth.signOut();
+    window.location.href = 'index.html';
+  } catch(e) {
+    showSettingsMsg('set-delete-msg', 'Error deleting account — contact support@sylloggames.com', 'error');
   }
 }
 
@@ -946,5 +1089,92 @@ async function portalCheckout(priceId) {
   }
 }
 </script>
+
+<div class="settings-panel" id="settings-panel">
+  <div class="settings-header">
+    <div class="settings-title">Settings</div>
+    <button class="settings-close" onclick="closeSettings()">&#10005;</button>
+  </div>
+
+  <!-- ACCOUNT -->
+  <div class="settings-section">
+    <div class="settings-section-title">&#9881; Account</div>
+    <div class="settings-field">
+      <label class="settings-label">Change Username</label>
+      <input type="text" class="settings-input" id="set-username" placeholder="New username">
+    </div>
+    <button class="settings-btn settings-btn-primary" onclick="saveUsername()">Update Username</button>
+    <div class="settings-msg" id="set-username-msg"></div>
+  </div>
+
+  <!-- PASSWORD -->
+  <div class="settings-section">
+    <div class="settings-section-title">&#128274; Password</div>
+    <div class="settings-field">
+      <label class="settings-label">New Password</label>
+      <input type="password" class="settings-input" id="set-password" placeholder="New password">
+    </div>
+    <div class="settings-field">
+      <label class="settings-label">Confirm Password</label>
+      <input type="password" class="settings-input" id="set-password-confirm" placeholder="Confirm new password">
+    </div>
+    <button class="settings-btn settings-btn-primary" onclick="savePassword()">Update Password</button>
+    <div class="settings-msg" id="set-password-msg"></div>
+    <div style="margin-top:0.75rem;">
+      <button class="settings-btn settings-btn-primary" onclick="sendPasswordReset()">Send Password Reset Email</button>
+      <div class="settings-msg" id="set-reset-msg"></div>
+    </div>
+  </div>
+
+  <!-- NOTIFICATIONS -->
+  <div class="settings-section">
+    <div class="settings-section-title">&#128276; Notifications</div>
+    <div class="settings-toggle-row">
+      <span class="settings-toggle-label">Monthly championship reminders</span>
+      <div class="settings-toggle on" id="notif-monthly" onclick="this.classList.toggle('on')"></div>
+    </div>
+    <div class="settings-toggle-row">
+      <span class="settings-toggle-label">New game announcements</span>
+      <div class="settings-toggle on" id="notif-games" onclick="this.classList.toggle('on')"></div>
+    </div>
+    <div class="settings-toggle-row">
+      <span class="settings-toggle-label">SC Credit promotions</span>
+      <div class="settings-toggle" id="notif-promo" onclick="this.classList.toggle('on')"></div>
+    </div>
+    <div class="settings-toggle-row">
+      <span class="settings-toggle-label">Universe store releases</span>
+      <div class="settings-toggle on" id="notif-universe" onclick="this.classList.toggle('on')"></div>
+    </div>
+  </div>
+
+  <!-- PRIVACY -->
+  <div class="settings-section">
+    <div class="settings-section-title">&#128065; Privacy</div>
+    <div class="settings-toggle-row">
+      <span class="settings-toggle-label">Show on leaderboards</span>
+      <div class="settings-toggle on" id="priv-leaderboard" onclick="this.classList.toggle('on')"></div>
+    </div>
+    <div class="settings-toggle-row">
+      <span class="settings-toggle-label">Show online status</span>
+      <div class="settings-toggle on" id="priv-online" onclick="this.classList.toggle('on')"></div>
+    </div>
+    <div class="settings-toggle-row">
+      <span class="settings-toggle-label">Show profile to other players</span>
+      <div class="settings-toggle on" id="priv-profile" onclick="this.classList.toggle('on')"></div>
+    </div>
+  </div>
+
+  <!-- DELETE ACCOUNT -->
+  <div class="settings-section">
+    <div class="settings-section-title">&#9888; Danger Zone</div>
+    <button class="settings-btn settings-btn-danger" onclick="showDeleteConfirm()">Delete My Account</button>
+    <div class="settings-delete-confirm" id="delete-confirm">
+      <div class="settings-delete-warn">This will <span>permanently delete</span> your account, all SC Credits, XP, inventory, and progress. This cannot be undone.</div>
+      <input type="text" class="settings-input" id="delete-confirm-input" placeholder="Type DELETE to confirm" style="margin-bottom:0.5rem;">
+      <button class="settings-btn settings-btn-danger" onclick="deleteAccount()">Permanently Delete Account</button>
+      <div class="settings-msg" id="set-delete-msg"></div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
