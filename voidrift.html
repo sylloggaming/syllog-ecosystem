@@ -1220,8 +1220,8 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
     </div>
     <div class="up-spd" id="spdBtns"></div>
     <div class="up-score">
-      <div class="up-score-lbl" id="panelLevel" style="font-size:8px;letter-spacing:1px;color:#4af;opacity:.8;">LVL 1/150</div>
-      <div class="up-score-val" id="panelScore">0</div>
+      <div id="panelLevel" style="display:none;">LVL 1/150</div>
+      <div id="panelScore" style="display:none;">0</div>
       <button id="rewardedAdBtn" onclick="showBossRewardedAd()" style="
         margin-top:6px;width:100%;padding:5px 0;display:none;
         background:linear-gradient(135deg,rgba(255,180,0,.15),rgba(255,120,0,.1));
@@ -1229,16 +1229,18 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
         color:#fa0;font-family:'Orbitron',sans-serif;font-size:6px;
         font-weight:700;letter-spacing:2px;cursor:pointer;
       ">📺 WATCH AD → +1 LIFE</button>
+    </div>
+    <div style="margin-top:10px;padding:0 2px;">
       <button onclick="openHangar()" style="
-        margin-top:8px;width:100%;padding:9px 0;
+        width:100%;padding:12px 0;
         background:linear-gradient(135deg,rgba(0,60,120,.95),rgba(0,30,80,.98));
-        border:2px solid rgba(0,180,255,.6);border-radius:6px;
+        border:2px solid rgba(0,180,255,.65);border-radius:6px;
         color:#7df;font-family:'Orbitron',sans-serif;font-size:10px;
         font-weight:900;letter-spacing:3px;cursor:pointer;
-        box-shadow:0 0 14px rgba(0,160,255,.35),inset 0 1px 0 rgba(255,255,255,.08);
-        transition:all .15s;text-shadow:0 0 10px rgba(0,200,255,.6);
-      " onmouseover="this.style.boxShadow='0 0 28px rgba(0,200,255,.6),inset 0 1px 0 rgba(255,255,255,.1)';this.style.borderColor='rgba(0,220,255,.9)';this.style.color='#aef';"
-         onmouseout="this.style.boxShadow='0 0 14px rgba(0,160,255,.35),inset 0 1px 0 rgba(255,255,255,.08)';this.style.borderColor='rgba(0,180,255,.6)';this.style.color='#7df';">
+        box-shadow:0 0 16px rgba(0,160,255,.4),inset 0 1px 0 rgba(255,255,255,.08);
+        transition:all .15s;text-shadow:0 0 10px rgba(0,200,255,.7);
+      " onmouseover="this.style.boxShadow='0 0 28px rgba(0,200,255,.65),inset 0 1px 0 rgba(255,255,255,.1)';this.style.borderColor='rgba(0,220,255,.95)';this.style.color='#aef';"
+         onmouseout="this.style.boxShadow='0 0 16px rgba(0,160,255,.4),inset 0 1px 0 rgba(255,255,255,.08)';this.style.borderColor='rgba(0,180,255,.65)';this.style.color='#7df';">
         ⬡ HANGAR
       </button>
     </div>
