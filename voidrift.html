@@ -938,7 +938,7 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
   </script>
 
 <script>(function(){var _x1=document.createElement('div');_x1.style.display='none';document.body&&document.body.appendChild(_x1);})();</script>
-<script>(function(){var _cfg={v:'3.0.2',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
+<script>(function(){var _cfg={v:'3.0.3',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
 </head>
 <body>
 
@@ -14891,7 +14891,7 @@ window.addEventListener('load', async function() {
 
     
     const { data } = await _sb.from('players')
-      .select('sc_balance, owned_ships, owned_skins, equipped_ship, equipped_skin, username')
+      .select('sc_balance, owned_ships, owned_skins, equipped_ship, equipped_skin, username, current_run')
       .eq('id', _sbUser.id).single();
 
     if (data) {
