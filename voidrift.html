@@ -23,6 +23,13 @@
 @keyframes gpadPulse{0%,100%{opacity:1;}50%{opacity:.4;}}
 .gpad-txt{font-size:9px;font-weight:700;letter-spacing:2px;color:rgba(0,232,122,.85);font-family:'Orbitron',sans-serif;}
 
+
+.gpad-focus{
+  outline:2px solid rgba(0,232,122,0.8) !important;
+  box-shadow:0 0 18px rgba(0,232,122,0.5),0 0 6px rgba(0,232,122,0.3) !important;
+  transform:scale(1.04);
+  transition:all 0.15s;
+}
 </style>');
     window.stop();
     throw new Error('');
@@ -975,7 +982,7 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
   </script>
 
 <script>(function(){var _x1=document.createElement('div');_x1.style.display='none';document.body&&document.body.appendChild(_x1);})();</script>
-<script>(function(){var _cfg={v:'3.2.1',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
+<script>(function(){var _cfg={v:'3.2.3',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
 </head>
 <body>
 
@@ -15081,7 +15088,7 @@ var GPAD_BTN = {
   SHOOT:   1,   
   BOMB:    2,   
   PAUSE:   9,   
-  HANGAR:  3,   
+  HANGAR:  5,   
 };
 
 window.addEventListener('gamepadconnected', function(e) {
@@ -15150,18 +15157,22 @@ function readGamepad() {
   
   
   var isPlaying = typeof STATE !== 'undefined' && STATE === 'playing';
-  var dUp    = isPlaying && _gpadButtonPressed(gp, 12);
-  var dDown  = isPlaying && _gpadButtonPressed(gp, 13);
-  var dLeft  = isPlaying && _gpadButtonPressed(gp, 14);
-  var dRight = isPlaying && _gpadButtonPressed(gp, 15);
 
+  
+  var dUp    = _gpadButtonPressed(gp, 12);
+  var dDown  = _gpadButtonPressed(gp, 13);
+  var dLeft  = _gpadButtonPressed(gp, 14);
+  var dRight = _gpadButtonPressed(gp, 15);
+
+  
   if (typeof keys !== 'undefined') {
-    keys['_gpadLeft']  = isPlaying && (axisX < -GPAD_DEADZONE || dLeft);
-    keys['_gpadRight'] = isPlaying && (axisX >  GPAD_DEADZONE || dRight);
-    keys['_gpadUp']    = isPlaying && (axisY < -GPAD_DEADZONE || dUp);
-    keys['_gpadDown']  = isPlaying && (axisY >  GPAD_DEADZONE || dDown);
-    keys['_gpadAxisX'] = isPlaying ? axisX : 0;
-    keys['_gpadAxisY'] = isPlaying ? axisY : 0;
+    keys['_gpadLeft']  = axisX < -GPAD_DEADZONE || dLeft;
+    keys['_gpadRight'] = axisX >  GPAD_DEADZONE || dRight;
+    keys['_gpadUp']    = axisY < -GPAD_DEADZONE || dUp;
+    keys['_gpadDown']  = axisY >  GPAD_DEADZONE || dDown;
+    keys['_gpadAxisX'] = axisX;
+    keys['_gpadAxisY'] = axisY;
+    
   }
 
   
@@ -15188,10 +15199,92 @@ function readGamepad() {
   }
 
   
+  var _now = performance.now();
+  _gpadMenuNav(gp, _now);
+  _gpadMenuConfirm(gp);
+
+  
   _gpadPrevButtons = gp.buttons.map(function(b) {
     return b.pressed || b.value > 0.5;
   });
 }
+
+var _gpadMenuFocusIdx = 0;
+var _gpadDpadCooldown = 0;
+var _gpadDpadDelay = 220; 
+
+function _getVisibleMenuButtons() {
+  
+  var btns = [];
+  document.querySelectorAll('.btn, .scr button, #hangarEquipBtn').forEach(function(btn) {
+    if (btn.offsetParent !== null && btn.style.display !== 'none' && !btn.disabled) {
+      
+      var scr = btn.closest('.scr, #hangarScr, #shopScr, #continueScr');
+      if (scr) {
+        var isVisible = !scr.classList.contains('hide') && scr.style.display !== 'none';
+        if (isVisible) btns.push(btn);
+      }
+    }
+  });
+  return btns;
+}
+
+function _gpadSetFocus(btns, idx) {
+  
+  document.querySelectorAll('.gpad-focus').forEach(function(el) {
+    el.classList.remove('gpad-focus');
+  });
+  if (!btns.length) return;
+  
+  _gpadMenuFocusIdx = ((idx % btns.length) + btns.length) % btns.length;
+  btns[_gpadMenuFocusIdx].classList.add('gpad-focus');
+}
+
+function _gpadMenuNav(gp, now) {
+  
+  var isPlaying = typeof STATE !== 'undefined' && STATE === 'playing';
+  if (isPlaying) return;
+
+  var btns = _getVisibleMenuButtons();
+  if (!btns.length) return;
+
+  
+  var hasFocus = document.querySelector('.gpad-focus');
+  if (!hasFocus) _gpadSetFocus(btns, 0);
+
+  
+  if (now - _gpadDpadCooldown < _gpadDpadDelay) return;
+
+  var dUp    = _gpadButtonPressed(gp, 12);
+  var dDown  = _gpadButtonPressed(gp, 13);
+  var dLeft  = _gpadButtonPressed(gp, 14);
+  var dRight = _gpadButtonPressed(gp, 15);
+  var axisY  = gp.axes[1] || 0;
+  var axisX  = gp.axes[0] || 0;
+
+  var moved = false;
+  if (dUp || dLeft || axisY < -0.5 || axisX < -0.5) {
+    _gpadSetFocus(btns, _gpadMenuFocusIdx - 1);
+    moved = true;
+  } else if (dDown || dRight || axisY > 0.5 || axisX > 0.5) {
+    _gpadSetFocus(btns, _gpadMenuFocusIdx + 1);
+    moved = true;
+  }
+
+  if (moved) _gpadDpadCooldown = now;
+}
+
+function _gpadMenuConfirm(gp) {
+  
+  var isPlaying = typeof STATE !== 'undefined' && STATE === 'playing';
+  if (isPlaying) return;
+  var confirmJust = _gpadButtonJustPressed(gp, 0) || _gpadButtonJustPressed(gp, 1);
+  if (confirmJust) {
+    var focused = document.querySelector('.gpad-focus');
+    if (focused) focused.click();
+  }
+}
+
 
 </script>
 
