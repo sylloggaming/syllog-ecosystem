@@ -976,7 +976,7 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
   </script>
 
 <script>(function(){var _x1=document.createElement('div');_x1.style.display='none';document.body&&document.body.appendChild(_x1);})();</script>
-<script>(function(){var _cfg={v:'3.5.6',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
+<script>(function(){var _cfg={v:'3.5.7',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
 </head>
 <body>
 
@@ -14815,8 +14815,18 @@ document.getElementById('continueBtn').addEventListener('click',()=>{
   const st=loadRunState();
   if(!st||!st.level||st.level<1){ 
     
-    clearRunState();
-    updateTitleScreen();
+    if(_sbUser){
+      _sb.from('players').select('current_run').eq('id',_sbUser.id).single().then(res=>{
+        if(res.data&&res.data.current_run&&res.data.current_run.level>0){
+          _storeSet(LS_KEY_SAVE, JSON.stringify(res.data.current_run));
+          resumeRun();
+        } else {
+          updateTitleScreen();
+        }
+      });
+    } else {
+      updateTitleScreen();
+    }
     return;
   }
   playSfx('btn_click');
