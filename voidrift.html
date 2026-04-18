@@ -976,7 +976,7 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
   </script>
 
 <script>(function(){var _x1=document.createElement('div');_x1.style.display='none';document.body&&document.body.appendChild(_x1);})();</script>
-<script>(function(){var _cfg={v:'3.5.1',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
+<script>(function(){var _cfg={v:'3.5.2',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
 </head>
 <body>
 
@@ -15117,7 +15117,7 @@ window._gpadNoControllerTimer = setTimeout(function(){
 <script>
 
 var _gpadIndex = null;
-var _gpadConnected = false;
+window._gpadConnected = false;
 var _gpadPrevButtons = [];
 var _gpadPrevButtonsMenu = [];
 var GPAD_DEADZONE = 0.25;
@@ -15200,7 +15200,7 @@ var GPAD_DPAD_R = _gpadProfile.DPAD_R;
 
 window.addEventListener('gamepadconnected', function(e) {
   _gpadIndex = e.gamepad.index;
-  _gpadConnected = true;
+  window._gpadConnected = true;
   _gpadPrevButtons = [];
   _gpadPrevButtonsMenu = [];
   
@@ -15276,7 +15276,7 @@ window.addEventListener('gamepadconnected', function(e) {
 window.addEventListener('gamepaddisconnected', function(e) {
   if (e.gamepad.index === _gpadIndex) {
     _gpadIndex = null;
-    _gpadConnected = false;
+    window._gpadConnected = false;
     _gpadPrevButtons = [];
     _gpadPrevButtonsMenu = [];
     var ind = document.getElementById('gpad-indicator');
@@ -15308,7 +15308,7 @@ function _gpJustPressed(gp, idx, prevArr) {
 }
 
 function _gpGetPad() {
-  if (!_gpadConnected || _gpadIndex === null) return null;
+  if (!window._gpadConnected || _gpadIndex === null) return null;
   var pads = navigator.getGamepads ? navigator.getGamepads() : [];
   return pads[_gpadIndex] || null;
 }
