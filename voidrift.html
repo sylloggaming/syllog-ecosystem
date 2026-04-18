@@ -11,17 +11,40 @@
     document.documentElement.innerHTML = '';
     document.write('<style>*{margin:0;padding:0;}body{background:#000;}
 #gpad-indicator{
-  position:fixed;bottom:12px;left:50%;transform:translateX(-50%);
-  z-index:999;display:none;align-items:center;gap:6px;
-  background:rgba(0,0,0,0.75);border:1px solid rgba(0,200,120,0.35);
-  border-radius:20px;padding:4px 12px;pointer-events:none;
+  position:fixed;bottom:14px;left:50%;transform:translateX(-50%);
+  z-index:999;display:none;align-items:center;gap:8px;
+  border-radius:24px;padding:6px 16px;pointer-events:none;
+  transition:all 0.4s ease;
+}
+#gpad-indicator.visible{display:flex;}
+#gpad-indicator.state-detecting{
+  background:rgba(0,0,0,0.8);
+  border:1px solid rgba(68,170,255,0.35);
   animation:gpadFadeIn .4s ease;
 }
-@keyframes gpadFadeIn{from{opacity:0;transform:translateX(-50%) translateY(6px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
-#gpad-indicator.visible{display:flex;}
-.gpad-dot{width:7px;height:7px;border-radius:50%;background:#00e87a;box-shadow:0 0 8px #00e87a;animation:gpadPulse 1.8s ease-in-out infinite;}
-@keyframes gpadPulse{0%,100%{opacity:1;}50%{opacity:.4;}}
-.gpad-txt{font-size:9px;font-weight:700;letter-spacing:2px;color:rgba(0,232,122,.85);font-family:'Orbitron',sans-serif;}
+#gpad-indicator.state-connected{
+  background:rgba(0,0,0,0.8);
+  border:1px solid rgba(0,200,120,0.4);
+  animation:gpadFadeIn .3s ease;
+}
+#gpad-indicator.state-ready{
+  background:rgba(0,0,0,0.8);
+  border:1px solid rgba(68,170,255,0.5);
+  box-shadow:0 0 16px rgba(68,170,255,0.15);
+  animation:gpadFadeIn .3s ease;
+}
+@keyframes gpadFadeIn{from{opacity:0;transform:translateX(-50%) translateY(8px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
+.gpad-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.gpad-dot.detecting{background:#4af;box-shadow:0 0 8px #4af;animation:gpadPulse 0.6s ease-in-out infinite;}
+.gpad-dot.connected{background:#00e87a;box-shadow:0 0 8px #00e87a;animation:gpadPulse 1.8s ease-in-out infinite;}
+.gpad-dot.ready{background:#4af;box-shadow:0 0 10px #4af;animation:gpadReady 1s ease-in-out infinite;}
+@keyframes gpadPulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+@keyframes gpadReady{0%,100%{opacity:0.7;box-shadow:0 0 6px #4af;}50%{opacity:1;box-shadow:0 0 14px #4af,0 0 24px rgba(68,170,255,0.4);}}
+.gpad-icon{font-size:12px;}
+.gpad-txt{font-size:8px;font-weight:700;letter-spacing:2px;font-family:'Orbitron',sans-serif;}
+.gpad-txt.detecting{color:rgba(68,170,255,0.7);}
+.gpad-txt.connected{color:rgba(0,232,122,0.85);}
+.gpad-txt.ready{color:rgba(68,170,255,0.9);}
 
 </style>');
     window.stop();
@@ -975,7 +998,7 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
   </script>
 
 <script>(function(){var _x1=document.createElement('div');_x1.style.display='none';document.body&&document.body.appendChild(_x1);})();</script>
-<script>(function(){var _cfg={v:'3.4.0',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
+<script>(function(){var _cfg={v:'3.4.1',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
 </head>
 <body>
 
@@ -15084,8 +15107,9 @@ document.addEventListener('DOMContentLoaded', scaleGame);
 
 
 <div id="gpad-indicator">
-  <div class="gpad-dot"></div>
-  <div class="gpad-txt">CONTROLLER CONNECTED</div>
+  <div class="gpad-dot detecting" id="gpad-dot"></div>
+  <div class="gpad-icon" id="gpad-icon">&#127918;</div>
+  <div class="gpad-txt detecting" id="gpad-txt">DETECTING CONTROLLER...</div>
 </div>
 
 <script>
@@ -15198,6 +15222,7 @@ window.addEventListener('gamepadconnected', function(e) {
   _gpadConnected = true;
   _gpadPrevButtons = [];
   _gpadPrevButtonsMenu = [];
+
   
   _gpadProfile = _detectControllerProfile(e.gamepad.id);
   GPAD_SHOOT  = _gpadProfile.SHOOT;
@@ -15208,8 +15233,53 @@ window.addEventListener('gamepadconnected', function(e) {
   GPAD_DPAD_D = _gpadProfile.DPAD_D;
   GPAD_DPAD_L = _gpadProfile.DPAD_L;
   GPAD_DPAD_R = _gpadProfile.DPAD_R;
+
+  
+  var id = (e.gamepad.id || '').toLowerCase();
+  var ctrlName, ctrlIcon;
+  if (id.indexOf('057e') > -1 || id.indexOf('nintendo') > -1 || id.indexOf('wii') > -1 || id.indexOf('switch') > -1) {
+    ctrlName = 'NINTENDO CONTROLLER'; ctrlIcon = '&#127918;';
+  } else if (id.indexOf('playstation') > -1 || id.indexOf('dualshock') > -1 || id.indexOf('dualsense') > -1 || id.indexOf('054c') > -1) {
+    ctrlName = 'PLAYSTATION CONTROLLER'; ctrlIcon = '&#127918;';
+  } else if (id.indexOf('xbox') > -1 || id.indexOf('xinput') > -1 || id.indexOf('045e') > -1) {
+    ctrlName = 'XBOX CONTROLLER'; ctrlIcon = '&#127918;';
+  } else {
+    ctrlName = 'CONTROLLER'; ctrlIcon = '&#127918;';
+  }
+
   var ind = document.getElementById('gpad-indicator');
-  if (ind) ind.classList.add('visible');
+  var dot = document.getElementById('gpad-dot');
+  var txt = document.getElementById('gpad-txt');
+  var icon = document.getElementById('gpad-icon');
+
+  
+  if (ind) {
+    ind.className = 'visible state-detecting';
+    if (dot) { dot.className = 'gpad-dot detecting'; }
+    if (txt) { txt.className = 'gpad-txt detecting'; txt.textContent = 'DETECTING CONTROLLER...'; }
+    if (icon) icon.innerHTML = ctrlIcon;
+  }
+
+  
+  setTimeout(function() {
+    if (ind) ind.className = 'visible state-connected';
+    if (dot) dot.className = 'gpad-dot connected';
+    if (txt) { txt.className = 'gpad-txt connected'; txt.textContent = ctrlName + ' — CONNECTED'; }
+  }, 800);
+
+  
+  setTimeout(function() {
+    if (ind) ind.className = 'visible state-ready';
+    if (dot) dot.className = 'gpad-dot ready';
+    if (txt) { txt.className = 'gpad-txt ready'; txt.textContent = ctrlName + ' — READY'; }
+    
+    setTimeout(function() {
+      if (ind) {
+        ind.className = 'visible state-ready';
+        if (txt) txt.textContent = ctrlName;
+      }
+    }, 3000);
+  }, 1800);
 });
 
 window.addEventListener('gamepaddisconnected', function(e) {
@@ -15219,7 +15289,15 @@ window.addEventListener('gamepaddisconnected', function(e) {
     _gpadPrevButtons = [];
     _gpadPrevButtonsMenu = [];
     var ind = document.getElementById('gpad-indicator');
-    if (ind) ind.classList.remove('visible');
+    var dot = document.getElementById('gpad-dot');
+    var txt = document.getElementById('gpad-txt');
+    if (ind) ind.className = 'visible state-detecting';
+    if (dot) dot.className = 'gpad-dot detecting';
+    if (txt) { txt.className = 'gpad-txt detecting'; txt.textContent = 'CONTROLLER DISCONNECTED'; }
+    setTimeout(function() {
+      var ind2 = document.getElementById('gpad-indicator');
+      if (ind2) ind2.classList.remove('visible');
+    }, 2000);
   }
 });
 
