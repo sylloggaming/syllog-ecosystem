@@ -975,7 +975,7 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
   </script>
 
 <script>(function(){var _x1=document.createElement('div');_x1.style.display='none';document.body&&document.body.appendChild(_x1);})();</script>
-<script>(function(){var _cfg={v:'3.2.0',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
+<script>(function(){var _cfg={v:'3.2.1',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
 </head>
 <body>
 
@@ -15075,12 +15075,10 @@ document.addEventListener('DOMContentLoaded', scaleGame);
 var _gpadIndex = null;
 var _gpadConnected = false;
 var _gpadPrevButtons = [];
-
-
 var GPAD_DEADZONE = 0.18;
 
 var GPAD_BTN = {
-  SHOOT:   0,   
+  SHOOT:   1,   
   BOMB:    2,   
   PAUSE:   9,   
   HANGAR:  3,   
@@ -15091,16 +15089,15 @@ window.addEventListener('gamepadconnected', function(e) {
   _gpadConnected = true;
   var ind = document.getElementById('gpad-indicator');
   if (ind) ind.classList.add('visible');
-  console.log('[Syllog] Controller connected:', e.gamepad.id);
 });
 
 window.addEventListener('gamepaddisconnected', function(e) {
   if (e.gamepad.index === _gpadIndex) {
     _gpadIndex = null;
     _gpadConnected = false;
+    _gpadPrevButtons = [];
     var ind = document.getElementById('gpad-indicator');
     if (ind) ind.classList.remove('visible');
-    console.log('[Syllog] Controller disconnected');
   }
 });
 
@@ -15115,60 +15112,70 @@ function _gpadButtonJustPressed(gp, btnIndex) {
   return now && !prev;
 }
 
+
+function _gpadPausePoll() {
+  if (!_gpadConnected || _gpadIndex === null) { requestAnimationFrame(_gpadPausePoll); return; }
+  var gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
+  var gp = gamepads[_gpadIndex];
+  if (gp) {
+    var pauseNow = _gpadButtonPressed(gp, GPAD_BTN.PAUSE);
+    var pausePrev = _gpadPrevButtons[GPAD_BTN.PAUSE] || false;
+    if (pauseNow && !pausePrev) {
+      if (typeof togglePause === 'function' &&
+          typeof STATE !== 'undefined' &&
+          (STATE === 'playing' || STATE === 'paused')) {
+        togglePause();
+      }
+    }
+    
+    if (!_gpadPrevButtons) _gpadPrevButtons = [];
+    _gpadPrevButtons[GPAD_BTN.PAUSE] = pauseNow;
+  }
+  requestAnimationFrame(_gpadPausePoll);
+}
+
+requestAnimationFrame(_gpadPausePoll);
+
 function readGamepad() {
   if (!_gpadConnected || _gpadIndex === null) return;
-
   var gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
   var gp = gamepads[_gpadIndex];
   if (!gp) return;
 
-  
-  var axisX = gp.axes[0] || 0;  
-  var axisY = gp.axes[1] || 0;  
-
-  
+  var axisX = gp.axes[0] || 0;
+  var axisY = gp.axes[1] || 0;
   if (Math.abs(axisX) < GPAD_DEADZONE) axisX = 0;
   if (Math.abs(axisY) < GPAD_DEADZONE) axisY = 0;
 
   
-  var dUp    = _gpadButtonPressed(gp, 12);
-  var dDown  = _gpadButtonPressed(gp, 13);
-  var dLeft  = _gpadButtonPressed(gp, 14);
-  var dRight = _gpadButtonPressed(gp, 15);
+  
+  var isPlaying = typeof STATE !== 'undefined' && STATE === 'playing';
+  var dUp    = isPlaying && _gpadButtonPressed(gp, 12);
+  var dDown  = isPlaying && _gpadButtonPressed(gp, 13);
+  var dLeft  = isPlaying && _gpadButtonPressed(gp, 14);
+  var dRight = isPlaying && _gpadButtonPressed(gp, 15);
 
-  
-  
   if (typeof keys !== 'undefined') {
-    keys['_gpadLeft']  = axisX < -GPAD_DEADZONE || dLeft;
-    keys['_gpadRight'] = axisX >  GPAD_DEADZONE || dRight;
-    keys['_gpadUp']    = axisY < -GPAD_DEADZONE || dUp;
-    keys['_gpadDown']  = axisY >  GPAD_DEADZONE || dDown;
-    
-    keys['_gpadAxisX'] = axisX;
-    keys['_gpadAxisY'] = axisY;
+    keys['_gpadLeft']  = isPlaying && (axisX < -GPAD_DEADZONE || dLeft);
+    keys['_gpadRight'] = isPlaying && (axisX >  GPAD_DEADZONE || dRight);
+    keys['_gpadUp']    = isPlaying && (axisY < -GPAD_DEADZONE || dUp);
+    keys['_gpadDown']  = isPlaying && (axisY >  GPAD_DEADZONE || dDown);
+    keys['_gpadAxisX'] = isPlaying ? axisX : 0;
+    keys['_gpadAxisY'] = isPlaying ? axisY : 0;
   }
 
   
-  if (_gpadButtonPressed(gp, GPAD_BTN.SHOOT)) {
-    if (typeof keys !== 'undefined') keys['Space'] = true;
-  } else {
-    if (typeof keys !== 'undefined') keys['Space'] = false;
+  if (isPlaying) {
+    if (_gpadButtonPressed(gp, GPAD_BTN.SHOOT)) {
+      if (typeof keys !== 'undefined') keys['Space'] = true;
+    } else {
+      if (typeof keys !== 'undefined') keys['Space'] = false;
+    }
   }
 
   
   if (_gpadButtonJustPressed(gp, GPAD_BTN.BOMB)) {
-    if (typeof useBomb === 'function' && typeof STATE !== 'undefined' && STATE === 'playing') {
-      useBomb();
-    }
-  }
-
-  
-  if (_gpadButtonJustPressed(gp, GPAD_BTN.PAUSE)) {
-    if (typeof togglePause === 'function' &&
-        typeof STATE !== 'undefined' &&
-        (STATE === 'playing' || STATE === 'paused')) {
-      togglePause();
-    }
+    if (typeof useBomb === 'function' && isPlaying) useBomb();
   }
 
   
