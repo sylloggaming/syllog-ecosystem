@@ -976,7 +976,7 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
   </script>
 
 <script>(function(){var _x1=document.createElement('div');_x1.style.display='none';document.body&&document.body.appendChild(_x1);})();</script>
-<script>(function(){var _cfg={v:'3.4.5',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
+<script>(function(){var _cfg={v:'3.4.6',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
 </head>
 <body>
 
@@ -15332,7 +15332,7 @@ function _independentPoll() {
   var isPlaying = typeof STATE !== 'undefined' && STATE === 'playing';
 
   
-  if (ind && _gpadConnected) {
+  if (ind) {
     if (isPlaying) {
       ind.classList.add('gameplay-hidden');
     } else {
