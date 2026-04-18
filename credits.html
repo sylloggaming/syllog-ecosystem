@@ -6,8 +6,7 @@
 <title>Syllog — Credits & Passes</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<script src="https://js.stripe.com/v3/">function goProfile(){window.location.href="profile.html";}
-</script>
+<script src="https://js.stripe.com/v3/"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -220,6 +219,7 @@ body{background:#050505 !important;}
 </style>
 </head>
 <body>
+<script>function goProfile(){window.location.href="profile.html";}</script>
 <div class="ambient">
   <div class="ambient-orb ambient-orb-1" style="background:#ffd700;"></div>
   <div class="ambient-orb ambient-orb-2" style="background:#8a2be2;"></div>
@@ -549,11 +549,11 @@ function toggleFaq(el) {
 }
 </script>
 
-<div class="dash-overlay" id="dash-overlay" onclick="toggleDash()"></div>
+<div class="dash-overlay" id="dash-overlay" onclick="goProfile();"></div>
 <div class="dash-panel" id="dash-panel">
   <div class="dash-header">
     <div class="dash-header-title">Player Profile</div>
-    <button class="dash-close" onclick="toggleDash()">&#10005;</button>
+    <button class="dash-close" onclick="goProfile();">&#10005;</button>
   </div>
   <div class="dash-avatar-section">
     <div class="dash-avatar-wrap">
