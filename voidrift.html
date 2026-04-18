@@ -833,6 +833,7 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
 #gpad-indicator.state-detecting{background:rgba(0,0,10,0.88);border:1px solid rgba(68,170,255,0.4);animation:gpadFadeIn .4s ease;}
 #gpad-indicator.state-connected{background:rgba(0,0,10,0.88);border:1px solid rgba(0,210,130,0.45);animation:gpadFadeIn .3s ease;}
 #gpad-indicator.state-ready{background:rgba(0,0,10,0.88);border:1px solid rgba(68,170,255,0.6);box-shadow:0 0 20px rgba(68,170,255,0.2);animation:gpadFadeIn .3s ease;}
+#gpad-indicator.gameplay-hidden{opacity:0!important;pointer-events:none!important;transition:opacity 0.5s!important;}
 @keyframes gpadFadeIn{from{opacity:0;transform:translateX(-50%) translateY(10px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
 .gpad-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
 .gpad-dot.scanning{background:#4af;box-shadow:0 0 6px #4af;animation:gpadScan .4s ease-in-out infinite alternate;}
@@ -975,7 +976,7 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
   </script>
 
 <script>(function(){var _x1=document.createElement('div');_x1.style.display='none';document.body&&document.body.appendChild(_x1);})();</script>
-<script>(function(){var _cfg={v:'3.4.4',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
+<script>(function(){var _cfg={v:'3.4.5',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
 </head>
 <body>
 
@@ -14946,14 +14947,10 @@ async function injectPlayerName() {
 
 window.addEventListener('load', async function() {
   
-  STATE = 'title';
   
-  ['goScr','winScr','pauseScr','continueScr','shopScr'].forEach(function(id){
-    var el = document.getElementById(id);
-    if(el){ el.classList.add('hide'); el.style.display=''; }
-  });
-  var titleEl = document.getElementById('titleScr');
-  if(titleEl) titleEl.classList.remove('hide');
+  if (typeof STATE !== 'undefined' && STATE === 'playing') {
+    STATE = 'title';
+  }
 
   
   try {
@@ -15107,6 +15104,23 @@ document.addEventListener('DOMContentLoaded', scaleGame);
   if(ind) ind.className = 'visible state-scanning';
   if(dot) dot.className = 'gpad-dot scanning';
   if(txt){ txt.className='gpad-txt scanning'; txt.textContent='SCANNING FOR CONTROLLER...'; }
+
+  
+  setTimeout(function(){
+    if(typeof _gpadConnected !== 'undefined' && !_gpadConnected){
+      var ind2 = document.getElementById('gpad-indicator');
+      var dot2 = document.getElementById('gpad-dot');
+      var txt2 = document.getElementById('gpad-txt');
+      if(ind2) ind2.className = 'visible state-detecting';
+      if(dot2){ dot2.className='gpad-dot'; dot2.style.background='rgba(255,255,255,0.2)'; dot2.style.boxShadow='none'; dot2.style.animation='none'; }
+      if(txt2){ txt2.className='gpad-txt detecting'; txt2.style.color='rgba(255,255,255,0.25)'; txt2.textContent='NO CONTROLLER DETECTED'; }
+      
+      setTimeout(function(){
+        var ind3 = document.getElementById('gpad-indicator');
+        if(ind3) ind3.classList.remove('visible');
+      }, 3000);
+    }
+  }, 8000);
 })();
 </script>
 
@@ -15311,11 +15325,23 @@ var _pausePollPrev = false;
 var _hangarPollPrev = false;
 
 var _lastActiveScreen = null;
+var _lastIsPlaying = false;
 function _independentPoll() {
   var gp = _gpGetPad();
+  var ind = document.getElementById('gpad-indicator');
+  var isPlaying = typeof STATE !== 'undefined' && STATE === 'playing';
+
+  
+  if (ind && _gpadConnected) {
+    if (isPlaying) {
+      ind.classList.add('gameplay-hidden');
+    } else {
+      ind.classList.remove('gameplay-hidden');
+    }
+  }
+
   if (gp) {
     var pollNow = performance.now();
-    var isPlaying = typeof STATE !== 'undefined' && STATE === 'playing';
 
     
     var curScreen = typeof _getActiveScreen === 'function' ? _getActiveScreen() : null;
