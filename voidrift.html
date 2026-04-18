@@ -976,7 +976,7 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
   </script>
 
 <script>(function(){var _x1=document.createElement('div');_x1.style.display='none';document.body&&document.body.appendChild(_x1);})();</script>
-<script>(function(){var _cfg={v:'3.5.4',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
+<script>(function(){var _cfg={v:'3.5.5',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
 </head>
 <body>
 
@@ -14119,6 +14119,9 @@ function _doResumeRun(){
   const zoneIdx=Math.min(Math.floor((level-1)/5), BG_THEMES.length-1);
   if(zoneIdx>0) enterZone(zoneIdx);
   resetStats();
+  
+  Object.keys(keys).forEach(function(k){ keys[k]=false; });
+  _gpadPrevButtons = [];
   resetPlayer();initStars();spawnLevel();updateHUD();
   document.getElementById('upgradePanel').style.display='flex';
   renderUpgradePanel();STATE='playing';
@@ -14134,6 +14137,11 @@ function startGame(){
   if(continueCountdown){clearInterval(continueCountdown);continueCountdown=null;}
   freeContineUsed=false;
   clearRunState();
+  
+  Object.keys(keys).forEach(function(k){ keys[k]=false; });
+  
+  _gpadPrevButtons = [];
+  _gpadPrevButtonsMenu = [];
   
   const _ship=SHIP_DEFS.find(s=>s.id===equippedShip)||SHIP_DEFS[0];
   score=0;lives=3;level=1;maxLives=3+_ship.hpBonus;hpTokens=0;hpTokensNeeded=10;powerTokens=0;playerPowerMult=1.0;speedTier=0;player.speed=SPEED_BASE+(_ship.speedBonus||0);
