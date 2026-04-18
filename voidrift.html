@@ -23,14 +23,6 @@
 @keyframes gpadPulse{0%,100%{opacity:1;}50%{opacity:.4;}}
 .gpad-txt{font-size:9px;font-weight:700;letter-spacing:2px;color:rgba(0,232,122,.85);font-family:'Orbitron',sans-serif;}
 
-.gpad-focus{
-  outline:3px solid rgba(0,232,122,0.9) !important;
-  box-shadow:0 0 22px rgba(0,232,122,0.6),0 0 8px rgba(0,232,122,0.4) !important;
-  transform:scale(1.06) !important;
-  transition:all 0.12s !important;
-  position:relative;
-  z-index:10;
-}
 </style>');
     window.stop();
     throw new Error('');
@@ -983,7 +975,7 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
   </script>
 
 <script>(function(){var _x1=document.createElement('div');_x1.style.display='none';document.body&&document.body.appendChild(_x1);})();</script>
-<script>(function(){var _cfg={v:'3.3.2',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
+<script>(function(){var _cfg={v:'3.3.3',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
 </head>
 <body>
 
@@ -15080,6 +15072,21 @@ document.addEventListener('DOMContentLoaded', scaleGame);
 
 <script>
 
+
+(function() {
+  var s = document.createElement('style');
+  s.textContent = [
+    '.gpad-focus {',
+    '  border: 3px solid rgba(0,232,122,0.95) !important;',
+    '  background: rgba(0,232,122,0.15) !important;',
+    '  color: #fff !important;',
+    '  box-shadow: 0 0 20px rgba(0,232,122,0.5) !important;',
+    '  transition: all 0.1s !important;',
+    '}'
+  ].join('');
+  document.head.appendChild(s);
+})();
+
 var _gpadIndex = null;
 var _gpadConnected = false;
 var _gpadPrevButtons = [];
@@ -15158,8 +15165,12 @@ function _independentPoll() {
     
     var hangarNow = _gpPressed(gp, GPAD_HANGAR);
     if (hangarNow && !_hangarPollPrev) {
-      if (typeof openHangar === 'function' && !isPlaying) {
-        openHangar();
+      if (typeof hangarOpen !== 'undefined' && hangarOpen) {
+        
+        if (typeof closeHangar === 'function') closeHangar();
+      } else {
+        
+        if (typeof openHangar === 'function') openHangar();
       }
     }
     _hangarPollPrev = hangarNow;
