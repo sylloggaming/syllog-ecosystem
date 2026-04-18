@@ -23,12 +23,13 @@
 @keyframes gpadPulse{0%,100%{opacity:1;}50%{opacity:.4;}}
 .gpad-txt{font-size:9px;font-weight:700;letter-spacing:2px;color:rgba(0,232,122,.85);font-family:'Orbitron',sans-serif;}
 
-
 .gpad-focus{
-  outline:2px solid rgba(0,232,122,0.8) !important;
-  box-shadow:0 0 18px rgba(0,232,122,0.5),0 0 6px rgba(0,232,122,0.3) !important;
-  transform:scale(1.04);
-  transition:all 0.15s;
+  outline:3px solid rgba(0,232,122,0.9) !important;
+  box-shadow:0 0 22px rgba(0,232,122,0.6),0 0 8px rgba(0,232,122,0.4) !important;
+  transform:scale(1.06) !important;
+  transition:all 0.12s !important;
+  position:relative;
+  z-index:10;
 }
 </style>');
     window.stop();
@@ -982,7 +983,7 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
   </script>
 
 <script>(function(){var _x1=document.createElement('div');_x1.style.display='none';document.body&&document.body.appendChild(_x1);})();</script>
-<script>(function(){var _cfg={v:'3.3.1',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
+<script>(function(){var _cfg={v:'3.3.2',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
 </head>
 <body>
 
@@ -15140,7 +15141,8 @@ var _hangarPollPrev = false;
 function _independentPoll() {
   var gp = _gpGetPad();
   if (gp) {
-    var now = performance.now();
+    var pollNow = performance.now();
+    var isPlaying = typeof STATE !== 'undefined' && STATE === 'playing';
 
     
     var pauseNow = _gpPressed(gp, GPAD_PAUSE);
@@ -15156,19 +15158,15 @@ function _independentPoll() {
     
     var hangarNow = _gpPressed(gp, GPAD_HANGAR);
     if (hangarNow && !_hangarPollPrev) {
-      if (typeof openHangar === 'function' &&
-          typeof STATE !== 'undefined' &&
-          (STATE === 'title' || STATE === 'paused')) {
+      if (typeof openHangar === 'function' && !isPlaying) {
         openHangar();
       }
     }
     _hangarPollPrev = hangarNow;
 
     
-    var isPlaying = typeof STATE !== 'undefined' && STATE === 'playing';
     if (!isPlaying) {
-      _menuNav(gp, now);
-      
+      _menuNav(gp, pollNow);
       _gpadPrevButtonsMenu = gp.buttons.map(function(b) { return b.pressed || b.value > 0.5; });
     }
   }
