@@ -976,7 +976,7 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
   </script>
 
 <script>(function(){var _x1=document.createElement('div');_x1.style.display='none';document.body&&document.body.appendChild(_x1);})();</script>
-<script>(function(){var _cfg={v:'3.5.7',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
+<script>(function(){var _cfg={v:'3.5.9',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
 </head>
 <body>
 
@@ -14158,7 +14158,8 @@ function startGame(){
   renderUpgradePanel();
   ['titleScr','goScr','winScr','pauseScr'].forEach(id=>document.getElementById(id).classList.add('hide'));
   const cs=document.getElementById('continueScr');if(cs)cs.classList.add('hide');
-  saveRunState();
+  
+  
 }
 
 
@@ -14812,26 +14813,37 @@ document.getElementById('csBtnQuit').addEventListener('click',()=>{
 
 
 document.getElementById('continueBtn').addEventListener('click',()=>{
-  const st=loadRunState();
-  if(!st||!st.level||st.level<1){ 
-    
-    if(_sbUser){
-      _sb.from('players').select('current_run').eq('id',_sbUser.id).single().then(res=>{
-        if(res.data&&res.data.current_run&&res.data.current_run.level>0){
-          _storeSet(LS_KEY_SAVE, JSON.stringify(res.data.current_run));
+  playSfx('btn_click');
+  
+  if(_sbUser){
+    _sb.from('players').select('current_run').eq('id',_sbUser.id).single().then(res=>{
+      const sbSt = res.data&&res.data.current_run;
+      if(sbSt&&sbSt.level>0){
+        
+        _storeSet(LS_KEY_SAVE, JSON.stringify(sbSt));
+        document.getElementById('titleScr').classList.add('hide');
+        resumeRun();
+      } else {
+        
+        const localSt = loadRunState();
+        if(localSt&&localSt.level>0){
+          document.getElementById('titleScr').classList.add('hide');
           resumeRun();
         } else {
           updateTitleScreen();
         }
-      });
+      }
+    });
+  } else {
+    
+    const st = loadRunState();
+    if(st&&st.level>0){
+      document.getElementById('titleScr').classList.add('hide');
+      resumeRun();
     } else {
       updateTitleScreen();
     }
-    return;
   }
-  playSfx('btn_click');
-  document.getElementById('titleScr').classList.add('hide');
-  resumeRun();
 });
 
 function updateTitleScreen(){
@@ -14850,26 +14862,46 @@ function updateTitleScreen(){
 
 document.getElementById('startBtn').addEventListener('click',()=>{
   playSfx('btn_click');
-  if(hasSavedRun()){
-    const st=loadRunState();
-    const scoreStr=st.score>=1000000?(st.score/1000000).toFixed(1)+'M':st.score>=1000?(st.score/1000).toFixed(0)+'K':String(st.score);
-    showConfirm(
-      'ACTIVE RUN EXISTS',
-      'Starting a new game will permanently erase your progress.',
-      `WAVE ${st.level}  ·  SCORE ${scoreStr}  ·  PWR x${(st.playerPowerMult||1).toFixed(2)}`,
-      'YES — START NEW',
-      ()=>{
-        
-        clearRunState();
-        document.getElementById('titleScr').classList.add('hide');
-        showStoryCrawl('opening', function(){ startGame(); });
-      },
-      null 
-    );
+  
+  function _doStartCheck(st){
+    if(st&&st.level>0){
+      const scoreStr=st.score>=1000000?(st.score/1000000).toFixed(1)+'M':st.score>=1000?(st.score/1000).toFixed(0)+'K':String(st.score);
+      showConfirm(
+        'ACTIVE RUN EXISTS',
+        'Starting a new game will permanently erase your progress.',
+        `WAVE ${st.level}  ·  SCORE ${scoreStr}  ·  PWR x${(st.playerPowerMult||1).toFixed(2)}`,
+        'YES — START NEW',
+        ()=>{
+          clearRunState();
+          document.getElementById('titleScr').classList.add('hide');
+          showStoryCrawl('opening', function(){ startGame(); });
+        },
+        null
+      );
+    } else {
+      document.getElementById('titleScr').classList.add('hide');
+      showStoryCrawl('opening', function(){ startGame(); });
+    }
+  }
+  
+  const localSt = loadRunState();
+  if(localSt&&localSt.level>0){
+    _doStartCheck(localSt);
     return;
   }
-  document.getElementById('titleScr').classList.add('hide');
-  showStoryCrawl('opening', function(){ startGame(); });
+  
+  if(_sbUser){
+    _sb.from('players').select('current_run').eq('id',_sbUser.id).single().then(res=>{
+      const sbSt = res.data&&res.data.current_run;
+      if(sbSt&&sbSt.level>0){
+        _storeSet(LS_KEY_SAVE, JSON.stringify(sbSt));
+        updateTitleScreen();
+      }
+      _doStartCheck(sbSt&&sbSt.level>0 ? sbSt : null);
+    });
+  } else {
+    _doStartCheck(null);
+  }
 });
 
 lsLoad();
