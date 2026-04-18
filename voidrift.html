@@ -4,7 +4,30 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 
-(function(){var _$a=function(a){return a.map(function(c){return String.fromCharCode(c)}).join('');};var _$b=[_$a([115,121,108,108,111,103,103,97,109,101,115,46,99,111,109]),_$a([119,119,119,46,115,121,108,108,111,103,103,97,109,101,115,46,99,111,109]),_$a([108,111,99,97,108,104,111,115,116]),_$a([49,50,55,46,48,46,48,46,49])];var _$c=window.location.hostname.toLowerCase();var _$d=_$b.indexOf(_$c)===-1&&_$c!==_$b[2]&&_$c!==_$b[3];if(_$d){document.documentElement.innerHTML='';window.stop&&window.stop();throw new Error('');};})();(function(){var _$e=[118,111,105,100,114,105,102,116,95,118,51];window._$vid=_$e;})();
+(function(){
+  var allowed = ['sylloggames.com', 'www.sylloggames.com'];
+  var host = window.location.hostname.toLowerCase();
+  if(allowed.indexOf(host) === -1 && host !== 'localhost' && host !== '127.0.0.1') {
+    document.documentElement.innerHTML = '';
+    document.write('<style>*{margin:0;padding:0;}body{background:#000;}
+#gpad-indicator{
+  position:fixed;bottom:12px;left:50%;transform:translateX(-50%);
+  z-index:999;display:none;align-items:center;gap:6px;
+  background:rgba(0,0,0,0.75);border:1px solid rgba(0,200,120,0.35);
+  border-radius:20px;padding:4px 12px;pointer-events:none;
+  animation:gpadFadeIn .4s ease;
+}
+@keyframes gpadFadeIn{from{opacity:0;transform:translateX(-50%) translateY(6px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
+#gpad-indicator.visible{display:flex;}
+.gpad-dot{width:7px;height:7px;border-radius:50%;background:#00e87a;box-shadow:0 0 8px #00e87a;animation:gpadPulse 1.8s ease-in-out infinite;}
+@keyframes gpadPulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.gpad-txt{font-size:9px;font-weight:700;letter-spacing:2px;color:rgba(0,232,122,.85);font-family:'Orbitron',sans-serif;}
+
+</style>');
+    window.stop();
+    throw new Error('');
+  }
+})();
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
@@ -952,7 +975,7 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
   </script>
 
 <script>(function(){var _x1=document.createElement('div');_x1.style.display='none';document.body&&document.body.appendChild(_x1);})();</script>
-<script>(function(){var _cfg={v:'3.1.1',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
+<script>(function(){var _cfg={v:'3.2.0',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
 </head>
 <body>
 
@@ -1272,7 +1295,7 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
     <button class="btn" id="shopBtn" style="background:linear-gradient(135deg,rgba(20,10,60,.9),rgba(10,5,40,.95));border:1px solid rgba(120,80,255,.5);color:#a78bfa;box-shadow:0 0 16px rgba(120,80,255,.2);margin-top:6px;font-size:10px;letter-spacing:4px;padding:10px 36px;">✦ SHOP</button>
     <div id="titleRunHistory" style="width:100%;max-width:380px;margin:14px auto 0;"></div>
     <div class="inst">
-      <p><span>← → ↑ ↓</span> MOVE &nbsp;&nbsp; <span>SPACE</span> FIRE</p>
+      <p><span>← → ↑ ↓</span> MOVE &nbsp;&nbsp; <span>SPACE</span> FIRE &nbsp;&nbsp; <span style="color:rgba(0,232,122,.8);">&#127918;</span> <span style="color:rgba(0,232,122,.8);">CONTROLLER SUPPORTED</span></p>
       <p><span>Z / SHIFT</span> NOVA BOMB &nbsp; <span>P</span> PAUSE</p>
       <p>Shoot enemies to drop power-ups · Catch them to absorb!</p>
       <p>Boss every 5th level · New enemy every 6th level</p>
@@ -5762,11 +5785,16 @@ function updatePlayer(dt){
     }
   }
 
+  
+  if(typeof readGamepad==='function')readGamepad();
   let vx=0,vy=0;
-  if(keys['ArrowLeft']||keys['KeyA'])vx=-player.speed;
-  if(keys['ArrowRight']||keys['KeyD'])vx=player.speed;
-  if(keys['ArrowUp']||keys['KeyW'])vy=-player.speed;
-  if(keys['ArrowDown']||keys['KeyS'])vy=player.speed;
+  if(keys['ArrowLeft']||keys['KeyA']||keys['_gpadLeft'])vx=-player.speed;
+  if(keys['ArrowRight']||keys['KeyD']||keys['_gpadRight'])vx=player.speed;
+  if(keys['ArrowUp']||keys['KeyW']||keys['_gpadUp'])vy=-player.speed;
+  if(keys['ArrowDown']||keys['KeyS']||keys['_gpadDown'])vy=player.speed;
+  
+  if(keys['_gpadAxisX']&&Math.abs(keys['_gpadAxisX'])>0.18)vx=keys['_gpadAxisX']*player.speed;
+  if(keys['_gpadAxisY']&&Math.abs(keys['_gpadAxisY'])>0.18)vy=keys['_gpadAxisY']*player.speed;
   if(touchX!==null){const dx=touchX-player.x,dy=touchY-player.y;vx=Math.sign(dx)*Math.min(Math.abs(dx)*5,player.speed);vy=Math.sign(dy)*Math.min(Math.abs(dy)*5,player.speed);}
   if(vx!==0&&vy!==0){vx*=.707;vy*=.707;}
 
@@ -15034,6 +15062,130 @@ function scaleGame() {
 
 window.addEventListener('resize', scaleGame);
 document.addEventListener('DOMContentLoaded', scaleGame);
+</script>
+
+
+<div id="gpad-indicator">
+  <div class="gpad-dot"></div>
+  <div class="gpad-txt">CONTROLLER CONNECTED</div>
+</div>
+
+<script>
+
+var _gpadIndex = null;
+var _gpadConnected = false;
+var _gpadPrevButtons = [];
+
+
+var GPAD_DEADZONE = 0.18;
+
+var GPAD_BTN = {
+  SHOOT:   0,   
+  BOMB:    2,   
+  PAUSE:   9,   
+  HANGAR:  3,   
+};
+
+window.addEventListener('gamepadconnected', function(e) {
+  _gpadIndex = e.gamepad.index;
+  _gpadConnected = true;
+  var ind = document.getElementById('gpad-indicator');
+  if (ind) ind.classList.add('visible');
+  console.log('[Syllog] Controller connected:', e.gamepad.id);
+});
+
+window.addEventListener('gamepaddisconnected', function(e) {
+  if (e.gamepad.index === _gpadIndex) {
+    _gpadIndex = null;
+    _gpadConnected = false;
+    var ind = document.getElementById('gpad-indicator');
+    if (ind) ind.classList.remove('visible');
+    console.log('[Syllog] Controller disconnected');
+  }
+});
+
+function _gpadButtonPressed(gp, btnIndex) {
+  if (!gp.buttons[btnIndex]) return false;
+  return gp.buttons[btnIndex].pressed || gp.buttons[btnIndex].value > 0.5;
+}
+
+function _gpadButtonJustPressed(gp, btnIndex) {
+  var now = _gpadButtonPressed(gp, btnIndex);
+  var prev = _gpadPrevButtons[btnIndex] || false;
+  return now && !prev;
+}
+
+function readGamepad() {
+  if (!_gpadConnected || _gpadIndex === null) return;
+
+  var gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
+  var gp = gamepads[_gpadIndex];
+  if (!gp) return;
+
+  
+  var axisX = gp.axes[0] || 0;  
+  var axisY = gp.axes[1] || 0;  
+
+  
+  if (Math.abs(axisX) < GPAD_DEADZONE) axisX = 0;
+  if (Math.abs(axisY) < GPAD_DEADZONE) axisY = 0;
+
+  
+  var dUp    = _gpadButtonPressed(gp, 12);
+  var dDown  = _gpadButtonPressed(gp, 13);
+  var dLeft  = _gpadButtonPressed(gp, 14);
+  var dRight = _gpadButtonPressed(gp, 15);
+
+  
+  
+  if (typeof keys !== 'undefined') {
+    keys['_gpadLeft']  = axisX < -GPAD_DEADZONE || dLeft;
+    keys['_gpadRight'] = axisX >  GPAD_DEADZONE || dRight;
+    keys['_gpadUp']    = axisY < -GPAD_DEADZONE || dUp;
+    keys['_gpadDown']  = axisY >  GPAD_DEADZONE || dDown;
+    
+    keys['_gpadAxisX'] = axisX;
+    keys['_gpadAxisY'] = axisY;
+  }
+
+  
+  if (_gpadButtonPressed(gp, GPAD_BTN.SHOOT)) {
+    if (typeof keys !== 'undefined') keys['Space'] = true;
+  } else {
+    if (typeof keys !== 'undefined') keys['Space'] = false;
+  }
+
+  
+  if (_gpadButtonJustPressed(gp, GPAD_BTN.BOMB)) {
+    if (typeof useBomb === 'function' && typeof STATE !== 'undefined' && STATE === 'playing') {
+      useBomb();
+    }
+  }
+
+  
+  if (_gpadButtonJustPressed(gp, GPAD_BTN.PAUSE)) {
+    if (typeof togglePause === 'function' &&
+        typeof STATE !== 'undefined' &&
+        (STATE === 'playing' || STATE === 'paused')) {
+      togglePause();
+    }
+  }
+
+  
+  if (_gpadButtonJustPressed(gp, GPAD_BTN.HANGAR)) {
+    if (typeof openHangar === 'function' &&
+        typeof STATE !== 'undefined' &&
+        (STATE === 'title' || STATE === 'paused')) {
+      openHangar();
+    }
+  }
+
+  
+  _gpadPrevButtons = gp.buttons.map(function(b) {
+    return b.pressed || b.value > 0.5;
+  });
+}
+
 </script>
 
 </body>
