@@ -975,7 +975,7 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
   </script>
 
 <script>(function(){var _x1=document.createElement('div');_x1.style.display='none';document.body&&document.body.appendChild(_x1);})();</script>
-<script>(function(){var _cfg={v:'3.3.4',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
+<script>(function(){var _cfg={v:'3.3.5',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
 </head>
 <body>
 
@@ -12887,6 +12887,19 @@ function drawSkinShip(g, skinId, t){
 }
 
 let hangarOpen = false;
+
+function _gpadResetFocus() {
+  document.querySelectorAll('.gpad-focus').forEach(function(el) { el.classList.remove('gpad-focus'); });
+  if (typeof _menuFocusIdx !== 'undefined') _menuFocusIdx = 0;
+  if (typeof _menuCooldown !== 'undefined') _menuCooldown = 0;
+  
+  setTimeout(function() {
+    var btns = typeof _getMenuBtns === 'function' ? _getMenuBtns() : [];
+    if (btns.length) {
+      if (typeof _setMenuFocus === 'function') _setMenuFocus(btns, 0);
+    }
+  }, 50);
+}
 let hangarSelectedShip = '';
 let hangarSelectedSkin = '';
 let _hangarRAF = null;
@@ -12946,7 +12959,7 @@ function renderHangarShips(){
     const owned = ownedShips.includes(ship.id);
     const active = hangarSelectedShip === ship.id;
     const shortName = ship.name.split(' ').pop();
-    return `<div onclick="${owned?`hangarSelectShip('${ship.id}')`:'void 0'}" style="
+    return `<div onclick="${owned?`hangarSelectShip('${ship.id}')`:'void 0'}" ${owned?`class="gpad-nav-item"`:''}  style="
       flex-shrink:0;width:80px;border-radius:8px;overflow:hidden;
       cursor:${owned?'pointer':'default'};
       border:2px solid ${active?'rgba(0,180,255,.8)':'rgba(255,255,255,.1)'};
@@ -12971,7 +12984,7 @@ function renderHangarSkins(){
   if(!container) return;
   const skins = SHOP_ITEMS.filter(i=>i.tab==='cosmetics');
   const noneActive = hangarSelectedSkin==='';
-  let out = `<div onclick="hangarSelectSkin('')" style="
+  let out = `<div onclick="hangarSelectSkin('')" class="gpad-nav-item" style="
     flex-shrink:0;width:64px;height:80px;border-radius:8px;cursor:pointer;
     border:2px solid ${noneActive?'rgba(255,255,255,.7)':'rgba(255,255,255,.12)'};
     background:rgba(0,0,20,.5);transition:all .2s;
@@ -12986,7 +12999,7 @@ function renderHangarSkins(){
     const active = hangarSelectedSkin===sk.id;
     const c = sk.id==='skin_gold'?'255,200,80':sk.id==='skin_crimson'?'255,80,20':
               sk.id==='skin_void'?'160,80,255':'0,255,200';
-    return `<div onclick="${owned?`hangarSelectSkin('${sk.id}')`:'void 0'}" style="
+    return `<div onclick="${owned?`hangarSelectSkin('${sk.id}')`:'void 0'}" ${owned?`class="gpad-nav-item"`:''}  style="
       flex-shrink:0;width:64px;height:80px;border-radius:8px;
       cursor:${owned?'pointer':'default'};opacity:${owned?'1':'0.3'};
       border:2px solid ${active?`rgba(${c},.8)`:'rgba(255,255,255,.1)'};
@@ -15084,6 +15097,11 @@ document.addEventListener('DOMContentLoaded', scaleGame);
     '  text-shadow: 0 0 8px rgba(68,170,255,0.9) !important;',
     '  transition: all 0.1s !important;',
     '  outline: none !important;',
+    '}',
+    '.gpad-nav-item.gpad-focus {',
+    '  border: 2px solid rgba(68,170,255,0.95) !important;',
+    '  background: rgba(0,60,140,0.4) !important;',
+    '  box-shadow: 0 0 14px rgba(68,170,255,0.6) !important;',
     '}'
   ].join('');
   document.head.appendChild(s);
@@ -15147,11 +15165,20 @@ function _gpGetPad() {
 var _pausePollPrev = false;
 var _hangarPollPrev = false;
 
+var _lastActiveScreen = null;
 function _independentPoll() {
   var gp = _gpGetPad();
   if (gp) {
     var pollNow = performance.now();
     var isPlaying = typeof STATE !== 'undefined' && STATE === 'playing';
+
+    
+    var curScreen = typeof _getActiveScreen === 'function' ? _getActiveScreen() : null;
+    var curId = curScreen ? curScreen.id : null;
+    if (curId !== _lastActiveScreen) {
+      _lastActiveScreen = curId;
+      if (!isPlaying && typeof _gpadResetFocus === 'function') _gpadResetFocus();
+    }
 
     
     var pauseNow = _gpPressed(gp, GPAD_PAUSE);
@@ -15192,25 +15219,35 @@ var _menuFocusIdx = 0;
 var _menuCooldown = 0;
 var _menuCooldownMs = 200;
 
-function _getMenuBtns() {
-  var btns = [];
+function _getActiveScreen() {
   
-  var screens = ['titleScr','pauseScr','continueScr','goScr','winScr','hangarScr','shopScr','confirmModal'];
-  screens.forEach(function(id) {
-    var scr = document.getElementById(id);
-    if (!scr) return;
+  var order = ['confirmModal','continueScr','hangarScr','shopScr','pauseScr','goScr','winScr','titleScr'];
+  for (var i = 0; i < order.length; i++) {
+    var scr = document.getElementById(order[i]);
+    if (!scr) continue;
     var hidden = scr.classList.contains('hide') || scr.style.display === 'none';
-    if (hidden) return;
-    
-    scr.querySelectorAll('button').forEach(function(btn) {
-      if (btn.style.display === 'none') return;
-      if (btn.disabled) return;
-      if (btn.offsetParent === null) return;
-      
-      var skip = ['adSkipBtn','rewardedAdBtn'];
-      if (skip.indexOf(btn.id) > -1) return;
-      btns.push(btn);
-    });
+    if (!hidden) return scr;
+  }
+  return null;
+}
+
+function _getMenuBtns() {
+  var scr = _getActiveScreen();
+  if (!scr) return [];
+  var btns = [];
+  var skip = ['adSkipBtn','rewardedAdBtn'];
+  
+  scr.querySelectorAll('button').forEach(function(btn) {
+    if (btn.style.display === 'none') return;
+    if (btn.disabled) return;
+    if (btn.offsetParent === null) return;
+    if (skip.indexOf(btn.id) > -1) return;
+    btns.push(btn);
+  });
+  
+  scr.querySelectorAll('.gpad-nav-item').forEach(function(el) {
+    if (el.offsetParent === null) return;
+    btns.push(el);
   });
   return btns;
 }
