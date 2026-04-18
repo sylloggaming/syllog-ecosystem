@@ -7,29 +7,74 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
+
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:#000;color:#fff;font-family:'Inter',sans-serif;}
-nav{background:rgba(0,0,0,0.97);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:100;}
+body{background:#000;color:#fff;font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+/* Ambient background */
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 20% 20%,rgba(68,170,255,0.04) 0%,transparent 60%),radial-gradient(ellipse 60% 80% at 80% 80%,rgba(120,80,255,0.04) 0%,transparent 60%);pointer-events:none;z-index:0;}
+
+nav{background:rgba(0,0,0,0.95);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);}
 .logo{font-size:1rem;font-weight:900;letter-spacing:6px;background:linear-gradient(135deg,#fff 0%,#c0c0c0 60%,#777 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;cursor:pointer;text-decoration:none;}
 .nav-links{display:flex;gap:1.75rem;list-style:none;}
-.nav-links a{color:rgba(255,255,255,0.28);text-decoration:none;font-size:0.68rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;}
+.nav-links a{color:rgba(255,255,255,0.28);text-decoration:none;font-size:0.68rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:color 0.2s;}
 .nav-links a:hover{color:#fff;}
 .nav-btns{display:flex;gap:0.5rem;}
-.btn-g{background:transparent;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);padding:0.3rem 0.9rem;border-radius:4px;font-size:0.65rem;font-weight:600;letter-spacing:1px;cursor:pointer;text-transform:uppercase;font-family:'Inter',sans-serif;}
+.btn-g{background:transparent;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);padding:0.3rem 0.9rem;border-radius:4px;font-size:0.65rem;font-weight:600;letter-spacing:1px;cursor:pointer;text-transform:uppercase;font-family:'Inter',sans-serif;transition:all 0.2s;}
+.btn-g:hover{border-color:rgba(255,255,255,0.3);color:#fff;}
 .btn-w{background:#fff;border:none;color:#000;padding:0.3rem 0.9rem;border-radius:4px;font-size:0.65rem;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;font-family:'Inter',sans-serif;}
-.hero{padding:3rem 2rem 2rem;border-bottom:1px solid rgba(255,255,255,0.05);}
-.tag{font-size:0.56rem;letter-spacing:4px;text-transform:uppercase;color:#444;border:1px solid rgba(255,255,255,0.05);padding:0.25rem 0.85rem;border-radius:20px;display:inline-block;margin-bottom:0.9rem;}
-.htitle{font-size:2.5rem;font-weight:900;letter-spacing:-1px;background:linear-gradient(160deg,#fff 0%,#c0c0c0 60%,#888 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:0.5rem;}
-.hsub{font-size:0.78rem;color:#666;line-height:1.6;}
-.content{max-width:800px;margin:0 auto;padding:3rem 2rem;}
-.sec{margin-bottom:2.5rem;}
-.sec h2{font-size:1rem;font-weight:700;color:#fff;margin-bottom:0.85rem;padding-bottom:0.5rem;border-bottom:1px solid rgba(255,255,255,0.06);}
-.sec p{font-size:0.8rem;color:#666;line-height:1.8;margin-bottom:0.75rem;}
+
+/* Hero */
+.hero{padding:5rem 2rem 4rem;position:relative;z-index:1;text-align:center;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.58rem;letter-spacing:4px;text-transform:uppercase;color:rgba(68,170,255,0.7);border:1px solid rgba(68,170,255,0.15);background:rgba(68,170,255,0.05);padding:0.3rem 1rem;border-radius:20px;margin-bottom:1.5rem;}
+.hero-eyebrow-dot{width:5px;height:5px;border-radius:50%;background:#4af;box-shadow:0 0 6px #4af;}
+.htitle{font-size:3.5rem;font-weight:900;letter-spacing:-2px;line-height:1;margin-bottom:1rem;background:linear-gradient(160deg,#fff 0%,rgba(255,255,255,0.7) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hsub{font-size:0.85rem;color:rgba(255,255,255,0.35);line-height:1.7;max-width:500px;margin:0 auto 2rem;}
+.hero-date{display:inline-block;font-size:0.6rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.06);padding:0.25rem 0.9rem;border-radius:20px;}
+
+/* Content */
+.content{max-width:780px;margin:0 auto;padding:0 2rem 5rem;position:relative;z-index:1;}
+
+/* Section cards */
+.sec{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:2rem;margin-bottom:1.5rem;transition:border-color 0.3s;}
+.sec:hover{border-color:rgba(255,255,255,0.1);}
+.sec-header{display:flex;align-items:center;gap:0.85rem;margin-bottom:1.25rem;}
+.sec-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.sec-num{font-size:0.52rem;font-weight:700;letter-spacing:3px;color:rgba(255,255,255,0.15);text-transform:uppercase;}
+.sec h2{font-size:1rem;font-weight:700;color:#fff;letter-spacing:-0.3px;}
+.sec p{font-size:0.8rem;color:rgba(255,255,255,0.45);line-height:1.85;margin-bottom:0.75rem;}
+.sec p:last-child{margin-bottom:0;}
 .sec ul{list-style:none;margin-bottom:0.75rem;}
-.sec ul li{font-size:0.8rem;color:#666;line-height:1.8;padding-left:1rem;position:relative;}
-.sec ul li::before{content:'·';position:absolute;left:0;color:#444;}
-.hi{color:#c0c0c0;font-weight:600;}
-footer{display:flex;align-items:center;justify-content:space-between;padding:0.8rem 2rem;border-top:1px solid rgba(255,255,255,0.04);margin-top:2rem;}
+.sec ul li{font-size:0.8rem;color:rgba(255,255,255,0.45);line-height:1.85;padding-left:1.25rem;position:relative;margin-bottom:0.15rem;}
+.sec ul li::before{content:'▸';position:absolute;left:0;color:rgba(68,170,255,0.5);font-size:0.65rem;}
+.hi{color:rgba(255,255,255,0.8);font-weight:600;}
+.tag-inline{display:inline-block;background:rgba(68,170,255,0.08);border:1px solid rgba(68,170,255,0.15);color:rgba(68,170,255,0.8);font-size:0.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.15rem 0.55rem;border-radius:4px;margin:0 0.1rem;}
+
+/* Contact specific */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:0.5rem;}
+.contact-card{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:1.25rem;transition:all 0.2s;}
+.contact-card:hover{border-color:rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);}
+.contact-card-icon{font-size:1.4rem;margin-bottom:0.6rem;}
+.contact-card-label{font-size:0.58rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.2);margin-bottom:0.3rem;}
+.contact-card-value{font-size:0.82rem;font-weight:600;color:rgba(255,255,255,0.7);}
+.contact-card-sub{font-size:0.68rem;color:rgba(255,255,255,0.25);margin-top:0.2rem;}
+.contact-form{margin-top:1rem;}
+.form-row{margin-bottom:0.85rem;}
+.form-label{font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:0.4rem;display:block;}
+.form-input{width:100%;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:0.7rem 0.9rem;color:#fff;font-size:0.82rem;font-family:'Inter',sans-serif;outline:none;transition:border-color 0.2s;}
+.form-input:focus{border-color:rgba(255,255,255,0.2);}
+.form-input::placeholder{color:rgba(255,255,255,0.15);}
+textarea.form-input{resize:vertical;min-height:100px;}
+.form-btn{background:#fff;color:#000;border:none;border-radius:8px;padding:0.75rem 2rem;font-size:0.75rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;transition:opacity 0.2s;}
+.form-btn:hover{opacity:0.85;}
+
+/* Footer */
+footer{border-top:1px solid rgba(255,255,255,0.04);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1;}
+.footer-left{font-size:0.6rem;color:rgba(255,255,255,0.15);letter-spacing:1px;}
+.footer-links{display:flex;gap:1.5rem;}
+.footer-links a{font-size:0.6rem;color:rgba(255,255,255,0.2);text-decoration:none;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s;}
+.footer-links a:hover{color:rgba(255,255,255,0.5);}
+
 
 .nav-user{display:flex;align-items:center;gap:0.5rem;cursor:pointer;padding:0.28rem 0.75rem;border-radius:5px;border:1px solid rgba(255,255,255,0.08);transition:all 0.2s;background:transparent;}
 .nav-user:hover{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.15);}
@@ -81,11 +126,8 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
 </head>
 <body>
 <script>function goProfile(){window.location.href="profile.html";}</script>
-
-
-
 <nav>
-  <a href="index.html" class="logo">SYLLOG</a>
+  <a class="logo" href="index.html">SYLLOG</a>
   <ul class="nav-links">
     <li><a href="games.html">Games</a></li>
     <li><a href="universe.html">Universe</a></li>
@@ -97,24 +139,6 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
     <button class="btn-w" onclick="window.location.href='auth.html?tab=signup'">Create Account</button>
   </div>
 </nav>
-<div class="hero"><div class="tag">Legal</div><div class="htitle">Privacy Policy</div><div class="hsub">How Syllog collects, uses, and protects your personal information.</div></div>
-<div class="content"><p style="font-size:0.65rem;color:#333;margin-bottom:2rem;letter-spacing:1px;text-transform:uppercase;">Last updated: April 13, 2026</p>
-<div class="sec"><h2>1. Introduction</h2><p>Syllog Games operates the browser-based gaming platform at <span class="hi">sylloggames.com</span>. This policy explains how we collect, use, and protect your information.</p></div>
-<div class="sec"><h2>2. Information We Collect</h2><ul><li><span class="hi">Account Information</span> — Username, email, and password for your Universal Syllog ID.</li><li><span class="hi">Payment Information</span> — Processed by Stripe. We never store full card details.</li><li><span class="hi">Usage Data</span> — Game progress, XP, SC balance, and in-game activity.</li><li><span class="hi">Technical Data</span> — IP address, browser type, and cookies.</li></ul></div>
-<div class="sec"><h2>3. How We Use Your Information</h2><ul><li>Create and manage your Universal Syllog ID and player profile</li><li>Deliver and maintain the Syllog gaming platform</li><li>Process payments for Syllog Credits and Pass memberships</li><li>Track XP, achievements, and leaderboard rankings</li><li>Detect and prevent fraud and cheating</li></ul></div>
-<div class="sec"><h2>4. Data Security</h2><p>Your data is stored using <span class="hi">Supabase</span> with row-level security. We use Cloudflare WAF and SSL encryption to protect all data.</p></div>
-<div class="sec"><h2>5. Advertising</h2><p>Free-tier players may see ads via AdinPlay. Gold and Platinum subscribers have ads removed. We do not sell your personal data.</p></div>
-<div class="sec"><h2>6. Your Rights</h2><ul><li>Access the data we hold about you</li><li>Request correction of inaccurate data</li><li>Request deletion of your account and data</li></ul><p>Contact us at <span class="hi"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d2a1a7a2a2bda0a692a1abbebebdb5b5b3bfb7a1fcb1bdbf">[email&#160;protected]</a></span>.</p></div>
-<div class="sec"><h2>7. Contact</h2><p>Email: <span class="hi"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="added8ddddc2dfd9edded4c1c1c2cacaccc0c8de83cec2c0">[email&#160;protected]</a></span></p></div></div>
-<footer>
-  <div style="font-size:0.7rem;font-weight:900;letter-spacing:5px;color:#444;">SYLLOG</div>
-  <div style="display:flex;gap:1.25rem;">
-    <a href="privacy.html" style="font-size:0.58rem;color:#888;text-decoration:none;letter-spacing:1px;text-transform:uppercase;">Privacy</a>
-    <a href="terms.html" style="font-size:0.58rem;color:#888;text-decoration:none;letter-spacing:1px;text-transform:uppercase;">Terms</a>
-    <a href="contact.html" style="font-size:0.58rem;color:#888;text-decoration:none;letter-spacing:1px;text-transform:uppercase;">Contact</a>
-  </div>
-  <div style="font-size:0.58rem;color:#444;">&copy; 2026 Syllog Games.</div>
-</footer>
 <div class="dash-overlay" id="dash-overlay" onclick="toggleDash()"></div>
 <div class="dash-panel" id="dash-panel">
   <div class="dash-header">
@@ -160,541 +184,114 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
     <div class="dash-member-since" id="dash-since">Syllog Games</div>
   </div>
 </div>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>E html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Syllog — Privacy Policy</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{background:#000;color:#fff;font-family:'Inter',sans-serif;}
-nav{background:rgba(0,0,0,0.97);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:100;}
-.logo{font-size:1rem;font-weight:900;letter-spacing:6px;background:linear-gradient(135deg,#fff 0%,#c0c0c0 60%,#777 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;cursor:pointer;text-decoration:none;}
-.nav-links{display:flex;gap:1.75rem;list-style:none;}
-.nav-links a{color:rgba(255,255,255,0.28);text-decoration:none;font-size:0.68rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;}
-.nav-links a:hover{color:#fff;}
-.nav-btns{display:flex;gap:0.5rem;}
-.btn-g{background:transparent;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);padding:0.3rem 0.9rem;border-radius:4px;font-size:0.65rem;font-weight:600;letter-spacing:1px;cursor:pointer;text-transform:uppercase;font-family:'Inter',sans-serif;}
-.btn-w{background:#fff;border:none;color:#000;padding:0.3rem 0.9rem;border-radius:4px;font-size:0.65rem;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;font-family:'Inter',sans-serif;}
-.hero{padding:3rem 2rem 2rem;border-bottom:1px solid rgba(255,255,255,0.05);}
-.tag{font-size:0.56rem;letter-spacing:4px;text-transform:uppercase;color:#444;border:1px solid rgba(255,255,255,0.05);padding:0.25rem 0.85rem;border-radius:20px;display:inline-block;margin-bottom:0.9rem;}
-.htitle{font-size:2.5rem;font-weight:900;letter-spacing:-1px;background:linear-gradient(160deg,#fff 0%,#c0c0c0 60%,#888 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:0.5rem;}
-.hsub{font-size:0.78rem;color:#666;line-height:1.6;}
-.content{max-width:800px;margin:0 auto;padding:3rem 2rem;}
-.sec{margin-bottom:2.5rem;}
-.sec h2{font-size:1rem;font-weight:700;color:#fff;margin-bottom:0.85rem;padding-bottom:0.5rem;border-bottom:1px solid rgba(255,255,255,0.06);}
-.sec p{font-size:0.8rem;color:#666;line-height:1.8;margin-bottom:0.75rem;}
-.sec ul{list-style:none;margin-bottom:0.75rem;}
-.sec ul li{font-size:0.8rem;color:#666;line-height:1.8;padding-left:1rem;position:relative;}
-.sec ul li::before{content:'·';position:absolute;left:0;color:#444;}
-.hi{color:#c0c0c0;font-weight:600;}
-footer{display:flex;align-items:center;justify-content:space-between;padding:0.8rem 2rem;border-top:1px solid rgba(255,255,255,0.04);margin-top:2rem;}
-
-.nav-user{display:flex;align-items:center;gap:0.5rem;cursor:pointer;padding:0.28rem 0.75rem;border-radius:5px;border:1px solid rgba(255,255,255,0.08);transition:all 0.2s;background:transparent;}
-.nav-user:hover{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.15);}
-.nav-dot{width:6px;height:6px;border-radius:50%;background:#c0c0c0;flex-shrink:0;}
-.nav-name{font-size:0.63rem;font-weight:700;color:rgba(255,255,255,0.65);letter-spacing:1px;text-transform:uppercase;}
-.nav-arrow{font-size:0.55rem;color:rgba(255,255,255,0.2);}
-.dash-overlay{position:fixed;inset:0;background:rgba(0,0,0,0);transition:background 0.4s ease;pointer-events:none;z-index:300;}
-.dash-overlay.open{background:rgba(0,0,0,0.65);pointer-events:auto;}
-.dash-panel{position:fixed;top:0;right:0;bottom:0;width:320px;background:#060606;border-left:1px solid rgba(255,255,255,0.07);transform:translateX(100%);transition:transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94);z-index:400;display:flex;flex-direction:column;overflow-y:auto;}
-.dash-panel.open{transform:translateX(0);}
-.dash-header{padding:1.25rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.dash-header-title{font-size:0.58rem;letter-spacing:3px;text-transform:uppercase;color:#2a2a2a;}
-.dash-close{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);color:rgba(255,255,255,0.3);width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:0.75rem;display:flex;align-items:center;justify-content:center;transition:all 0.2s;font-family:'Inter',sans-serif;}
-.dash-close:hover{background:rgba(255,255,255,0.08);color:#fff;}
-.dash-avatar-section{padding:1.5rem;display:flex;flex-direction:column;align-items:center;gap:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05);}
-.dash-avatar-wrap{position:relative;width:80px;height:80px;}
-.dash-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#1a1a1a,#0a0a0a);border:2px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:2rem;overflow:hidden;}
-.dash-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
-.dash-avatar-upload{position:absolute;bottom:0;right:0;width:24px;height:24px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:2px solid #060606;transition:background 0.2s;}
-.dash-avatar-upload:hover{background:#c0c0c0;}
-.dash-avatar-upload svg{width:11px;height:11px;}
-.dash-upload-hint{font-size:0.55rem;color:#1e1e1e;letter-spacing:0.5px;}
-.dash-username{font-size:1.1rem;font-weight:900;letter-spacing:-0.3px;color:#fff;}
-.dash-id-label{font-size:0.55rem;color:#222;letter-spacing:2px;text-transform:uppercase;}
-.dash-founder{background:linear-gradient(135deg,rgba(192,192,192,0.1),rgba(255,255,255,0.05));border:1px solid rgba(192,192,192,0.2);color:#c0c0c0;font-size:0.52rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.18rem 0.6rem;border-radius:20px;}
-.dash-pass-banner{margin:1rem 1.5rem 0;background:#0a0a0a;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:0.85rem 1rem;display:flex;align-items:center;justify-content:space-between;}
-.dash-pass-label{font-size:0.5rem;color:#666;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.2rem;}
-.dash-pass-name{font-size:0.85rem;font-weight:800;color:#fff;}
-.dash-upgrade-btn{font-size:0.55rem;color:#333;letter-spacing:1px;text-transform:uppercase;background:none;border:1px solid rgba(255,255,255,0.07);padding:0.22rem 0.6rem;border-radius:4px;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;}
-.dash-upgrade-btn:hover{border-color:rgba(255,255,255,0.2);color:#fff;}
-.dash-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:1rem 1.5rem;}
-.dash-stat{background:#0a0a0a;border:1px solid rgba(255,255,255,0.05);border-radius:8px;padding:0.85rem;}
-.dash-stat-label{font-size:0.5rem;color:#2a2a2a;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.3rem;}
-.dash-stat-value{font-size:1.3rem;font-weight:900;color:#c0c0c0;letter-spacing:-0.5px;}
-.dash-stat-sub{font-size:0.52rem;color:#1e1e1e;margin-top:0.15rem;}
-.dash-divider{height:1px;background:rgba(255,255,255,0.04);margin:0 1.5rem;}
-.dash-links{padding:1rem 1.5rem;display:flex;flex-direction:column;gap:2px;}
-.dash-links-label{font-size:0.5rem;color:#222;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.4rem;}
-.dash-link-item{display:flex;align-items:center;justify-content:space-between;padding:0.55rem 0.75rem;border-radius:6px;cursor:pointer;transition:background 0.15s;}
-.dash-link-item:hover{background:rgba(255,255,255,0.03);}
-.dash-link-left{display:flex;align-items:center;gap:0.6rem;font-size:0.72rem;color:rgba(255,255,255,0.4);}
-.dash-link-icon{width:22px;height:22px;background:#0d0d0d;border:1px solid rgba(255,255,255,0.05);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;}
-.dash-link-arrow{font-size:0.6rem;color:#1e1e1e;}
-.dash-footer{padding:1rem 1.5rem;border-top:1px solid rgba(255,255,255,0.04);margin-top:auto;flex-shrink:0;}
-.dash-signout{width:100%;padding:0.6rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:6px;color:#2a2a2a;font-size:0.63rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;}
-.dash-signout:hover{background:rgba(255,60,60,0.06);border-color:rgba(255,60,60,0.15);color:#ff6b6b;}
-.dash-member-since{font-size:0.5rem;color:#181818;text-align:center;margin-top:0.6rem;letter-spacing:1px;}
-</style>
-</head>
-<body>
-
-
-
-<nav>
-  <a href="index.html" class="logo">SYLLOG</a>
-  <ul class="nav-links">
-    <li><a href="games.html">Games</a></li>
-    <li><a href="universe.html">Universe</a></li>
-    <li><a href="credits.html">Credits &amp; Passes</a></li>
-    <li><a href="leaderboards.html">Leaderboards</a></li>
-  </ul>
-  <div class="nav-btns" id="nav-btns">
-    <button class="btn-g" onclick="window.location.href='auth.html?tab=signin'">Sign In</button>
-    <button class="btn-w" onclick="window.location.href='auth.html?tab=signup'">Create Account</button>
-  </div>
-</nav>
-<div class="hero"><div class="tag">Legal</div><div class="htitle">Privacy Policy</div><div class="hsub">How Syllog collects, uses, and protects your personal information.</div></div>
-<div class="content"><p style="font-size:0.65rem;color:#333;margin-bottom:2rem;letter-spacing:1px;text-transform:uppercase;">Last updated: April 13, 2026</p>
-<div class="sec"><h2>1. Introduction</h2><p>Syllog Games operates the browser-based gaming platform at <span class="hi">sylloggames.com</span>. This policy explains how we collect, use, and protect your information.</p></div>
-<div class="sec"><h2>2. Information We Collect</h2><ul><li><span class="hi">Account Information</span> — Username, email, and password for your Universal Syllog ID.</li><li><span class="hi">Payment Information</span> — Processed by Stripe. We never store full card details.</li><li><span class="hi">Usage Data</span> — Game progress, XP, SC balance, and in-game activity.</li><li><span class="hi">Technical Data</span> — IP address, browser type, and cookies.</li></ul></div>
-<div class="sec"><h2>3. How We Use Your Information</h2><ul><li>Create and manage your Universal Syllog ID and player profile</li><li>Deliver and maintain the Syllog gaming platform</li><li>Process payments for Syllog Credits and Pass memberships</li><li>Track XP, achievements, and leaderboard rankings</li><li>Detect and prevent fraud and cheating</li></ul></div>
-<div class="sec"><h2>4. Data Security</h2><p>Your data is stored using <span class="hi">Supabase</span> with row-level security. We use Cloudflare WAF and SSL encryption to protect all data.</p></div>
-<div class="sec"><h2>5. Advertising</h2><p>Free-tier players may see ads via AdinPlay. Gold and Platinum subscribers have ads removed. We do not sell your personal data.</p></div>
-<div class="sec"><h2>6. Your Rights</h2><ul><li>Access the data we hold about you</li><li>Request correction of inaccurate data</li><li>Request deletion of your account and data</li></ul><p>Contact us at <span class="hi"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d2a1a7a2a2bda0a692a1abbebebdb5b5b3bfb7a1fcb1bdbf">[email&#160;protected]</a></span>.</p></div>
-<div class="sec"><h2>7. Contact</h2><p>Email: <span class="hi"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="added8ddddc2dfd9edded4c1c1c2cacaccc0c8de83cec2c0">[email&#160;protected]</a></span></p></div></div>
-<footer>
-  <div style="font-size:0.7rem;font-weight:900;letter-spacing:5px;color:#444;">SYLLOG</div>
-  <div style="display:flex;gap:1.25rem;">
-    <a href="privacy.html" style="font-size:0.58rem;color:#888;text-decoration:none;letter-spacing:1px;text-transform:uppercase;">Privacy</a>
-    <a href="terms.html" style="font-size:0.58rem;color:#888;text-decoration:none;letter-spacing:1px;text-transform:uppercase;">Terms</a>
-    <a href="contact.html" style="font-size:0.58rem;color:#888;text-decoration:none;letter-spacing:1px;text-transform:uppercase;">Contact</a>
-  </div>
-  <div style="font-size:0.58rem;color:#444;">&copy; 2026 Syllog Games.</div>
-</footer>
-<div class="dash-overlay" id="dash-overlay" onclick="toggleDash()"></div>
-<div class="dash-panel" id="dash-panel">
-  <div class="dash-header">
-    <div class="dash-header-title">Player Profile</div>
-    <button class="dash-close" onclick="toggleDash()">&#10005;</button>
-  </div>
-  <div class="dash-avatar-section">
-    <div class="dash-avatar-wrap">
-      <div class="dash-avatar" id="dash-avatar">&#128100;</div>
-      <label class="dash-avatar-upload" title="Upload photo">
-        <input type="file" accept="image/*" style="display:none;" id="avatar-input" onchange="uploadAvatar(this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-      </label>
-    </div>
-    <div class="dash-upload-hint">Click arrow to upload your photo</div>
-    <div class="dash-username" id="dash-username">Player</div>
-    <div class="dash-id-label">Universal Syllog ID</div>
-    <div class="dash-founder" id="dash-founder" style="display:none;">&#11088; Founder</div>
-  </div>
-  <div class="dash-pass-banner">
-    <div>
-      <div class="dash-pass-label">Current Pass</div>
-      <div class="dash-pass-name" id="dash-pass">Free Player</div>
-    </div>
-    <button class="dash-upgrade-btn" onclick="window.location.href='credits.html'">Upgrade &#8594;</button>
-  </div>
-  <div class="dash-stats">
-    <div class="dash-stat"><div class="dash-stat-label">SC Balance</div><div class="dash-stat-value" id="dash-sc">0</div><div class="dash-stat-sub">Syllog Credits</div></div>
-    <div class="dash-stat"><div class="dash-stat-label">Global XP</div><div class="dash-stat-value" id="dash-xp">0</div><div class="dash-stat-sub">Across all games</div></div>
-    <div class="dash-stat"><div class="dash-stat-label">Games Played</div><div class="dash-stat-value">1</div><div class="dash-stat-sub">Of all titles</div></div>
-    <div class="dash-stat"><div class="dash-stat-label">Achievements</div><div class="dash-stat-value">0</div><div class="dash-stat-sub">Unlocked</div></div>
-  </div>
-  <div class="dash-divider"></div>
-  <div class="dash-links">
-    <div class="dash-links-label">Quick Links</div>
-    <div class="dash-link-item" onclick="window.location.href='index.html'"><div class="dash-link-left"><div class="dash-link-icon">&#127942;</div>My Achievements</div><div class="dash-link-arrow">&#8250;</div></div>
-    <div class="dash-link-item" onclick="window.location.href='credits.html'"><div class="dash-link-left"><div class="dash-link-icon">&#128142;</div>Buy SC Credits</div><div class="dash-link-arrow">&#8250;</div></div>
-    <div class="dash-link-item" onclick="window.location.href='credits.html'"><div class="dash-link-left"><div class="dash-link-icon">&#127775;</div>Upgrade Pass</div><div class="dash-link-arrow">&#8250;</div></div>
-    <div class="dash-link-item"><div class="dash-link-left"><div class="dash-link-icon">&#9881;&#65039;</div>Settings</div><div class="dash-link-arrow">&#8250;</div></div>
-  </div>
-  <div class="dash-footer">
-    <button class="dash-signout" onclick="signOut()">Sign Out</button>
-    <div class="dash-member-since" id="dash-since">Syllog Games</div>
-  </div>
+<div class="hero">
+  <div class="hero-eyebrow"><div class="hero-eyebrow-dot"></div>Legal · Privacy</div>
+  <div class="htitle">Privacy Policy</div>
+  <div class="hsub">How Syllog collects, uses, and protects your personal information.</div>
+  <div class="hero-date">Last updated: April 13, 2026</div>
 </div>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>E html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Syllog — Privacy Policy</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{background:#000;color:#fff;font-family:'Inter',sans-serif;}
-nav{background:rgba(0,0,0,0.97);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:100;}
-.logo{font-size:1rem;font-weight:900;letter-spacing:6px;background:linear-gradient(135deg,#fff 0%,#c0c0c0 60%,#777 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;cursor:pointer;text-decoration:none;}
-.nav-links{display:flex;gap:1.75rem;list-style:none;}
-.nav-links a{color:rgba(255,255,255,0.28);text-decoration:none;font-size:0.68rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;}
-.nav-links a:hover{color:#fff;}
-.nav-btns{display:flex;gap:0.5rem;}
-.btn-g{background:transparent;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);padding:0.3rem 0.9rem;border-radius:4px;font-size:0.65rem;font-weight:600;letter-spacing:1px;cursor:pointer;text-transform:uppercase;font-family:'Inter',sans-serif;}
-.btn-w{background:#fff;border:none;color:#000;padding:0.3rem 0.9rem;border-radius:4px;font-size:0.65rem;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;font-family:'Inter',sans-serif;}
-.hero{padding:3rem 2rem 2rem;border-bottom:1px solid rgba(255,255,255,0.05);}
-.tag{font-size:0.56rem;letter-spacing:4px;text-transform:uppercase;color:#444;border:1px solid rgba(255,255,255,0.05);padding:0.25rem 0.85rem;border-radius:20px;display:inline-block;margin-bottom:0.9rem;}
-.htitle{font-size:2.5rem;font-weight:900;letter-spacing:-1px;background:linear-gradient(160deg,#fff 0%,#c0c0c0 60%,#888 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:0.5rem;}
-.hsub{font-size:0.78rem;color:#666;line-height:1.6;}
-.content{max-width:800px;margin:0 auto;padding:3rem 2rem;}
-.sec{margin-bottom:2.5rem;}
-.sec h2{font-size:1rem;font-weight:700;color:#fff;margin-bottom:0.85rem;padding-bottom:0.5rem;border-bottom:1px solid rgba(255,255,255,0.06);}
-.sec p{font-size:0.8rem;color:#666;line-height:1.8;margin-bottom:0.75rem;}
-.sec ul{list-style:none;margin-bottom:0.75rem;}
-.sec ul li{font-size:0.8rem;color:#666;line-height:1.8;padding-left:1rem;position:relative;}
-.sec ul li::before{content:'·';position:absolute;left:0;color:#444;}
-.hi{color:#c0c0c0;font-weight:600;}
-footer{display:flex;align-items:center;justify-content:space-between;padding:0.8rem 2rem;border-top:1px solid rgba(255,255,255,0.04);margin-top:2rem;}
+<div class="content">
 
-.nav-user{display:flex;align-items:center;gap:0.5rem;cursor:pointer;padding:0.28rem 0.75rem;border-radius:5px;border:1px solid rgba(255,255,255,0.08);transition:all 0.2s;background:transparent;}
-.nav-user:hover{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.15);}
-.nav-dot{width:6px;height:6px;border-radius:50%;background:#c0c0c0;flex-shrink:0;}
-.nav-name{font-size:0.63rem;font-weight:700;color:rgba(255,255,255,0.65);letter-spacing:1px;text-transform:uppercase;}
-.nav-arrow{font-size:0.55rem;color:rgba(255,255,255,0.2);}
-.dash-overlay{position:fixed;inset:0;background:rgba(0,0,0,0);transition:background 0.4s ease;pointer-events:none;z-index:300;}
-.dash-overlay.open{background:rgba(0,0,0,0.65);pointer-events:auto;}
-.dash-panel{position:fixed;top:0;right:0;bottom:0;width:320px;background:#060606;border-left:1px solid rgba(255,255,255,0.07);transform:translateX(100%);transition:transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94);z-index:400;display:flex;flex-direction:column;overflow-y:auto;}
-.dash-panel.open{transform:translateX(0);}
-.dash-header{padding:1.25rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.dash-header-title{font-size:0.58rem;letter-spacing:3px;text-transform:uppercase;color:#2a2a2a;}
-.dash-close{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);color:rgba(255,255,255,0.3);width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:0.75rem;display:flex;align-items:center;justify-content:center;transition:all 0.2s;font-family:'Inter',sans-serif;}
-.dash-close:hover{background:rgba(255,255,255,0.08);color:#fff;}
-.dash-avatar-section{padding:1.5rem;display:flex;flex-direction:column;align-items:center;gap:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05);}
-.dash-avatar-wrap{position:relative;width:80px;height:80px;}
-.dash-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#1a1a1a,#0a0a0a);border:2px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:2rem;overflow:hidden;}
-.dash-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
-.dash-avatar-upload{position:absolute;bottom:0;right:0;width:24px;height:24px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:2px solid #060606;transition:background 0.2s;}
-.dash-avatar-upload:hover{background:#c0c0c0;}
-.dash-avatar-upload svg{width:11px;height:11px;}
-.dash-upload-hint{font-size:0.55rem;color:#1e1e1e;letter-spacing:0.5px;}
-.dash-username{font-size:1.1rem;font-weight:900;letter-spacing:-0.3px;color:#fff;}
-.dash-id-label{font-size:0.55rem;color:#222;letter-spacing:2px;text-transform:uppercase;}
-.dash-founder{background:linear-gradient(135deg,rgba(192,192,192,0.1),rgba(255,255,255,0.05));border:1px solid rgba(192,192,192,0.2);color:#c0c0c0;font-size:0.52rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.18rem 0.6rem;border-radius:20px;}
-.dash-pass-banner{margin:1rem 1.5rem 0;background:#0a0a0a;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:0.85rem 1rem;display:flex;align-items:center;justify-content:space-between;}
-.dash-pass-label{font-size:0.5rem;color:#666;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.2rem;}
-.dash-pass-name{font-size:0.85rem;font-weight:800;color:#fff;}
-.dash-upgrade-btn{font-size:0.55rem;color:#333;letter-spacing:1px;text-transform:uppercase;background:none;border:1px solid rgba(255,255,255,0.07);padding:0.22rem 0.6rem;border-radius:4px;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;}
-.dash-upgrade-btn:hover{border-color:rgba(255,255,255,0.2);color:#fff;}
-.dash-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:1rem 1.5rem;}
-.dash-stat{background:#0a0a0a;border:1px solid rgba(255,255,255,0.05);border-radius:8px;padding:0.85rem;}
-.dash-stat-label{font-size:0.5rem;color:#2a2a2a;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.3rem;}
-.dash-stat-value{font-size:1.3rem;font-weight:900;color:#c0c0c0;letter-spacing:-0.5px;}
-.dash-stat-sub{font-size:0.52rem;color:#1e1e1e;margin-top:0.15rem;}
-.dash-divider{height:1px;background:rgba(255,255,255,0.04);margin:0 1.5rem;}
-.dash-links{padding:1rem 1.5rem;display:flex;flex-direction:column;gap:2px;}
-.dash-links-label{font-size:0.5rem;color:#222;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.4rem;}
-.dash-link-item{display:flex;align-items:center;justify-content:space-between;padding:0.55rem 0.75rem;border-radius:6px;cursor:pointer;transition:background 0.15s;}
-.dash-link-item:hover{background:rgba(255,255,255,0.03);}
-.dash-link-left{display:flex;align-items:center;gap:0.6rem;font-size:0.72rem;color:rgba(255,255,255,0.4);}
-.dash-link-icon{width:22px;height:22px;background:#0d0d0d;border:1px solid rgba(255,255,255,0.05);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;}
-.dash-link-arrow{font-size:0.6rem;color:#1e1e1e;}
-.dash-footer{padding:1rem 1.5rem;border-top:1px solid rgba(255,255,255,0.04);margin-top:auto;flex-shrink:0;}
-.dash-signout{width:100%;padding:0.6rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:6px;color:#2a2a2a;font-size:0.63rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;}
-.dash-signout:hover{background:rgba(255,60,60,0.06);border-color:rgba(255,60,60,0.15);color:#ff6b6b;}
-.dash-member-since{font-size:0.5rem;color:#181818;text-align:center;margin-top:0.6rem;letter-spacing:1px;}
-</style>
-</head>
-<body>
-
-
-
-<nav>
-  <a href="index.html" class="logo">SYLLOG</a>
-  <ul class="nav-links">
-    <li><a href="games.html">Games</a></li>
-    <li><a href="universe.html">Universe</a></li>
-    <li><a href="credits.html">Credits &amp; Passes</a></li>
-    <li><a href="leaderboards.html">Leaderboards</a></li>
+<div class="sec">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:rgba(68,170,255,0.08);border:1px solid rgba(68,170,255,0.15);">📋</div>
+    <div><div class="sec-num">Section 01</div><h2>Information We Collect</h2></div>
+  </div>
+  <p>When you create a Syllog account, we collect the information necessary to provide you with a personalized gaming experience. This includes:</p>
+  <ul>
+    <li><span class="hi">Account information</span> — username and email address</li>
+    <li><span class="hi">Game data</span> — scores, progress, unlocked items, and equipped loadouts</li>
+    <li><span class="hi">Transaction data</span> — Syllog Credit purchases and pass subscriptions</li>
+    <li><span class="hi">Usage data</span> — game sessions, features accessed, and platform interactions</li>
   </ul>
-  <div class="nav-btns" id="nav-btns">
-    <button class="btn-g" onclick="window.location.href='auth.html?tab=signin'">Sign In</button>
-    <button class="btn-w" onclick="window.location.href='auth.html?tab=signup'">Create Account</button>
-  </div>
-</nav>
-<div class="hero"><div class="tag">Legal</div><div class="htitle">Privacy Policy</div><div class="hsub">How Syllog collects, uses, and protects your personal information.</div></div>
-<div class="content"><p style="font-size:0.65rem;color:#333;margin-bottom:2rem;letter-spacing:1px;text-transform:uppercase;">Last updated: April 13, 2026</p>
-<div class="sec"><h2>1. Introduction</h2><p>Syllog Games operates the browser-based gaming platform at <span class="hi">sylloggames.com</span>. This policy explains how we collect, use, and protect your information.</p></div>
-<div class="sec"><h2>2. Information We Collect</h2><ul><li><span class="hi">Account Information</span> — Username, email, and password for your Universal Syllog ID.</li><li><span class="hi">Payment Information</span> — Processed by Stripe. We never store full card details.</li><li><span class="hi">Usage Data</span> — Game progress, XP, SC balance, and in-game activity.</li><li><span class="hi">Technical Data</span> — IP address, browser type, and cookies.</li></ul></div>
-<div class="sec"><h2>3. How We Use Your Information</h2><ul><li>Create and manage your Universal Syllog ID and player profile</li><li>Deliver and maintain the Syllog gaming platform</li><li>Process payments for Syllog Credits and Pass memberships</li><li>Track XP, achievements, and leaderboard rankings</li><li>Detect and prevent fraud and cheating</li></ul></div>
-<div class="sec"><h2>4. Data Security</h2><p>Your data is stored using <span class="hi">Supabase</span> with row-level security. We use Cloudflare WAF and SSL encryption to protect all data.</p></div>
-<div class="sec"><h2>5. Advertising</h2><p>Free-tier players may see ads via AdinPlay. Gold and Platinum subscribers have ads removed. We do not sell your personal data.</p></div>
-<div class="sec"><h2>6. Your Rights</h2><ul><li>Access the data we hold about you</li><li>Request correction of inaccurate data</li><li>Request deletion of your account and data</li></ul><p>Contact us at <span class="hi"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d2a1a7a2a2bda0a692a1abbebebdb5b5b3bfb7a1fcb1bdbf">[email&#160;protected]</a></span>.</p></div>
-<div class="sec"><h2>7. Contact</h2><p>Email: <span class="hi"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="added8ddddc2dfd9edded4c1c1c2cacaccc0c8de83cec2c0">[email&#160;protected]</a></span></p></div></div>
-<footer>
-  <div style="font-size:0.7rem;font-weight:900;letter-spacing:5px;color:#444;">SYLLOG</div>
-  <div style="display:flex;gap:1.25rem;">
-    <a href="privacy.html" style="font-size:0.58rem;color:#888;text-decoration:none;letter-spacing:1px;text-transform:uppercase;">Privacy</a>
-    <a href="terms.html" style="font-size:0.58rem;color:#888;text-decoration:none;letter-spacing:1px;text-transform:uppercase;">Terms</a>
-    <a href="contact.html" style="font-size:0.58rem;color:#888;text-decoration:none;letter-spacing:1px;text-transform:uppercase;">Contact</a>
-  </div>
-  <div style="font-size:0.58rem;color:#444;">&copy; 2026 Syllog Games.</div>
-</footer>
-<div class="dash-overlay" id="dash-overlay" onclick="toggleDash()"></div>
-<div class="dash-panel" id="dash-panel">
-  <div class="dash-header">
-    <div class="dash-header-title">Player Profile</div>
-    <button class="dash-close" onclick="toggleDash()">&#10005;</button>
-  </div>
-  <div class="dash-avatar-section">
-    <div class="dash-avatar-wrap">
-      <div class="dash-avatar" id="dash-avatar">&#128100;</div>
-      <label class="dash-avatar-upload" title="Upload photo">
-        <input type="file" accept="image/*" style="display:none;" id="avatar-input" onchange="uploadAvatar(this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-      </label>
-    </div>
-    <div class="dash-upload-hint">Click arrow to upload your photo</div>
-    <div class="dash-username" id="dash-username">Player</div>
-    <div class="dash-id-label">Universal Syllog ID</div>
-    <div class="dash-founder" id="dash-founder" style="display:none;">&#11088; Founder</div>
-  </div>
-  <div class="dash-pass-banner">
-    <div>
-      <div class="dash-pass-label">Current Pass</div>
-      <div class="dash-pass-name" id="dash-pass">Free Player</div>
-    </div>
-    <button class="dash-upgrade-btn" onclick="window.location.href='credits.html'">Upgrade &#8594;</button>
-  </div>
-  <div class="dash-stats">
-    <div class="dash-stat"><div class="dash-stat-label">SC Balance</div><div class="dash-stat-value" id="dash-sc">0</div><div class="dash-stat-sub">Syllog Credits</div></div>
-    <div class="dash-stat"><div class="dash-stat-label">Global XP</div><div class="dash-stat-value" id="dash-xp">0</div><div class="dash-stat-sub">Across all games</div></div>
-    <div class="dash-stat"><div class="dash-stat-label">Games Played</div><div class="dash-stat-value">1</div><div class="dash-stat-sub">Of all titles</div></div>
-    <div class="dash-stat"><div class="dash-stat-label">Achievements</div><div class="dash-stat-value">0</div><div class="dash-stat-sub">Unlocked</div></div>
-  </div>
-  <div class="dash-divider"></div>
-  <div class="dash-links">
-    <div class="dash-links-label">Quick Links</div>
-    <div class="dash-link-item" onclick="window.location.href='index.html'"><div class="dash-link-left"><div class="dash-link-icon">&#127942;</div>My Achievements</div><div class="dash-link-arrow">&#8250;</div></div>
-    <div class="dash-link-item" onclick="window.location.href='credits.html'"><div class="dash-link-left"><div class="dash-link-icon">&#128142;</div>Buy SC Credits</div><div class="dash-link-arrow">&#8250;</div></div>
-    <div class="dash-link-item" onclick="window.location.href='credits.html'"><div class="dash-link-left"><div class="dash-link-icon">&#127775;</div>Upgrade Pass</div><div class="dash-link-arrow">&#8250;</div></div>
-    <div class="dash-link-item"><div class="dash-link-left"><div class="dash-link-icon">&#9881;&#65039;</div>Settings</div><div class="dash-link-arrow">&#8250;</div></div>
-  </div>
-  <div class="dash-footer">
-    <button class="dash-signout" onclick="signOut()">Sign Out</button>
-    <div class="dash-member-since" id="dash-since">Syllog Games</div>
-  </div>
+  <p>We do not collect sensitive personal information such as government IDs, financial account numbers, or biometric data.</p>
 </div>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>E html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Syllog — Privacy Policy</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{background:#000;color:#fff;font-family:'Inter',sans-serif;}
-nav{background:rgba(0,0,0,0.97);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:100;}
-.logo{font-size:1rem;font-weight:900;letter-spacing:6px;background:linear-gradient(135deg,#fff 0%,#c0c0c0 60%,#777 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;cursor:pointer;text-decoration:none;}
-.nav-links{display:flex;gap:1.75rem;list-style:none;}
-.nav-links a{color:rgba(255,255,255,0.28);text-decoration:none;font-size:0.68rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;}
-.nav-links a:hover{color:#fff;}
-.nav-btns{display:flex;gap:0.5rem;}
-.btn-g{background:transparent;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);padding:0.3rem 0.9rem;border-radius:4px;font-size:0.65rem;font-weight:600;letter-spacing:1px;cursor:pointer;text-transform:uppercase;font-family:'Inter',sans-serif;}
-.btn-w{background:#fff;border:none;color:#000;padding:0.3rem 0.9rem;border-radius:4px;font-size:0.65rem;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;font-family:'Inter',sans-serif;}
-.hero{padding:3rem 2rem 2rem;border-bottom:1px solid rgba(255,255,255,0.05);}
-.tag{font-size:0.56rem;letter-spacing:4px;text-transform:uppercase;color:#444;border:1px solid rgba(255,255,255,0.05);padding:0.25rem 0.85rem;border-radius:20px;display:inline-block;margin-bottom:0.9rem;}
-.htitle{font-size:2.5rem;font-weight:900;letter-spacing:-1px;background:linear-gradient(160deg,#fff 0%,#c0c0c0 60%,#888 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:0.5rem;}
-.hsub{font-size:0.78rem;color:#666;line-height:1.6;}
-.content{max-width:800px;margin:0 auto;padding:3rem 2rem;}
-.sec{margin-bottom:2.5rem;}
-.sec h2{font-size:1rem;font-weight:700;color:#fff;margin-bottom:0.85rem;padding-bottom:0.5rem;border-bottom:1px solid rgba(255,255,255,0.06);}
-.sec p{font-size:0.8rem;color:#666;line-height:1.8;margin-bottom:0.75rem;}
-.sec ul{list-style:none;margin-bottom:0.75rem;}
-.sec ul li{font-size:0.8rem;color:#666;line-height:1.8;padding-left:1rem;position:relative;}
-.sec ul li::before{content:'·';position:absolute;left:0;color:#444;}
-.hi{color:#c0c0c0;font-weight:600;}
-footer{display:flex;align-items:center;justify-content:space-between;padding:0.8rem 2rem;border-top:1px solid rgba(255,255,255,0.04);margin-top:2rem;}
 
-.nav-user{display:flex;align-items:center;gap:0.5rem;cursor:pointer;padding:0.28rem 0.75rem;border-radius:5px;border:1px solid rgba(255,255,255,0.08);transition:all 0.2s;background:transparent;}
-.nav-user:hover{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.15);}
-.nav-dot{width:6px;height:6px;border-radius:50%;background:#c0c0c0;flex-shrink:0;}
-.nav-name{font-size:0.63rem;font-weight:700;color:rgba(255,255,255,0.65);letter-spacing:1px;text-transform:uppercase;}
-.nav-arrow{font-size:0.55rem;color:rgba(255,255,255,0.2);}
-.dash-overlay{position:fixed;inset:0;background:rgba(0,0,0,0);transition:background 0.4s ease;pointer-events:none;z-index:300;}
-.dash-overlay.open{background:rgba(0,0,0,0.65);pointer-events:auto;}
-.dash-panel{position:fixed;top:0;right:0;bottom:0;width:320px;background:#060606;border-left:1px solid rgba(255,255,255,0.07);transform:translateX(100%);transition:transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94);z-index:400;display:flex;flex-direction:column;overflow-y:auto;}
-.dash-panel.open{transform:translateX(0);}
-.dash-header{padding:1.25rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.dash-header-title{font-size:0.58rem;letter-spacing:3px;text-transform:uppercase;color:#2a2a2a;}
-.dash-close{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);color:rgba(255,255,255,0.3);width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:0.75rem;display:flex;align-items:center;justify-content:center;transition:all 0.2s;font-family:'Inter',sans-serif;}
-.dash-close:hover{background:rgba(255,255,255,0.08);color:#fff;}
-.dash-avatar-section{padding:1.5rem;display:flex;flex-direction:column;align-items:center;gap:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05);}
-.dash-avatar-wrap{position:relative;width:80px;height:80px;}
-.dash-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#1a1a1a,#0a0a0a);border:2px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:2rem;overflow:hidden;}
-.dash-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
-.dash-avatar-upload{position:absolute;bottom:0;right:0;width:24px;height:24px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:2px solid #060606;transition:background 0.2s;}
-.dash-avatar-upload:hover{background:#c0c0c0;}
-.dash-avatar-upload svg{width:11px;height:11px;}
-.dash-upload-hint{font-size:0.55rem;color:#1e1e1e;letter-spacing:0.5px;}
-.dash-username{font-size:1.1rem;font-weight:900;letter-spacing:-0.3px;color:#fff;}
-.dash-id-label{font-size:0.55rem;color:#222;letter-spacing:2px;text-transform:uppercase;}
-.dash-founder{background:linear-gradient(135deg,rgba(192,192,192,0.1),rgba(255,255,255,0.05));border:1px solid rgba(192,192,192,0.2);color:#c0c0c0;font-size:0.52rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.18rem 0.6rem;border-radius:20px;}
-.dash-pass-banner{margin:1rem 1.5rem 0;background:#0a0a0a;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:0.85rem 1rem;display:flex;align-items:center;justify-content:space-between;}
-.dash-pass-label{font-size:0.5rem;color:#666;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.2rem;}
-.dash-pass-name{font-size:0.85rem;font-weight:800;color:#fff;}
-.dash-upgrade-btn{font-size:0.55rem;color:#333;letter-spacing:1px;text-transform:uppercase;background:none;border:1px solid rgba(255,255,255,0.07);padding:0.22rem 0.6rem;border-radius:4px;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;}
-.dash-upgrade-btn:hover{border-color:rgba(255,255,255,0.2);color:#fff;}
-.dash-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:1rem 1.5rem;}
-.dash-stat{background:#0a0a0a;border:1px solid rgba(255,255,255,0.05);border-radius:8px;padding:0.85rem;}
-.dash-stat-label{font-size:0.5rem;color:#2a2a2a;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.3rem;}
-.dash-stat-value{font-size:1.3rem;font-weight:900;color:#c0c0c0;letter-spacing:-0.5px;}
-.dash-stat-sub{font-size:0.52rem;color:#1e1e1e;margin-top:0.15rem;}
-.dash-divider{height:1px;background:rgba(255,255,255,0.04);margin:0 1.5rem;}
-.dash-links{padding:1rem 1.5rem;display:flex;flex-direction:column;gap:2px;}
-.dash-links-label{font-size:0.5rem;color:#222;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.4rem;}
-.dash-link-item{display:flex;align-items:center;justify-content:space-between;padding:0.55rem 0.75rem;border-radius:6px;cursor:pointer;transition:background 0.15s;}
-.dash-link-item:hover{background:rgba(255,255,255,0.03);}
-.dash-link-left{display:flex;align-items:center;gap:0.6rem;font-size:0.72rem;color:rgba(255,255,255,0.4);}
-.dash-link-icon{width:22px;height:22px;background:#0d0d0d;border:1px solid rgba(255,255,255,0.05);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;}
-.dash-link-arrow{font-size:0.6rem;color:#1e1e1e;}
-.dash-footer{padding:1rem 1.5rem;border-top:1px solid rgba(255,255,255,0.04);margin-top:auto;flex-shrink:0;}
-.dash-signout{width:100%;padding:0.6rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:6px;color:#2a2a2a;font-size:0.63rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;}
-.dash-signout:hover{background:rgba(255,60,60,0.06);border-color:rgba(255,60,60,0.15);color:#ff6b6b;}
-.dash-member-since{font-size:0.5rem;color:#181818;text-align:center;margin-top:0.6rem;letter-spacing:1px;}
-</style>
-</head>
-<body>
-
-
-
-<nav>
-  <a href="index.html" class="logo">SYLLOG</a>
-  <ul class="nav-links">
-    <li><a href="games.html">Games</a></li>
-    <li><a href="universe.html">Universe</a></li>
-    <li><a href="credits.html">Credits &amp; Passes</a></li>
-    <li><a href="leaderboards.html">Leaderboards</a></li>
+<div class="sec">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:rgba(120,80,255,0.08);border:1px solid rgba(120,80,255,0.15);">🔍</div>
+    <div><div class="sec-num">Section 02</div><h2>How We Use Your Information</h2></div>
+  </div>
+  <p>Your data is used exclusively to operate and improve the Syllog platform:</p>
+  <ul>
+    <li>Authenticating your identity and maintaining your session across games</li>
+    <li>Syncing your progress, scores, and inventory across devices</li>
+    <li>Processing Syllog Credit and pass transactions securely</li>
+    <li>Displaying your rank on leaderboards and in-game stats</li>
+    <li>Sending platform announcements (you can opt out at any time)</li>
   </ul>
-  <div class="nav-btns" id="nav-btns">
-    <button class="btn-g" onclick="window.location.href='auth.html?tab=signin'">Sign In</button>
-    <button class="btn-w" onclick="window.location.href='auth.html?tab=signup'">Create Account</button>
-  </div>
-</nav>
-<div class="hero"><div class="tag">Legal</div><div class="htitle">Privacy Policy</div><div class="hsub">How Syllog collects, uses, and protects your personal information.</div></div>
-<div class="content"><p style="font-size:0.65rem;color:#333;margin-bottom:2rem;letter-spacing:1px;text-transform:uppercase;">Last updated: April 13, 2026</p>
-<div class="sec"><h2>1. Introduction</h2><p>Syllog Games operates the browser-based gaming platform at <span class="hi">sylloggames.com</span>. This policy explains how we collect, use, and protect your information.</p></div>
-<div class="sec"><h2>2. Information We Collect</h2><ul><li><span class="hi">Account Information</span> — Username, email, and password for your Universal Syllog ID.</li><li><span class="hi">Payment Information</span> — Processed by Stripe. We never store full card details.</li><li><span class="hi">Usage Data</span> — Game progress, XP, SC balance, and in-game activity.</li><li><span class="hi">Technical Data</span> — IP address, browser type, and cookies.</li></ul></div>
-<div class="sec"><h2>3. How We Use Your Information</h2><ul><li>Create and manage your Universal Syllog ID and player profile</li><li>Deliver and maintain the Syllog gaming platform</li><li>Process payments for Syllog Credits and Pass memberships</li><li>Track XP, achievements, and leaderboard rankings</li><li>Detect and prevent fraud and cheating</li></ul></div>
-<div class="sec"><h2>4. Data Security</h2><p>Your data is stored using <span class="hi">Supabase</span> with row-level security. We use Cloudflare WAF and SSL encryption to protect all data.</p></div>
-<div class="sec"><h2>5. Advertising</h2><p>Free-tier players may see ads via AdinPlay. Gold and Platinum subscribers have ads removed. We do not sell your personal data.</p></div>
-<div class="sec"><h2>6. Your Rights</h2><ul><li>Access the data we hold about you</li><li>Request correction of inaccurate data</li><li>Request deletion of your account and data</li></ul><p>Contact us at <span class="hi"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d2a1a7a2a2bda0a692a1abbebebdb5b5b3bfb7a1fcb1bdbf">[email&#160;protected]</a></span>.</p></div>
-<div class="sec"><h2>7. Contact</h2><p>Email: <span class="hi"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="added8ddddc2dfd9edded4c1c1c2cacaccc0c8de83cec2c0">[email&#160;protected]</a></span></p></div></div>
-<footer>
-  <div style="font-size:0.7rem;font-weight:900;letter-spacing:5px;color:#444;">SYLLOG</div>
-  <div style="display:flex;gap:1.25rem;">
-    <a href="privacy.html" style="font-size:0.58rem;color:#888;text-decoration:none;letter-spacing:1px;text-transform:uppercase;">Privacy</a>
-    <a href="terms.html" style="font-size:0.58rem;color:#888;text-decoration:none;letter-spacing:1px;text-transform:uppercase;">Terms</a>
-    <a href="contact.html" style="font-size:0.58rem;color:#888;text-decoration:none;letter-spacing:1px;text-transform:uppercase;">Contact</a>
-  </div>
-  <div style="font-size:0.58rem;color:#444;">&copy; 2026 Syllog Games.</div>
-</footer>
-<div class="dash-overlay" id="dash-overlay" onclick="toggleDash()"></div>
-<div class="dash-panel" id="dash-panel">
-  <div class="dash-header">
-    <div class="dash-header-title">Player Profile</div>
-    <button class="dash-close" onclick="toggleDash()">&#10005;</button>
-  </div>
-  <div class="dash-avatar-section">
-    <div class="dash-avatar-wrap">
-      <div class="dash-avatar" id="dash-avatar">&#128100;</div>
-      <label class="dash-avatar-upload" title="Upload photo">
-        <input type="file" accept="image/*" style="display:none;" id="avatar-input" onchange="uploadAvatar(this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-      </label>
-    </div>
-    <div class="dash-upload-hint">Click arrow to upload your photo</div>
-    <div class="dash-username" id="dash-username">Player</div>
-    <div class="dash-id-label">Universal Syllog ID</div>
-    <div class="dash-founder" id="dash-founder" style="display:none;">&#11088; Founder</div>
-  </div>
-  <div class="dash-pass-banner">
-    <div>
-      <div class="dash-pass-label">Current Pass</div>
-      <div class="dash-pass-name" id="dash-pass">Free Player</div>
-    </div>
-    <button class="dash-upgrade-btn" onclick="window.location.href='credits.html'">Upgrade &#8594;</button>
-  </div>
-  <div class="dash-stats">
-    <div class="dash-stat"><div class="dash-stat-label">SC Balance</div><div class="dash-stat-value" id="dash-sc">0</div><div class="dash-stat-sub">Syllog Credits</div></div>
-    <div class="dash-stat"><div class="dash-stat-label">Global XP</div><div class="dash-stat-value" id="dash-xp">0</div><div class="dash-stat-sub">Across all games</div></div>
-    <div class="dash-stat"><div class="dash-stat-label">Games Played</div><div class="dash-stat-value">1</div><div class="dash-stat-sub">Of all titles</div></div>
-    <div class="dash-stat"><div class="dash-stat-label">Achievements</div><div class="dash-stat-value">0</div><div class="dash-stat-sub">Unlocked</div></div>
-  </div>
-  <div class="dash-divider"></div>
-  <div class="dash-links">
-    <div class="dash-links-label">Quick Links</div>
-    <div class="dash-link-item" onclick="window.location.href='index.html'"><div class="dash-link-left"><div class="dash-link-icon">&#127942;</div>My Achievements</div><div class="dash-link-arrow">&#8250;</div></div>
-    <div class="dash-link-item" onclick="window.location.href='credits.html'"><div class="dash-link-left"><div class="dash-link-icon">&#128142;</div>Buy SC Credits</div><div class="dash-link-arrow">&#8250;</div></div>
-    <div class="dash-link-item" onclick="window.location.href='credits.html'"><div class="dash-link-left"><div class="dash-link-icon">&#127775;</div>Upgrade Pass</div><div class="dash-link-arrow">&#8250;</div></div>
-    <div class="dash-link-item"><div class="dash-link-left"><div class="dash-link-icon">&#9881;&#65039;</div>Settings</div><div class="dash-link-arrow">&#8250;</div></div>
-  </div>
-  <div class="dash-footer">
-    <button class="dash-signout" onclick="signOut()">Sign Out</button>
-    <div class="dash-member-since" id="dash-since">Syllog Games</div>
-  </div>
+  <p>We do not sell your data, use it for advertising profiling, or share it with third parties for their own marketing purposes.</p>
 </div>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+
+<div class="sec">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:rgba(0,200,120,0.08);border:1px solid rgba(0,200,120,0.15);">🤝</div>
+    <div><div class="sec-num">Section 03</div><h2>Data Sharing</h2></div>
+  </div>
+  <p>Syllog does not sell, trade, or rent your personal information to third parties. We may share limited data only in the following circumstances:</p>
+  <ul>
+    <li><span class="hi">Payment processing</span> — transaction data is shared with our secure payment processor solely to complete purchases</li>
+    <li><span class="hi">Legal compliance</span> — we may disclose information if required by law or to protect the rights and safety of our users</li>
+    <li><span class="hi">Platform infrastructure</span> — anonymized, aggregated usage data may be shared with infrastructure providers to optimize performance</li>
+  </ul>
+</div>
+
+<div class="sec">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:rgba(255,180,0,0.08);border:1px solid rgba(255,180,0,0.15);">🔒</div>
+    <div><div class="sec-num">Section 04</div><h2>Data Security</h2></div>
+  </div>
+  <p>We take the security of your data seriously. Your account information is protected using <span class="hi">row-level access controls</span> — meaning each player can only access their own data, not anyone else's.</p>
+  <p>All data is transmitted over <span class="hi">SSL-encrypted connections</span> and stored on <span class="hi">enterprise-grade secure servers</span> protected by firewall and intrusion detection systems. We regularly review and update our security practices to maintain a safe environment for all players.</p>
+  <p>While no system can guarantee absolute security, we take every reasonable precaution to protect your information from unauthorized access, disclosure, or misuse.</p>
+</div>
+
+<div class="sec">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:rgba(255,80,80,0.08);border:1px solid rgba(255,80,80,0.15);">⚖️</div>
+    <div><div class="sec-num">Section 05</div><h2>Your Rights</h2></div>
+  </div>
+  <p>You have full control over your personal data. At any time, you may:</p>
+  <ul>
+    <li>Request a copy of all data we hold about you</li>
+    <li>Correct inaccurate information in your profile</li>
+    <li>Delete your account and all associated data permanently</li>
+    <li>Opt out of non-essential communications</li>
+  </ul>
+  <p>To exercise any of these rights, contact us at <span class="hi">support@sylloggames.com</span>. We will respond within 30 days.</p>
+</div>
+
+<div class="sec">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:rgba(68,170,255,0.08);border:1px solid rgba(68,170,255,0.15);">🔄</div>
+    <div><div class="sec-num">Section 06</div><h2>Policy Updates</h2></div>
+  </div>
+  <p>We may update this Privacy Policy as the platform evolves. When we make significant changes, we will notify you via email or a prominent notice on the platform. Continued use of Syllog after notification constitutes acceptance of the updated policy.</p>
+  <p>Questions? Reach us at <span class="hi">support@sylloggames.com</span>.</p>
+</div>
+
+</div>
+<footer>
+  <div class="footer-left">© 2026 Syllog Games. All rights reserved.</div>
+  <div class="footer-links">
+    <a href="privacy.html">Privacy</a>
+    <a href="terms.html">Terms</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</footer>
+<script>
 (function(){
   var _u='https://mlstrkqefyqoczusewrm.supabase.co';
   var _k='sb_publishable_g7_BTnT_cTqaIk19Kx9FEw_iP1I7Df7';
   var _sb=supabase.createClient(_u,_k);
-  var _user=null;
-
-  function showNav(p){
-    var nb=document.getElementById('nav-btns');
-    if(!nb)return;
-    nb.innerHTML='<button class="nav-user" onclick="goProfile();"><div class="nav-dot"></div><div class="nav-name">'+p.username+'</div><div class="nav-arrow">&#9660;</div></button>';
-  }
-
-  function fillDash(p){
-    document.getElementById('dash-username').textContent=p.username;
-    document.getElementById('dash-sc').textContent=(p.sc_balance||0).toLocaleString();
-    document.getElementById('dash-xp').textContent=(p.global_xp||0).toLocaleString();
-    var pn={free:'Free Player',gold:'Gold Pass',platinum:'Platinum Pass'};
-    document.getElementById('dash-pass').textContent=pn[p.pass_tier]||'Free Player';
-    if(p.is_founder)document.getElementById('dash-founder').style.display='inline-block';
-    if(p.avatar_url)document.getElementById('dash-avatar').innerHTML='<img src="'+p.avatar_url+'" alt="avatar">';
-    var d=new Date(p.created_at);
-    var m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    document.getElementById('dash-since').textContent='Member since '+m[d.getMonth()]+' '+d.getFullYear()+' · Syllog Games';
-  }
-
-  _sb.auth.getSession().then(function(r){
-    if(!r.data||!r.data.session)return;
-    _user=r.data.session.user;
-    _sb.from('players').select('*').eq('id',_user.id).single().then(function(res){
-      if(!res.data)return;
-      showNav(res.data);
-      fillDash(res.data);
-    });
-  });
-
+  function showNav(p){var nb=document.getElementById('nav-btns');if(!nb)return;nb.innerHTML='<button class="nav-user" onclick="goProfile();"><div class="nav-dot"></div><div class="nav-name">'+p.username+'</div><div class="nav-arrow">&#9660;</div></button>';}
+  function fillDash(p){var u=document.getElementById('dash-username');if(u)u.textContent=p.username;var s=document.getElementById('dash-sc');if(s)s.textContent=(p.sc_balance||0).toLocaleString();var x=document.getElementById('dash-xp');if(x)x.textContent=(p.global_xp||0).toLocaleString();var pt=document.getElementById('dash-pass');var pn={free:'Free Player',gold:'Gold Pass',platinum:'Platinum Pass'};if(pt)pt.textContent=pn[p.pass_tier]||'Free Player';var av=document.getElementById('dash-avatar');if(av&&p.avatar_url)av.innerHTML='<img src="'+p.avatar_url+'" alt="avatar">';var ds=document.getElementById('dash-since');if(ds){var d=new Date(p.created_at);var m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];ds.textContent='Member since '+m[d.getMonth()]+' '+d.getFullYear()+' · Syllog Games';}}
+  _sb.auth.getSession().then(function(r){if(!r||!r.data||!r.data.session)return;var user=r.data.session.user;_sb.from('players').select('*').eq('id',user.id).single().then(function(res){if(!res.data)return;showNav(res.data);fillDash(res.data);});});
   var _open=false;
-  window.toggleDash=function(){
-    _open=!_open;
-    document.getElementById('dash-panel').classList.toggle('open',_open);
-    document.getElementById('dash-overlay').classList.toggle('open',_open);
-    document.body.style.overflow=_open?'hidden':'';
-  };
-
-  window.signOut=function(){
-    _sb.auth.signOut().then(function(){window.location.reload();});
-  };
-
-  window.uploadAvatar=async function(input){
-    if(!input.files||!input.files[0]||!_user)return;
-    var file=input.files[0];
-    var ext=file.name.split('.').pop();
-    var path='avatars/'+_user.id+'.'+ext;
-    var reader=new FileReader();
-    reader.onload=function(e){document.getElementById('dash-avatar').innerHTML='<img src="'+e.target.result
+  window.toggleDash=function(){_open=!_open;var dp=document.getElementById('dash-panel');if(dp)dp.classList.toggle('open',_open);var ov=document.getElementById('dash-overlay');if(ov)ov.classList.toggle('open',_open);};
+  window.signOut=function(){_sb.auth.signOut().then(function(){window.location.reload();});};
+  
+})();
+</script>
+</body>
+</html>
