@@ -976,7 +976,7 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
   </script>
 
 <script>(function(){var _x1=document.createElement('div');_x1.style.display='none';document.body&&document.body.appendChild(_x1);})();</script>
-<script>(function(){var _cfg={v:'3.4.7',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
+<script>(function(){var _cfg={v:'3.5.0',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
 </head>
 <body>
 
@@ -15104,23 +15104,26 @@ document.addEventListener('DOMContentLoaded', scaleGame);
   if(ind) ind.className = 'visible state-scanning';
   if(dot) dot.className = 'gpad-dot scanning';
   if(txt){ txt.className='gpad-txt scanning'; txt.textContent='SCANNING FOR CONTROLLER...'; }
+})();
+
+window.addEventListener('load', function(){
   window._gpadNoControllerTimer = setTimeout(function(){
     
-    var connected = window._gpadSystemReady && window._gpadConnected;
-    if(!connected){
-      var ind2=document.getElementById('gpad-indicator');
-      var dot2=document.getElementById('gpad-dot');
-      var txt2=document.getElementById('gpad-txt');
-      if(ind2) ind2.className='visible state-detecting';
-      if(dot2){dot2.className='gpad-dot';dot2.style.cssText='width:9px;height:9px;border-radius:50%;flex-shrink:0;background:rgba(255,255,255,0.2);box-shadow:none;animation:none;';}
-      if(txt2){txt2.className='gpad-txt detecting';txt2.style.color='rgba(255,255,255,0.2)';txt2.textContent='NO CONTROLLER DETECTED';}
+    if(!window._gpadConnected){
+      var ind=document.getElementById('gpad-indicator');
+      var dot=document.getElementById('gpad-dot');
+      var txt=document.getElementById('gpad-txt');
+      if(ind) ind.className='visible state-detecting';
+      if(dot){dot.className='gpad-dot';dot.style.cssText='width:9px;height:9px;border-radius:50%;flex-shrink:0;background:rgba(255,255,255,0.18);box-shadow:none;animation:none;';}
+      if(txt){txt.className='gpad-txt detecting';txt.style.color='rgba(255,255,255,0.18)';txt.textContent='NO CONTROLLER DETECTED';}
+      
       setTimeout(function(){
-        var ind3=document.getElementById('gpad-indicator');
-        if(ind3) ind3.classList.remove('visible');
-      },3000);
+        var ind2=document.getElementById('gpad-indicator');
+        if(ind2) ind2.classList.remove('visible');
+      }, 3000);
     }
-  }, 8000);
-})();
+  }, 9000); 
+});
 </script>
 
 <script>
@@ -15336,8 +15339,10 @@ function _independentPoll() {
   
   if (ind) {
     if (isPlaying) {
+      
       ind.classList.add('gameplay-hidden');
     } else {
+      
       ind.classList.remove('gameplay-hidden');
     }
   }
