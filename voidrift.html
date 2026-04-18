@@ -982,7 +982,7 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
   </script>
 
 <script>(function(){var _x1=document.createElement('div');_x1.style.display='none';document.body&&document.body.appendChild(_x1);})();</script>
-<script>(function(){var _cfg={v:'3.2.3',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
+<script>(function(){var _cfg={v:'3.3.0',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
 </head>
 <body>
 
@@ -15082,18 +15082,25 @@ document.addEventListener('DOMContentLoaded', scaleGame);
 var _gpadIndex = null;
 var _gpadConnected = false;
 var _gpadPrevButtons = [];
-var GPAD_DEADZONE = 0.18;
+var _gpadPrevButtonsMenu = [];
+var GPAD_DEADZONE = 0.25;
 
-var GPAD_BTN = {
-  SHOOT:   1,   
-  BOMB:    2,   
-  PAUSE:   9,   
-  HANGAR:  5,   
-};
+
+var GPAD_SHOOT  = 0;   
+var GPAD_HANGAR = 5;   
+var GPAD_PAUSE  = 16;  
+var GPAD_DPAD_U = 12;
+var GPAD_DPAD_D = 13;
+var GPAD_DPAD_L = 14;
+var GPAD_DPAD_R = 15;
+var GPAD_CONFIRM= 0;   
+
 
 window.addEventListener('gamepadconnected', function(e) {
   _gpadIndex = e.gamepad.index;
   _gpadConnected = true;
+  _gpadPrevButtons = [];
+  _gpadPrevButtonsMenu = [];
   var ind = document.getElementById('gpad-indicator');
   if (ind) ind.classList.add('visible');
 });
@@ -15103,94 +15110,153 @@ window.addEventListener('gamepaddisconnected', function(e) {
     _gpadIndex = null;
     _gpadConnected = false;
     _gpadPrevButtons = [];
+    _gpadPrevButtonsMenu = [];
     var ind = document.getElementById('gpad-indicator');
     if (ind) ind.classList.remove('visible');
   }
 });
 
-function _gpadButtonPressed(gp, btnIndex) {
-  if (!gp.buttons[btnIndex]) return false;
-  return gp.buttons[btnIndex].pressed || gp.buttons[btnIndex].value > 0.5;
+function _gpPressed(gp, idx) {
+  if (!gp || !gp.buttons[idx]) return false;
+  return gp.buttons[idx].pressed || gp.buttons[idx].value > 0.5;
 }
 
-function _gpadButtonJustPressed(gp, btnIndex) {
-  var now = _gpadButtonPressed(gp, btnIndex);
-  var prev = _gpadPrevButtons[btnIndex] || false;
+function _gpJustPressed(gp, idx, prevArr) {
+  var now = _gpPressed(gp, idx);
+  var prev = prevArr[idx] || false;
   return now && !prev;
 }
 
+function _gpGetPad() {
+  if (!_gpadConnected || _gpadIndex === null) return null;
+  var pads = navigator.getGamepads ? navigator.getGamepads() : [];
+  return pads[_gpadIndex] || null;
+}
 
-function _gpadPausePoll() {
-  if (!_gpadConnected || _gpadIndex === null) { requestAnimationFrame(_gpadPausePoll); return; }
-  var gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
-  var gp = gamepads[_gpadIndex];
+
+var _pausePollPrev = false;
+function _pausePoll() {
+  var gp = _gpGetPad();
   if (gp) {
-    var pauseNow = _gpadButtonPressed(gp, GPAD_BTN.PAUSE);
-    var pausePrev = _gpadPrevButtons[GPAD_BTN.PAUSE] || false;
-    if (pauseNow && !pausePrev) {
+    var now = _gpPressed(gp, GPAD_PAUSE);
+    if (now && !_pausePollPrev) {
       if (typeof togglePause === 'function' &&
           typeof STATE !== 'undefined' &&
           (STATE === 'playing' || STATE === 'paused')) {
         togglePause();
       }
     }
-    
-    if (!_gpadPrevButtons) _gpadPrevButtons = [];
-    _gpadPrevButtons[GPAD_BTN.PAUSE] = pauseNow;
+    _pausePollPrev = now;
   }
-  requestAnimationFrame(_gpadPausePoll);
+  requestAnimationFrame(_pausePoll);
+}
+requestAnimationFrame(_pausePoll);
+
+
+var _menuFocusIdx = 0;
+var _menuCooldown = 0;
+var _menuCooldownMs = 200;
+
+function _getMenuBtns() {
+  var btns = [];
+  var screens = ['titleScr','pauseScr','continueScr','goScr','winScr','hangarScr','shopScr'];
+  screens.forEach(function(id) {
+    var scr = document.getElementById(id);
+    if (!scr) return;
+    var hidden = scr.classList.contains('hide') || scr.style.display === 'none';
+    if (hidden) return;
+    scr.querySelectorAll('button.btn, button#hangarEquipBtn, button#continueBtn, button#startBtn, button#shopBtn').forEach(function(btn) {
+      if (btn.style.display !== 'none' && !btn.disabled && btn.offsetParent !== null) {
+        btns.push(btn);
+      }
+    });
+  });
+  return btns;
 }
 
-requestAnimationFrame(_gpadPausePoll);
+function _setMenuFocus(btns, idx) {
+  document.querySelectorAll('.gpad-focus').forEach(function(el) { el.classList.remove('gpad-focus'); });
+  if (!btns.length) return;
+  _menuFocusIdx = ((idx % btns.length) + btns.length) % btns.length;
+  btns[_menuFocusIdx].classList.add('gpad-focus');
+  btns[_menuFocusIdx].scrollIntoView({ block: 'nearest' });
+}
 
-function readGamepad() {
-  if (!_gpadConnected || _gpadIndex === null) return;
-  var gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
-  var gp = gamepads[_gpadIndex];
-  if (!gp) return;
-
-  var axisX = gp.axes[0] || 0;
-  var axisY = gp.axes[1] || 0;
-  if (Math.abs(axisX) < GPAD_DEADZONE) axisX = 0;
-  if (Math.abs(axisY) < GPAD_DEADZONE) axisY = 0;
-
-  
-  
+function _menuNav(gp, now) {
   var isPlaying = typeof STATE !== 'undefined' && STATE === 'playing';
+  if (isPlaying) return;
+  if (now - _menuCooldown < _menuCooldownMs) return;
+
+  var btns = _getMenuBtns();
+  if (!btns.length) return;
 
   
-  var dUp    = _gpadButtonPressed(gp, 12);
-  var dDown  = _gpadButtonPressed(gp, 13);
-  var dLeft  = _gpadButtonPressed(gp, 14);
-  var dRight = _gpadButtonPressed(gp, 15);
+  if (!document.querySelector('.gpad-focus')) _setMenuFocus(btns, 0);
 
-  
-  if (typeof keys !== 'undefined') {
-    keys['_gpadLeft']  = axisX < -GPAD_DEADZONE || dLeft;
-    keys['_gpadRight'] = axisX >  GPAD_DEADZONE || dRight;
-    keys['_gpadUp']    = axisY < -GPAD_DEADZONE || dUp;
-    keys['_gpadDown']  = axisY >  GPAD_DEADZONE || dDown;
-    keys['_gpadAxisX'] = axisX;
-    keys['_gpadAxisY'] = axisY;
-    
+  var dUp   = _gpPressed(gp, GPAD_DPAD_U) || (gp.axes[1] || 0) < -0.5;
+  var dDown = _gpPressed(gp, GPAD_DPAD_D) || (gp.axes[1] || 0) >  0.5;
+  var dLeft = _gpPressed(gp, GPAD_DPAD_L) || (gp.axes[0] || 0) < -0.5;
+  var dRight= _gpPressed(gp, GPAD_DPAD_R) || (gp.axes[0] || 0) >  0.5;
+
+  if (dUp || dLeft) {
+    _setMenuFocus(btns, _menuFocusIdx - 1);
+    _menuCooldown = now;
+  } else if (dDown || dRight) {
+    _setMenuFocus(btns, _menuFocusIdx + 1);
+    _menuCooldown = now;
   }
 
   
-  if (isPlaying) {
-    if (_gpadButtonPressed(gp, GPAD_BTN.SHOOT)) {
-      if (typeof keys !== 'undefined') keys['Space'] = true;
+  if (_gpJustPressed(gp, GPAD_CONFIRM, _gpadPrevButtonsMenu)) {
+    var focused = document.querySelector('.gpad-focus');
+    if (focused) focused.click();
+  }
+}
+
+
+function readGamepad() {
+  var gp = _gpGetPad();
+  if (!gp) return;
+
+  var isPlaying = typeof STATE !== 'undefined' && STATE === 'playing';
+  var now = performance.now();
+
+  
+  if (isPlaying && typeof keys !== 'undefined') {
+    var axisX = gp.axes[0] || 0;
+    var axisY = gp.axes[1] || 0;
+    if (Math.abs(axisX) < GPAD_DEADZONE) axisX = 0;
+    if (Math.abs(axisY) < GPAD_DEADZONE) axisY = 0;
+
+    keys['_gpadLeft']  = axisX < -GPAD_DEADZONE || _gpPressed(gp, GPAD_DPAD_L);
+    keys['_gpadRight'] = axisX >  GPAD_DEADZONE || _gpPressed(gp, GPAD_DPAD_R);
+    keys['_gpadUp']    = axisY < -GPAD_DEADZONE || _gpPressed(gp, GPAD_DPAD_U);
+    keys['_gpadDown']  = axisY >  GPAD_DEADZONE || _gpPressed(gp, GPAD_DPAD_D);
+    keys['_gpadAxisX'] = axisX;
+    keys['_gpadAxisY'] = axisY;
+
+    
+    if (_gpPressed(gp, GPAD_SHOOT)) {
+      keys['Space'] = true;
     } else {
-      if (typeof keys !== 'undefined') keys['Space'] = false;
+      keys['Space'] = false;
+    }
+
+    
+    if (_gpJustPressed(gp, 2, _gpadPrevButtons)) {
+      if (typeof useBomb === 'function') useBomb();
+    }
+  } else {
+    
+    if (typeof keys !== 'undefined') {
+      keys['_gpadLeft'] = keys['_gpadRight'] = keys['_gpadUp'] = keys['_gpadDown'] = false;
+      keys['_gpadAxisX'] = keys['_gpadAxisY'] = 0;
+      keys['Space'] = false;
     }
   }
 
   
-  if (_gpadButtonJustPressed(gp, GPAD_BTN.BOMB)) {
-    if (typeof useBomb === 'function' && isPlaying) useBomb();
-  }
-
-  
-  if (_gpadButtonJustPressed(gp, GPAD_BTN.HANGAR)) {
+  if (_gpJustPressed(gp, GPAD_HANGAR, _gpadPrevButtons)) {
     if (typeof openHangar === 'function' &&
         typeof STATE !== 'undefined' &&
         (STATE === 'title' || STATE === 'paused')) {
@@ -15199,92 +15265,12 @@ function readGamepad() {
   }
 
   
-  var _now = performance.now();
-  _gpadMenuNav(gp, _now);
-  _gpadMenuConfirm(gp);
+  _menuNav(gp, now);
 
   
-  _gpadPrevButtons = gp.buttons.map(function(b) {
-    return b.pressed || b.value > 0.5;
-  });
+  _gpadPrevButtons = gp.buttons.map(function(b) { return b.pressed || b.value > 0.5; });
+  _gpadPrevButtonsMenu = gp.buttons.map(function(b) { return b.pressed || b.value > 0.5; });
 }
-
-var _gpadMenuFocusIdx = 0;
-var _gpadDpadCooldown = 0;
-var _gpadDpadDelay = 220; 
-
-function _getVisibleMenuButtons() {
-  
-  var btns = [];
-  document.querySelectorAll('.btn, .scr button, #hangarEquipBtn').forEach(function(btn) {
-    if (btn.offsetParent !== null && btn.style.display !== 'none' && !btn.disabled) {
-      
-      var scr = btn.closest('.scr, #hangarScr, #shopScr, #continueScr');
-      if (scr) {
-        var isVisible = !scr.classList.contains('hide') && scr.style.display !== 'none';
-        if (isVisible) btns.push(btn);
-      }
-    }
-  });
-  return btns;
-}
-
-function _gpadSetFocus(btns, idx) {
-  
-  document.querySelectorAll('.gpad-focus').forEach(function(el) {
-    el.classList.remove('gpad-focus');
-  });
-  if (!btns.length) return;
-  
-  _gpadMenuFocusIdx = ((idx % btns.length) + btns.length) % btns.length;
-  btns[_gpadMenuFocusIdx].classList.add('gpad-focus');
-}
-
-function _gpadMenuNav(gp, now) {
-  
-  var isPlaying = typeof STATE !== 'undefined' && STATE === 'playing';
-  if (isPlaying) return;
-
-  var btns = _getVisibleMenuButtons();
-  if (!btns.length) return;
-
-  
-  var hasFocus = document.querySelector('.gpad-focus');
-  if (!hasFocus) _gpadSetFocus(btns, 0);
-
-  
-  if (now - _gpadDpadCooldown < _gpadDpadDelay) return;
-
-  var dUp    = _gpadButtonPressed(gp, 12);
-  var dDown  = _gpadButtonPressed(gp, 13);
-  var dLeft  = _gpadButtonPressed(gp, 14);
-  var dRight = _gpadButtonPressed(gp, 15);
-  var axisY  = gp.axes[1] || 0;
-  var axisX  = gp.axes[0] || 0;
-
-  var moved = false;
-  if (dUp || dLeft || axisY < -0.5 || axisX < -0.5) {
-    _gpadSetFocus(btns, _gpadMenuFocusIdx - 1);
-    moved = true;
-  } else if (dDown || dRight || axisY > 0.5 || axisX > 0.5) {
-    _gpadSetFocus(btns, _gpadMenuFocusIdx + 1);
-    moved = true;
-  }
-
-  if (moved) _gpadDpadCooldown = now;
-}
-
-function _gpadMenuConfirm(gp) {
-  
-  var isPlaying = typeof STATE !== 'undefined' && STATE === 'playing';
-  if (isPlaying) return;
-  var confirmJust = _gpadButtonJustPressed(gp, 0) || _gpadButtonJustPressed(gp, 1);
-  if (confirmJust) {
-    var focused = document.querySelector('.gpad-focus');
-    if (focused) focused.click();
-  }
-}
-
 
 </script>
 
