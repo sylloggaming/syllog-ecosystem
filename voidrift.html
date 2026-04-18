@@ -975,7 +975,7 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
   </script>
 
 <script>(function(){var _x1=document.createElement('div');_x1.style.display='none';document.body&&document.body.appendChild(_x1);})();</script>
-<script>(function(){var _cfg={v:'3.3.3',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
+<script>(function(){var _cfg={v:'3.3.4',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
 </head>
 <body>
 
@@ -15077,11 +15077,13 @@ document.addEventListener('DOMContentLoaded', scaleGame);
   var s = document.createElement('style');
   s.textContent = [
     '.gpad-focus {',
-    '  border: 3px solid rgba(0,232,122,0.95) !important;',
-    '  background: rgba(0,232,122,0.15) !important;',
-    '  color: #fff !important;',
-    '  box-shadow: 0 0 20px rgba(0,232,122,0.5) !important;',
+    '  border: 2px solid rgba(68,170,255,0.95) !important;',
+    '  background: rgba(0,80,180,0.25) !important;',
+    '  color: #4af !important;',
+    '  box-shadow: 0 0 16px rgba(68,170,255,0.7), 0 0 32px rgba(0,120,255,0.3), inset 0 0 8px rgba(68,170,255,0.1) !important;',
+    '  text-shadow: 0 0 8px rgba(68,170,255,0.9) !important;',
     '  transition: all 0.1s !important;',
+    '  outline: none !important;',
     '}'
   ].join('');
   document.head.appendChild(s);
@@ -15192,16 +15194,22 @@ var _menuCooldownMs = 200;
 
 function _getMenuBtns() {
   var btns = [];
-  var screens = ['titleScr','pauseScr','continueScr','goScr','winScr','hangarScr','shopScr'];
+  
+  var screens = ['titleScr','pauseScr','continueScr','goScr','winScr','hangarScr','shopScr','confirmModal'];
   screens.forEach(function(id) {
     var scr = document.getElementById(id);
     if (!scr) return;
     var hidden = scr.classList.contains('hide') || scr.style.display === 'none';
     if (hidden) return;
-    scr.querySelectorAll('button.btn, button#hangarEquipBtn, button#continueBtn, button#startBtn, button#shopBtn').forEach(function(btn) {
-      if (btn.style.display !== 'none' && !btn.disabled && btn.offsetParent !== null) {
-        btns.push(btn);
-      }
+    
+    scr.querySelectorAll('button').forEach(function(btn) {
+      if (btn.style.display === 'none') return;
+      if (btn.disabled) return;
+      if (btn.offsetParent === null) return;
+      
+      var skip = ['adSkipBtn','rewardedAdBtn'];
+      if (skip.indexOf(btn.id) > -1) return;
+      btns.push(btn);
     });
   });
   return btns;
