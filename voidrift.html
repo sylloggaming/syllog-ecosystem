@@ -976,7 +976,7 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
   </script>
 
 <script>(function(){var _x1=document.createElement('div');_x1.style.display='none';document.body&&document.body.appendChild(_x1);})();</script>
-<script>(function(){var _cfg={v:'3.5.2',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
+<script>(function(){var _cfg={v:'3.5.3',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
 </head>
 <body>
 
@@ -15098,6 +15098,16 @@ document.addEventListener('DOMContentLoaded', scaleGame);
 <script>
 
 
+</script>
+
+<script>
+
+var _gpadIndex = null;
+window._gpadConnected = false;
+var _gpadPrevButtons = [];
+var _gpadPrevButtonsMenu = [];
+var GPAD_DEADZONE = 0.25;
+
 window._gpadNoControllerTimer = setTimeout(function(){
   if(!window._gpadConnected){
     var ind=document.getElementById('gpad-indicator');
@@ -15112,15 +15122,6 @@ window._gpadNoControllerTimer = setTimeout(function(){
     }, 3000);
   }
 }, 9000);
-</script>
-
-<script>
-
-var _gpadIndex = null;
-window._gpadConnected = false;
-var _gpadPrevButtons = [];
-var _gpadPrevButtonsMenu = [];
-var GPAD_DEADZONE = 0.25;
 window._gpadSystemReady = true; 
 
 var GPAD_PROFILES = {
