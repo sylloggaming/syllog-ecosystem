@@ -982,7 +982,7 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
   </script>
 
 <script>(function(){var _x1=document.createElement('div');_x1.style.display='none';document.body&&document.body.appendChild(_x1);})();</script>
-<script>(function(){var _cfg={v:'3.3.0',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
+<script>(function(){var _cfg={v:'3.3.1',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
 </head>
 <body>
 
@@ -15135,22 +15135,46 @@ function _gpGetPad() {
 
 
 var _pausePollPrev = false;
-function _pausePoll() {
+var _hangarPollPrev = false;
+
+function _independentPoll() {
   var gp = _gpGetPad();
   if (gp) {
-    var now = _gpPressed(gp, GPAD_PAUSE);
-    if (now && !_pausePollPrev) {
+    var now = performance.now();
+
+    
+    var pauseNow = _gpPressed(gp, GPAD_PAUSE);
+    if (pauseNow && !_pausePollPrev) {
       if (typeof togglePause === 'function' &&
           typeof STATE !== 'undefined' &&
           (STATE === 'playing' || STATE === 'paused')) {
         togglePause();
       }
     }
-    _pausePollPrev = now;
+    _pausePollPrev = pauseNow;
+
+    
+    var hangarNow = _gpPressed(gp, GPAD_HANGAR);
+    if (hangarNow && !_hangarPollPrev) {
+      if (typeof openHangar === 'function' &&
+          typeof STATE !== 'undefined' &&
+          (STATE === 'title' || STATE === 'paused')) {
+        openHangar();
+      }
+    }
+    _hangarPollPrev = hangarNow;
+
+    
+    var isPlaying = typeof STATE !== 'undefined' && STATE === 'playing';
+    if (!isPlaying) {
+      _menuNav(gp, now);
+      
+      _gpadPrevButtonsMenu = gp.buttons.map(function(b) { return b.pressed || b.value > 0.5; });
+    }
   }
-  requestAnimationFrame(_pausePoll);
+  requestAnimationFrame(_independentPoll);
 }
-requestAnimationFrame(_pausePoll);
+requestAnimationFrame(_independentPoll);
 
 
 var _menuFocusIdx = 0;
@@ -15256,16 +15280,6 @@ function readGamepad() {
   }
 
   
-  if (_gpJustPressed(gp, GPAD_HANGAR, _gpadPrevButtons)) {
-    if (typeof openHangar === 'function' &&
-        typeof STATE !== 'undefined' &&
-        (STATE === 'title' || STATE === 'paused')) {
-      openHangar();
-    }
-  }
-
-  
-  _menuNav(gp, now);
 
   
   _gpadPrevButtons = gp.buttons.map(function(b) { return b.pressed || b.value > 0.5; });
