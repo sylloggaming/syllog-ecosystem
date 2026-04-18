@@ -976,7 +976,7 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
   </script>
 
 <script>(function(){var _x1=document.createElement('div');_x1.style.display='none';document.body&&document.body.appendChild(_x1);})();</script>
-<script>(function(){var _cfg={v:'3.5.0',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
+<script>(function(){var _cfg={v:'3.5.1',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
 </head>
 <body>
 
@@ -15097,33 +15097,21 @@ document.addEventListener('DOMContentLoaded', scaleGame);
 </div>
 <script>
 
-(function(){
-  var ind = document.getElementById('gpad-indicator');
-  var dot = document.getElementById('gpad-dot');
-  var txt = document.getElementById('gpad-txt');
-  if(ind) ind.className = 'visible state-scanning';
-  if(dot) dot.className = 'gpad-dot scanning';
-  if(txt){ txt.className='gpad-txt scanning'; txt.textContent='SCANNING FOR CONTROLLER...'; }
-})();
 
-window.addEventListener('load', function(){
-  window._gpadNoControllerTimer = setTimeout(function(){
-    
-    if(!window._gpadConnected){
-      var ind=document.getElementById('gpad-indicator');
-      var dot=document.getElementById('gpad-dot');
-      var txt=document.getElementById('gpad-txt');
-      if(ind) ind.className='visible state-detecting';
-      if(dot){dot.className='gpad-dot';dot.style.cssText='width:9px;height:9px;border-radius:50%;flex-shrink:0;background:rgba(255,255,255,0.18);box-shadow:none;animation:none;';}
-      if(txt){txt.className='gpad-txt detecting';txt.style.color='rgba(255,255,255,0.18)';txt.textContent='NO CONTROLLER DETECTED';}
-      
-      setTimeout(function(){
-        var ind2=document.getElementById('gpad-indicator');
-        if(ind2) ind2.classList.remove('visible');
-      }, 3000);
-    }
-  }, 9000); 
-});
+window._gpadNoControllerTimer = setTimeout(function(){
+  if(!window._gpadConnected){
+    var ind=document.getElementById('gpad-indicator');
+    var dot=document.getElementById('gpad-dot');
+    var txt=document.getElementById('gpad-txt');
+    if(ind) ind.className='visible state-detecting';
+    if(dot){dot.className='gpad-dot';dot.style.background='rgba(255,255,255,0.15)';dot.style.boxShadow='none';dot.style.animation='none';}
+    if(txt){txt.className='gpad-txt';txt.style.color='rgba(255,255,255,0.15)';txt.textContent='NO CONTROLLER DETECTED';}
+    setTimeout(function(){
+      var ind2=document.getElementById('gpad-indicator');
+      if(ind2) ind2.classList.remove('visible');
+    }, 3000);
+  }
+}, 9000);
 </script>
 
 <script>
