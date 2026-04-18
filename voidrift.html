@@ -976,7 +976,7 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
   </script>
 
 <script>(function(){var _x1=document.createElement('div');_x1.style.display='none';document.body&&document.body.appendChild(_x1);})();</script>
-<script>(function(){var _cfg={v:'3.5.5',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
+<script>(function(){var _cfg={v:'3.5.6',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
 </head>
 <body>
 
@@ -15014,6 +15014,10 @@ window.addEventListener('load', async function() {
           console.log('[VoidRift] Run state synced from Supabase: level', sbState.level);
         }
       }
+      
+      
+      if (typeof updateTitleScreen === 'function') updateTitleScreen();
+      if (typeof _refreshContinueBtnWhenReady === 'function') _refreshContinueBtnWhenReady();
 
       
       await _sb.from('players').update({ last_seen: new Date().toISOString() }).eq('id', _sbUser.id);
