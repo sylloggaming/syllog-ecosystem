@@ -975,7 +975,7 @@ canvas{position:absolute;top:0;left:0;width:480px;height:700px;}
   </script>
 
 <script>(function(){var _x1=document.createElement('div');_x1.style.display='none';document.body&&document.body.appendChild(_x1);})();</script>
-<script>(function(){var _cfg={v:'3.3.5',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
+<script>(function(){var _cfg={v:'3.4.0',b:'vr_core',t:Date.now()};window._vrc=_cfg;})();</script>
 </head>
 <body>
 
@@ -12890,15 +12890,20 @@ let hangarOpen = false;
 
 function _gpadResetFocus() {
   document.querySelectorAll('.gpad-focus').forEach(function(el) { el.classList.remove('gpad-focus'); });
-  if (typeof _menuFocusIdx !== 'undefined') _menuFocusIdx = 0;
-  if (typeof _menuCooldown !== 'undefined') _menuCooldown = 0;
+  _menuFocusIdx = 0;
+  _menuCooldown = 0;
   
-  setTimeout(function() {
+  var attempts = 0;
+  function tryFocus() {
     var btns = typeof _getMenuBtns === 'function' ? _getMenuBtns() : [];
-    if (btns.length) {
-      if (typeof _setMenuFocus === 'function') _setMenuFocus(btns, 0);
+    if (btns.length > 0) {
+      _setMenuFocus(btns, 0);
+    } else if (attempts < 20) {
+      attempts++;
+      setTimeout(tryFocus, 30);
     }
-  }, 50);
+  }
+  setTimeout(tryFocus, 0);
 }
 let hangarSelectedShip = '';
 let hangarSelectedSkin = '';
@@ -15113,15 +15118,79 @@ var _gpadPrevButtons = [];
 var _gpadPrevButtonsMenu = [];
 var GPAD_DEADZONE = 0.25;
 
+var GPAD_PROFILES = {
+  
+  nintendo: {
+    SHOOT:   0,   
+    BOMB:    2,   
+    HANGAR:  5,   
+    PAUSE:   16,  
+    CONFIRM: 0,
+    DPAD_U:  12, DPAD_D: 13, DPAD_L: 14, DPAD_R: 15,
+    AXIS_X:  0,  AXIS_Y: 1
+  },
+  
+  xbox: {
+    SHOOT:   0,   
+    BOMB:    2,   
+    HANGAR:  5,   
+    PAUSE:   9,   
+    CONFIRM: 0,
+    DPAD_U:  12, DPAD_D: 13, DPAD_L: 14, DPAD_R: 15,
+    AXIS_X:  0,  AXIS_Y: 1
+  },
+  
+  playstation: {
+    SHOOT:   0,   
+    BOMB:    2,   
+    HANGAR:  5,   
+    PAUSE:   9,   
+    CONFIRM: 0,
+    DPAD_U:  12, DPAD_D: 13, DPAD_L: 14, DPAD_R: 15,
+    AXIS_X:  0,  AXIS_Y: 1
+  },
+  
+  generic: {
+    SHOOT:   0,
+    BOMB:    2,
+    HANGAR:  5,
+    PAUSE:   9,
+    CONFIRM: 0,
+    DPAD_U:  12, DPAD_D: 13, DPAD_L: 14, DPAD_R: 15,
+    AXIS_X:  0,  AXIS_Y: 1
+  }
+};
 
-var GPAD_SHOOT  = 0;   
-var GPAD_HANGAR = 5;   
-var GPAD_PAUSE  = 16;  
-var GPAD_DPAD_U = 12;
-var GPAD_DPAD_D = 13;
-var GPAD_DPAD_L = 14;
-var GPAD_DPAD_R = 15;
-var GPAD_CONFIRM= 0;   
+var _gpadProfile = GPAD_PROFILES.generic;
+
+function _detectControllerProfile(id) {
+  id = (id || '').toLowerCase();
+  if (id.indexOf('057e') > -1 || id.indexOf('nintendo') > -1 ||
+      id.indexOf('wii') > -1 || id.indexOf('switch') > -1 ||
+      id.indexOf('pro controller') > -1) {
+    return GPAD_PROFILES.nintendo;
+  }
+  if (id.indexOf('playstation') > -1 || id.indexOf('dualshock') > -1 ||
+      id.indexOf('dualsense') > -1 || id.indexOf('054c') > -1 ||
+      id.indexOf('sony') > -1) {
+    return GPAD_PROFILES.playstation;
+  }
+  if (id.indexOf('xbox') > -1 || id.indexOf('xinput') > -1 ||
+      id.indexOf('045e') > -1 || id.indexOf('microsoft') > -1) {
+    return GPAD_PROFILES.xbox;
+  }
+  return GPAD_PROFILES.generic;
+}
+
+
+var GPAD_SHOOT  = _gpadProfile.SHOOT;
+var GPAD_HANGAR = _gpadProfile.HANGAR;
+var GPAD_PAUSE  = _gpadProfile.PAUSE;
+var GPAD_CONFIRM= _gpadProfile.CONFIRM;
+var GPAD_DPAD_U = _gpadProfile.DPAD_U;
+var GPAD_DPAD_D = _gpadProfile.DPAD_D;
+var GPAD_DPAD_L = _gpadProfile.DPAD_L;
+var GPAD_DPAD_R = _gpadProfile.DPAD_R;
 
 
 window.addEventListener('gamepadconnected', function(e) {
@@ -15129,6 +15198,16 @@ window.addEventListener('gamepadconnected', function(e) {
   _gpadConnected = true;
   _gpadPrevButtons = [];
   _gpadPrevButtonsMenu = [];
+  
+  _gpadProfile = _detectControllerProfile(e.gamepad.id);
+  GPAD_SHOOT  = _gpadProfile.SHOOT;
+  GPAD_HANGAR = _gpadProfile.HANGAR;
+  GPAD_PAUSE  = _gpadProfile.PAUSE;
+  GPAD_CONFIRM= _gpadProfile.CONFIRM;
+  GPAD_DPAD_U = _gpadProfile.DPAD_U;
+  GPAD_DPAD_D = _gpadProfile.DPAD_D;
+  GPAD_DPAD_L = _gpadProfile.DPAD_L;
+  GPAD_DPAD_R = _gpadProfile.DPAD_R;
   var ind = document.getElementById('gpad-indicator');
   if (ind) ind.classList.add('visible');
 });
