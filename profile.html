@@ -247,7 +247,7 @@ footer a:hover{color:#fff;}
       <div class="game-stats-card">
         <div class="gsc-header">
           <div class="gsc-icon">&#127756;</div>
-          <div class="gsc-name">Void Rift</div>
+          <div class="gsc-name">Void Vexon</div>
           <div class="gsc-live">&#9679; Live</div>
         </div>
         <div class="gsc-grid">
@@ -261,7 +261,7 @@ footer a:hover{color:#fff;}
         <div class="lb-rank-num" id="lb-rank-num">—</div>
         <div class="lb-rank-info">
           <div class="lb-rank-title" id="lb-rank-title">Leaderboard Position</div>
-          <div class="lb-rank-sub" id="lb-rank-sub">Play Void Rift to earn your rank</div>
+          <div class="lb-rank-sub" id="lb-rank-sub">Play Void Vexon to earn your rank</div>
         </div>
         <button class="lb-rank-cta" onclick="window.location.href='leaderboards.html'">View Leaderboards &#8250;</button>
       </div>
@@ -277,11 +277,11 @@ footer a:hover{color:#fff;}
     <!-- INVENTORY -->
     <div class="tab-content" id="tab-inventory">
       <div class="inv-section">
-        <div class="inv-section-hdr">&#128640; Ships &mdash; Void Rift</div>
+        <div class="inv-section-hdr">&#128640; Ships &mdash; Void Vexon</div>
         <div class="inv-grid" id="inv-ships"></div>
       </div>
       <div class="inv-section">
-        <div class="inv-section-hdr">&#10024; Skins &mdash; Void Rift</div>
+        <div class="inv-section-hdr">&#10024; Skins &mdash; Void Vexon</div>
         <div class="inv-grid" id="inv-skins"></div>
       </div>
     </div>
@@ -376,7 +376,7 @@ var _user=null,_player=null;
 
 var SHIPS={'default':{name:'Void Fighter',icon:'&#128640;'},'nova':{name:'Nova Interceptor',icon:'&#9993;&#65039;'},'dread':{name:'Dread Destroyer',icon:'&#128308;'},'phantom':{name:'Phantom Elite',icon:'&#9889;'}};
 var SKINS={'skin_aurora':{name:'Aurora',icon:'&#127752;'},'skin_inferno':{name:'Inferno',icon:'&#128293;'},'skin_nebula':{name:'Nebula',icon:'&#127756;'},'skin_celestial':{name:'Celestial Wraith',icon:'&#10024;'}};
-var UNI_ITEMS={'deep_lore':{name:'Deep Lore Archive',icon:'&#128274;',type:'Lore'},'comic_vr_001':{name:'Void Rift: Issue #1',icon:'&#128214;',type:'Comic'},'comic_vr_002':{name:'Void Rift: Issue #2',icon:'&#128214;',type:'Comic'},'music_vr_ost1':{name:'Void Rift OST Vol.1',icon:'&#127926;',type:'Music'},'book_vr_bible':{name:'The Void Bible',icon:'&#128218;',type:'Book'}};
+var UNI_ITEMS={'deep_lore':{name:'Deep Lore Archive',icon:'&#128274;',type:'Lore'},'comic_vr_001':{name:'Void Vexon: Issue #1',icon:'&#128214;',type:'Comic'},'comic_vr_002':{name:'Void Vexon: Issue #2',icon:'&#128214;',type:'Comic'},'music_vr_ost1':{name:'Void Vexon OST Vol.1',icon:'&#127926;',type:'Music'},'book_vr_bible':{name:'The Void Bible',icon:'&#128218;',type:'Book'}};
 
 function fmt(n){if(!n||n===0)return'0';if(n>=1000000)return(n/1000000).toFixed(1)+'M';if(n>=1000)return(n/1000).toFixed(1)+'K';return n.toLocaleString();}
 function fmtS(n){if(!n||n===0)return'—';if(n>=1000000)return(n/1000000).toFixed(1)+'M';if(n>=1000)return(n/1000).toFixed(0)+'K';return String(n).padStart(6,'0');}
@@ -475,7 +475,7 @@ async function loadRank(p){
   else if(rank===2)el.className='lb-rank-num r2';
   else if(rank===3)el.className='lb-rank-num r3';
   document.getElementById('lb-rank-title').textContent=rank<=3?'&#127942; Championship Contender':'Global Rank #'+rank;
-  document.getElementById('lb-rank-sub').textContent='Void Rift High Score: '+fmtS(p.voidrift_highscore)+' pts';
+  document.getElementById('lb-rank-sub').textContent='Void Vexon High Score: '+fmtS(p.voidrift_highscore)+' pts';
   document.getElementById('gs-rank').textContent='#'+rank;
   document.getElementById('p-rank-meta').style.display='';
   document.getElementById('p-rank-val').textContent='#'+rank;
