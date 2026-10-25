@@ -1,10 +1,27 @@
 ﻿/Voidvexon.html
   Cache-Control: no-store, no-cache, must-revalidate, max-age=0
   CDN-Cache-Control: no-store
+  Cloudflare-CDN-Cache-Control: no-store
+
+/Voidvexon
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+  CDN-Cache-Control: no-store
+  Cloudflare-CDN-Cache-Control: no-store
+
+/Voidvexon-live.html
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+  CDN-Cache-Control: no-store
+  Cloudflare-CDN-Cache-Control: no-store
 
 /Voidvexon-play.html
   Cache-Control: no-store, no-cache, must-revalidate, max-age=0
   CDN-Cache-Control: no-store
+  Cloudflare-CDN-Cache-Control: no-store
 
 /voidrift.html
   Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+  CDN-Cache-Control: no-store
+
+/vv-build.txt
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+  CDN-Cache-Control: no-store
