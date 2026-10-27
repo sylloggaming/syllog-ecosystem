@@ -231,13 +231,18 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
 .video-close-btn{position:absolute;top:-2.5rem;right:0;background:transparent;border:none;color:rgba(255,255,255,0.35);cursor:pointer;font-size:0.72rem;letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;gap:0.4rem;transition:color 0.2s;font-family:'Inter',sans-serif;}
 .video-close-btn:hover{color:#fff;}
 .video-frame{width:100%;aspect-ratio:16/9;background:#080808;border:1px solid rgba(255,255,255,0.06);border-radius:12px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
-.vf-scan{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.12),transparent);animation:vscan 3s linear infinite;}
+.video-frame.has-video{background:#000;}
+.vf-scan{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.12),transparent);animation:vscan 3s linear infinite;z-index:3;pointer-events:none;}
+.video-frame.has-video .vf-scan{display:none;}
 @keyframes vscan{0%{top:0%}100%{top:100%}}
 .vf-content{text-align:center;position:relative;z-index:2;}
+.vf-content.is-hidden{display:none;}
 .vf-icon{font-size:4rem;margin-bottom:1rem;opacity:0.25;}
 .vf-game{font-size:1.4rem;font-weight:900;color:rgba(255,255,255,0.12);margin-bottom:0.5rem;letter-spacing:-0.5px;}
 .vf-label{font-size:0.65rem;color:rgba(255,255,255,0.15);letter-spacing:3px;text-transform:uppercase;margin-bottom:1.5rem;}
 .vf-hint{font-size:0.6rem;color:rgba(255,255,255,0.08);letter-spacing:2px;text-transform:uppercase;}
+.vf-player{display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;z-index:2;}
+.vf-player.is-on{display:block;}
 
 .settings-panel{position:fixed;top:0;right:0;bottom:0;width:340px;background:#060606;border-left:1px solid rgba(255,255,255,0.07);transform:translateX(100%);transition:transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94);z-index:500;display:flex;flex-direction:column;overflow-y:auto;}
 .settings-panel.open{transform:translateX(0);}
@@ -564,13 +569,14 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
 <div class="video-modal" id="video-modal">
   <div class="video-inner">
     <button class="video-close-btn" onclick="closeTrailer()">&#10005; &nbsp;Close</button>
-    <div class="video-frame">
+    <div class="video-frame" id="video-frame">
       <div class="vf-scan"></div>
-      <div class="vf-content">
+      <video class="vf-player" id="vf-player" controls playsinline preload="metadata"></video>
+      <div class="vf-content" id="vf-content">
         <div class="vf-icon" id="vf-icon"></div>
         <div class="vf-game" id="vf-game"></div>
         <div class="vf-label">Official Trailer</div>
-        <div class="vf-hint">Replace this with your YouTube embed or video file</div>
+        <div class="vf-hint">Trailer coming soon</div>
       </div>
     </div>
   </div>
@@ -1038,14 +1044,39 @@ function closeDetail() {
 document.getElementById('detail-overlay').addEventListener('click', function(e) { if (e.target === this) closeDetail(); });
 
 // TRAILER
+var TRAILERS = {
+  'Void Vexon': 'https://syllog-cdn.b-cdn.net/Void-Rift/Trailer/Void%20Vexon%20Trailer.mp4'
+};
 function openTrailer(name, icon) {
+  var frame = document.getElementById('video-frame');
+  var player = document.getElementById('vf-player');
+  var content = document.getElementById('vf-content');
+  var src = TRAILERS[name] || '';
   document.getElementById('vf-game').textContent = name;
   document.getElementById('vf-icon').textContent = icon;
+  if (src) {
+    frame.classList.add('has-video');
+    content.classList.add('is-hidden');
+    player.classList.add('is-on');
+    if (player.getAttribute('src') !== src) player.setAttribute('src', src);
+    player.currentTime = 0;
+    var playPromise = player.play();
+    if (playPromise && playPromise.catch) playPromise.catch(function() {});
+  } else {
+    frame.classList.remove('has-video');
+    content.classList.remove('is-hidden');
+    player.classList.remove('is-on');
+    player.removeAttribute('src');
+    player.load();
+  }
   document.getElementById('video-modal').classList.add('open');
   document.body.style.overflow = 'hidden';
   clearInterval(fTimer);
 }
 function closeTrailer() {
+  var player = document.getElementById('vf-player');
+  player.pause();
+  player.currentTime = 0;
   document.getElementById('video-modal').classList.remove('open');
   document.body.style.overflow = '';
   fStartProgress();
