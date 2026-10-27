@@ -39,46 +39,37 @@ nav{background:rgba(0,0,0,0.96);border-bottom:1px solid rgba(255,255,255,0.06);p
 .s:last-child{border-right:none;}
 .sn{font-size:1.1rem;font-weight:800;color:#b0b0b0;}
 .sl{font-size:0.52rem;color:#888;letter-spacing:2px;text-transform:uppercase;}
+/* True 1920×480 design canvas, uniformly scaled to viewport — layout always matches the clean banner, at any zoom/width. */
 .featured-section{position:relative;width:100%;overflow:hidden;border-bottom:1px solid rgba(255,255,255,0.06);}
-.featured-slides{display:flex;transition:transform 0.85s cubic-bezier(0.25,0.46,0.45,0.94);will-change:transform;}
-/* Locked 1920×480 featured frame. All banner type/spacing in px (no rem/vw) so zoom cannot enlarge copy vs art. */
-.fslide{min-width:100%;height:480px;max-height:480px;min-height:480px;position:relative;display:flex;align-items:flex-end;overflow:hidden;flex-shrink:0;}
+.featured-scaler{width:100%;aspect-ratio:1920/480;overflow:hidden;position:relative;}
+.featured-canvas{position:absolute;top:0;left:0;width:1920px;height:480px;transform-origin:top left;will-change:transform;overflow:hidden;}
+.featured-slides{display:flex;width:1920px;height:480px;transition:transform 0.85s cubic-bezier(0.25,0.46,0.45,0.94);will-change:transform;}
+.fslide{width:1920px;min-width:1920px;height:480px;position:relative;display:flex;align-items:flex-end;overflow:hidden;flex-shrink:0;}
 .fslide-bg{position:absolute;inset:0;background-position:center;background-repeat:no-repeat;background-size:cover;}
 .fslide-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
-.fslide-icon{font-size:144px;opacity:0.07;position:absolute;right:32px;top:50%;transform:translateY(-50%);pointer-events:none;filter:blur(2px);z-index:1;}
+.fslide-icon{font-size:144px;opacity:0.07;position:absolute;right:48px;top:50%;transform:translateY(-50%);pointer-events:none;filter:blur(2px);z-index:1;}
 .fslide-overlay-l{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.78) 0%,rgba(0,0,0,.5) 26%,rgba(0,0,0,.18) 46%,transparent 60%);z-index:2;}
 .fslide-overlay-b{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.55) 100%);z-index:2;}
-.fslide-content{position:relative;z-index:5;padding:38px 48px 36px;width:100%;max-width:520px;box-sizing:border-box;}
-.fslide-meta{display:flex;flex-direction:column;gap:10px;width:100%;max-width:480px;}
-.fslide-eyebrow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
-.fslide-tag{font-size:9px;letter-spacing:3px;text-transform:uppercase;padding:4px 12px;border-radius:20px;font-weight:700;}
+.fslide-content{position:relative;z-index:5;padding:48px 64px 44px;width:560px;max-width:560px;box-sizing:border-box;}
+.fslide-meta{display:flex;flex-direction:column;gap:12px;width:100%;}
+.fslide-eyebrow{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.fslide-tag{font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:5px 14px;border-radius:20px;font-weight:700;}
 .tag-live{background:rgba(255,255,255,0.12);color:#fff;border:1px solid rgba(255,255,255,0.2);}
 .tag-coming{background:rgba(255,200,0,0.12);color:#ffc800;border:1px solid rgba(255,200,0,0.2);}
 .tag-phase{background:rgba(192,192,192,0.12);color:#c0c0c0;border:1px solid rgba(192,192,192,0.2);}
-.fslide-label{font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:2px;text-transform:uppercase;}
-.fslide-title{font-size:46px;font-weight:900;letter-spacing:-1.4px;line-height:1;color:#fff;max-width:100%;}
+.fslide-label{font-size:11px;color:rgba(255,255,255,0.25);letter-spacing:2px;text-transform:uppercase;}
+.fslide-title{font-size:56px;font-weight:900;letter-spacing:-1.6px;line-height:1;color:#fff;max-width:100%;}
 .fslide-title .silver{background:linear-gradient(135deg,#fff 0%,#c0c0c0 60%,#888 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.fslide-desc{font-size:13px;color:rgba(255,255,255,0.38);line-height:1.55;max-width:100%;}
-.fslide-ftags{display:flex;gap:6px;flex-wrap:wrap;}
-.fftag{font-size:9px;padding:3px 10px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase;}
-.fslide-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
-.fslide-play{background:#fff;color:#000;border:none;padding:10px 26px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background 0.2s;white-space:nowrap;font-family:'Inter',sans-serif;}
+.fslide-desc{font-size:15px;color:rgba(255,255,255,0.38);line-height:1.55;max-width:480px;}
+.fslide-ftags{display:flex;gap:8px;flex-wrap:wrap;}
+.fftag{font-size:11px;padding:4px 12px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase;}
+.fslide-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+.fslide-play{background:#fff;color:#000;border:none;padding:12px 28px;border-radius:6px;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background 0.2s;white-space:nowrap;font-family:'Inter',sans-serif;}
 .fslide-play:hover{background:#c0c0c0;}
 .fslide-play svg{width:14px;height:14px;flex-shrink:0;}
-.fslide-trailer{background:transparent;color:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.12);padding:10px 20px;border-radius:6px;font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;white-space:nowrap;font-family:'Inter',sans-serif;}
+.fslide-trailer{background:transparent;color:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.12);padding:12px 22px;border-radius:6px;font-size:13px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;white-space:nowrap;font-family:'Inter',sans-serif;}
 .fslide-trailer:hover{color:#fff;border-color:rgba(255,255,255,0.3);}
-.fslide-inactive{background:rgba(255,255,255,0.04);color:#333;border:none;padding:10px 22px;border-radius:6px;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:default;white-space:nowrap;font-family:'Inter',sans-serif;}
-@media (max-width:720px){
-  .fslide{height:280px;min-height:280px;max-height:280px;}
-  .fslide-content{padding:18px 20px 20px;max-width:100%;}
-  .fslide-meta{gap:8px;max-width:100%;}
-  .fslide-title{font-size:28px;letter-spacing:-1px;}
-  .fslide-desc{font-size:12px;}
-  .fslide-tag,.fftag{font-size:8px;}
-  .fslide-label{font-size:9px;}
-  .fslide-play,.fslide-trailer,.fslide-inactive{font-size:10px;padding:8px 14px;}
-  .fslide-bg-img{object-position:70% center;}
-}
+.fslide-inactive{background:rgba(255,255,255,0.04);color:#333;border:none;padding:12px 24px;border-radius:6px;font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:default;white-space:nowrap;font-family:'Inter',sans-serif;}
 .fnav-l{position:absolute;left:1.25rem;top:50%;transform:translateY(-50%);z-index:20;}
 .fnav-r{position:absolute;right:1.25rem;top:50%;transform:translateY(-50%);z-index:20;}
 .fnav-btn{width:38px;height:38px;border-radius:50%;background:rgba(0,0,0,0.45);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.4);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.9rem;transition:all 0.2s;}
@@ -313,52 +304,56 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
   </div>
 </section>
 
-<div class="featured-section">
-  <div class="featured-slides" id="fslides">
-    <div class="fslide">
-      <div class="fslide-bg" style="background:#050818;"></div>
-      <img class="fslide-bg-img" src="https://syllog-cdn.b-cdn.net/Void-Rift/Banners/Main%20Homepage%20featured%20banner.png" alt="Void Vexon" decoding="async">
-      <div class="fslide-overlay-l"></div><div class="fslide-overlay-b"></div>
-      <div class="fslide-content"><div class="fslide-meta">
-        <div class="fslide-eyebrow"><span class="fslide-tag tag-live">&#9654; Live Now</span><span class="fslide-label">Game 01 &nbsp;&middot;&nbsp; Action / Space</span></div>
-        <div class="fslide-title"><span class="silver">Void</span> Vexon</div>
-        <div class="fslide-desc">Navigate the collapsing edges of reality. High-intensity browser action built natively in HTML5 â€” no download, instant play, full intensity.</div>
-        <div class="fslide-ftags"><span class="fftag">Action</span><span class="fftag">Space</span><span class="fftag">HTML5</span><span class="fftag">Instant Play</span></div>
-        <div class="fslide-actions">
-          <button class="fslide-play" onclick="window.location.href='Voidvexon.html'"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Play Now &mdash; Free</button>
-          <button class="fslide-trailer" onclick="openTrailer('Void Vexon','&#127756;')">Watch Trailer</button>
+<div class="featured-section" id="featured-section">
+  <div class="featured-scaler" id="featured-scaler">
+    <div class="featured-canvas" id="featured-canvas">
+      <div class="featured-slides" id="fslides">
+        <div class="fslide">
+          <div class="fslide-bg" style="background:#050818;"></div>
+          <img class="fslide-bg-img" src="https://syllog-cdn.b-cdn.net/Void-Rift/Banners/Main%20Homepage%20featured%20banner.png" alt="Void Vexon" decoding="async">
+          <div class="fslide-overlay-l"></div><div class="fslide-overlay-b"></div>
+          <div class="fslide-content"><div class="fslide-meta">
+            <div class="fslide-eyebrow"><span class="fslide-tag tag-live">&#9654; Live Now</span><span class="fslide-label">Game 01 &nbsp;&middot;&nbsp; Action / Space</span></div>
+            <div class="fslide-title"><span class="silver">Void</span> Vexon</div>
+            <div class="fslide-desc">Navigate the collapsing edges of reality. High-intensity browser action built natively in HTML5 â€” no download, instant play, full intensity.</div>
+            <div class="fslide-ftags"><span class="fftag">Action</span><span class="fftag">Space</span><span class="fftag">HTML5</span><span class="fftag">Instant Play</span></div>
+            <div class="fslide-actions">
+              <button class="fslide-play" onclick="window.location.href='Voidvexon.html'"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Play Now &mdash; Free</button>
+              <button class="fslide-trailer" onclick="openTrailer('Void Vexon','&#127756;')">Watch Trailer</button>
+            </div>
+          </div></div>
         </div>
-      </div></div>
-    </div>
-    <div class="fslide">
-      <div class="fslide-bg" style="background:linear-gradient(135deg,#000 0%,#180808 50%,#2a0a0a 100%);"></div>
-      <div class="fslide-icon">&#9876;&#65039;</div>
-      <div class="fslide-overlay-l"></div><div class="fslide-overlay-b"></div>
-      <div class="fslide-content"><div class="fslide-meta">
-        <div class="fslide-eyebrow"><span class="fslide-tag tag-coming">Coming Soon</span><span class="fslide-label">Game 02 &nbsp;&middot;&nbsp; Strategy / RPG</span></div>
-        <div class="fslide-title"><span class="silver">Iron</span> Throne</div>
-        <div class="fslide-desc">Build your empire, forge alliances, and conquer kingdoms. A deep browser strategy RPG where every decision reshapes the world.</div>
-        <div class="fslide-ftags"><span class="fftag">Strategy</span><span class="fftag">RPG</span><span class="fftag">HTML5</span><span class="fftag">Multiplayer</span></div>
-        <div class="fslide-actions">
-          <button class="fslide-inactive">Coming Soon</button>
-          <button class="fslide-trailer" onclick="openTrailer('Iron Throne','&#9876;&#65039;')">Watch Trailer</button>
+        <div class="fslide">
+          <div class="fslide-bg" style="background:linear-gradient(135deg,#000 0%,#180808 50%,#2a0a0a 100%);"></div>
+          <div class="fslide-icon">&#9876;&#65039;</div>
+          <div class="fslide-overlay-l"></div><div class="fslide-overlay-b"></div>
+          <div class="fslide-content"><div class="fslide-meta">
+            <div class="fslide-eyebrow"><span class="fslide-tag tag-coming">Coming Soon</span><span class="fslide-label">Game 02 &nbsp;&middot;&nbsp; Strategy / RPG</span></div>
+            <div class="fslide-title"><span class="silver">Iron</span> Throne</div>
+            <div class="fslide-desc">Build your empire, forge alliances, and conquer kingdoms. A deep browser strategy RPG where every decision reshapes the world.</div>
+            <div class="fslide-ftags"><span class="fftag">Strategy</span><span class="fftag">RPG</span><span class="fftag">HTML5</span><span class="fftag">Multiplayer</span></div>
+            <div class="fslide-actions">
+              <button class="fslide-inactive">Coming Soon</button>
+              <button class="fslide-trailer" onclick="openTrailer('Iron Throne','&#9876;&#65039;')">Watch Trailer</button>
+            </div>
+          </div></div>
         </div>
-      </div></div>
-    </div>
-    <div class="fslide">
-      <div class="fslide-bg" style="background:linear-gradient(135deg,#000 0%,#081408 50%,#0f2010 100%);"></div>
-      <div class="fslide-icon">&#127961;&#65039;</div>
-      <div class="fslide-overlay-l"></div><div class="fslide-overlay-b"></div>
-      <div class="fslide-content"><div class="fslide-meta">
-        <div class="fslide-eyebrow"><span class="fslide-tag tag-phase">Phase 2</span><span class="fslide-label">Game 03 &nbsp;&middot;&nbsp; Tycoon / Builder</span></div>
-        <div class="fslide-title"><span class="silver">Megacity</span> Tycoon</div>
-        <div class="fslide-desc">Design, build and manage a thriving megacity from the ground up. Every zoning decision, every budget call shapes your skyline and your legacy.</div>
-        <div class="fslide-ftags"><span class="fftag">Tycoon</span><span class="fftag">Builder</span><span class="fftag">HTML5</span><span class="fftag">Strategy</span></div>
-        <div class="fslide-actions">
-          <button class="fslide-inactive">In Development</button>
-          <button class="fslide-trailer" onclick="openTrailer('Megacity Tycoon','&#127961;&#65039;')">Watch Teaser</button>
+        <div class="fslide">
+          <div class="fslide-bg" style="background:linear-gradient(135deg,#000 0%,#081408 50%,#0f2010 100%);"></div>
+          <div class="fslide-icon">&#127961;&#65039;</div>
+          <div class="fslide-overlay-l"></div><div class="fslide-overlay-b"></div>
+          <div class="fslide-content"><div class="fslide-meta">
+            <div class="fslide-eyebrow"><span class="fslide-tag tag-phase">Phase 2</span><span class="fslide-label">Game 03 &nbsp;&middot;&nbsp; Tycoon / Builder</span></div>
+            <div class="fslide-title"><span class="silver">Megacity</span> Tycoon</div>
+            <div class="fslide-desc">Design, build and manage a thriving megacity from the ground up. Every zoning decision, every budget call shapes your skyline and your legacy.</div>
+            <div class="fslide-ftags"><span class="fftag">Tycoon</span><span class="fftag">Builder</span><span class="fftag">HTML5</span><span class="fftag">Strategy</span></div>
+            <div class="fslide-actions">
+              <button class="fslide-inactive">In Development</button>
+              <button class="fslide-trailer" onclick="openTrailer('Megacity Tycoon','&#127961;&#65039;')">Watch Teaser</button>
+            </div>
+          </div></div>
         </div>
-      </div></div>
+      </div>
     </div>
   </div>
   <div class="fnav-l"><button class="fnav-btn" id="fprev">&#8592;</button></div>
@@ -849,10 +844,26 @@ function signOut() {
   sb.auth.signOut().then(function() { window.location.reload(); });
 }
 
-// FEATURED BANNER
+// FEATURED BANNER — always authored at 1920×480, then scaled to the section width
 var fcur = 0, ftotal = 3, fbusy = false, fTimer, FDURATION = 6000;
 var fslides = document.getElementById('fslides');
 var fprog = document.getElementById('fprog');
+var fSection = document.getElementById('featured-section');
+var fScaler = document.getElementById('featured-scaler');
+var fCanvas = document.getElementById('featured-canvas');
+var F_W = 1920, F_H = 480;
+
+function scaleFeatured() {
+  if (!fSection || !fCanvas) return;
+  var w = fSection.clientWidth || window.innerWidth || F_W;
+  fCanvas.style.transform = 'scale(' + (w / F_W) + ')';
+}
+scaleFeatured();
+window.addEventListener('resize', scaleFeatured);
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', scaleFeatured);
+  window.visualViewport.addEventListener('scroll', scaleFeatured);
+}
 
 (function buildFdots() {
   var dc = document.getElementById('fdots');
@@ -868,7 +879,7 @@ function fGoTo(idx, auto) {
   if (fbusy && !auto) return;
   fbusy = true;
   fcur = ((idx % ftotal) + ftotal) % ftotal;
-  fslides.style.transform = 'translateX(-' + fcur + '00%)';
+  fslides.style.transform = 'translateX(-' + (fcur * F_W) + 'px)';
   document.getElementById('fcur-num').textContent = String(fcur + 1).padStart(2, '0');
   document.querySelectorAll('.fdot').forEach(function(d, i) { d.classList.toggle('active', i === fcur); });
   fStartProgress();
