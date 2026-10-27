@@ -41,24 +41,24 @@ nav{background:rgba(0,0,0,0.96);border-bottom:1px solid rgba(255,255,255,0.06);p
 .sl{font-size:0.52rem;color:#888;letter-spacing:2px;text-transform:uppercase;}
 .featured-section{position:relative;width:100%;overflow:hidden;border-bottom:1px solid rgba(255,255,255,0.06);}
 .featured-slides{display:flex;transition:transform 0.85s cubic-bezier(0.25,0.46,0.45,0.94);will-change:transform;}
-/* Permanent featured frame: fixed height + left copy column. No vw type — zoom cannot restack/overlap art titles. */
-.fslide{min-width:100%;height:420px;position:relative;display:flex;align-items:flex-end;overflow:hidden;flex-shrink:0;}
+/* Featured = true 1920×480 (4:1). Left copy column stays capped so text never eats art titles; rem type so zoom stays stable. */
+.fslide{min-width:100%;aspect-ratio:1920/480;height:auto;max-height:480px;position:relative;display:flex;align-items:flex-end;overflow:hidden;flex-shrink:0;}
 .fslide-bg{position:absolute;inset:0;background-position:center;background-repeat:no-repeat;background-size:cover;}
-.fslide-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:78% center;display:block;}
+.fslide-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
 .fslide-icon{font-size:9rem;opacity:0.07;position:absolute;right:2rem;top:50%;transform:translateY(-50%);pointer-events:none;filter:blur(2px);z-index:1;}
-.fslide-overlay-l{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.82) 0%,rgba(0,0,0,.55) 28%,rgba(0,0,0,.2) 48%,transparent 62%);z-index:2;}
-.fslide-overlay-b{position:absolute;inset:0;background:linear-gradient(180deg,transparent 42%,rgba(0,0,0,.58) 100%);z-index:2;}
-.fslide-content{position:relative;z-index:5;padding:2rem 3rem 2.15rem;width:100%;max-width:520px;box-sizing:border-box;}
-.fslide-meta{display:flex;flex-direction:column;gap:0.55rem;width:100%;max-width:480px;}
+.fslide-overlay-l{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.78) 0%,rgba(0,0,0,.5) 26%,rgba(0,0,0,.18) 46%,transparent 60%);z-index:2;}
+.fslide-overlay-b{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.55) 100%);z-index:2;}
+.fslide-content{position:relative;z-index:5;padding:2.4rem 3rem 2.35rem;width:100%;max-width:540px;box-sizing:border-box;}
+.fslide-meta{display:flex;flex-direction:column;gap:0.6rem;width:100%;max-width:500px;}
 .fslide-eyebrow{display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;}
 .fslide-tag{font-size:0.58rem;letter-spacing:3px;text-transform:uppercase;padding:0.25rem 0.75rem;border-radius:20px;font-weight:700;}
 .tag-live{background:rgba(255,255,255,0.12);color:#fff;border:1px solid rgba(255,255,255,0.2);}
 .tag-coming{background:rgba(255,200,0,0.12);color:#ffc800;border:1px solid rgba(255,200,0,0.2);}
 .tag-phase{background:rgba(192,192,192,0.12);color:#c0c0c0;border:1px solid rgba(192,192,192,0.2);}
 .fslide-label{font-size:0.6rem;color:rgba(255,255,255,0.25);letter-spacing:2px;text-transform:uppercase;}
-.fslide-title{font-size:2.55rem;font-weight:900;letter-spacing:-1.2px;line-height:1;color:#fff;max-width:100%;}
+.fslide-title{font-size:2.85rem;font-weight:900;letter-spacing:-1.4px;line-height:1;color:#fff;max-width:100%;}
 .fslide-title .silver{background:linear-gradient(135deg,#fff 0%,#c0c0c0 60%,#888 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.fslide-desc{font-size:0.78rem;color:rgba(255,255,255,0.38);line-height:1.55;max-width:100%;}
+.fslide-desc{font-size:0.8rem;color:rgba(255,255,255,0.38);line-height:1.55;max-width:100%;}
 .fslide-ftags{display:flex;gap:0.4rem;flex-wrap:wrap;}
 .fftag{font-size:0.58rem;padding:0.2rem 0.6rem;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase;}
 .fslide-actions{display:flex;gap:0.6rem;align-items:center;flex-wrap:wrap;}
@@ -69,7 +69,7 @@ nav{background:rgba(0,0,0,0.96);border-bottom:1px solid rgba(255,255,255,0.06);p
 .fslide-trailer:hover{color:#fff;border-color:rgba(255,255,255,0.3);}
 .fslide-inactive{background:rgba(255,255,255,0.04);color:#333;border:none;padding:0.65rem 1.4rem;border-radius:6px;font-size:0.72rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:default;white-space:nowrap;font-family:'Inter',sans-serif;}
 @media (max-width:720px){
-  .fslide{height:380px;}
+  .fslide{aspect-ratio:auto;height:280px;max-height:none;}
   .fslide-content{padding:1.4rem 1.25rem 1.5rem;max-width:100%;}
   .fslide-title{font-size:2rem;}
   .fslide-bg-img{object-position:70% center;}
