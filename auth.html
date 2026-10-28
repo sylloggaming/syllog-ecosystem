@@ -190,13 +190,24 @@ async function signInWithGoogle() {
     provider: 'google',
     options: {
       redirectTo: authRedirect(),
-      queryParams: { access_type: 'offline', prompt: 'consent' }
+      skipBrowserRedirect: false
     }
   });
   if (result.error) {
     showMsg(result.error.message + ' — enable Google in Supabase Auth providers first.', 'error');
     setLoading('google-btn', false);
   }
+}
+
+function showOAuthReturnError() {
+  var q = new URLSearchParams(window.location.search);
+  var h = new URLSearchParams((window.location.hash || '').replace(/^#/, ''));
+  var err = q.get('error_description') || h.get('error_description') || q.get('error') || h.get('error');
+  var code = q.get('error_code') || h.get('error_code') || '';
+  if (!err) return;
+  var msg = decodeURIComponent(String(err).replace(/\+/g, ' '));
+  if (code) msg = code + ' — ' + msg;
+  showMsg(msg, 'error');
 }
 
 async function signIn() {
@@ -292,6 +303,8 @@ async function claimUsername() {
   document.getElementById('si-btn').dataset.idle = 'Sign In';
   document.getElementById('su-btn').dataset.idle = 'Create My Syllog ID';
   document.getElementById('claim-btn').dataset.idle = 'Save Syllog ID & Enter';
+
+  showOAuthReturnError();
 
   sb.auth.getSession().then(function(result) {
     var session = result.data && result.data.session;
