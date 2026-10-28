@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="ship-preview.js"></script>
+<script src="inventory-catalog.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
@@ -246,6 +247,9 @@ footer a{color:rgba(255,255,255,0.35)!important;}
 .inv-card-icon{height:72px;display:flex;align-items:center;justify-content:center;}
 .inv-card-icon canvas{width:72px;height:72px;display:block;}
 
+.inv-auto-note{font-size:0.62rem;color:rgba(255,255,255,0.35);letter-spacing:0.5px;line-height:1.5;margin:0 0 1.25rem;padding:0.75rem 1rem;border:1px solid rgba(255,255,255,0.08);border-radius:10px;background:rgba(255,255,255,0.03);}
+.inv-emoji{font-size:2rem;line-height:1;}
+.inv-summary{font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:1rem;}
 </style>
 </head>
 <body>
@@ -372,14 +376,8 @@ footer a{color:rgba(255,255,255,0.35)!important;}
 
     <!-- INVENTORY -->
     <div class="tab-content" id="tab-inventory">
-      <div class="inv-section">
-        <div class="inv-section-hdr">&#128640; Ships &mdash; Void Vexon</div>
-        <div class="inv-grid" id="inv-ships"></div>
-      </div>
-      <div class="inv-section">
-        <div class="inv-section-hdr">&#10024; Skins &mdash; Void Vexon</div>
-        <div class="inv-grid" id="inv-skins"></div>
-      </div>
+      <div class="inv-summary" id="inv-summary">Loading inventory…</div>
+      <div id="inv-root"></div>
     </div>
 
     <!-- UNIVERSE -->
@@ -540,6 +538,35 @@ var UNI_ITEMS={'deep_lore':{name:'Deep Lore Archive',icon:'&#128274;',type:'Lore
 function fmt(n){if(!n||n===0)return'0';if(n>=1000000)return(n/1000000).toFixed(1)+'M';if(n>=1000)return(n/1000).toFixed(1)+'K';return n.toLocaleString();}
 function fmtS(n){if(!n||n===0)return'—';if(n>=1000000)return(n/1000000).toFixed(1)+'M';if(n>=1000)return(n/1000).toFixed(0)+'K';return String(n).padStart(6,'0');}
 
+function renderInventory(p){
+  if(!window.SyllogInventory){
+    var root=document.getElementById('inv-root');
+    if(root) root.innerHTML='<div class="inv-empty">Inventory module failed to load</div>';
+    return;
+  }
+  var owned=SyllogInventory.render(p,{
+    root:document.getElementById('inv-root'),
+    summary:document.getElementById('inv-summary')
+  });
+  // Keep overview counters in sync
+  var gs=document.getElementById('gs-ships'); if(gs) gs.textContent=owned.ships.length;
+  var gk=document.getElementById('gs-skins'); if(gk) gk.textContent=owned.skins.length;
+}
+
+async function refreshInventoryFromCloud(){
+  if(!_user||!_sb) return;
+  try{
+    var res=await _sb.from('players').select('*').eq('id',_user.id).single();
+    if(res.data){
+      _player=res.data;
+      renderInventory(_player);
+      // also refresh equipped ship preview / avatar if no photo
+      if(typeof setAvatarFromPlayer==='function') setAvatarFromPlayer(_player);
+      if(typeof renderEquippedShip==='function') renderEquippedShip(_player);
+    }
+  }catch(e){ console.warn('inventory refresh', e); }
+}
+
 async function init(){
   var r=await _sb.auth.getSession();
   if(!r.data||!r.data.session){document.getElementById('not-logged').style.display='block';return;}
@@ -573,55 +600,19 @@ function render(p){
   document.getElementById('ov-xp').textContent=(p.global_xp||0).toLocaleString();
   document.getElementById('gs-hs').textContent=fmtS(p.voidrift_highscore);
 
-  var ships=[];try{ships=JSON.parse(p.owned_ships||'[]');}catch(e){ships=['default'];}
-  if(!ships.length)ships=['default'];
-  document.getElementById('gs-ships').textContent=ships.length;
-  var skins=[];try{skins=JSON.parse(p.owned_skins||'[]');}catch(e){skins=[];}
-  document.getElementById('gs-skins').textContent=skins.length;
+  // Inventory — auto-lists every owned ship/skin/item/unlock across games
+  renderInventory(p);
 
-  // Ships inventory (normalize legacy ids from older saves)
-  ships=ships.map(normShipId).filter(function(v,i,a){return a.indexOf(v)===i;});
-  if(ships.indexOf('default')===-1)ships.unshift('default');
-  document.getElementById('gs-ships').textContent=ships.length;
-  var sh='';
-  Object.keys(SHIPS).forEach(function(k){
-    if(ships.indexOf(k)===-1)return;
-    var eq=normShipId(p.equipped_ship)===k;
-    sh+='<div class="inv-card'+(eq?' equipped':'')+'">'+
-      (eq?'<div class="inv-equipped">Equipped</div>':'')+
-      '<div class="inv-card-icon"><canvas class="ship-preview-canvas" data-ship="'+k+'" data-skin="'+(eq?normSkinId(p.equipped_skin):'')+'" width="72" height="72"></canvas></div>'+
-      '<div class="inv-card-name">'+SHIPS[k].name+'</div>'+
-      '<div class="inv-card-type">Ship</div></div>';
-  });
-  document.getElementById('inv-ships').innerHTML=sh||'<div class="inv-empty">No ships yet</div>';
-  if(window.SyllogShipPreview)SyllogShipPreview.hydrate(document.getElementById('inv-ships'));
-
-  // Skins inventory
-  var sk='';
-  skins.forEach(function(k){
-    var nk=normSkinId(k);
-    if(!SKINS[nk]||SKINS[nk].mapsTo)return;
-    if(sk.indexOf('data-skin-id="'+nk+'"')!==-1)return;
-    var eq=normSkinId(p.equipped_skin)===nk;
-    sk+='<div class="inv-card'+(eq?' equipped':'')+'" data-skin-id="'+nk+'">'+
-      (eq?'<div class="inv-equipped">Equipped</div>':'')+
-      '<div class="inv-card-icon"><canvas class="ship-preview-canvas" data-ship="'+normShipId(p.equipped_ship)+'" data-skin="'+nk+'" width="72" height="72"></canvas></div>'+
-      '<div class="inv-card-name">'+SKINS[nk].name+'</div>'+
-      '<div class="inv-card-type">Skin</div></div>';
-  });
-  if(window.SyllogShipPreview){ /* hydrate after insert below */ }
-  document.getElementById('inv-skins').innerHTML=sk||'<div class="inv-empty">No skins unlocked yet</div>';
-  if(window.SyllogShipPreview)SyllogShipPreview.hydrate(document.getElementById('inv-skins'));
-
-  // Universe
-  var unlocks=p.unlocked_items||[];
+  // Universe — show every unlock automatically (known or new)
+  var unlocks=[];
+  try{unlocks=Array.isArray(p.unlocked_items)?p.unlocked_items:(typeof p.unlocked_items==='string'?JSON.parse(p.unlocked_items||'[]'):[]);}catch(e){unlocks=[];}
+  if(!Array.isArray(unlocks))unlocks=[];
   if(!unlocks.length){
     document.getElementById('uni-list').innerHTML='<div class="uni-empty">No content unlocked yet &mdash; <a href="universe.html">Visit the Universe</a></div>';
   } else {
     var ul='<div class="uni-unlocked-grid">';
     unlocks.forEach(function(k){
-      if(!UNI_ITEMS[k])return;
-      var item=UNI_ITEMS[k];
+      var item=UNI_ITEMS[k]||{name:String(k).replace(/[_-]+/g,' ').replace(/\b\w/g,function(c){return c.toUpperCase();}),icon:'&#10024;',type:'Unlock'};
       ul+='<div class="uni-item"><div class="uni-item-icon">'+item.icon+'</div><div><div class="uni-item-name">'+item.name+'</div><div class="uni-item-type">'+item.type+'</div></div></div>';
     });
     ul+='</div>';
@@ -654,6 +645,7 @@ function switchTab(tab,btn){
   document.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});
   btn.classList.add('active');
   document.getElementById('tab-'+tab).classList.add('active');
+  if(tab==='inventory') refreshInventoryFromCloud();
 }
 
 async function uploadAvatar(input){
@@ -732,6 +724,11 @@ async function deleteAccount(){
   }catch(e){showMsg('msg-del','Error — contact support@sylloggames.com','err');}
 }
 
+document.addEventListener('visibilitychange', function(){
+  if(document.visibilityState==='visible' && document.getElementById('tab-inventory') && document.getElementById('tab-inventory').classList.contains('active')){
+    refreshInventoryFromCloud();
+  }
+});
 init();
 </script>
 </body>
