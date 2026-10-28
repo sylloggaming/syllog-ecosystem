@@ -614,6 +614,7 @@ sb.auth.getSession().then(function(result) {
       }
     });
   }
+  if (typeof window.__syllogPingGuest === 'function') window.__syllogPingGuest();
 });
 
 // â”€â”€ LIVE STATS SYSTEM â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -630,39 +631,45 @@ sb.rpc('count_online_players').then(function(res) {
   if (el) el.textContent = (res.data || 0).toLocaleString();
 });
 
-// 3. Guest tracking â€” upsert session into guest_sessions table
+// 3. Guest tracking — ping guest_sessions, then count recent viewers
 (function() {
-  // Generate or retrieve a unique session ID for this browser
-  var gid = sessionStorage.getItem('syllog_gid');
+  var gid = localStorage.getItem('syllog_gid');
   if (!gid) {
     gid = 'g_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-    sessionStorage.setItem('syllog_gid', gid);
+    localStorage.setItem('syllog_gid', gid);
   }
 
-  // Upsert guest session into Supabase
-  sb.from('guest_sessions').upsert(
-    { session_id: gid, last_seen: new Date().toISOString() },
-    { onConflict: 'session_id' }
-  ).then(function() {
-    // Now count active guests
+  function refreshGuestCount() {
     sb.rpc('count_online_guests').then(function(res) {
       var el = document.getElementById('guest-count');
-      if (el) el.textContent = (res.data || 0).toLocaleString();
+      if (!el) return;
+      if (res.error) {
+        el.textContent = '0';
+        return;
+      }
+      el.textContent = (res.data || 0).toLocaleString();
     });
-  });
+  }
 
-  // Keep guest session alive every 2 minutes
-  setInterval(function() {
+  function pingGuest() {
+    // Logged-in players are counted under Online Now, not Guests
+    if (currentUser) {
+      refreshGuestCount();
+      return;
+    }
     sb.from('guest_sessions').upsert(
       { session_id: gid, last_seen: new Date().toISOString() },
       { onConflict: 'session_id' }
-    ).then(function() {
-      sb.rpc('count_online_guests').then(function(res) {
-        var el = document.getElementById('guest-count');
-        if (el) el.textContent = (res.data || 0).toLocaleString();
-      });
+    ).then(function(res) {
+      if (res && res.error) console.warn('guest ping failed', res.error.message || res.error);
+      refreshGuestCount();
+      sb.rpc('cleanup_old_guest_sessions').then(function() {});
     });
-  }, 120000);
+  }
+
+  window.__syllogPingGuest = pingGuest;
+  pingGuest();
+  setInterval(pingGuest, 20000); // refresh often so other devices show up
 })();
 
 // 4. Update last_seen for logged-in players every 2 minutes
