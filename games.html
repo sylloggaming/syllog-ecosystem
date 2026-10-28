@@ -114,38 +114,67 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:1re
 footer a{font-size:0.58rem;color:rgba(255,255,255,0.3);text-decoration:none;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s;}
 footer a:hover{color:#fff;}
 
-.detail-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.96);z-index:500;overflow-y:auto;padding:1.5rem;align-items:center;justify-content:center;}
+/* ── Game Details Modal (richer than carousel) ── */
+.detail-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:500;overflow-y:auto;padding:1.25rem;align-items:flex-start;justify-content:center;}
 .detail-overlay.open{display:flex;}
-.detail-inner{width:100%;max-width:780px;background:#050505;border:1px solid rgba(255,255,255,0.07);border-radius:16px;overflow:hidden;position:relative;}
-.d-hero{display:grid;grid-template-columns:1fr 1fr;}
-@media(max-width:720px){.d-hero{grid-template-columns:1fr;}}
-.d-thumb{height:220px;display:flex;align-items:center;justify-content:center;font-size:5rem;border-right:1px solid rgba(255,255,255,0.05);position:relative;overflow:hidden;}
-@media(max-width:720px){.d-thumb{border-right:none;border-bottom:1px solid rgba(255,255,255,0.05);}}
-.d-thumb-bg{position:absolute;inset:0;}
-.d-info{padding:1.5rem;}
-.d-genre-lbl{font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:#666;margin-bottom:0.4rem;}
-.d-title{font-size:1.6rem;font-weight:900;letter-spacing:-0.8px;margin-bottom:0.4rem;color:#fff;}
-.d-desc{font-size:0.73rem;color:#666;line-height:1.6;margin-bottom:0.85rem;}
-.d-tags{display:flex;gap:0.35rem;flex-wrap:wrap;margin-bottom:0.85rem;}
-.dtag{font-size:0.55rem;padding:0.2rem 0.5rem;border-radius:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);color:#666;letter-spacing:1px;text-transform:uppercase;}
-.d-play-btn{background:#fff;color:#000;border:none;padding:0.6rem 1.5rem;border-radius:5px;font-size:0.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:background 0.2s;font-family:'Inter',sans-serif;margin-right:0.5rem;}
-.d-play-btn:hover{background:#c0c0c0;}
-.d-sec-btn{background:transparent;color:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.12);padding:0.6rem 1.1rem;border-radius:5px;font-size:0.68rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;}
-.d-sec-btn:hover{color:#fff;border-color:rgba(255,255,255,0.3);}
-.d-close{position:absolute;top:0.85rem;right:0.85rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:0.8rem;display:flex;align-items:center;justify-content:center;transition:all 0.2s;font-family:'Inter',sans-serif;z-index:3;}
-.d-close:hover{background:rgba(255,255,255,0.1);color:#fff;}
-.d-body{padding:1.1rem 1.5rem;border-top:1px solid rgba(255,255,255,0.05);}
-.d-section{font-size:0.52rem;letter-spacing:3px;text-transform:uppercase;color:#444;margin-bottom:0.5rem;}
-.d-screens{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:0.85rem;}
-.d-screen{height:72px;background:#0a0a0a;border:1px solid rgba(255,255,255,0.04);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;overflow:hidden;padding:0;}
-.d-screen img{width:100%;height:100%;object-fit:cover;display:block;}
-.d-screen.is-empty{opacity:0.55;}
-.d-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
-.dstat{background:#0a0a0a;border:1px solid rgba(255,255,255,0.04);border-radius:7px;padding:0.55rem;text-align:center;}
-.dstat-n{font-size:0.85rem;font-weight:800;color:#b0b0b0;}
-.dstat-l{font-size:0.48rem;color:#444;letter-spacing:1.5px;text-transform:uppercase;margin-top:0.1rem;}
+.gd-panel{width:100%;max-width:980px;margin:1.5rem auto 2.5rem;background:#070707;border:1px solid rgba(255,255,255,0.08);border-radius:20px;overflow:hidden;position:relative;box-shadow:0 40px 100px rgba(0,0,0,0.65);}
+.gd-close{position:absolute;top:1rem;right:1rem;z-index:5;background:rgba(0,0,0,0.55);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:0.95rem;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);transition:all 0.2s;font-family:'Inter',sans-serif;}
+.gd-close:hover{background:rgba(255,255,255,0.12);color:#fff;}
+.gd-hero{position:relative;min-height:280px;padding:2.25rem 2rem 1.75rem;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;}
+.gd-hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;}
+.gd-hero-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.25) 0%,rgba(7,7,7,0.75) 55%,#070707 100%),linear-gradient(90deg,rgba(0,0,0,0.55) 0%,transparent 60%);}
+.gd-hero-content{position:relative;z-index:2;max-width:640px;}
+.gd-badge-row{display:flex;flex-wrap:wrap;gap:0.45rem;margin-bottom:0.85rem;}
+.gd-badge{font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.7rem;border-radius:999px;font-weight:700;border:1px solid rgba(255,255,255,0.14);color:rgba(255,255,255,0.7);background:rgba(0,0,0,0.35);}
+.gd-badge.live{color:#4ade80;border-color:rgba(74,222,128,0.35);background:rgba(34,197,94,0.12);}
+.gd-badge.soon{color:#fbbf24;border-color:rgba(251,191,36,0.3);background:rgba(251,191,36,0.1);}
+.gd-badge.dev{color:#94a3b8;border-color:rgba(148,163,184,0.25);background:rgba(148,163,184,0.08);}
+.gd-title{font-size:clamp(2rem,4vw,2.8rem);font-weight:900;letter-spacing:-1.5px;color:#fff;line-height:1;margin-bottom:0.45rem;}
+.gd-tagline{font-size:0.9rem;color:rgba(255,255,255,0.55);font-style:italic;margin-bottom:0.85rem;line-height:1.45;}
+.gd-meta{display:flex;flex-wrap:wrap;gap:0.9rem;margin-bottom:1.15rem;}
+.gd-meta span{font-size:0.62rem;color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase;}
+.gd-meta b{color:rgba(255,255,255,0.85);font-weight:700;margin-left:0.25rem;}
+.gd-actions{display:flex;flex-wrap:wrap;gap:0.55rem;}
+.gd-btn{border:none;padding:0.72rem 1.25rem;border-radius:8px;font-size:0.68rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;}
+.gd-btn.primary{background:#fff;color:#000;}
+.gd-btn.primary:hover{background:#d8d8d8;}
+.gd-btn.ghost{background:rgba(255,255,255,0.06);color:#fff;border:1px solid rgba(255,255,255,0.14);}
+.gd-btn.ghost:hover{border-color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.1);}
+.gd-btn:disabled{opacity:0.4;cursor:default;}
+.gd-body{padding:0 2rem 2rem;display:grid;grid-template-columns:1.35fr 0.9fr;gap:1.25rem;}
+@media(max-width:840px){.gd-body{grid-template-columns:1fr;}.gd-hero{min-height:240px;padding:1.75rem 1.25rem 1.4rem;}.gd-panel{margin:0.75rem auto 1.5rem;}.detail-overlay{padding:0.75rem;}}
+.gd-col{display:flex;flex-direction:column;gap:1rem;}
+.gd-card{background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:1.1rem 1.15rem;}
+.gd-h{font-size:0.55rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:0.7rem;font-weight:700;}
+.gd-about{font-size:0.78rem;color:rgba(255,255,255,0.55);line-height:1.7;}
+.gd-features{display:grid;grid-template-columns:1fr 1fr;gap:0.55rem;margin-top:0.9rem;}
+@media(max-width:520px){.gd-features{grid-template-columns:1fr;}}
+.gd-feat{background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.05);border-radius:10px;padding:0.65rem 0.75rem;}
+.gd-feat b{display:block;font-size:0.68rem;color:#fff;margin-bottom:0.2rem;}
+.gd-feat span{font-size:0.62rem;color:rgba(255,255,255,0.4);line-height:1.45;}
+.gd-shots{display:grid;grid-template-columns:repeat(3,1fr);gap:0.55rem;}
+.gd-shot{aspect-ratio:16/10;border-radius:10px;overflow:hidden;background:#0a0a0a;border:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.2);font-size:1.4rem;}
+.gd-shot img{width:100%;height:100%;object-fit:cover;display:block;}
+.gd-trailer{position:relative;border-radius:12px;overflow:hidden;background:#000;border:1px solid rgba(255,255,255,0.08);aspect-ratio:16/9;}
+.gd-trailer video{width:100%;height:100%;object-fit:contain;display:block;background:#000;}
+.gd-trailer-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0.4rem;color:rgba(255,255,255,0.28);font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;}
+.gd-players{display:flex;flex-direction:column;gap:0.45rem;}
+.gd-player{display:grid;grid-template-columns:28px 1fr auto;gap:0.65rem;align-items:center;padding:0.55rem 0.6rem;border-radius:10px;background:rgba(0,0,0,0.28);border:1px solid rgba(255,255,255,0.04);}
+.gd-rank{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.68rem;font-weight:800;color:#fff;background:rgba(255,255,255,0.06);}
+.gd-rank.r1{background:linear-gradient(135deg,#f5d76e,#b8860b);color:#111;}
+.gd-rank.r2{background:linear-gradient(135deg,#e8e8e8,#8a8a8a);color:#111;}
+.gd-rank.r3{background:linear-gradient(135deg,#d4a574,#8b5a2b);color:#111;}
+.gd-pname{font-size:0.72rem;font-weight:700;color:#fff;}
+.gd-psub{font-size:0.55rem;color:rgba(255,255,255,0.3);margin-top:0.1rem;}
+.gd-pscore{font-size:0.72rem;font-weight:800;color:rgba(255,255,255,0.75);font-family:'Share Tech Mono',monospace;}
+.gd-empty{font-size:0.68rem;color:rgba(255,255,255,0.28);padding:0.85rem 0.2rem;line-height:1.5;}
+.gd-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:0.5rem;}
+.gd-stat{background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.05);border-radius:10px;padding:0.7rem;text-align:center;}
+.gd-stat b{display:block;font-size:0.95rem;color:#fff;font-weight:800;margin-bottom:0.15rem;}
+.gd-stat span{font-size:0.48rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.3);}
 .gc-btn-view{flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#fff;padding:0.75rem;border-radius:10px;font-size:0.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;}
 .gc-btn-view:hover{border-color:rgba(255,255,255,0.28);background:rgba(255,255,255,0.09);}
+
 </style></head><body><div class="ambient"><div class="ambient-orb ambient-orb-1"></div><div class="ambient-orb ambient-orb-2"></div><div class="ambient-orb ambient-orb-3"></div></div><nav><a href="index.html" class="logo">SYLLOG</a><ul class="nav-links"><li><a href="games.html" class="active">Games</a></li><li><a href="universe.html">Universe</a></li><li><a href="credits.html">Credits &amp; Passes</a></li><li><a href="leaderboards.html">Leaderboards</a></li></ul><div class="nav-btns" id="nav-btns"><button class="btn-g" onclick="window.location.href='auth.html?tab=signin'">Sign In</button><button class="btn-w" onclick="window.location.href='auth.html?tab=signup'">Create Account</button></div></nav><div class="games-hero"><div class="games-hero-tag">&#9632; Syllog Games Library</div><h1 class="games-hero-title"><span class="word-library">Every game. Every genre.</span><span class="word-games">Games</span></h1><p class="games-hero-sub">Every title free to play. Every world built to last. Choose your game â€” the universe is waiting.</p><div class="games-hero-stats"><div class="gh-stat"><div class="gh-stat-num">4</div><div class="gh-stat-lbl">Titles</div></div><div class="gh-stat"><div class="gh-stat-num">1</div><div class="gh-stat-lbl">Live Now</div></div><div class="gh-stat"><div class="gh-stat-num">17</div><div class="gh-stat-lbl">Genres</div></div><div class="gh-stat"><div class="gh-stat-num">âˆž</div><div class="gh-stat-lbl">Free</div></div></div></div><div class="genre-section"><div class="genre-section-inner"><div class="genre-section-hdr"><div class="genre-section-title">&#9632; Browse by Genre</div><div class="genre-section-sub">17 categories</div></div><div class="genre-grid"><div class="genre-card active" data-genre="all" onclick="filterGenre('all',this)"><div class="genre-card-glow" style="background:radial-gradient(circle at 50% 50%,#fff,transparent 70%);opacity:0;"></div><div class="genre-card-icon">&#127918;</div><div class="genre-card-name">All</div><div class="genre-card-count">4 games</div></div>
 <div class="genre-card" data-genre="action" onclick="filterGenre('action',this)"><div class="genre-card-glow" style="background:radial-gradient(circle at 50% 50%,#ef4444,transparent 70%);opacity:0;"></div><div class="genre-card-icon">&#9876;&#65039;</div><div class="genre-card-name">Action</div><div class="genre-card-count">1 game</div></div>
 <div class="genre-card" data-genre="sports" onclick="filterGenre('sports',this)"><div class="genre-card-glow" style="background:radial-gradient(circle at 50% 50%,#f59e0b,transparent 70%);opacity:0;"></div><div class="genre-card-icon">&#127942;</div><div class="genre-card-name">Sports</div><div class="genre-card-count">0 games</div></div>
@@ -163,75 +192,304 @@ footer a:hover{color:#fff;}
 <div class="genre-card" data-genre="idle" onclick="filterGenre('idle',this)"><div class="genre-card-glow" style="background:radial-gradient(circle at 50% 50%,#a78bfa,transparent 70%);opacity:0;"></div><div class="genre-card-icon">&#9203;</div><div class="genre-card-name">Idle</div><div class="genre-card-count">0 games</div></div>
 <div class="genre-card" data-genre="religion" onclick="filterGenre('religion',this)"><div class="genre-card-glow" style="background:radial-gradient(circle at 50% 50%,#fbbf24,transparent 70%);opacity:0;"></div><div class="genre-card-icon">&#10013;&#65039;</div><div class="genre-card-name">Religion</div><div class="genre-card-count">0 games</div></div>
 <div class="genre-card" data-genre="kids" onclick="filterGenre('kids',this)"><div class="genre-card-glow" style="background:radial-gradient(circle at 50% 50%,#fb7185,transparent 70%);opacity:0;"></div><div class="genre-card-icon">&#11088;</div><div class="genre-card-name">Kids</div><div class="genre-card-count">0 games</div></div>
-</div></div></div><div class="games-section"><div class="games-toolbar"><div class="games-toolbar-left"><div class="games-active-genre" id="active-genre-label">All Games</div><div class="games-count-badge"><span id="visible-count">4</span> titles</div></div><input type="text" class="games-search" id="games-search" placeholder="&#128269; Search games..."></div><div class="games-grid" id="games-grid"><div class="game-card" data-genres="action shooter" data-game="void-vexon" onclick="openGameDetail('void-vexon')"><div class="game-card-cover"><div class="game-card-cover-bg" style="background:#050818 url('https://syllog-cdn.b-cdn.net/Void-Rift/Banners/Games%20library%20card.png') center/cover no-repeat;position:absolute;inset:0;"></div><div class="game-card-cover-overlay"></div><div class="game-card-status status-live"><span class="status-dot"></span>Live Now</div><div class="game-card-genres"><span class="game-genre-tag">action</span><span class="game-genre-tag">shooter</span></div><div class="game-card-cover-accent" style="background:linear-gradient(90deg,rgba(65,105,225,0.4),transparent);"></div></div><div class="game-card-body"><div class="game-card-title">Void Vexon</div><div class="game-card-tagline">The last pilot. The entire Void army. Survive.</div><div class="game-card-desc">A relentless space shooter set in 2847 CE. Fight through 10 zones across 150 levels as Commander Kael Voss â€” the last GAF pilot standing against the Void Sovereign.</div><div class="game-card-meta"><div class="gcm-item">Difficulty <span>Hard</span></div><div class="gcm-item">Rating <span>4.9</span></div></div><div class="game-card-footer"><button class="gc-btn-play" onclick="event.stopPropagation();window.location.href='Voidvexon.html'">&#9654; Play Now</button><button class="gc-btn-view" onclick="event.stopPropagation();openGameDetail('void-vexon')">View Profile</button></div></div></div>
-<div class="game-card" data-genres="strategy rpg" data-game="iron-throne" onclick="openGameDetail('iron-throne')"><div class="game-card-cover"><div class="game-card-cover-bg" style="background:linear-gradient(135deg,#180808 0%,#2a0a0a 50%,#3a0505 100%);position:absolute;inset:0;"></div><div class="game-card-cover-grid"></div><div class="game-card-cover-overlay"></div><div class="game-card-icon">&#9876;&#65039;</div><div class="game-card-status status-soon">Coming Soon</div><div class="game-card-genres"><span class="game-genre-tag">strategy</span><span class="game-genre-tag">rpg</span></div><div class="game-card-cover-accent" style="background:linear-gradient(90deg,rgba(139,0,0,0.4),transparent);"></div></div><div class="game-card-body"><div class="game-card-title">Iron Throne</div><div class="game-card-tagline">Build your empire. Forge your legacy.</div><div class="game-card-desc">A deep medieval strategy RPG. Build kingdoms, forge alliances, command armies and claim the Iron Throne. Every decision reshapes the world.</div><div class="game-card-meta"><div class="gcm-item">Difficulty <span>Medium</span></div><div class="gcm-item">Rating <span>â€”</span></div></div><div class="game-card-footer"><button class="gc-btn-view" onclick="event.stopPropagation();openGameDetail('iron-throne')">View Profile</button><button class="gc-btn-soon">Coming Soon</button></div></div></div>
-<div class="game-card" data-genres="tycoon simulation" data-game="megacity-tycoon" onclick="openGameDetail('megacity-tycoon')"><div class="game-card-cover"><div class="game-card-cover-bg" style="background:linear-gradient(135deg,#081408 0%,#0f2010 50%,#0a1a0a 100%);position:absolute;inset:0;"></div><div class="game-card-cover-grid"></div><div class="game-card-cover-overlay"></div><div class="game-card-icon">&#127961;&#65039;</div><div class="game-card-status status-dev">In Development</div><div class="game-card-genres"><span class="game-genre-tag">tycoon</span><span class="game-genre-tag">simulation</span></div><div class="game-card-cover-accent" style="background:linear-gradient(90deg,rgba(34,197,94,0.3),transparent);"></div></div><div class="game-card-body"><div class="game-card-title">Megacity Tycoon</div><div class="game-card-tagline">Design. Build. Dominate the skyline.</div><div class="game-card-desc">Build and manage a thriving megacity from the ground up. Every zoning decision and policy shapes your city and your legacy.</div><div class="game-card-meta"><div class="gcm-item">Difficulty <span>Medium</span></div><div class="gcm-item">Rating <span>â€”</span></div></div><div class="game-card-footer"><button class="gc-btn-view" onclick="event.stopPropagation();openGameDetail('megacity-tycoon')">View Profile</button><button class="gc-btn-soon">Coming Soon</button></div></div></div>
-<div class="game-card" data-genres="puzzle adventure" data-game="cipher-deep" onclick="openGameDetail('cipher-deep')"><div class="game-card-cover"><div class="game-card-cover-bg" style="background:linear-gradient(135deg,#10081a 0%,#180a28 50%,#0d0520 100%);position:absolute;inset:0;"></div><div class="game-card-cover-grid"></div><div class="game-card-cover-overlay"></div><div class="game-card-icon">&#129521;</div><div class="game-card-status status-dev">In Development</div><div class="game-card-genres"><span class="game-genre-tag">puzzle</span><span class="game-genre-tag">adventure</span></div><div class="game-card-cover-accent" style="background:linear-gradient(90deg,rgba(138,43,226,0.4),transparent);"></div></div><div class="game-card-body"><div class="game-card-title">Cipher Deep</div><div class="game-card-tagline">Nothing is what it seems. Crack the code.</div><div class="game-card-desc">Descend into a labyrinth of mind-bending puzzles and conspiracies. Every cipher solved reveals a darker truth. Intelligence is your only weapon.</div><div class="game-card-meta"><div class="gcm-item">Difficulty <span>Hard</span></div><div class="gcm-item">Rating <span>â€”</span></div></div><div class="game-card-footer"><button class="gc-btn-view" onclick="event.stopPropagation();openGameDetail('cipher-deep')">View Profile</button><button class="gc-btn-soon">Coming Soon</button></div></div></div></div><div class="no-results" id="no-results" style="display:none;"><div class="no-results-icon">&#127918;</div>No games in this genre yet â€” check back soon!</div></div>
+</div></div></div><div class="games-section"><div class="games-toolbar"><div class="games-toolbar-left"><div class="games-active-genre" id="active-genre-label">All Games</div><div class="games-count-badge"><span id="visible-count">4</span> titles</div></div><input type="text" class="games-search" id="games-search" placeholder="&#128269; Search games..."></div><div class="games-grid" id="games-grid"><div class="game-card" data-genres="action shooter" data-game="void-vexon" onclick="openGameDetail('void-vexon')"><div class="game-card-cover"><div class="game-card-cover-bg" style="background:#050818 url('https://syllog-cdn.b-cdn.net/Void-Rift/Banners/Games%20library%20card.png') center/cover no-repeat;position:absolute;inset:0;"></div><div class="game-card-cover-overlay"></div><div class="game-card-status status-live"><span class="status-dot"></span>Live Now</div><div class="game-card-genres"><span class="game-genre-tag">action</span><span class="game-genre-tag">shooter</span></div><div class="game-card-cover-accent" style="background:linear-gradient(90deg,rgba(65,105,225,0.4),transparent);"></div></div><div class="game-card-body"><div class="game-card-title">Void Vexon</div><div class="game-card-tagline">The last pilot. The entire Void army. Survive.</div><div class="game-card-desc">A relentless space shooter set in 2847 CE. Fight through 10 zones across 150 levels as Commander Kael Voss â€” the last GAF pilot standing against the Void Sovereign.</div><div class="game-card-meta"><div class="gcm-item">Difficulty <span>Hard</span></div><div class="gcm-item">Rating <span>4.9</span></div></div><div class="game-card-footer"><button class="gc-btn-play" onclick="event.stopPropagation();window.location.href='Voidvexon.html'">&#9654; Play Now</button><button class="gc-btn-view" onclick="event.stopPropagation();openGameDetail('void-vexon')">View Details</button></div></div></div>
+<div class="game-card" data-genres="strategy rpg" data-game="iron-throne" onclick="openGameDetail('iron-throne')"><div class="game-card-cover"><div class="game-card-cover-bg" style="background:linear-gradient(135deg,#180808 0%,#2a0a0a 50%,#3a0505 100%);position:absolute;inset:0;"></div><div class="game-card-cover-grid"></div><div class="game-card-cover-overlay"></div><div class="game-card-icon">&#9876;&#65039;</div><div class="game-card-status status-soon">Coming Soon</div><div class="game-card-genres"><span class="game-genre-tag">strategy</span><span class="game-genre-tag">rpg</span></div><div class="game-card-cover-accent" style="background:linear-gradient(90deg,rgba(139,0,0,0.4),transparent);"></div></div><div class="game-card-body"><div class="game-card-title">Iron Throne</div><div class="game-card-tagline">Build your empire. Forge your legacy.</div><div class="game-card-desc">A deep medieval strategy RPG. Build kingdoms, forge alliances, command armies and claim the Iron Throne. Every decision reshapes the world.</div><div class="game-card-meta"><div class="gcm-item">Difficulty <span>Medium</span></div><div class="gcm-item">Rating <span>â€”</span></div></div><div class="game-card-footer"><button class="gc-btn-view" onclick="event.stopPropagation();openGameDetail('iron-throne')">View Details</button><button class="gc-btn-soon">Coming Soon</button></div></div></div>
+<div class="game-card" data-genres="tycoon simulation" data-game="megacity-tycoon" onclick="openGameDetail('megacity-tycoon')"><div class="game-card-cover"><div class="game-card-cover-bg" style="background:linear-gradient(135deg,#081408 0%,#0f2010 50%,#0a1a0a 100%);position:absolute;inset:0;"></div><div class="game-card-cover-grid"></div><div class="game-card-cover-overlay"></div><div class="game-card-icon">&#127961;&#65039;</div><div class="game-card-status status-dev">In Development</div><div class="game-card-genres"><span class="game-genre-tag">tycoon</span><span class="game-genre-tag">simulation</span></div><div class="game-card-cover-accent" style="background:linear-gradient(90deg,rgba(34,197,94,0.3),transparent);"></div></div><div class="game-card-body"><div class="game-card-title">Megacity Tycoon</div><div class="game-card-tagline">Design. Build. Dominate the skyline.</div><div class="game-card-desc">Build and manage a thriving megacity from the ground up. Every zoning decision and policy shapes your city and your legacy.</div><div class="game-card-meta"><div class="gcm-item">Difficulty <span>Medium</span></div><div class="gcm-item">Rating <span>â€”</span></div></div><div class="game-card-footer"><button class="gc-btn-view" onclick="event.stopPropagation();openGameDetail('megacity-tycoon')">View Details</button><button class="gc-btn-soon">Coming Soon</button></div></div></div>
+<div class="game-card" data-genres="puzzle adventure" data-game="cipher-deep" onclick="openGameDetail('cipher-deep')"><div class="game-card-cover"><div class="game-card-cover-bg" style="background:linear-gradient(135deg,#10081a 0%,#180a28 50%,#0d0520 100%);position:absolute;inset:0;"></div><div class="game-card-cover-grid"></div><div class="game-card-cover-overlay"></div><div class="game-card-icon">&#129521;</div><div class="game-card-status status-dev">In Development</div><div class="game-card-genres"><span class="game-genre-tag">puzzle</span><span class="game-genre-tag">adventure</span></div><div class="game-card-cover-accent" style="background:linear-gradient(90deg,rgba(138,43,226,0.4),transparent);"></div></div><div class="game-card-body"><div class="game-card-title">Cipher Deep</div><div class="game-card-tagline">Nothing is what it seems. Crack the code.</div><div class="game-card-desc">Descend into a labyrinth of mind-bending puzzles and conspiracies. Every cipher solved reveals a darker truth. Intelligence is your only weapon.</div><div class="game-card-meta"><div class="gcm-item">Difficulty <span>Hard</span></div><div class="gcm-item">Rating <span>â€”</span></div></div><div class="game-card-footer"><button class="gc-btn-view" onclick="event.stopPropagation();openGameDetail('cipher-deep')">View Details</button><button class="gc-btn-soon">Coming Soon</button></div></div></div></div><div class="no-results" id="no-results" style="display:none;"><div class="no-results-icon">&#127918;</div>No games in this genre yet â€” check back soon!</div></div>
 <div class="detail-overlay" id="detail-overlay">
-  <div class="detail-inner">
-    <button class="d-close" onclick="closeGameDetail()">&#10005;</button>
-    <div class="d-hero">
-      <div class="d-thumb"><div class="d-thumb-bg" id="d-thumb-bg"></div><span id="d-icon" style="position:relative;z-index:2;font-size:5rem;"></span></div>
-      <div class="d-info">
-        <div class="d-genre-lbl" id="d-genre"></div>
-        <div class="d-title" id="d-title"></div>
-        <div class="d-desc" id="d-desc"></div>
-        <div class="d-tags"><span class="dtag">HTML5</span><span class="dtag">Instant Play</span><span class="dtag">Free</span><span class="dtag" id="d-stag"></span></div>
-        <button class="d-play-btn" id="d-play-btn">Play Now &mdash; Free</button>
-        <button class="d-sec-btn" id="d-lore-btn" style="display:none;">Lore</button>
+  <div class="gd-panel" id="gd-panel">
+    <button class="gd-close" onclick="closeGameDetail()" aria-label="Close">&#10005;</button>
+    <div class="gd-hero">
+      <div class="gd-hero-bg" id="gd-hero-bg"></div>
+      <div class="gd-hero-shade"></div>
+      <div class="gd-hero-content">
+        <div class="gd-badge-row" id="gd-badges"></div>
+        <div class="gd-title" id="gd-title"></div>
+        <div class="gd-tagline" id="gd-tagline"></div>
+        <div class="gd-meta" id="gd-meta"></div>
+        <div class="gd-actions">
+          <button class="gd-btn primary" id="gd-play">Play Now — Free</button>
+          <button class="gd-btn ghost" id="gd-trailer">Watch Trailer</button>
+          <button class="gd-btn ghost" id="gd-lore" style="display:none;">Universe Lore</button>
+        </div>
       </div>
     </div>
-    <div class="d-body">
-      <div class="d-section">Screenshots</div>
-      <div class="d-screens"><div class="d-screen" id="ds1"></div><div class="d-screen" id="ds2"></div><div class="d-screen" id="ds3"></div></div>
-      <div class="d-section">Game Stats</div>
-      <div class="d-stats">
-        <div class="dstat"><div class="dstat-n">Free</div><div class="dstat-l">Price</div></div>
-        <div class="dstat"><div class="dstat-n">HTML5</div><div class="dstat-l">Engine</div></div>
-        <div class="dstat"><div class="dstat-n">Any</div><div class="dstat-l">Platform</div></div>
-        <div class="dstat"><div class="dstat-n" id="d-stat-status"></div><div class="dstat-l">Status</div></div>
+    <div class="gd-body">
+      <div class="gd-col">
+        <div class="gd-card">
+          <div class="gd-h">About</div>
+          <div class="gd-about" id="gd-about"></div>
+          <div class="gd-features" id="gd-features"></div>
+        </div>
+        <div class="gd-card">
+          <div class="gd-h">Screenshots</div>
+          <div class="gd-shots" id="gd-shots"></div>
+        </div>
+        <div class="gd-card" id="gd-trailer-card">
+          <div class="gd-h">Official Trailer</div>
+          <div class="gd-trailer">
+            <video id="gd-video" controls playsinline preload="metadata"></video>
+            <div class="gd-trailer-empty" id="gd-trailer-empty">Trailer coming soon</div>
+          </div>
+        </div>
+      </div>
+      <div class="gd-col">
+        <div class="gd-card">
+          <div class="gd-h">Quick Facts</div>
+          <div class="gd-stats" id="gd-stats"></div>
+        </div>
+        <div class="gd-card">
+          <div class="gd-h">Top Players</div>
+          <div class="gd-players" id="gd-players"><div class="gd-empty">Loading standings…</div></div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 <footer><div style="font-size:0.7rem;font-weight:900;letter-spacing:5px;color:rgba(255,255,255,0.2);">SYLLOG</div><div style="display:flex;gap:1.25rem;"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="contact.html">Contact</a></div><div style="font-size:0.58rem;color:rgba(255,255,255,0.2);">&copy; 2026 Syllog Games.</div></footer><script>var _sb=supabase.createClient("https://mlstrkqefyqoczusewrm.supabase.co","sb_publishable_g7_BTnT_cTqaIk19Kx9FEw_iP1I7Df7");var _user=null,activeGenre="all";function goProfile(){window.location.href="profile.html";}function showNav(p){var nb=document.getElementById("nav-btns");if(!nb)return;nb.innerHTML='<button class="nav-user" onclick="goProfile();"><div class="nav-dot"></div><div class="nav-name">'+p.username+'</div><div class="nav-arrow">&#9660;</div></button>';}_sb.auth.getSession().then(function(r){if(!r.data||!r.data.session)return;_user=r.data.session.user;_sb.from("players").select("username").eq("id",_user.id).single().then(function(res){if(res.data)showNav(res.data);});});function filterGenre(genre,btn){activeGenre=genre;document.querySelectorAll(".genre-card").forEach(function(t){t.classList.remove("active");});btn.classList.add("active");var label=btn.querySelector(".genre-card-name").textContent;document.getElementById("active-genre-label").textContent=label;applyFilters();}function applyFilters(){var search=document.getElementById("games-search").value.toLowerCase().trim();var cards=document.querySelectorAll(".game-card");var visible=0;cards.forEach(function(card){var genres=card.dataset.genres||"";var title=card.querySelector(".game-card-title").textContent.toLowerCase();var desc=card.querySelector(".game-card-desc").textContent.toLowerCase();var gm=activeGenre==="all"||genres.indexOf(activeGenre)>-1;var sm=!search||title.indexOf(search)>-1||desc.indexOf(search)>-1;if(gm&&sm){card.style.display="";visible++;}else{card.style.display="none";}});var nr=document.getElementById("no-results");if(nr)nr.style.display=visible===0?"block":"none";document.getElementById("visible-count").textContent=visible;}document.getElementById("games-search").addEventListener("input",applyFilters);
 var GAME_PROFILES={
-  'void-vexon':{name:'Void Vexon',icon:'🌌',genre:'Action · Space',desc:'Navigate the collapsing edges of reality. High-intensity browser action built natively in HTML5 — no download, instant play, full intensity.',status:'live',color:'#0a0f1e',url:'Voidvexon.html',lore:'universe-voidrift.html',screenshots:['https://syllog-cdn.b-cdn.net/Void-Rift/Screenshots/Screenshot%202.png','https://syllog-cdn.b-cdn.net/Void-Rift/Screenshots/Screenshot%203.png','https://syllog-cdn.b-cdn.net/Void-Rift/Screenshots/Screenshot%204.png']},
-  'iron-throne':{name:'Iron Throne',icon:'⚔️',genre:'Strategy · RPG',desc:'Build your empire, forge alliances, and conquer kingdoms. A deep browser strategy RPG where every decision reshapes the world.',status:'soon',color:'#1a0a08',url:'',lore:'',screenshots:[]},
-  'megacity-tycoon':{name:'Megacity Tycoon',icon:'🏙️',genre:'Tycoon · Builder',desc:'Design, build and manage a thriving megacity from the ground up. Every zoning decision and budget call shapes your skyline and your legacy.',status:'dev',color:'#081a08',url:'',lore:'',screenshots:[]},
-  'cipher-deep':{name:'Cipher Deep',icon:'🧩',genre:'Puzzle · Mystery',desc:'Descend into a labyrinth of mind-bending puzzles and conspiracies. Every cipher solved reveals a darker truth.',status:'dev',color:'#10081a',url:'',lore:'',screenshots:[]}
+  'void-vexon':{
+    id:'void-vexon',status:'live',badge:'Live Now',name:'Void Vexon',
+    tagline:'The last pilot. The entire Void army. Survive.',
+    year:'2025',genre:'Action · Space',platform:'Browser',
+    playUrl:'Voidvexon.html',
+    trailerUrl:'https://syllog-cdn.b-cdn.net/Void-Rift/Trailer/Void%20Vexon%20Trailer.mp4',
+    loreUrl:'universe-voidrift.html',hasLore:true,
+    about:'A relentless space shooter set in 2847 CE. Fight through 10 zones across 150 levels as Commander Kael Voss — the last GAF pilot standing against the Void Sovereign. Chain near-misses for Voidrift multipliers, unlock ships, and climb all-time and monthly championship boards.',
+    features:[
+      {t:'Voidrift System',d:'Near-miss scoring that rewards aggressive play'},
+      {t:'Ship Roster',d:'Unlock and master distinct craft with unique feels'},
+      {t:'Monthly Cups',d:'Fresh championship leaderboard every month'},
+      {t:'Cross-Device',d:'Cloud saves when signed into Syllog ID'}
+    ],
+    stats:[
+      {v:'Free',l:'To Play'},{v:'150',l:'Levels'},
+      {v:'Monthly',l:'Cups'},{v:'Browser',l:'No Install'}
+    ],
+    screenshots:[
+      'https://syllog-cdn.b-cdn.net/Void-Rift/Screenshots/Screenshot%202.png',
+      'https://syllog-cdn.b-cdn.net/Void-Rift/Screenshots/Screenshot%203.png',
+      'https://syllog-cdn.b-cdn.net/Void-Rift/Screenshots/Screenshot%204.png'
+    ],
+    color:'#4169e1',
+    coverUrl:'https://syllog-cdn.b-cdn.net/Void-Rift/Banners/Games%20library%20card.png',
+    hasLeaderboard:true
+  },
+  'iron-throne':{
+    id:'iron-throne',status:'soon',badge:'Coming Soon',name:'Iron Throne',
+    tagline:'Build your empire. Forge your legacy.',
+    year:'TBA',genre:'Strategy · RPG',platform:'Browser',
+    playUrl:null,trailerUrl:null,loreUrl:null,hasLore:false,
+    about:'A deep medieval strategy RPG. Build kingdoms, forge alliances, command armies and claim the Iron Throne. Every decision reshapes the world.',
+    features:[
+      {t:'Kingdom Building',d:'Raise cities, levy armies, shape the realm'},
+      {t:'Alliances',d:'Forge pacts — or break them'},
+      {t:'Conquest',d:'Claim the throne through strategy'},
+      {t:'Coming Soon',d:'Wishlist and trailer drop incoming'}
+    ],
+    stats:[
+      {v:'TBA',l:'Release'},{v:'Strategy',l:'Core'},
+      {v:'RPG',l:'Depth'},{v:'Soon',l:'Status'}
+    ],
+    screenshots:[],color:'#8b0000',hasLeaderboard:false
+  },
+  'megacity-tycoon':{
+    id:'megacity-tycoon',status:'dev',badge:'In Development',name:'Megacity Tycoon',
+    tagline:'Design. Build. Dominate the skyline.',
+    year:'TBA',genre:'Tycoon · Simulation',platform:'Browser',
+    playUrl:null,trailerUrl:null,loreUrl:null,hasLore:false,
+    about:'Build and manage a thriving megacity from the ground up. Every zoning decision and policy shapes your city and your legacy.',
+    features:[
+      {t:'City Building',d:'Zone, budget, and grow from scratch'},
+      {t:'Skyline',d:'Watch your metropolis rise'},
+      {t:'Policy',d:'Every rule changes the outcome'},
+      {t:'In Dev',d:'Systems prototyping underway'}
+    ],
+    stats:[
+      {v:'Pre',l:'Production'},{v:'Tycoon',l:'Genre'},
+      {v:'TBA',l:'Release'},{v:'Dev',l:'Status'}
+    ],
+    screenshots:[],color:'#22c55e',hasLeaderboard:false
+  },
+  'cipher-deep':{
+    id:'cipher-deep',status:'dev',badge:'In Development',name:'Cipher Deep',
+    tagline:'Nothing is what it seems. Crack the code.',
+    year:'TBA',genre:'Puzzle · Adventure',platform:'Browser',
+    playUrl:null,trailerUrl:null,loreUrl:null,hasLore:false,
+    about:'Descend into a labyrinth of mind-bending puzzles and conspiracies. Every cipher solved reveals a darker truth. Intelligence is your only weapon.',
+    features:[
+      {t:'Ciphers',d:'Layered puzzles that reward sharp thinking'},
+      {t:'Conspiracy',d:'A story that rewrites itself'},
+      {t:'Atmosphere',d:'Tension built for the browser'},
+      {t:'In Dev',d:'Vertical slice in progress'}
+    ],
+    stats:[
+      {v:'Pre',l:'Production'},{v:'Puzzle',l:'Core'},
+      {v:'TBA',l:'Release'},{v:'Dev',l:'Status'}
+    ],
+    screenshots:[],color:'#8a2be2',hasLeaderboard:false
+  }
 };
-function fillDetailShot(el,src,fallbackIcon){
-  if(!el)return;
-  if(src){el.classList.remove('is-empty');el.innerHTML='<img src="'+src+'" alt="Screenshot" loading="lazy">';}
-  else{el.classList.add('is-empty');el.textContent=fallbackIcon||'';}
+
+function monthKeyNow(){
+  var d=new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
 }
+
+function statusClass(s){return s==='live'?'live':(s==='soon'?'soon':'dev');}
+
+function fillTopPlayers(rows, emptyMsg){
+  var box=document.getElementById('gd-players');
+  if(!rows||!rows.length){
+    box.innerHTML='<div class="gd-empty">'+(emptyMsg||'No standings yet — be the first.')+'</div>';
+    return;
+  }
+  box.innerHTML=rows.map(function(r,i){
+    var rank=i+1;
+    var rc=rank===1?'r1':(rank===2?'r2':(rank===3?'r3':''));
+    var name=r.username||r.player_name||'Pilot';
+    var score=Number(r._score||r.score||0).toLocaleString();
+    var sub=r._label||'Score';
+    return '<div class="gd-player"><div class="gd-rank '+rc+'">'+rank+'</div><div><div class="gd-pname">'+name+'</div><div class="gd-psub">'+sub+'</div></div><div class="gd-pscore">'+score+'</div></div>';
+  }).join('');
+}
+
+async function loadTopPlayers(profile){
+  var box=document.getElementById('gd-players');
+  if(!profile.hasLeaderboard){
+    fillTopPlayers([], 'Competitive boards unlock at launch.');
+    return;
+  }
+  if(typeof _sb==='undefined'||!_sb){
+    fillTopPlayers([], 'Standings unavailable right now.');
+    return;
+  }
+  box.innerHTML='<div class="gd-empty">Loading standings…</div>';
+  try{
+    var mk=monthKeyNow();
+    var m=await _sb.from('players')
+      .select('username,voidrift_month_score,voidrift_month_key,voidrift_highscore')
+      .eq('voidrift_month_key', mk)
+      .order('voidrift_month_score',{ascending:false})
+      .limit(5);
+    var monthRows=[];
+    if(!m.error&&m.data&&m.data.length){
+      monthRows=m.data.filter(function(p){return (p.voidrift_month_score||0)>0;}).map(function(p){
+        return {username:p.username,_score:p.voidrift_month_score,_label:'This month'};
+      });
+    }
+    if(monthRows.length){
+      fillTopPlayers(monthRows);
+      return;
+    }
+    var h=await _sb.from('players')
+      .select('username,voidrift_highscore')
+      .order('voidrift_highscore',{ascending:false})
+      .limit(5);
+    if(!h.error&&h.data&&h.data.length){
+      var rows=h.data.filter(function(p){return (p.voidrift_highscore||0)>0;}).map(function(p){
+        return {username:p.username,_score:p.voidrift_highscore,_label:'All-time high'};
+      });
+      if(rows.length){fillTopPlayers(rows);return;}
+    }
+    fillTopPlayers([], 'No scores yet — open Void Vexon and set the pace.');
+  }catch(e){
+    fillTopPlayers([], 'Could not load standings right now.');
+  }
+}
+
 function openGameDetail(id){
-  var g=GAME_PROFILES[id]; if(!g)return;
-  document.getElementById('d-icon').textContent=g.icon;
-  document.getElementById('d-thumb-bg').style.background='radial-gradient(circle at 40% 60%,'+g.color+' 0%,#000 100%)';
-  document.getElementById('d-genre').textContent=g.genre;
-  document.getElementById('d-title').textContent=g.name;
-  document.getElementById('d-desc').textContent=g.desc;
-  var sl=g.status==='live'?'Live Now':g.status==='soon'?'Coming Soon':'In Development';
-  document.getElementById('d-stag').textContent=sl;
-  document.getElementById('d-stat-status').textContent=sl;
-  var play=document.getElementById('d-play-btn');
-  var lore=document.getElementById('d-lore-btn');
-  if(g.url){play.style.display='';play.textContent='Play Now — Free';play.onclick=function(){window.location.href=g.url;};}
-  else{play.style.display='';play.textContent='Coming Soon';play.onclick=null;}
-  if(g.lore){lore.style.display='';lore.onclick=function(){window.location.href=g.lore;};}
-  else{lore.style.display='none';lore.onclick=null;}
-  var shots=g.screenshots||[];
-  fillDetailShot(document.getElementById('ds1'),shots[0],g.icon);
-  fillDetailShot(document.getElementById('ds2'),shots[1],g.icon);
-  fillDetailShot(document.getElementById('ds3'),shots[2],g.icon);
-  document.getElementById('detail-overlay').classList.add('open');
+  var g=GAME_PROFILES[id];
+  if(!g)return;
+  var overlay=document.getElementById('detail-overlay');
+  var heroBg=document.getElementById('gd-hero-bg');
+  if(g.coverUrl){
+    heroBg.style.backgroundImage='linear-gradient(135deg,'+g.color+'66,transparent 55%),url('+JSON.stringify(g.coverUrl)+')';
+    heroBg.style.backgroundSize='cover';
+    heroBg.style.backgroundPosition='center';
+  }else{
+    heroBg.style.backgroundImage='linear-gradient(135deg,'+g.color+'55,transparent 60%),radial-gradient(ellipse at 70% 30%,'+g.color+'33,transparent 55%)';
+    heroBg.style.backgroundSize='';
+    heroBg.style.backgroundPosition='';
+  }
+  document.getElementById('gd-badges').innerHTML=
+    '<span class="gd-badge '+statusClass(g.status)+'">'+g.badge+'</span>'+
+    '<span class="gd-badge">'+g.genre+'</span>'+
+    (g.hasLeaderboard?'<span class="gd-badge">Ranked</span>':'');
+  document.getElementById('gd-title').textContent=g.name;
+  document.getElementById('gd-tagline').textContent=g.tagline;
+  document.getElementById('gd-meta').innerHTML=
+    '<span>Year <b>'+g.year+'</b></span>'+
+    '<span>Platform <b>'+g.platform+'</b></span>'+
+    '<span>Genre <b>'+g.genre+'</b></span>';
+  document.getElementById('gd-about').textContent=g.about;
+  document.getElementById('gd-features').innerHTML=g.features.map(function(f){
+    return '<div class="gd-feat"><b>'+f.t+'</b><span>'+f.d+'</span></div>';
+  }).join('');
+  document.getElementById('gd-stats').innerHTML=g.stats.map(function(s){
+    return '<div class="gd-stat"><b>'+s.v+'</b><span>'+s.l+'</span></div>';
+  }).join('');
+  var shots=document.getElementById('gd-shots');
+  if(g.screenshots&&g.screenshots.length){
+    shots.innerHTML=g.screenshots.map(function(src,i){
+      return '<div class="gd-shot"><img src="'+src+'" alt="'+g.name+' screenshot '+(i+1)+'" loading="lazy" onerror="this.parentNode.innerHTML=\'\\u25C6\'"></div>';
+    }).join('');
+  }else{
+    shots.innerHTML='<div class="gd-shot">◆</div><div class="gd-shot">◆</div><div class="gd-shot">◆</div>';
+  }
+  var video=document.getElementById('gd-video');
+  var empty=document.getElementById('gd-trailer-empty');
+  var trailerBtn=document.getElementById('gd-trailer');
+  try{video.pause();}catch(e){}
+  video.removeAttribute('src');
+  video.load();
+  if(g.trailerUrl){
+    video.src=g.trailerUrl;
+    empty.style.display='none';
+    trailerBtn.style.display='';
+    trailerBtn.onclick=function(){
+      document.getElementById('gd-trailer-card').scrollIntoView({behavior:'smooth',block:'center'});
+      try{video.play();}catch(e2){}
+    };
+  }else{
+    empty.style.display='flex';
+    trailerBtn.style.display='none';
+    trailerBtn.onclick=null;
+  }
+  var play=document.getElementById('gd-play');
+  if(g.playUrl){
+    play.disabled=false;
+    play.textContent='Play Now — Free';
+    play.onclick=function(){window.location.href=g.playUrl;};
+  }else{
+    play.disabled=true;
+    play.textContent=g.status==='soon'?'Coming Soon':'In Development';
+    play.onclick=null;
+  }
+  var lore=document.getElementById('gd-lore');
+  if(g.hasLore&&g.loreUrl){
+    lore.style.display='';
+    lore.onclick=function(){window.location.href=g.loreUrl;};
+  }else{
+    lore.style.display='none';
+    lore.onclick=null;
+  }
+  loadTopPlayers(g);
+  overlay.classList.add('open');
   document.body.style.overflow='hidden';
 }
+
 function closeGameDetail(){
+  var video=document.getElementById('gd-video');
+  if(video){try{video.pause();}catch(e){}}
   document.getElementById('detail-overlay').classList.remove('open');
   document.body.style.overflow='';
 }
-document.getElementById('detail-overlay').addEventListener('click',function(e){if(e.target===this)closeGameDetail();});
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape')closeGameDetail();
+});
+document.getElementById('detail-overlay').addEventListener('click',function(e){
+  if(e.target===this)closeGameDetail();
+});
 </script></body></html>
