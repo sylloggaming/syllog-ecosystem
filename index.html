@@ -365,32 +365,17 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:1.1
           </div></div>
         </div>
         <div class="fslide">
-          <div class="fslide-bg" style="background:linear-gradient(135deg,#000 0%,#180808 50%,#2a0a0a 100%);"></div>
-          <div class="fslide-icon">&#9876;&#65039;</div>
+          <div class="fslide-bg" style="background:linear-gradient(135deg,#000 0%,#1a0a08 45%,#2a1408 100%);"></div>
+          <div class="fslide-icon">&#127920;</div>
           <div class="fslide-overlay-l"></div><div class="fslide-overlay-b"></div>
           <div class="fslide-content"><div class="fslide-meta">
-            <div class="fslide-eyebrow"><span class="fslide-tag tag-coming">Coming Soon</span><span class="fslide-label">Game 02 &nbsp;&middot;&nbsp; Strategy / RPG</span></div>
-            <div class="fslide-title"><span class="silver">Iron</span> Throne</div>
-            <div class="fslide-desc">Build your empire, forge alliances, and conquer kingdoms. A deep browser strategy RPG where every decision reshapes the world.</div>
-            <div class="fslide-ftags"><span class="fftag">Strategy</span><span class="fftag">RPG</span><span class="fftag">HTML5</span><span class="fftag">Multiplayer</span></div>
+            <div class="fslide-eyebrow"><span class="fslide-tag tag-coming">Coming Soon</span><span class="fslide-label">Game 02 &nbsp;&middot;&nbsp; Narrative Casino</span></div>
+            <div class="fslide-title"><span class="silver">Vegas</span> Reckoning</div>
+            <div class="fslide-desc">A cinematic casino narrative set in the HAL Grand Hotel & Casino. Broke ex-analyst Maddox Cross arrives with $700 and a score to settle — six playable games, sixty-five story events, one reckoning.</div>
+            <div class="fslide-ftags"><span class="fftag">Narrative</span><span class="fftag">Casino</span><span class="fftag">Story</span><span class="fftag">HTML5</span></div>
             <div class="fslide-actions">
               <button class="fslide-inactive">Coming Soon</button>
-              <button class="fslide-trailer" onclick="openTrailer('Iron Throne','&#9876;&#65039;')">Watch Trailer</button>
-            </div>
-          </div></div>
-        </div>
-        <div class="fslide">
-          <div class="fslide-bg" style="background:linear-gradient(135deg,#000 0%,#081408 50%,#0f2010 100%);"></div>
-          <div class="fslide-icon">&#127961;&#65039;</div>
-          <div class="fslide-overlay-l"></div><div class="fslide-overlay-b"></div>
-          <div class="fslide-content"><div class="fslide-meta">
-            <div class="fslide-eyebrow"><span class="fslide-tag tag-phase">Phase 2</span><span class="fslide-label">Game 03 &nbsp;&middot;&nbsp; Tycoon / Builder</span></div>
-            <div class="fslide-title"><span class="silver">Megacity</span> Tycoon</div>
-            <div class="fslide-desc">Design, build and manage a thriving megacity from the ground up. Every zoning decision, every budget call shapes your skyline and your legacy.</div>
-            <div class="fslide-ftags"><span class="fftag">Tycoon</span><span class="fftag">Builder</span><span class="fftag">HTML5</span><span class="fftag">Strategy</span></div>
-            <div class="fslide-actions">
-              <button class="fslide-inactive">In Development</button>
-              <button class="fslide-trailer" onclick="openTrailer('Megacity Tycoon','&#127961;&#65039;')">Watch Teaser</button>
+              <button class="fslide-trailer" onclick="window.location.href='games.html'">View Details</button>
             </div>
           </div></div>
         </div>
@@ -399,7 +384,7 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:1.1
   </div>
   <div class="fnav-l"><button class="fnav-btn" id="fprev">&#8592;</button></div>
   <div class="fnav-r"><button class="fnav-btn" id="fnext">&#8594;</button></div>
-  <div class="fcounter"><span id="fcur-num">01</span> / <span id="ftot-num">03</span></div>
+  <div class="fcounter"><span id="fcur-num">01</span> / <span id="ftot-num">02</span></div>
   <div class="fdots" id="fdots"></div>
   <div class="fprog-bar"><div class="fprog-fill" id="fprog"></div></div>
 </div>
@@ -644,13 +629,8 @@ var SUPABASE_URL = 'https://mlstrkqefyqoczusewrm.supabase.co';
 var SUPABASE_KEY = 'sb_publishable_g7_BTnT_cTqaIk19Kx9FEw_iP1I7Df7';
 
 var GAMES = [
-  {name:'Void Vexon',      icon:'ðŸŒŒ', genre:'Action Â· Space',    desc:'Navigate the collapsing edges of reality. High-intensity browser action built natively in HTML5.',   status:'live', color:'#0a0f1e', url:'Voidvexon.html', screenshots:['https://syllog-cdn.b-cdn.net/Void-Rift/Screenshots/Screenshot%202.png','https://syllog-cdn.b-cdn.net/Void-Rift/Screenshots/Screenshot%203.png','https://syllog-cdn.b-cdn.net/Void-Rift/Screenshots/Screenshot%204.png']},
-  {name:'Iron Throne',    icon:'âš”ï¸', genre:'Strategy Â· RPG',    desc:'Build your empire, forge alliances, and conquer kingdoms in this deep browser strategy RPG.',         status:'soon', color:'#1a0a08', screenshots:[]},
-  {name:'Megacity Tycoon',icon:'ðŸ™ï¸', genre:'Tycoon Â· Builder',  desc:'Design, build and manage a thriving megacity. Every decision shapes your skyline.',                  status:'soon', color:'#081a08', screenshots:[]},
-  {name:'Cipher Deep',    icon:'ðŸ§©', genre:'Puzzle Â· Mystery',  desc:'Crack codes, unravel conspiracies, and descend into a labyrinth of mind-bending puzzles.',            status:'p2',   color:'#10081a', screenshots:[]},
-  {name:'Dragon Forge',   icon:'ðŸ‰', genre:'RPG Â· Adventure',   desc:'Forge legendary weapons, tame mythical beasts, and carve your legend across a vast fantasy realm.',   status:'p2',   color:'#1a0808', screenshots:[]},
-  {name:'Orbital Command',icon:'ðŸš€', genre:'Strategy Â· Sci-Fi', desc:'Command fleets across the galaxy. Real-time tactical strategy in the browser.',                       status:'p2',   color:'#081518', screenshots:[]},
-  {name:'Abyssal Run',    icon:'ðŸŒŠ', genre:'Action Â· Survival', desc:'Dive into the deep unknown. Survive the pressure, the darkness, and what lurks beneath.',             status:'p2',   color:'#060e1a', screenshots:[]}
+  {name:'Void Vexon', icon:'🌌', genre:'Action · Space', desc:'Navigate the collapsing edges of reality. High-intensity browser action built natively in HTML5.', status:'live', color:'#0a0f1e', url:'Voidvexon.html', screenshots:['https://syllog-cdn.b-cdn.net/Void-Rift/Screenshots/Screenshot%202.png','https://syllog-cdn.b-cdn.net/Void-Rift/Screenshots/Screenshot%203.png','https://syllog-cdn.b-cdn.net/Void-Rift/Screenshots/Screenshot%204.png']},
+  {name:'Vegas Reckoning', icon:'🎰', genre:'Narrative Casino · Story', desc:"A cinematic casino narrative set in the HAL Grand Hotel & Casino. Broke ex-analyst Maddox Cross arrives with $700 and a score to settle — six playable games, sixty-five story events, one reckoning.", status:'soon', color:'#1a0a08', screenshots:[]}
 ];
 
 document.getElementById('live-count').textContent = LIVE_TITLE_COUNT;
@@ -934,7 +914,7 @@ function signOut() {
 }
 
 // FEATURED BANNER — always authored at 1920×480, then scaled to the section width
-var fcur = 0, ftotal = 3, fbusy = false, fTimer, FDURATION = 6000;
+var fcur = 0, ftotal = 2, fbusy = false, fTimer, FDURATION = 6000;
 var fslides = document.getElementById('fslides');
 var fprog = document.getElementById('fprog');
 var fSection = document.getElementById('featured-section');
