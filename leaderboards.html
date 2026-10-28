@@ -259,14 +259,14 @@ body{background:#050505 !important;}
 <!-- MONTHLY CHAMPIONSHIP BANNER -->
 <div class="monthly-section">
   <div class="section-eyebrow">Monthly Competition</div>
-  <div class="section-title">April 2026 Featured Game <span>&middot; Championship</span></div>
+  <div class="section-title" id="champ-section-title">Featured Game <span>&middot; Championship</span></div>
   <div class="featured-banner">
     <div class="featured-overlay"></div>
     <div class="featured-bg-icon">&#127756;</div>
     <div class="featured-banner-inner">
       <div class="featured-meta">
         <span class="featured-badge">&#127942; Monthly Championship</span>
-        <span class="featured-month">April 2026</span>
+        <span class="featured-month" id="champ-month-label">—</span>
       </div>
       <div class="featured-game-title"><span>Void</span> Rift</div>
       <div class="featured-desc">Top 3 players by highest single-run score this month win Syllog Credits. Every run is your shot at the top.</div>
@@ -488,66 +488,126 @@ body{background:#050505 !important;}
   }
 
   var PRIZES=[2000,1000,500];
+  var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var _champMonthKey='';
+
+  function champMonthInfo(now){
+    now=now||new Date();
+    var y=now.getFullYear(), m=now.getMonth();
+    return {
+      label: MONTHS[m]+' '+y,
+      key: y+'-'+String(m+1).padStart(2,'0'),
+      end: new Date(y, m+1, 1, 0, 0, 0)
+    };
+  }
+
+  function refreshChampLabels(){
+    var info=champMonthInfo();
+    _champMonthKey=info.key;
+    var title=document.getElementById('champ-section-title');
+    var monthEl=document.getElementById('champ-month-label');
+    if(title) title.innerHTML=info.label+' Featured Game <span>&middot; Championship</span>';
+    if(monthEl) monthEl.textContent=info.label;
+  }
 
   function loadStandings(){
-    _sb.from('players').select('username,voidrift_highscore,avatar_url,pass_tier').order('voidrift_highscore',{ascending:false}).limit(10).then(function(res){
+    refreshChampLabels();
+    var monthKey=_champMonthKey;
+    // Prefer true monthly scores; fall back to all-time if columns not ready yet
+    _sb.from('players')
+      .select('username,voidrift_highscore,voidrift_month_score,voidrift_month_key,avatar_url,pass_tier')
+      .eq('voidrift_month_key', monthKey)
+      .order('voidrift_month_score',{ascending:false})
+      .limit(10)
+      .then(function(res){
       var grid=document.getElementById('standings-grid');
       if(!grid)return;
-      var players=(res.data||[]).filter(function(p){return p.voidrift_highscore>0;});
-      if(!players.length){grid.innerHTML='<div class="standings-empty">No scores yet &mdash; be the first to play!</div>';return;}
-      var rowClasses=['s-gold','s-silver','s-bronze'];
-      var rankClasses=['r1','r2','r3'];
-      var rankIcons=['&#129351;','&#129352;','&#129353;'];
-      var scoreClasses=['sc-gold','sc-silver','sc-bronze'];
-      var pt={free:'Free',gold:'Gold Pass',platinum:'Platinum Pass'};
-      var top=players[0].voidrift_highscore;
-      var html='';
-      players.forEach(function(p,i){
-        var rank=i+1;
-        var rc=rowClasses[i]||'';
-        var rk=rankClasses[i]||'rn';
-        var ri=rank<=3?rankIcons[i]:rank;
-        var sc=scoreClasses[i]||'';
-        var gap=rank>1?(players[i-1].voidrift_highscore-p.voidrift_highscore):0;
-        var gapStr=rank>1?('-'+fmt(gap)+' from #'+(rank-1)):'';
-        var prizeHtml=rank<=3
-          ?'<div class="st-prize"><span class="st-prize-val">'+PRIZES[i].toLocaleString()+'</span><span class="st-prize-lbl"> SC</span></div>'
-          :'<div class="st-no-prize">&mdash;</div>';
-        html+='<div class="standing-row '+rc+'">';
-        html+='<div class="st-rank '+rk+'">'+ri+'</div>';
-        html+='<div class="st-player"><div class="st-avatar">'+avHTML(p,36)+'</div><div><div class="st-name">'+p.username+'</div><div class="st-pass">'+(pt[p.pass_tier]||'Free')+'</div></div></div>';
-        html+='<div><div class="st-score '+sc+'">'+fmt(p.voidrift_highscore)+' pts</div><div class="st-gap">'+gapStr+'</div></div>';
-        html+=prizeHtml;
-        html+='</div>';
-      });
-      grid.innerHTML=html;
-
-      // Update podium
-      [1,2,3].forEach(function(pos){
-        var p=players[pos-1];
-        var ne=document.getElementById('pod-'+pos+'-name');
-        var se=document.getElementById('pod-'+pos+'-score');
-        var ae=document.getElementById('pod-'+pos+'-av');
-        if(p){
-          if(ne)ne.textContent=p.username;
-          if(se)se.textContent=fmt(p.voidrift_highscore)+' pts';
-          if(ae)ae.innerHTML=avHTML(p,64);
+      var monthlyOk=!res.error;
+      var players=[];
+      if(monthlyOk){
+        players=(res.data||[]).filter(function(p){return (p.voidrift_month_score||0)>0;});
+      }
+      function render(list, usingMonthly){
+        if(!list.length){
+          grid.innerHTML='<div class="standings-empty">No '+(_champMonthKey?champMonthInfo().label+' ':'')+'scores yet &mdash; be the first to play!</div>';
+          [1,2,3].forEach(function(pos){
+            var ne=document.getElementById('pod-'+pos+'-name');
+            var se=document.getElementById('pod-'+pos+'-score');
+            var ae=document.getElementById('pod-'+pos+'-av');
+            if(ne)ne.textContent='Open';
+            if(se)se.textContent='No score yet';
+            if(ae)ae.innerHTML='&#128100;';
+          });
+          return;
         }
+        var rowClasses=['s-gold','s-silver','s-bronze'];
+        var rankClasses=['r1','r2','r3'];
+        var rankIcons=['&#129351;','&#129352;','&#129353;'];
+        var scoreClasses=['sc-gold','sc-silver','sc-bronze'];
+        var pt={free:'Free',gold:'Gold Pass',platinum:'Platinum Pass'};
+        var html='';
+        list.forEach(function(p,i){
+          var pts=usingMonthly?(p.voidrift_month_score||0):(p.voidrift_highscore||0);
+          var rank=i+1;
+          var rc=rowClasses[i]||'';
+          var rk=rankClasses[i]||'rn';
+          var ri=rank<=3?rankIcons[i]:rank;
+          var sc=scoreClasses[i]||'';
+          var prev=usingMonthly?(list[i-1]&&list[i-1].voidrift_month_score||0):(list[i-1]&&list[i-1].voidrift_highscore||0);
+          var gap=rank>1?(prev-pts):0;
+          var gapStr=rank>1?('-'+fmt(gap)+' from #'+(rank-1)):'';
+          var prizeHtml=rank<=3
+            ?'<div class="st-prize"><span class="st-prize-val">'+PRIZES[i].toLocaleString()+'</span><span class="st-prize-lbl"> SC</span></div>'
+            :'<div class="st-no-prize">&mdash;</div>';
+          html+='<div class="standing-row '+rc+'">';
+          html+='<div class="st-rank '+rk+'">'+ri+'</div>';
+          html+='<div class="st-player"><div class="st-avatar">'+avHTML(p,36)+'</div><div><div class="st-name">'+p.username+'</div><div class="st-pass">'+(pt[p.pass_tier]||'Free')+'</div></div></div>';
+          html+='<div><div class="st-score '+sc+'">'+fmt(pts)+' pts</div><div class="st-gap">'+gapStr+'</div></div>';
+          html+=prizeHtml;
+          html+='</div>';
+        });
+        grid.innerHTML=html;
+
+        [1,2,3].forEach(function(pos){
+          var p=list[pos-1];
+          var ne=document.getElementById('pod-'+pos+'-name');
+          var se=document.getElementById('pod-'+pos+'-score');
+          var ae=document.getElementById('pod-'+pos+'-av');
+          if(p){
+            var pts=usingMonthly?(p.voidrift_month_score||0):(p.voidrift_highscore||0);
+            if(ne)ne.textContent=p.username;
+            if(se)se.textContent=fmt(pts)+' pts';
+            if(ae)ae.innerHTML=avHTML(p,64);
+          } else {
+            if(ne)ne.textContent='Open';
+            if(se)se.textContent='No score yet';
+            if(ae)ae.innerHTML='&#128100;';
+          }
+        });
+
+        var champ=document.getElementById('voidrift-champion');
+        if(champ&&list[0]){
+          var c=list[0];
+          var cPts=usingMonthly?(c.voidrift_month_score||0):(c.voidrift_highscore||0);
+          champ.innerHTML='<div class="champion-avatar">'+avHTML(c,44)+'</div><div class="champion-info"><div class="champion-crown">&#127775; Champion</div><div class="champion-name">'+c.username+'</div><div class="champion-score">'+fmt(cPts)+' pts</div></div>';
+        }
+
+        var ri=document.getElementById('refresh-info');
+        if(ri){
+          var now=new Date();
+          ri.textContent='Last updated '+now.getHours()+':'+String(now.getMinutes()).padStart(2,'0')+':'+String(now.getSeconds()).padStart(2,'0');
+        }
+      }
+
+      if(monthlyOk){
+        render(players, true);
+        return;
+      }
+      // Columns missing — temporary all-time fallback until SQL is run
+      _sb.from('players').select('username,voidrift_highscore,avatar_url,pass_tier').order('voidrift_highscore',{ascending:false}).limit(10).then(function(res2){
+        var list=(res2.data||[]).filter(function(p){return p.voidrift_highscore>0;});
+        render(list, false);
       });
-
-      // Update champion card
-      var champ=document.getElementById('voidrift-champion');
-      if(champ&&players[0]){
-        var c=players[0];
-        champ.innerHTML='<div class="champion-avatar">'+avHTML(c,44)+'</div><div class="champion-info"><div class="champion-crown">&#127775; Champion</div><div class="champion-name">'+c.username+'</div><div class="champion-score">'+fmt(c.voidrift_highscore)+' pts</div></div>';
-      }
-
-      // Update refresh time
-      var ri=document.getElementById('refresh-info');
-      if(ri){
-        var now=new Date();
-        ri.textContent='Last updated '+now.getHours()+':'+String(now.getMinutes()).padStart(2,'0')+':'+String(now.getSeconds()).padStart(2,'0');
-      }
     });
   }
 
@@ -569,11 +629,14 @@ body{background:#050505 !important;}
     list.innerHTML=html;
   });
 
-  // Countdown to end of month
+  // Countdown to 1st of next month (auto month rollover)
   function updateCountdown(){
-    var now=new Date();
-    var end=new Date(now.getFullYear(),now.getMonth()+1,1,0,0,0);
-    var diff=Math.max(0,end-now);
+    var info=champMonthInfo();
+    if(info.key!==_champMonthKey){
+      refreshChampLabels();
+      loadStandings();
+    }
+    var diff=Math.max(0, info.end - new Date());
     var d=Math.floor(diff/86400000);
     var h=Math.floor((diff%86400000)/3600000);
     var m=Math.floor((diff%3600000)/60000);
@@ -583,6 +646,7 @@ body{background:#050505 !important;}
     document.getElementById('cd-m').textContent=String(m).padStart(2,'0');
     document.getElementById('cd-s').textContent=String(s).padStart(2,'0');
   }
+  refreshChampLabels();
   updateCountdown();
   setInterval(updateCountdown,1000);
 
