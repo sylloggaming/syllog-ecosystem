@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="ship-preview.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden;}
@@ -200,6 +201,7 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:1.1
 .dash-avatar-section{padding:1.6rem 1.5rem 1.35rem;display:flex;flex-direction:column;align-items:center;gap:0.7rem;border-bottom:1px solid rgba(255,255,255,0.06);background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,0.04),transparent 60%);}
 .dash-avatar-wrap{position:relative;width:88px;height:88px;}
 .dash-avatar{width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,#1a1a1a,#0a0a0a);border:2px solid rgba(255,255,255,0.18);display:flex;align-items:center;justify-content:center;font-size:2rem;overflow:hidden;box-shadow:0 0 0 6px rgba(255,255,255,0.03);}
+.dash-avatar canvas{width:100%;height:100%;display:block;}
 .dash-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
 .dash-avatar-upload{position:absolute;bottom:0;right:0;width:26px;height:26px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:2px solid #060606;transition:background 0.2s;}
 .dash-avatar-upload:hover{background:#c0c0c0;}
@@ -559,7 +561,7 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:1.1
         <svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
       </label>
     </div>
-    <div class="dash-upload-hint">Click arrow to upload your photo</div>
+    <div class="dash-upload-hint">Ship auto-syncs · or upload a photo</div>
     <div class="dash-username" id="dash-username">Player</div>
     <div class="dash-id-label">Universal Syllog ID</div>
     <div class="dash-founder" id="dash-founder" style="display:none;">&#11088; Founder</div>
@@ -775,8 +777,15 @@ function populateDashboard(player) {
   var passNames = {free:'Free Player', gold:'Gold Pass', platinum:'Platinum Pass'};
   document.getElementById('dash-pass').textContent = passNames[player.pass_tier] || 'Free Player';
   if (player.is_founder) document.getElementById('dash-founder').style.display = 'inline-block';
+  var av = document.getElementById('dash-avatar');
   if (player.avatar_url) {
-    document.getElementById('dash-avatar').innerHTML = '<img src="' + player.avatar_url + '" alt="avatar">';
+    av.innerHTML = '<img src="' + player.avatar_url + '" alt="avatar">';
+  } else if (window.SyllogShipPreview) {
+    av.innerHTML = '<canvas id="dash-ship-av" width="88" height="88"></canvas>';
+    var sid = player.equipped_ship || 'default';
+    if (sid === 'nova') sid = 'interceptor';
+    if (sid === 'dread') sid = 'destroyer';
+    SyllogShipPreview.paintCanvas(document.getElementById('dash-ship-av'), sid, player.equipped_skin || '', { scale: 1.05 });
   }
   var joined = new Date(player.created_at);
   var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];

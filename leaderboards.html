@@ -7,6 +7,7 @@
 <meta name="vv-lb" content="ultra-grand-1793228542223">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="ship-preview.js"></script>
 <style>
 
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -178,6 +179,7 @@ footer a:hover{color:#fff;}
 .dash-avatar-section{padding:1.5rem;display:flex;flex-direction:column;align-items:center;gap:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05);}
 .dash-avatar-wrap{position:relative;width:80px;height:80px;}
 .dash-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#1a1a1a,#0a0a0a);border:2px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:2rem;overflow:hidden;}
+.dash-avatar canvas{width:100%;height:100%;display:block;}
 .dash-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
 .dash-avatar-upload{position:absolute;bottom:0;right:0;width:24px;height:24px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:2px solid #060606;transition:background 0.2s;}
 .dash-avatar-upload:hover{background:#c0c0c0;}
@@ -788,7 +790,7 @@ body{background:#020203!important;}
         <svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
       </label>
     </div>
-    <div class="dash-upload-hint">Click arrow to upload your photo</div>
+    <div class="dash-upload-hint">Ship auto-syncs · or upload a photo</div>
     <div class="dash-username" id="dash-username">Player</div>
     <div class="dash-id-label">Universal Syllog ID</div>
     <div class="dash-founder" id="dash-founder" style="display:none;">&#11088; Founder</div>
@@ -839,7 +841,14 @@ body{background:#020203!important;}
     var pn={free:'Free Player',gold:'Gold Pass',platinum:'Platinum Pass'};
     document.getElementById('dash-pass').textContent=pn[p.pass_tier]||'Free Player';
     if(p.is_founder)document.getElementById('dash-founder').style.display='inline-block';
-    if(p.avatar_url)document.getElementById('dash-avatar').innerHTML='<img src="'+p.avatar_url+'" alt="avatar">';
+    var av=document.getElementById('dash-avatar');
+    if(p.avatar_url){av.innerHTML='<img src="'+p.avatar_url+'" alt="avatar">';}
+    else if(window.SyllogShipPreview){
+      av.innerHTML='<canvas id="dash-ship-av" width="80" height="80"></canvas>';
+      var sid=(p.equipped_ship||'default');
+      if(sid==='nova')sid='interceptor'; if(sid==='dread')sid='destroyer';
+      SyllogShipPreview.paintCanvas(document.getElementById('dash-ship-av'),sid,p.equipped_skin||'',{scale:1.05});
+    }
     var d=new Date(p.created_at);
     var m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     document.getElementById('dash-since').textContent='Member since '+m[d.getMonth()]+' '+d.getFullYear()+' · Syllog Games';

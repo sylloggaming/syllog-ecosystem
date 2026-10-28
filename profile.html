@@ -6,6 +6,7 @@
 <title>Syllog — Player Profile</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="ship-preview.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
@@ -228,6 +229,23 @@ footer a{color:rgba(255,255,255,0.35)!important;}
   .lb-pos-card{flex-direction:column;text-align:center;}
 }
 
+
+/* Equipped ship auto-preview */
+.profile-avatar{background:radial-gradient(circle at 50% 40%,#141820,#07080c)!important;}
+.profile-avatar canvas{width:100%!important;height:100%!important;display:block;}
+.profile-avatar-hint{font-size:0.5rem;color:rgba(255,255,255,0.28);letter-spacing:1px;text-transform:uppercase;text-align:center;margin-top:0.45rem;max-width:120px;}
+.equipped-ship-card{margin-top:1.25rem;padding:1.35rem 1.5rem;border-radius:16px;border:1px solid rgba(255,255,255,0.1);background:linear-gradient(135deg,#0c0e14 0%,#070809 100%);display:flex;align-items:center;gap:1.35rem;position:relative;overflow:hidden;}
+.equipped-ship-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 15% 50%,rgba(68,170,255,0.12),transparent 55%);pointer-events:none;}
+.eq-ship-canvas-wrap{width:112px;height:112px;border-radius:16px;border:1px solid rgba(255,255,255,0.12);background:radial-gradient(circle at 50% 40%,#12151c,#050608);flex-shrink:0;overflow:hidden;position:relative;z-index:1;box-shadow:0 12px 40px rgba(0,0,0,0.45);}
+.eq-ship-canvas-wrap canvas{width:100%;height:100%;display:block;}
+.eq-ship-info{position:relative;z-index:1;flex:1;min-width:0;}
+.eq-ship-eyebrow{font-size:0.52rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.35rem;}
+.eq-ship-name{font-size:1.25rem;font-weight:900;letter-spacing:-0.5px;color:#fff;margin-bottom:0.25rem;}
+.eq-ship-sub{font-size:0.68rem;color:rgba(255,255,255,0.4);line-height:1.5;}
+.eq-ship-sub a{color:#fff;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.25);}
+.inv-card-icon{height:72px;display:flex;align-items:center;justify-content:center;}
+.inv-card-icon canvas{width:72px;height:72px;display:block;}
+
 </style>
 </head>
 <body>
@@ -272,6 +290,7 @@ footer a{color:rgba(255,255,255,0.35)!important;}
           <svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         </label>
         <div class="profile-online"></div>
+        <div class="profile-avatar-hint" id="p-avatar-hint">Equipped ship</div>
       </div>
       <div class="profile-info">
         <div class="profile-badges" id="p-badges"></div>
@@ -326,6 +345,14 @@ footer a{color:rgba(255,255,255,0.35)!important;}
           <div class="gsc-item"><div class="gsc-val" id="gs-rank">—</div><div class="gsc-lbl">Global Rank</div></div>
           <div class="gsc-item"><div class="gsc-val" id="gs-ships">1</div><div class="gsc-lbl">Ships</div></div>
           <div class="gsc-item"><div class="gsc-val" id="gs-skins">0</div><div class="gsc-lbl">Skins</div></div>
+        </div>
+      </div>
+      <div class="equipped-ship-card" id="equipped-ship-card">
+        <div class="eq-ship-canvas-wrap"><canvas id="eq-ship-canvas" width="112" height="112"></canvas></div>
+        <div class="eq-ship-info">
+          <div class="eq-ship-eyebrow">Currently Equipped</div>
+          <div class="eq-ship-name" id="eq-ship-name">Void Fighter</div>
+          <div class="eq-ship-sub" id="eq-ship-sub">Synced from Void Vexon Hangar — equip a ship in-game and it appears here automatically.</div>
         </div>
       </div>
       <div class="lb-pos-card">
@@ -447,8 +474,67 @@ footer a{color:rgba(255,255,255,0.35)!important;}
 var _sb=supabase.createClient('https://mlstrkqefyqoczusewrm.supabase.co','sb_publishable_g7_BTnT_cTqaIk19Kx9FEw_iP1I7Df7');
 var _user=null,_player=null;
 
-var SHIPS={'default':{name:'Void Fighter',icon:'&#128640;'},'nova':{name:'Nova Interceptor',icon:'&#9993;&#65039;'},'dread':{name:'Dread Destroyer',icon:'&#128308;'},'phantom':{name:'Phantom Elite',icon:'&#9889;'}};
-var SKINS={'skin_aurora':{name:'Aurora',icon:'&#127752;'},'skin_inferno':{name:'Inferno',icon:'&#128293;'},'skin_nebula':{name:'Nebula',icon:'&#127756;'},'skin_celestial':{name:'Celestial Wraith',icon:'&#10024;'}};
+var SHIPS={
+  'default':{name:'Void Fighter',id:'default'},
+  'interceptor':{name:'Nova Interceptor',id:'interceptor'},
+  'destroyer':{name:'Dread Destroyer',id:'destroyer'},
+  'phantom':{name:'Phantom Elite',id:'phantom'}
+};
+var SHIP_ALIAS={nova:'interceptor',dread:'destroyer',void_fighter:'default'};
+function normShipId(id){id=(id||'default').toLowerCase();return SHIP_ALIAS[id]||(SHIPS[id]?id:'default');}
+var SKINS={
+  'skin_gold':{name:'Aurora'},
+  'skin_crimson':{name:'Inferno'},
+  'skin_void':{name:'Nebula'},
+  'skin_wraith':{name:'Celestial Wraith'},
+  'skin_aurora':{name:'Aurora',mapsTo:'skin_gold'},
+  'skin_inferno':{name:'Inferno',mapsTo:'skin_crimson'},
+  'skin_nebula':{name:'Nebula',mapsTo:'skin_void'},
+  'skin_celestial':{name:'Celestial Wraith',mapsTo:'skin_wraith'}
+};
+function normSkinId(id){if(!id)return'';var s=SKINS[id];return(s&&s.mapsTo)||id;}
+var _shipSpinStop=null;
+function setAvatarFromPlayer(p){
+  var el=document.getElementById('p-avatar');
+  var hint=document.getElementById('p-avatar-hint');
+  if(!el)return;
+  if(_shipSpinStop){_shipSpinStop();_shipSpinStop=null;}
+  if(p.avatar_url){
+    el.innerHTML='<img src="'+p.avatar_url+'" alt="avatar">';
+    if(hint)hint.textContent='Your photo';
+    return;
+  }
+  var ship=normShipId(p.equipped_ship);
+  var skin=normSkinId(p.equipped_skin);
+  el.innerHTML='<canvas id="p-avatar-ship" width="120" height="120"></canvas>';
+  var c=document.getElementById('p-avatar-ship');
+  if(window.SyllogShipPreview&&c){
+    _shipSpinStop=SyllogShipPreview.startIdleSpin(c,ship,skin);
+  }
+  if(hint)hint.textContent='Equipped ship · auto';
+}
+function renderEquippedShip(p){
+  var ship=normShipId(p.equipped_ship);
+  var skin=normSkinId(p.equipped_skin);
+  var nameEl=document.getElementById('eq-ship-name');
+  var subEl=document.getElementById('eq-ship-sub');
+  var canvas=document.getElementById('eq-ship-canvas');
+  var card=document.getElementById('equipped-ship-card');
+  if(nameEl)nameEl.textContent=(SHIPS[ship]&&SHIPS[ship].name)||(window.SyllogShipPreview&&SyllogShipPreview.shipName(ship))||ship;
+  if(subEl){
+    var skinName=skin&&SKINS[skin]?SKINS[skin].name:null;
+    subEl.innerHTML=skinName
+      ?('Hull skin: <b style="color:#fff">'+skinName+'</b> · Change vessels in the <a href="Voidvexon.html">Void Vexon Hangar</a>.')
+      :('Synced from Void Vexon Hangar — equip in-game and it updates here automatically. <a href="Voidvexon.html">Open game</a>');
+  }
+  if(canvas&&window.SyllogShipPreview){
+    SyllogShipPreview.paintCanvas(canvas,ship,skin,{scale:1.1});
+    if(card){
+      var col=(SyllogShipPreview.INFO[ship]||{}).color||'#44aaff';
+      card.style.boxShadow='0 0 40px '+col+'22';
+    }
+  }
+}
 var UNI_ITEMS={'deep_lore':{name:'Deep Lore Archive',icon:'&#128274;',type:'Lore'},'comic_vr_001':{name:'Void Vexon: Issue #1',icon:'&#128214;',type:'Comic'},'comic_vr_002':{name:'Void Vexon: Issue #2',icon:'&#128214;',type:'Comic'},'music_vr_ost1':{name:'Void Vexon OST Vol.1',icon:'&#127926;',type:'Music'},'book_vr_bible':{name:'The Void Bible',icon:'&#128218;',type:'Book'}};
 
 function fmt(n){if(!n||n===0)return'0';if(n>=1000000)return(n/1000000).toFixed(1)+'M';if(n>=1000)return(n/1000).toFixed(1)+'K';return n.toLocaleString();}
@@ -467,7 +553,8 @@ async function init(){
 }
 
 function render(p){
-  if(p.avatar_url)document.getElementById('p-avatar').innerHTML='<img src="'+p.avatar_url+'" alt="avatar">';
+  setAvatarFromPlayer(p);
+  renderEquippedShip(p);
   var pn={free:'Free Player',gold:'Gold Pass',platinum:'Platinum Pass'};
   var pc={free:'badge-free',gold:'badge-gold',platinum:'badge-platinum'};
   var b='';
@@ -492,31 +579,39 @@ function render(p){
   var skins=[];try{skins=JSON.parse(p.owned_skins||'[]');}catch(e){skins=[];}
   document.getElementById('gs-skins').textContent=skins.length;
 
-  // Ships inventory
+  // Ships inventory (normalize legacy ids from older saves)
+  ships=ships.map(normShipId).filter(function(v,i,a){return a.indexOf(v)===i;});
+  if(ships.indexOf('default')===-1)ships.unshift('default');
+  document.getElementById('gs-ships').textContent=ships.length;
   var sh='';
   Object.keys(SHIPS).forEach(function(k){
     if(ships.indexOf(k)===-1)return;
-    var eq=p.equipped_ship===k;
+    var eq=normShipId(p.equipped_ship)===k;
     sh+='<div class="inv-card'+(eq?' equipped':'')+'">'+
       (eq?'<div class="inv-equipped">Equipped</div>':'')+
-      '<div class="inv-card-icon">'+SHIPS[k].icon+'</div>'+
+      '<div class="inv-card-icon"><canvas class="ship-preview-canvas" data-ship="'+k+'" data-skin="'+(eq?normSkinId(p.equipped_skin):'')+'" width="72" height="72"></canvas></div>'+
       '<div class="inv-card-name">'+SHIPS[k].name+'</div>'+
       '<div class="inv-card-type">Ship</div></div>';
   });
   document.getElementById('inv-ships').innerHTML=sh||'<div class="inv-empty">No ships yet</div>';
+  if(window.SyllogShipPreview)SyllogShipPreview.hydrate(document.getElementById('inv-ships'));
 
   // Skins inventory
   var sk='';
   skins.forEach(function(k){
-    if(!SKINS[k])return;
-    var eq=p.equipped_skin===k;
-    sk+='<div class="inv-card'+(eq?' equipped':'')+'">'+
+    var nk=normSkinId(k);
+    if(!SKINS[nk]||SKINS[nk].mapsTo)return;
+    if(sk.indexOf('data-skin-id="'+nk+'"')!==-1)return;
+    var eq=normSkinId(p.equipped_skin)===nk;
+    sk+='<div class="inv-card'+(eq?' equipped':'')+'" data-skin-id="'+nk+'">'+
       (eq?'<div class="inv-equipped">Equipped</div>':'')+
-      '<div class="inv-card-icon">'+SKINS[k].icon+'</div>'+
-      '<div class="inv-card-name">'+SKINS[k].name+'</div>'+
+      '<div class="inv-card-icon"><canvas class="ship-preview-canvas" data-ship="'+normShipId(p.equipped_ship)+'" data-skin="'+nk+'" width="72" height="72"></canvas></div>'+
+      '<div class="inv-card-name">'+SKINS[nk].name+'</div>'+
       '<div class="inv-card-type">Skin</div></div>';
   });
+  if(window.SyllogShipPreview){ /* hydrate after insert below */ }
   document.getElementById('inv-skins').innerHTML=sk||'<div class="inv-empty">No skins unlocked yet</div>';
+  if(window.SyllogShipPreview)SyllogShipPreview.hydrate(document.getElementById('inv-skins'));
 
   // Universe
   var unlocks=p.unlocked_items||[];
@@ -567,7 +662,7 @@ async function uploadAvatar(input){
   var ext=file.name.split('.').pop();
   var path='avatars/'+_user.id+'.'+ext;
   var reader=new FileReader();
-  reader.onload=function(e){document.getElementById('p-avatar').innerHTML='<img src="'+e.target.result+'" alt="avatar">';};
+  reader.onload=function(e){if(_shipSpinStop){_shipSpinStop();_shipSpinStop=null;}document.getElementById('p-avatar').innerHTML='<img src="'+e.target.result+'" alt="avatar">';var h=document.getElementById('p-avatar-hint');if(h)h.textContent='Your photo';};
   reader.readAsDataURL(file);
   var up=await _sb.storage.from('player-avatars').upload(path,file,{upsert:true});
   if(!up.error){
