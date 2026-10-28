@@ -657,13 +657,22 @@ sb.rpc('count_online_players').then(function(res) {
       refreshGuestCount();
       return;
     }
-    sb.from('guest_sessions').upsert(
-      { session_id: gid, last_seen: new Date().toISOString() },
-      { onConflict: 'session_id' }
-    ).then(function(res) {
-      if (res && res.error) console.warn('guest ping failed', res.error.message || res.error);
-      refreshGuestCount();
-      sb.rpc('cleanup_old_guest_sessions').then(function() {});
+    var payload = { session_id: gid, last_seen: new Date().toISOString() };
+    sb.from('guest_sessions').upsert(payload, { onConflict: 'session_id' }).then(function(res) {
+      if (!res || !res.error) {
+        refreshGuestCount();
+        sb.rpc('cleanup_old_guest_sessions').then(function() {});
+        return;
+      }
+      // Fallback if unique constraint is missing/misnamed: update then insert
+      sb.from('guest_sessions').update({ last_seen: payload.last_seen }).eq('session_id', gid).then(function(upd) {
+        var updated = upd && upd.data && upd.data.length;
+        if (updated) { refreshGuestCount(); return; }
+        sb.from('guest_sessions').insert(payload).then(function(ins) {
+          if (ins && ins.error) console.warn('guest ping failed', ins.error.message || ins.error);
+          refreshGuestCount();
+        });
+      });
     });
   }
 
