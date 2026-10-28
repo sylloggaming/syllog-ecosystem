@@ -664,10 +664,9 @@ sb.rpc('count_online_players').then(function(res) {
         sb.rpc('cleanup_old_guest_sessions').then(function() {});
         return;
       }
-      // Fallback if unique constraint is missing/misnamed: update then insert
-      sb.from('guest_sessions').update({ last_seen: payload.last_seen }).eq('session_id', gid).then(function(upd) {
-        var updated = upd && upd.data && upd.data.length;
-        if (updated) { refreshGuestCount(); return; }
+      // Fallback if unique/PK is missing: try update, then insert
+      sb.from('guest_sessions').update({ last_seen: payload.last_seen }).eq('session_id', gid).select('session_id').then(function(upd) {
+        if (upd && upd.data && upd.data.length) { refreshGuestCount(); return; }
         sb.from('guest_sessions').insert(payload).then(function(ins) {
           if (ins && ins.error) console.warn('guest ping failed', ins.error.message || ins.error);
           refreshGuestCount();
