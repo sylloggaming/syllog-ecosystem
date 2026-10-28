@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Syllog — Hall of Fame</title>
+<meta name="vv-lb" content="ultra-grand-1793228542223">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
@@ -355,6 +356,231 @@ body{background:#020203!important;}
   .podium-card.third .podium-plinth{height:110px!important;}
   .podium-beam{display:none;}
 }
+
+
+/* ═══ ULTRA HALL OF FAME ═══ */
+.page-hero{isolation:isolate;}
+.page-hero::before{background:
+  radial-gradient(ellipse at 50% -20%,rgba(255,215,0,0.14) 0%,transparent 55%),
+  radial-gradient(ellipse at 50% 0%,rgba(255,255,255,0.04) 0%,transparent 50%)!important;}
+.hero-main-title .title-word{
+  background:linear-gradient(165deg,#ffffff 0%,#fff6d0 18%,#ffe08a 36%,#ffffff 52%,#c8c8c8 78%,#ffffff 100%)!important;
+  -webkit-background-clip:text!important;background-clip:text!important;
+  filter:drop-shadow(0 0 48px rgba(255,215,0,0.22));
+  animation:titleSheen 7s ease-in-out infinite;
+}
+@keyframes titleSheen{0%,100%{filter:drop-shadow(0 0 36px rgba(255,215,0,0.16));}50%{filter:drop-shadow(0 0 64px rgba(255,215,0,0.32));}}
+.hero-eyebrow{position:relative;overflow:hidden;}
+.hero-eyebrow::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.18) 50%,transparent 60%);animation:eyebrowSweep 4.5s ease-in-out infinite;}
+@keyframes eyebrowSweep{0%,100%{transform:translateX(-120%);}50%{transform:translateX(120%);}}
+
+/* Premium polished medals — modern metal, not emoji/rusty */
+.medal{position:relative;display:inline-flex;width:44px;height:56px;align-items:flex-start;justify-content:center;vertical-align:middle;filter:drop-shadow(0 6px 14px rgba(0,0,0,0.45));}
+.medal-bail{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:10px;height:8px;border:2px solid currentColor;border-bottom:none;border-radius:8px 8px 0 0;z-index:3;opacity:0.85;}
+.medal-ring{position:absolute;top:14px;left:50%;transform:translateX(-50%);width:30px;height:30px;border-radius:50%;z-index:1;}
+.medal-ring::after{content:'';position:absolute;inset:3px;border-radius:50%;border:1px solid rgba(255,255,255,0.35);box-shadow:inset 0 0 0 1px rgba(0,0,0,0.15);}
+.medal-face{position:absolute;top:17px;left:50%;transform:translateX(-50%);width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;overflow:hidden;z-index:2;}
+.medal-shine{position:absolute;inset:0;background:linear-gradient(145deg,rgba(255,255,255,0.9) 0%,rgba(255,255,255,0.25) 22%,transparent 45%,rgba(0,0,0,0.08) 100%);pointer-events:none;z-index:2;}
+.medal-shine::after{content:'';position:absolute;top:-40%;left:-60%;width:40%;height:180%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.55),transparent);transform:skewX(-18deg);animation:medalSweep 3.2s ease-in-out infinite;}
+@keyframes medalSweep{0%,55%{transform:translateX(0) skewX(-18deg);opacity:0;}70%{opacity:1;}100%{transform:translateX(320%) skewX(-18deg);opacity:0;}}
+.medal-num{position:relative;z-index:3;font-size:0.72rem;font-weight:900;font-family:'Inter',sans-serif;line-height:1;text-shadow:0 1px 0 rgba(255,255,255,0.35);}
+.medal-ribbon{position:absolute;top:0;width:10px;height:20px;z-index:0;border-radius:2px 2px 1px 1px;}
+.medal-ribbon.r-l{left:calc(50% - 11px);transform:skewX(-16deg);clip-path:polygon(0 0,100% 0,100% 78%,50% 100%,0 78%);}
+.medal-ribbon.r-r{left:calc(50% + 1px);transform:skewX(16deg);clip-path:polygon(0 0,100% 0,100% 78%,50% 100%,0 78%);}
+
+.m-gold{color:#f0d060;}
+.m-gold .medal-ring{background:
+  radial-gradient(circle at 32% 28%,#fff8d0 0%,#ffe566 18%,#f5c518 42%,#d4a017 70%,#a67c00 100%);
+  box-shadow:0 4px 18px rgba(245,197,24,0.55),inset 0 1px 0 rgba(255,255,255,0.75),inset 0 -2px 4px rgba(120,80,0,0.25);}
+.m-gold .medal-face{background:
+  radial-gradient(circle at 35% 30%,#fff6b0 0%,#ffd84a 40%,#e6a800 75%,#b8860b 100%);
+  color:#5c3d00;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.8),0 0 18px rgba(255,215,0,0.4);}
+.m-gold .medal-ribbon{background:linear-gradient(180deg,#ff6b85 0%,#e11d48 55%,#9f1239 100%);box-shadow:inset -1px 0 0 rgba(255,255,255,0.25);}
+.m-gold .medal-ribbon.r-r{box-shadow:inset 1px 0 0 rgba(0,0,0,0.15);filter:brightness(0.92);}
+
+.m-silver{color:#d8d8d8;}
+.m-silver .medal-ring{background:
+  radial-gradient(circle at 32% 28%,#ffffff 0%,#f0f0f0 18%,#d0d0d0 42%,#a8a8a8 70%,#888 100%);
+  box-shadow:0 4px 16px rgba(200,200,200,0.4),inset 0 1px 0 rgba(255,255,255,0.9),inset 0 -2px 4px rgba(60,60,60,0.2);}
+.m-silver .medal-face{background:
+  radial-gradient(circle at 35% 30%,#fff 0%,#eaeaea 40%,#b8b8b8 75%,#909090 100%);
+  color:#2a2a2a;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.95),0 0 14px rgba(255,255,255,0.25);}
+.m-silver .medal-ribbon{background:linear-gradient(180deg,#7dd3fc 0%,#2563eb 55%,#1e3a8a 100%);box-shadow:inset -1px 0 0 rgba(255,255,255,0.3);}
+.m-silver .medal-ribbon.r-r{filter:brightness(0.9);}
+
+.m-bronze{color:#e0a070;}
+.m-bronze .medal-ring{background:
+  radial-gradient(circle at 32% 28%,#ffe0c0 0%,#f0b070 18%,#d08040 42%,#a85c28 70%,#7a3e18 100%);
+  box-shadow:0 4px 16px rgba(205,127,50,0.45),inset 0 1px 0 rgba(255,230,200,0.7),inset 0 -2px 4px rgba(80,40,10,0.25);}
+.m-bronze .medal-face{background:
+  radial-gradient(circle at 35% 30%,#ffd8b0 0%,#e8a060 40%,#c06a30 75%,#8b4518 100%);
+  color:#3d1e08;
+  box-shadow:inset 0 1px 0 rgba(255,220,180,0.7),0 0 14px rgba(205,127,50,0.35);}
+.m-bronze .medal-ribbon{background:linear-gradient(180deg,#86efac 0%,#16a34a 55%,#14532d 100%);box-shadow:inset -1px 0 0 rgba(255,255,255,0.25);}
+.m-bronze .medal-ribbon.r-r{filter:brightness(0.9);}
+
+.medal.sm{transform:scale(0.7);transform-origin:center top;}
+.medal.lg{transform:scale(1.65);transform-origin:center top;width:68px;height:86px;}
+.medal.xl{transform:scale(2.05);transform-origin:center top;width:84px;height:104px;}
+.m-gold.xl{filter:drop-shadow(0 10px 32px rgba(255,215,0,0.45));}
+.m-gold.xl .medal-shine::after{animation-duration:2.4s;}
+.prize-chip .medal{margin-top:-4px;}
+
+/* ═══ CINEMATIC PODIUM ARENA ═══ */
+.podium-section{padding:1.5rem 2rem 4rem!important;}
+.podium-arena{
+  position:relative;border-radius:32px;padding:3rem 1.5rem 0;overflow:hidden;
+  border:1px solid rgba(255,215,0,0.22)!important;
+  background:
+    radial-gradient(ellipse at 50% -5%,rgba(255,215,0,0.22) 0%,transparent 38%),
+    radial-gradient(ellipse at 50% 85%,rgba(255,255,255,0.06) 0%,transparent 45%),
+    radial-gradient(ellipse at 20% 40%,rgba(192,192,192,0.05) 0%,transparent 35%),
+    radial-gradient(ellipse at 80% 40%,rgba(205,127,50,0.05) 0%,transparent 35%),
+    linear-gradient(180deg,#0e0c08 0%,#070708 40%,#030304 100%)!important;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.04),
+    0 50px 140px rgba(0,0,0,0.75),
+    inset 0 1px 0 rgba(255,230,150,0.12),
+    inset 0 -40px 80px rgba(255,215,0,0.03)!important;
+}
+.podium-arena::before{
+  content:'';position:absolute;inset:0;pointer-events:none;opacity:0.55;z-index:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);
+  background-size:56px 56px;
+  mask-image:radial-gradient(ellipse at 50% 35%,black 8%,transparent 68%);
+  -webkit-mask-image:radial-gradient(ellipse at 50% 35%,black 8%,transparent 68%);
+}
+.podium-arena::after{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:1;
+  background:radial-gradient(ellipse at 50% 100%,rgba(255,215,0,0.08),transparent 50%);
+  mix-blend-mode:screen;
+}
+.podium-haze{
+  position:absolute;left:0;right:0;bottom:0;height:55%;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,transparent 0%,rgba(255,240,200,0.03) 40%,rgba(255,215,0,0.06) 100%);
+  filter:blur(1px);
+}
+.podium-vignette{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 40%,transparent 30%,rgba(0,0,0,0.45) 100%);
+}
+.podium-beams{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1;}
+.podium-beam{
+  position:absolute;top:-15%;height:130%;opacity:0.22;filter:blur(2px);
+  transform-origin:top center;pointer-events:none;
+  clip-path:polygon(40% 0,60% 0,100% 100%,0 100%);
+  animation:beamPulse 5s ease-in-out infinite;
+}
+.podium-beam.b1{
+  left:50%;width:160px;transform:translateX(-50%);
+  background:linear-gradient(180deg,rgba(255,230,150,0.85) 0%,rgba(255,215,0,0.35) 35%,transparent 78%);
+  animation-delay:0s;filter:blur(3px) drop-shadow(0 0 40px rgba(255,215,0,0.35));
+}
+.podium-beam.b2{
+  left:14%;width:110px;transform:rotate(-14deg);
+  background:linear-gradient(180deg,rgba(255,255,255,0.55) 0%,rgba(200,200,210,0.2) 40%,transparent 75%);
+  animation-delay:0.7s;
+}
+.podium-beam.b3{
+  right:14%;left:auto;width:110px;transform:rotate(14deg);
+  background:linear-gradient(180deg,rgba(255,180,120,0.5) 0%,rgba(205,127,50,0.22) 40%,transparent 75%);
+  animation-delay:1.2s;
+}
+.podium-beam.b4{
+  left:50%;width:280px;transform:translateX(-50%);opacity:0.1;filter:blur(18px);
+  background:linear-gradient(180deg,rgba(255,215,0,0.6) 0%,transparent 70%);
+  clip-path:none;border-radius:0 0 50% 50%;
+  animation:beamPulse 6s ease-in-out infinite 0.3s;
+}
+@keyframes beamPulse{0%,100%{opacity:0.12;}50%{opacity:0.32;}}
+.podium-sparkles{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:2;}
+.podium-sparkles span{
+  position:absolute;border-radius:50%;background:#fff;opacity:0;
+  animation:spark 4s ease-in-out infinite;
+}
+.podium-sparkles span:nth-child(1){left:10%;top:18%;width:3px;height:3px;animation-delay:0.2s;box-shadow:0 0 10px #ffd700,0 0 20px #ffd700;}
+.podium-sparkles span:nth-child(2){left:22%;top:12%;width:2px;height:2px;animation-delay:1.1s;box-shadow:0 0 8px #fff;}
+.podium-sparkles span:nth-child(3){left:48%;top:8%;width:4px;height:4px;animation-delay:0.5s;box-shadow:0 0 14px #ffd700,0 0 28px rgba(255,215,0,0.5);}
+.podium-sparkles span:nth-child(4){left:72%;top:14%;width:2px;height:2px;animation-delay:1.7s;box-shadow:0 0 8px #fff;}
+.podium-sparkles span:nth-child(5){left:88%;top:20%;width:3px;height:3px;animation-delay:0.9s;box-shadow:0 0 10px #cd7f32;}
+.podium-sparkles span:nth-child(6){left:58%;top:26%;width:2px;height:2px;animation-delay:2.2s;box-shadow:0 0 8px #ffd700;}
+.podium-sparkles span:nth-child(7){left:35%;top:20%;width:2px;height:2px;animation-delay:2.8s;box-shadow:0 0 8px #fff;}
+.podium-sparkles span:nth-child(8){left:65%;top:11%;width:3px;height:3px;animation-delay:1.4s;box-shadow:0 0 12px #ffd700;}
+.podium-sparkles span:nth-child(9){left:42%;top:32%;width:2px;height:2px;animation-delay:3.1s;box-shadow:0 0 8px #ffe9a0;}
+.podium-sparkles span:nth-child(10){left:78%;top:28%;width:2px;height:2px;animation-delay:0.4s;box-shadow:0 0 8px #e8b080;}
+@keyframes spark{0%,100%{opacity:0;transform:scale(0.3) translateY(0);}35%{opacity:1;transform:scale(1.2) translateY(-10px);}75%{opacity:0;transform:scale(0.5) translateY(-22px);}}
+
+.podium-crown{
+  position:absolute;top:1.1rem;left:50%;transform:translateX(-50%);z-index:4;
+  font-size:0.52rem;letter-spacing:4px;text-transform:uppercase;font-weight:800;
+  color:rgba(255,230,150,0.7);text-align:center;pointer-events:none;
+  text-shadow:0 0 20px rgba(255,215,0,0.35);
+}
+.podium-crown svg{display:block;margin:0 auto 0.35rem;filter:drop-shadow(0 0 12px rgba(255,215,0,0.55));animation:crownBob 3.5s ease-in-out infinite;}
+@keyframes crownBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
+
+.podium-wrap{z-index:3!important;padding-top:2.5rem!important;}
+.podium-plinth{
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.2),0 -8px 40px rgba(0,0,0,0.35)!important;
+  border:1px solid rgba(255,255,255,0.06);
+  border-bottom:none;
+}
+.podium-card.first .podium-plinth{
+  height:180px!important;
+  background:
+    linear-gradient(180deg,rgba(255,230,150,0.15) 0%,transparent 18%),
+    linear-gradient(180deg,#6b5518 0%,#3d320a 28%,#1a1506 65%,#0a0803 100%)!important;
+  box-shadow:inset 0 1px 0 rgba(255,230,150,0.55),0 -24px 70px rgba(255,215,0,0.22),0 0 60px rgba(255,215,0,0.08)!important;
+  border-color:rgba(255,215,0,0.2)!important;
+}
+.podium-card.first .podium-plinth::before{
+  background:linear-gradient(180deg,rgba(255,230,150,0.25),transparent 50%)!important;
+}
+.podium-card.second .podium-plinth{
+  height:128px!important;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,0.12) 0%,transparent 20%),
+    linear-gradient(180deg,#4a4a50 0%,#242428 45%,#101012 100%)!important;
+  border-color:rgba(255,255,255,0.12)!important;
+}
+.podium-card.third .podium-plinth{
+  height:104px!important;
+  background:
+    linear-gradient(180deg,rgba(255,200,140,0.12) 0%,transparent 20%),
+    linear-gradient(180deg,#5a3a1c 0%,#2a1a0c 50%,#100c06 100%)!important;
+  border-color:rgba(205,127,50,0.18)!important;
+}
+.podium-floor{
+  height:28px!important;margin:0 -1.5rem!important;
+  background:
+    linear-gradient(180deg,#2a2418 0%,#121210 40%,#060606 100%)!important;
+  border-top:1px solid rgba(255,215,0,0.2)!important;
+  box-shadow:0 -30px 80px rgba(255,215,0,0.1)!important;
+  position:relative;z-index:2;
+}
+.podium-floor::before{
+  width:70%!important;height:2px!important;top:-1px!important;
+  background:linear-gradient(90deg,transparent,rgba(255,215,0,0.55),rgba(255,255,255,0.4),rgba(255,215,0,0.55),transparent)!important;
+  box-shadow:0 0 20px rgba(255,215,0,0.35);
+}
+.podium-floor::after{
+  content:'SYLLOG CHAMPIONSHIP';
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  font-size:0.48rem;letter-spacing:5px;font-weight:800;color:rgba(255,230,150,0.28);
+  white-space:nowrap;pointer-events:none;
+}
+.podium-avatar.first-av{
+  animation:crownGlow 2.8s ease-in-out infinite!important;
+}
+@media(max-width:860px){
+  .podium-beam.b4,.podium-crown{display:none;}
+  .podium-floor::after{letter-spacing:3px;font-size:0.42rem;}
+}
+
 </style>
 </head>
 <body>
@@ -403,9 +629,9 @@ body{background:#020203!important;}
       <div class="featured-game-title"><span>Void</span> Vexon</div>
       <div class="featured-desc">Top 3 players by highest single-run score this month win Syllog Credits. Every run is your shot at the top.</div>
       <div class="prize-row">
-        <div class="prize-chip"><span class="medal m-gold" aria-hidden="true"><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">1</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span><span class="prize-chip-val">2,000 SC</span><span class="prize-chip-lbl">1st Place</span></div>
-        <div class="prize-chip"><span class="medal m-silver" aria-hidden="true"><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">2</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span><span class="prize-chip-val">1,000 SC</span><span class="prize-chip-lbl">2nd Place</span></div>
-        <div class="prize-chip"><span class="medal m-bronze" aria-hidden="true"><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">3</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span><span class="prize-chip-val">500 SC</span><span class="prize-chip-lbl">3rd Place</span></div>
+        <div class="prize-chip"><span class="medal m-gold" aria-hidden="true"><span class="medal-bail"></span><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">1</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span><span class="prize-chip-val">2,000 SC</span><span class="prize-chip-lbl">1st Place</span></div>
+        <div class="prize-chip"><span class="medal m-silver" aria-hidden="true"><span class="medal-bail"></span><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">2</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span><span class="prize-chip-val">1,000 SC</span><span class="prize-chip-lbl">2nd Place</span></div>
+        <div class="prize-chip"><span class="medal m-bronze" aria-hidden="true"><span class="medal-bail"></span><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">3</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span><span class="prize-chip-val">500 SC</span><span class="prize-chip-lbl">3rd Place</span></div>
       </div>
       <div class="featured-cta">
         <a class="fc-play" href="Voidvexon.html">Play Now — Free</a>
@@ -449,18 +675,25 @@ body{background:#020203!important;}
   <div class="section-eyebrow">Hall of Champions</div>
   <div class="section-title">Championship Podium <span>&middot; Top 3</span></div>
   <div class="podium-arena">
+    <div class="podium-crown">
+      <svg width="36" height="28" viewBox="0 0 36 28" fill="none" aria-hidden="true"><path d="M3 22 L6 8 L13 16 L18 4 L23 16 L30 8 L33 22 Z" fill="url(#cg)" stroke="#ffe9a0" stroke-width="1"/><rect x="3" y="20" width="30" height="5" rx="1" fill="url(#cg2)"/><defs><linearGradient id="cg" x1="18" y1="4" x2="18" y2="22"><stop stop-color="#fff6c8"/><stop offset="1" stop-color="#d4a017"/></linearGradient><linearGradient id="cg2" x1="18" y1="20" x2="18" y2="25"><stop stop-color="#ffe9a0"/><stop offset="1" stop-color="#b8860b"/></linearGradient></defs></svg>
+      Championship Stage
+    </div>
     <div class="podium-beams">
+      <div class="podium-beam b4"></div>
       <div class="podium-beam b1"></div>
       <div class="podium-beam b2"></div>
       <div class="podium-beam b3"></div>
     </div>
+    <div class="podium-haze"></div>
+    <div class="podium-vignette"></div>
     <div class="podium-sparkles">
-      <span></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
     </div>
     <div class="podium-wrap">
       <div class="podium-card second">
         <div class="podium-player">
-          <div class="podium-medal-wrap"><span class="medal m-silver lg" aria-hidden="true"><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">2</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span></div>
+          <div class="podium-medal-wrap"><span class="medal m-silver lg" aria-hidden="true"><span class="medal-bail"></span><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">2</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span></div>
           <div class="podium-avatar second-av" id="pod-2-av">&#128100;</div>
           <div class="podium-username" id="pod-2-name">Open</div>
           <div class="podium-score" id="pod-2-score">No score yet</div>
@@ -470,7 +703,7 @@ body{background:#020203!important;}
       </div>
       <div class="podium-card first">
         <div class="podium-player">
-          <div class="podium-medal-wrap"><span class="medal m-gold xl" aria-hidden="true"><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">1</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span></div>
+          <div class="podium-medal-wrap"><span class="medal m-gold xl" aria-hidden="true"><span class="medal-bail"></span><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">1</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span></div>
           <div class="podium-avatar first-av" id="pod-1-av">&#128100;</div>
           <div class="podium-username" id="pod-1-name">Open</div>
           <div class="podium-score" id="pod-1-score">No score yet</div>
@@ -480,7 +713,7 @@ body{background:#020203!important;}
       </div>
       <div class="podium-card third">
         <div class="podium-player">
-          <div class="podium-medal-wrap"><span class="medal m-bronze lg" aria-hidden="true"><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">3</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span></div>
+          <div class="podium-medal-wrap"><span class="medal m-bronze lg" aria-hidden="true"><span class="medal-bail"></span><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">3</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span></div>
           <div class="podium-avatar third-av" id="pod-3-av">&#128100;</div>
           <div class="podium-username" id="pod-3-name">Open</div>
           <div class="podium-score" id="pod-3-score">No score yet</div>
@@ -703,9 +936,9 @@ body{background:#020203!important;}
         var rowClasses=['s-gold','s-silver','s-bronze'];
         var rankClasses=['r1','r2','r3'];
         var MEDALS=[
-          '<span class="medal m-gold sm"><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">1</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span>',
-          '<span class="medal m-silver sm"><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">2</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span>',
-          '<span class="medal m-bronze sm"><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">3</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span>'
+          '<span class="medal m-gold sm" aria-hidden="true"><span class="medal-bail"></span><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">1</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span>',
+          '<span class="medal m-silver sm" aria-hidden="true"><span class="medal-bail"></span><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">2</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span>',
+          '<span class="medal m-bronze sm" aria-hidden="true"><span class="medal-bail"></span><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">3</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span>'
         ];
         var rankIcons=MEDALS;
         var scoreClasses=['sc-gold','sc-silver','sc-bronze'];
@@ -754,7 +987,7 @@ body{background:#020203!important;}
         if(champ&&list[0]){
           var c=list[0];
           var cPts=usingMonthly?(c.voidrift_month_score||0):(c.voidrift_highscore||0);
-          champ.innerHTML='<div class="champion-avatar">'+avHTML(c,44)+'</div><div class="champion-info"><div class="champion-crown"><span class="medal m-gold sm"><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">1</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span> Champion</div><div class="champion-name">'+c.username+'</div><div class="champion-score">'+fmt(cPts)+' pts</div></div>';
+          champ.innerHTML='<div class="champion-avatar">'+avHTML(c,44)+'</div><div class="champion-info"><div class="champion-crown"><span class="medal m-gold sm" aria-hidden="true"><span class="medal-bail"></span><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">1</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span> Champion</div><div class="champion-name">'+c.username+'</div><div class="champion-score">'+fmt(cPts)+' pts</div></div>';
         }
 
         var ri=document.getElementById('refresh-info');
@@ -784,9 +1017,9 @@ body{background:#020203!important;}
     if(!players.length){list.innerHTML='<div class="lb-empty">No players yet</div>';return;}
     var rc=['','r1','r2','r3'];
     var ri=['',
-      '<span class="medal m-gold sm"><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">1</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span>',
-      '<span class="medal m-silver sm"><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">2</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span>',
-      '<span class="medal m-bronze sm"><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">3</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span>'
+      '<span class="medal m-gold sm" aria-hidden="true"><span class="medal-bail"></span><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">1</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span>',
+      '<span class="medal m-silver sm" aria-hidden="true"><span class="medal-bail"></span><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">2</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span>',
+      '<span class="medal m-bronze sm" aria-hidden="true"><span class="medal-bail"></span><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">3</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span>'
     ];
     var pt={free:'Free',gold:'Gold Pass',platinum:'Platinum Pass'};
     var html='';
