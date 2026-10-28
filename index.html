@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Syllog â€” Instant-Play Gaming Universe</title>
+<title>Syllog — Instant-Play Gaming Universe</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -26,9 +26,9 @@ nav{background:rgba(0,0,0,0.96);border-bottom:1px solid rgba(255,255,255,0.06);p
 .nav-name{font-size:0.63rem;font-weight:700;color:rgba(255,255,255,0.65);letter-spacing:1px;text-transform:uppercase;}
 .nav-arrow{font-size:0.55rem;color:rgba(255,255,255,0.2);}
 .hero{padding:2.5rem 2rem 0;text-align:center;border-bottom:1px solid rgba(255,255,255,0.05);}
-.hero-tag{font-size:0.56rem;letter-spacing:4px;text-transform:uppercase;color:#333;border:1px solid rgba(255,255,255,0.05);padding:0.25rem 0.85rem;border-radius:20px;display:inline-block;margin-bottom:0.9rem;}
+.hero-tag{font-size:0.56rem;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.35);border:1px solid rgba(255,255,255,0.1);padding:0.25rem 0.85rem;border-radius:20px;display:inline-block;margin-bottom:0.9rem;}
 .hero-title{font-size:clamp(2.8rem,8vw,6rem);font-weight:900;letter-spacing:-2px;line-height:1;background:linear-gradient(160deg,#fff 0%,#d0d0d0 40%,#888 70%,#c0c0c0 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:0.5rem;}
-.hero-sub{font-size:0.65rem;color:#2a2a2a;letter-spacing:3px;text-transform:uppercase;margin-bottom:1.1rem;}
+.hero-sub{font-size:0.65rem;color:rgba(255,255,255,0.32);letter-spacing:3px;text-transform:uppercase;margin-bottom:1.1rem;}
 .hero-btns{display:flex;gap:0.6rem;justify-content:center;margin-bottom:1.5rem;}
 .cta-a{background:#fff;color:#000;border:none;padding:0.55rem 1.6rem;border-radius:5px;font-size:0.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:background 0.2s;font-family:'Inter',sans-serif;}
 .cta-a:hover{background:#c0c0c0;}
@@ -81,85 +81,114 @@ nav{background:rgba(0,0,0,0.96);border-bottom:1px solid rgba(255,255,255,0.06);p
 .fdot:not(.active){width:8px;}
 .fprog-bar{position:absolute;bottom:0;left:0;right:0;height:2px;background:rgba(255,255,255,0.05);z-index:20;}
 .fprog-fill{height:100%;background:linear-gradient(90deg,rgba(255,255,255,0.3),rgba(192,192,192,0.6));width:0%;transition:width linear;}
-.lobby{padding:2rem 0 1.5rem;background:#000;}
-.lobby-header{display:flex;align-items:flex-end;justify-content:space-between;padding:0 2rem;margin-bottom:1.75rem;}
-.sec-label{font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:#2a2a2a;margin-bottom:0.25rem;}
-.sec-head{font-size:1rem;font-weight:800;letter-spacing:-0.3px;color:#fff;}
-.sec-head span{color:#1e1e1e;}
-.view-all-btn{font-size:0.6rem;color:#333;letter-spacing:1px;text-transform:uppercase;background:none;border:none;cursor:pointer;text-decoration:underline;text-underline-offset:3px;font-family:'Inter',sans-serif;}
-.stage-container{position:relative;height:340px;display:flex;align-items:center;justify-content:center;overflow:hidden;}
-.fog-l{position:absolute;left:0;top:0;bottom:0;width:180px;background:linear-gradient(90deg,#000,transparent);z-index:10;pointer-events:none;}
-.fog-r{position:absolute;right:0;top:0;bottom:0;width:180px;background:linear-gradient(270deg,#000,transparent);z-index:10;pointer-events:none;}
-.floor-line{position:absolute;bottom:60px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.04),transparent);z-index:1;}
-.carousel-3d{position:relative;width:240px;height:280px;transform-style:preserve-3d;perspective:1200px;cursor:grab;}
-.carousel-3d:active{cursor:grabbing;}
-.c-card{position:absolute;width:240px;height:280px;border-radius:14px;overflow:visible;backface-visibility:hidden;transform-origin:center center;transition:transform 0.72s cubic-bezier(0.25,0.46,0.45,0.94),opacity 0.72s cubic-bezier(0.25,0.46,0.45,0.94),filter 0.72s ease;will-change:transform,opacity;}
-.c-card-inner{width:100%;height:280px;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.06);position:relative;background:#080808;}
-.c-card.is-active .c-card-inner{border-color:rgba(255,255,255,0.15);}
-.c-thumb{height:175px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
-.c-thumb-icon{font-size:4rem;position:relative;z-index:2;filter:drop-shadow(0 0 20px rgba(255,255,255,0.08));}
-.c-thumb-vignette{position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,0.8) 100%);z-index:1;}
-.c-body{padding:0.85rem 1rem 1rem;background:#0a0a0a;}
-.c-genre{font-size:0.55rem;color:#2a2a2a;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.2rem;}
-.c-name{font-size:1rem;font-weight:800;color:#fff;letter-spacing:-0.3px;margin-bottom:0.55rem;}
-.c-footer{display:flex;align-items:center;justify-content:space-between;}
-.cbadge{font-size:0.52rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.15rem 0.5rem;border-radius:8px;}
-.badge-live{background:rgba(255,255,255,0.06);color:#c0c0c0;border:1px solid rgba(255,255,255,0.1);}
-.badge-soon{color:#282828;border:1px solid rgba(255,255,255,0.04);}
-.c-details-btn{font-size:0.57rem;color:#2a2a2a;background:none;border:none;cursor:pointer;letter-spacing:1px;text-transform:uppercase;text-decoration:underline;text-underline-offset:2px;transition:color 0.15s;font-family:'Inter',sans-serif;}
-.c-details-btn:hover{color:#aaa;}
-.c-reflection{position:absolute;bottom:-88px;left:0;width:100%;height:88px;border-radius:0 0 14px 14px;overflow:hidden;pointer-events:none;opacity:0;transition:opacity 0.72s ease;}
-.c-card.is-active .c-reflection{opacity:1;}
-.c-refl-inner{width:100%;height:280px;border-radius:14px;transform:scaleY(-1);transform-origin:top;filter:blur(3px);opacity:0.3;}
-.c-refl-fade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.5) 0%,#000 72%);}
-.carousel-controls{display:flex;align-items:center;justify-content:center;gap:1.25rem;margin-top:1.25rem;padding:0 2rem;}
-.cc-btn{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);color:rgba(255,255,255,0.35);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.85rem;transition:all 0.2s;flex-shrink:0;}
-.cc-btn:hover{background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.18);color:#fff;}
-.cc-center{display:flex;flex-direction:column;align-items:center;gap:0.5rem;min-width:200px;}
-.cc-title{font-size:0.88rem;font-weight:800;color:#fff;letter-spacing:-0.3px;}
-.cc-genre{font-size:0.6rem;color:#2a2a2a;letter-spacing:2px;text-transform:uppercase;}
-.cc-dots{display:flex;gap:5px;align-items:center;}
-.cc-dot{height:3px;border-radius:2px;background:rgba(255,255,255,0.1);cursor:pointer;transition:all 0.35s cubic-bezier(0.25,0.46,0.45,0.94);}
-.cc-dot.active{background:#c0c0c0;width:22px;}
-.cc-dot:not(.active){width:5px;}
-.two-col{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid rgba(255,255,255,0.04);border-bottom:1px solid rgba(255,255,255,0.04);}
-.col-l{padding:1.25rem 2rem;border-right:1px solid rgba(255,255,255,0.04);}
-.col-r{padding:1.25rem 2rem;}
-.feat-row{display:flex;gap:0.7rem;padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.03);align-items:flex-start;}
-.feat-row:last-child{border-bottom:none;}
-.fi{width:24px;height:24px;background:#0a0a0a;border:1px solid rgba(255,255,255,0.05);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:0.75rem;flex-shrink:0;}
-.fn{font-size:0.75rem;font-weight:700;color:#ccc;margin-bottom:0.1rem;}
-.fd{font-size:0.67rem;color:#666;line-height:1.4;}
-.sc-table{width:100%;border-collapse:collapse;margin-top:0.6rem;}
-.sc-table th{font-size:0.55rem;color:#444;letter-spacing:1.5px;text-transform:uppercase;text-align:left;padding:0.35rem 0.4rem;border-bottom:1px solid rgba(255,255,255,0.03);}
-.sc-table td{font-size:0.68rem;color:#666;padding:0.3rem 0.4rem;border-bottom:1px solid rgba(255,255,255,0.025);}
-.sc-table td:first-child{color:#888;}
-.hi{color:#b0b0b0;font-weight:600;}
-.pass-wrap{padding:1.25rem 2rem;}
-.pass-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:0.85rem;}
-.pc{background:#060606;border:1px solid rgba(255,255,255,0.05);border-radius:10px;padding:1.1rem;position:relative;display:flex;flex-direction:column;}
-.pc.featured{background:#090909;border-color:rgba(255,255,255,0.12);}
-.pc-tier{font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:#666;margin-bottom:0.35rem;}
-.pc-price{font-size:1.8rem;font-weight:900;letter-spacing:-1px;color:#fff;line-height:1;}
-.pc-per{font-size:0.65rem;color:#444;font-weight:400;}
-.pc-sc{font-size:0.62rem;color:#666;margin-top:0.3rem;padding-bottom:0.7rem;border-bottom:1px solid rgba(255,255,255,0.04);margin-bottom:0.7rem;}
-.pc-list{list-style:none;flex:1;margin-bottom:0.85rem;}
-.pc-list li{font-size:0.67rem;padding:0.22rem 0;border-bottom:1px solid rgba(255,255,255,0.025);display:flex;gap:0.45rem;align-items:center;}
-.pc-list li.on{color:rgba(255,255,255,0.55);}
-.pc-list li.off{color:#1a1a1a;}
+/* ── Shared section chrome ── */
+.sec-label{font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:0.35rem;}
+.sec-head{font-size:clamp(1.35rem,3vw,2rem);font-weight:900;letter-spacing:-0.8px;color:#fff;line-height:1.1;}
+.sec-head .muted{background:linear-gradient(135deg,#fff 0%,#9a9a9a 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.sec-sub{font-size:0.78rem;color:rgba(255,255,255,0.38);line-height:1.6;max-width:520px;margin-top:0.55rem;}
+
+/* ── Ecosystem proof ── */
+.eco{padding:3.25rem 2rem 3rem;border-bottom:1px solid rgba(255,255,255,0.05);position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,0.035),transparent 55%);}
+.eco-inner{max-width:1100px;margin:0 auto;}
+.eco-top{display:flex;align-items:flex-end;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.75rem;}
+.eco-actions{display:flex;gap:0.55rem;flex-wrap:wrap;}
+.eco-btn{border:none;padding:0.72rem 1.2rem;border-radius:8px;font-size:0.65rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;}
+.eco-btn.primary{background:#fff;color:#000;}
+.eco-btn.primary:hover{background:#d0d0d0;}
+.eco-btn.ghost{background:rgba(255,255,255,0.04);color:#fff;border:1px solid rgba(255,255,255,0.12);}
+.eco-btn.ghost:hover{border-color:rgba(255,255,255,0.28);background:rgba(255,255,255,0.08);}
+.eco-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.85rem;}
+.eco-card{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:1.15rem 1.1rem;position:relative;overflow:hidden;transition:border-color 0.25s,transform 0.25s,background 0.25s;}
+.eco-card:hover{border-color:rgba(255,255,255,0.16);background:rgba(255,255,255,0.035);transform:translateY(-2px);}
+.eco-card::before{content:'';position:absolute;inset:0;background:linear-gradient(145deg,rgba(255,255,255,0.05),transparent 45%);pointer-events:none;}
+.eco-num{font-size:0.55rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.22);font-weight:700;margin-bottom:0.7rem;}
+.eco-title{font-size:0.95rem;font-weight:800;color:#fff;margin-bottom:0.35rem;letter-spacing:-0.3px;}
+.eco-desc{font-size:0.7rem;color:rgba(255,255,255,0.38);line-height:1.55;}
+.eco-rail{margin-top:1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding:0.95rem 1.1rem;border-radius:14px;border:1px solid rgba(255,255,255,0.07);background:linear-gradient(90deg,rgba(255,255,255,0.03),transparent 55%);}
+.eco-rail-text{font-size:0.72rem;color:rgba(255,255,255,0.45);line-height:1.45;}
+.eco-rail-text b{color:#fff;font-weight:700;}
+.eco-rail-link{font-size:0.6rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.55);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18);padding-bottom:1px;transition:color 0.2s;}
+.eco-rail-link:hover{color:#fff;}
+
+/* ── Value grid: pillars + wallet ── */
+.value-grid{display:grid;grid-template-columns:1.05fr 0.95fr;border-bottom:1px solid rgba(255,255,255,0.05);max-width:100%;}
+.value-col{padding:2.5rem 2rem;position:relative;}
+.value-col + .value-col{border-left:1px solid rgba(255,255,255,0.05);}
+.pillar-list{display:flex;flex-direction:column;gap:0.65rem;margin-top:1.15rem;}
+.pillar{display:grid;grid-template-columns:44px 1fr;gap:0.85rem;align-items:start;padding:0.85rem 0.9rem;border-radius:14px;border:1px solid rgba(255,255,255,0.05);background:rgba(255,255,255,0.015);transition:border-color 0.2s,background 0.2s;}
+.pillar:hover{border-color:rgba(255,255,255,0.12);background:rgba(255,255,255,0.03);}
+.pillar-mark{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:0.68rem;font-weight:900;letter-spacing:1px;color:#111;background:linear-gradient(145deg,#fff,#9a9a9a);flex-shrink:0;}
+.pillar h4{font-size:0.8rem;font-weight:800;color:#fff;margin-bottom:0.2rem;}
+.pillar p{font-size:0.68rem;color:rgba(255,255,255,0.38);line-height:1.5;margin:0;}
+.wallet-packs{display:grid;grid-template-columns:1fr 1fr;gap:0.65rem;margin-top:1.15rem;}
+.wpack{border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:1rem 0.95rem;background:rgba(255,255,255,0.02);position:relative;overflow:hidden;transition:border-color 0.2s,transform 0.2s;}
+.wpack:hover{border-color:rgba(255,255,255,0.16);transform:translateY(-1px);}
+.wpack.best{border-color:rgba(255,255,255,0.18);background:linear-gradient(160deg,rgba(255,255,255,0.06),rgba(255,255,255,0.015));}
+.wpack-tag{position:absolute;top:0.65rem;right:0.65rem;font-size:0.48rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:800;color:#111;background:#fff;padding:0.18rem 0.4rem;border-radius:999px;}
+.wpack-name{font-size:0.58rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.45rem;font-weight:700;}
+.wpack-credits{font-size:1.35rem;font-weight:900;color:#fff;letter-spacing:-0.5px;line-height:1;}
+.wpack-price{font-size:0.72rem;color:rgba(255,255,255,0.45);margin-top:0.35rem;}
+.wpack-value{font-size:0.58rem;color:rgba(255,255,255,0.28);margin-top:0.55rem;letter-spacing:0.5px;}
+.wpack-value em{color:rgba(255,255,255,0.7);font-style:normal;font-weight:700;}
+.wallet-note{margin-top:0.9rem;font-size:0.62rem;color:rgba(255,255,255,0.28);line-height:1.5;}
+.wallet-cta{margin-top:1rem;}
+.wallet-cta a{display:inline-flex;align-items:center;gap:0.4rem;font-size:0.62rem;letter-spacing:1.5px;text-transform:uppercase;color:#fff;text-decoration:none;font-weight:700;border-bottom:1px solid rgba(255,255,255,0.2);padding-bottom:2px;}
+.wallet-cta a:hover{border-color:#fff;}
+
+/* ── Membership passes ── */
+.pass-wrap{padding:3rem 2rem 3.25rem;background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,0.03),transparent 50%);}
+.pass-head{text-align:center;max-width:640px;margin:0 auto 1.5rem;}
+.pass-billing{display:flex;align-items:center;justify-content:center;gap:0.75rem;margin-top:1rem;flex-wrap:wrap;}
+.pass-billing span{font-size:0.68rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;color:rgba(255,255,255,0.28);transition:color 0.2s;}
+.pass-billing span.on{color:#fff;}
+.bill-toggle{width:42px;height:24px;background:#141414;border:1px solid rgba(255,255,255,0.12);border-radius:12px;position:relative;cursor:pointer;transition:all 0.2s;flex-shrink:0;}
+.bill-thumb{position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#555;transition:all 0.25s cubic-bezier(0.25,0.46,0.45,0.94);}
+.bill-save{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);color:rgba(255,255,255,0.7);font-size:0.52rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:0.2rem 0.55rem;border-radius:20px;}
+.pass-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:0.9rem;max-width:1100px;margin:0 auto;align-items:stretch;}
+.pc{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:18px;padding:1.35rem 1.2rem 1.2rem;position:relative;display:flex;flex-direction:column;overflow:hidden;transition:border-color 0.25s,transform 0.25s;}
+.pc:hover{border-color:rgba(255,255,255,0.14);transform:translateY(-2px);}
+.pc.featured{background:linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.015));border-color:rgba(255,255,255,0.2);box-shadow:0 24px 60px rgba(0,0,0,0.45);}
+.pc::after{content:'';position:absolute;inset:0;background:linear-gradient(145deg,rgba(255,255,255,0.04),transparent 40%);pointer-events:none;}
+.pc-tier{font-size:0.58rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:0.45rem;font-weight:700;}
+.pc-price{font-size:2rem;font-weight:900;letter-spacing:-1.2px;color:#fff;line-height:1;}
+.pc-per{font-size:0.65rem;color:rgba(255,255,255,0.3);font-weight:400;}
+.pc-sc{font-size:0.65rem;color:rgba(255,255,255,0.38);margin-top:0.4rem;padding-bottom:0.85rem;border-bottom:1px solid rgba(255,255,255,0.06);margin-bottom:0.85rem;}
+.pc-list{list-style:none;flex:1;margin-bottom:1rem;}
+.pc-list li{font-size:0.7rem;padding:0.28rem 0;border-bottom:1px solid rgba(255,255,255,0.03);display:flex;gap:0.5rem;align-items:center;}
+.pc-list li.on{color:rgba(255,255,255,0.62);}
+.pc-list li.off{color:rgba(255,255,255,0.16);}
 .ck{font-size:0.55rem;flex-shrink:0;}
-.pc-btn{width:100%;padding:0.55rem;border-radius:5px;font-size:0.63rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border:none;margin-top:auto;transition:all 0.2s;font-family:'Inter',sans-serif;}
-.pb-f{background:rgba(255,255,255,0.03);color:#1e1e1e;}
+.pc-btn{width:100%;padding:0.72rem;border-radius:8px;font-size:0.65rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border:none;margin-top:auto;transition:all 0.2s;font-family:'Inter',sans-serif;position:relative;z-index:1;}
+.pb-f{background:rgba(255,255,255,0.06);color:#fff;border:1px solid rgba(255,255,255,0.14)!important;}
+.pb-f:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.28)!important;}
 .pb-g{background:#fff;color:#000;}
-.pb-g:hover{background:#d0d0d0;}
-.pb-p{background:linear-gradient(135deg,#b0b0b0,#fff);color:#000;}
-.pb-p:hover{opacity:0.85;}
-.hot-badge{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:#fff;color:#000;font-size:0.5rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:0.18rem 0.65rem;border-radius:0 0 7px 7px;white-space:nowrap;}
-footer{display:flex;align-items:center;justify-content:space-between;padding:0.8rem 2rem;border-top:1px solid rgba(255,255,255,0.04);}
-.fl{font-size:0.7rem;font-weight:900;letter-spacing:5px;color:#181818;}
-.flinks{display:flex;gap:1.25rem;}
-.flinks a{font-size:0.58rem;color:#888;text-decoration:none;letter-spacing:1px;text-transform:uppercase;}
-.fc{font-size:0.58rem;color:#181818;}
+.pb-g:hover{background:#d8d8d8;}
+.pb-p{background:linear-gradient(135deg,#b8b8b8,#fff);color:#000;}
+.pb-p:hover{opacity:0.9;}
+.hot-badge{position:absolute;top:0;left:50%;transform:translateX(-50%);background:#fff;color:#000;font-size:0.5rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:0.22rem 0.7rem;border-radius:0 0 8px 8px;white-space:nowrap;z-index:2;}
+
+@media(max-width:980px){
+  .eco-grid{grid-template-columns:1fr 1fr;}
+  .value-grid{grid-template-columns:1fr;}
+  .value-col + .value-col{border-left:none;border-top:1px solid rgba(255,255,255,0.05);}
+  .pass-cards{grid-template-columns:1fr;max-width:420px;}
+}
+@media(max-width:640px){
+  .eco,.value-col,.pass-wrap{padding-left:1.15rem;padding-right:1.15rem;}
+  .eco-grid{grid-template-columns:1fr;}
+  .wallet-packs{grid-template-columns:1fr;}
+  .stats{flex-wrap:wrap;}
+  .s{padding:0.55rem 1rem;flex:1 1 30%;}
+}
+
+footer{display:flex;align-items:center;justify-content:space-between;padding:1.15rem 2rem;border-top:1px solid rgba(255,255,255,0.05);gap:1rem;flex-wrap:wrap;}
+.fl{font-size:0.75rem;font-weight:900;letter-spacing:5px;background:linear-gradient(135deg,#fff,#666);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.flinks{display:flex;gap:1.1rem;flex-wrap:wrap;}
+.flinks a{font-size:0.58rem;color:rgba(255,255,255,0.35);text-decoration:none;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s;}
+.flinks a:hover{color:#fff;}
+.fc{font-size:0.58rem;color:rgba(255,255,255,0.2);}
+
+
 .dash-overlay{position:fixed;inset:0;background:rgba(0,0,0,0);transition:background 0.4s ease;pointer-events:none;z-index:300;}
 .dash-overlay.open{background:rgba(0,0,0,0.65);pointer-events:auto;}
 .dash-panel{position:fixed;top:0;right:0;bottom:0;width:320px;background:#060606;border-left:1px solid rgba(255,255,255,0.07);transform:translateX(100%);transition:transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94);z-index:400;display:flex;flex-direction:column;overflow-y:auto;}
@@ -303,10 +332,10 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
 
   <div class="stats">
     <div class="s"><div class="sn" id="live-count">1</div><div class="sl">Live Titles</div></div>
-    <div class="s"><div class="sn" id="player-count">â€”</div><div class="sl">Accounts</div></div>
-    <div class="s"><div class="sn" id="online-count">â€”</div><div class="sl">Online Now</div></div>
-    <div class="s"><div class="sn" id="guest-count">â€”</div><div class="sl">Guests</div></div>
-    <div class="s"><div class="sn">0</div><div class="sl">Downloads</div></div>
+    <div class="s"><div class="sn" id="player-count">—</div><div class="sl">Accounts</div></div>
+    <div class="s"><div class="sn" id="online-count">—</div><div class="sl">Online Now</div></div>
+    <div class="s"><div class="sn" id="guest-count">—</div><div class="sl">Guests</div></div>
+    <div class="s"><div class="sn">0</div><div class="sl">Installs Needed</div></div>
     <div class="s"><div class="sn">&#8734;</div><div class="sl">Free Play</div></div>
   </div>
 </section>
@@ -370,70 +399,79 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
   <div class="fprog-bar"><div class="fprog-fill" id="fprog"></div></div>
 </div>
 
-<div class="lobby">
-  <div class="lobby-header">
-    <div><div class="sec-label">Game Lobby</div><div class="sec-head">The Universe <span>Awaits</span></div></div>
-    <button class="view-all-btn">View All Games</button>
-  </div>
-  <div class="stage-container">
-    <div class="fog-l"></div><div class="fog-r"></div>
-    <div class="floor-line"></div>
-    <div class="carousel-3d" id="carousel"></div>
-  </div>
-  <div class="carousel-controls">
-    <button class="cc-btn" id="cprev">&#8592;</button>
-    <div class="cc-center">
-      <div><div class="cc-title" id="cc-title">Void Vexon</div><div class="cc-genre" id="cc-genre">Action &middot; Space</div></div>
-      <div class="cc-dots" id="cc-dots"></div>
+
+<section class="eco">
+  <div class="eco-inner">
+    <div class="eco-top">
+      <div>
+        <div class="sec-label">Ecosystem</div>
+        <div class="sec-head">One ID. <span class="muted">Every title.</span></div>
+        <p class="sec-sub">Syllog connects play, progression, currency, and lore under one account — so every run strengthens the same universe.</p>
+      </div>
+      <div class="eco-actions">
+        <button class="eco-btn primary" onclick="window.location.href='auth.html?tab=signup'">Create Syllog ID</button>
+        <button class="eco-btn ghost" onclick="window.location.href='Voidvexon.html'">Play Void Vexon</button>
+        <button class="eco-btn ghost" onclick="window.location.href='games.html'">Browse Games</button>
+      </div>
     </div>
-    <button class="cc-btn" id="cnext">&#8594;</button>
+    <div class="eco-grid">
+      <div class="eco-card"><div class="eco-num">01</div><div class="eco-title">Syllog ID</div><div class="eco-desc">One login, one name, one identity across every Syllog title and leaderboard.</div></div>
+      <div class="eco-card"><div class="eco-num">02</div><div class="eco-title">Cloud Progress</div><div class="eco-desc">Saves, ranks, and unlocks follow your account — not a single browser or device.</div></div>
+      <div class="eco-card"><div class="eco-num">03</div><div class="eco-title">Syllog Credits</div><div class="eco-desc">One wallet for cosmetics, boosts, and future titles. Never locked to a single game.</div></div>
+      <div class="eco-card"><div class="eco-num">04</div><div class="eco-title">Living Universe</div><div class="eco-desc">Play feeds lore unlocks. XP and milestones open deeper Void Rift archive entries.</div></div>
+    </div>
+    <div class="eco-rail">
+      <div class="eco-rail-text"><b>Live now:</b> Void Vexon championship boards, guest play, and Syllog ID cloud saves.</div>
+      <a class="eco-rail-link" href="leaderboards.html">View Leaderboards →</a>
+    </div>
   </div>
-</div>
+</section>
 
-<div class="two-col">
-  <div class="col-l">
+<section class="value-grid">
+  <div class="value-col">
     <div class="sec-label">Platform</div>
-    <div class="sec-head" style="font-size:0.9rem;margin-bottom:0.75rem;">One Universe. <span style="color:#1e1e1e;">Everything Connected.</span></div>
-    <div class="feat-row"><div class="fi">&#128219;</div><div><div class="fn">Universal Syllog ID</div><div class="fd">One login across all games. One name on every leaderboard, forever.</div></div></div>
-    <div class="feat-row"><div class="fi">&#128142;</div><div><div class="fn">Global Wallet</div><div class="fd">Syllog Credits valid in every title. Never locked to one game.</div></div></div>
-    <div class="feat-row"><div class="fi">&#9889;</div><div><div class="fn">Zero Friction</div><div class="fd">No downloads. Click and play instantly in any modern browser.</div></div></div>
-    <div class="feat-row"><div class="fi">&#127942;</div><div><div class="fn">Cross-Title XP</div><div class="fd">Global XP persists across all titles. Milestones unlock cross-game rewards.</div></div></div>
-    <div class="feat-row"><div class="fi">&#128737;&#65039;</div><div><div class="fn">Fortress Security</div><div class="fd">Server-side economy, JScrambler, Cloudflare WAF. Zero client trust.</div></div></div>
+    <div class="sec-head">Built as a system.<br><span class="muted">Not a storefront.</span></div>
+    <p class="sec-sub">Every layer is designed so new titles plug into the same identity, economy, and competitive fabric.</p>
+    <div class="pillar-list">
+      <div class="pillar"><div class="pillar-mark">ID</div><div><h4>Universal Syllog ID</h4><p>One account across all games. Your name stays on every board, forever.</p></div></div>
+      <div class="pillar"><div class="pillar-mark">SC</div><div><h4>Global Wallet</h4><p>Syllog Credits travel with you — spend them in any live or future title.</p></div></div>
+      <div class="pillar"><div class="pillar-mark">GO</div><div><h4>Zero Friction</h4><p>No downloads. Open a tab and play instantly in any modern browser.</p></div></div>
+      <div class="pillar"><div class="pillar-mark">XP</div><div><h4>Cross-Title Progression</h4><p>Global XP persists across titles and unlocks cross-game rewards.</p></div></div>
+      <div class="pillar"><div class="pillar-mark">SEC</div><div><h4>Fortress Security</h4><p>Server-side economy, hardened clients, and Cloudflare-grade edge protection.</p></div></div>
+    </div>
   </div>
-  <div class="col-r">
+  <div class="value-col">
     <div class="sec-label">Syllog Credits</div>
-    <div class="sec-head" style="font-size:0.9rem;margin-bottom:0.75rem;">One Currency. <span style="color:#1e1e1e;">Every Game.</span></div>
-    <table class="sc-table">
-      <thead><tr><th>Pack</th><th>Credits</th><th>Price</th><th>Value</th></tr></thead>
-      <tbody>
-        <tr><td>Starter</td><td>500 SC</td><td>$4.99</td><td>100 SC/$1</td></tr>
-        <tr><td>Plus</td><td>1,200 SC</td><td>$9.99</td><td>120 SC/$1</td></tr>
-        <tr><td>Pro</td><td>2,750 SC</td><td>$19.99</td><td class="hi">138 SC/$1</td></tr>
-        <tr><td>Elite</td><td>6,500 SC</td><td>$39.99</td><td class="hi">163 SC/$1</td></tr>
-      </tbody>
-    </table>
-    <div style="margin-top:0.7rem;font-size:0.62rem;color:#666;line-height:1.5;">SC purchased once &middot; valid across all games &middot; Gold &amp; Platinum subscribers receive additional % bonuses.</div>
+    <div class="sec-head">One currency.<br><span class="muted">Every game.</span></div>
+    <p class="sec-sub">Buy once. Use everywhere. Pass members earn monthly SC gifts and bonus value.</p>
+    <div class="wallet-packs">
+      <div class="wpack"><div class="wpack-name">Starter</div><div class="wpack-credits">500 SC</div><div class="wpack-price">$4.99</div><div class="wpack-value">100 SC / $1</div></div>
+      <div class="wpack"><div class="wpack-name">Plus</div><div class="wpack-credits">1,200 SC</div><div class="wpack-price">$9.99</div><div class="wpack-value">120 SC / $1</div></div>
+      <div class="wpack best"><div class="wpack-tag">Best Value</div><div class="wpack-name">Pro</div><div class="wpack-credits">2,750 SC</div><div class="wpack-price">$19.99</div><div class="wpack-value"><em>138 SC / $1</em></div></div>
+      <div class="wpack"><div class="wpack-name">Elite</div><div class="wpack-credits">6,500 SC</div><div class="wpack-price">$39.99</div><div class="wpack-value"><em>163 SC / $1</em></div></div>
+    </div>
+    <div class="wallet-note">SC purchased once · valid across all games · Gold &amp; Platinum subscribers receive additional % bonuses.</div>
+    <div class="wallet-cta"><a href="credits.html">Full Credits &amp; Passes →</a></div>
   </div>
-</div>
+</section>
 
-<div class="pass-wrap">
-  <div style="text-align:center;margin-bottom:1.25rem;">
+<section class="pass-wrap">
+  <div class="pass-head">
     <div class="sec-label">Membership</div>
     <div class="sec-head">Choose Your Pass</div>
-    <div style="display:flex;align-items:center;justify-content:center;gap:0.75rem;margin-top:0.85rem;">
-      <span style="font-size:0.68rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;color:#fff;transition:color 0.2s;" id="lbl-m" onclick="switchBilling()">Monthly</span>
-      <div style="width:40px;height:22px;background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);border-radius:11px;position:relative;cursor:pointer;transition:all 0.2s;flex-shrink:0;" id="ptoggle" onclick="switchBilling()">
-        <div style="position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:#444;transition:all 0.25s cubic-bezier(0.25,0.46,0.45,0.94);" id="pthumb"></div>
-      </div>
-      <span style="font-size:0.68rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;color:#333;transition:color 0.2s;" id="lbl-a" onclick="switchBilling()">Annual</span>
-      <span style="background:rgba(192,192,192,0.1);border:1px solid rgba(192,192,192,0.2);color:#c0c0c0;font-size:0.55rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:0.18rem 0.6rem;border-radius:20px;">2 Months Free</span>
+    <p class="sec-sub" style="margin-left:auto;margin-right:auto;">Free forever to play. Upgrade when you want monthly SC, ad removal, and early access across the ecosystem.</p>
+    <div class="pass-billing">
+      <span id="lbl-m" class="on" onclick="switchBilling()">Monthly</span>
+      <div class="bill-toggle" id="ptoggle" onclick="switchBilling()"><div class="bill-thumb" id="pthumb"></div></div>
+      <span id="lbl-a" onclick="switchBilling()">Annual</span>
+      <span class="bill-save">2 Months Free</span>
     </div>
   </div>
   <div class="pass-cards">
     <div class="pc">
       <div class="pc-tier">Free Player</div>
       <div style="min-height:52px;"><div class="pc-price">$0 <span class="pc-per">/ forever</span></div></div>
-      <div class="pc-sc">All games &middot; Always free</div>
+      <div class="pc-sc">All games · Always free</div>
       <ul class="pc-list">
         <li class="on"><span class="ck">&#10003;</span>All games, free forever</li>
         <li class="on"><span class="ck">&#10003;</span>Universal Syllog ID</li>
@@ -447,20 +485,20 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
     </div>
     <div class="pc featured">
       <div class="hot-badge">Most Popular</div>
-      <div style="margin-top:0.6rem;"></div>
+      <div style="margin-top:0.75rem;"></div>
       <div class="pc-tier">Gold Pass</div>
       <div style="min-height:52px;">
-        <div class="pc-price" id="p-gold-price" style="color:#ddd;">$7.99 <span class="pc-per">/ month</span></div>
-        <div style="font-size:0.6rem;color:#555;margin-top:0.2rem;min-height:1rem;" id="p-gold-note">&nbsp;</div>
-        <div style="display:inline-block;background:rgba(192,192,192,0.08);border:1px solid rgba(192,192,192,0.15);color:#c0c0c0;font-size:0.52rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:0.15rem 0.5rem;border-radius:10px;margin-top:0.2rem;opacity:0;transition:opacity 0.3s;" id="p-gold-save">Save $15.89 &mdash; 2 months free</div>
+        <div class="pc-price" id="p-gold-price" style="color:#fff;">$7.99 <span class="pc-per">/ month</span></div>
+        <div style="font-size:0.6rem;color:rgba(255,255,255,0.28);margin-top:0.2rem;min-height:1rem;" id="p-gold-note">&nbsp;</div>
+        <div style="display:inline-block;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);color:rgba(255,255,255,0.7);font-size:0.52rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:0.15rem 0.5rem;border-radius:10px;margin-top:0.2rem;opacity:0;transition:opacity 0.3s;" id="p-gold-save">Save $15.89 — 2 months free</div>
       </div>
-      <div class="pc-sc" id="p-gold-sc" style="color:#777;">1,000 SC monthly &middot; ~$8.30 value &middot; +10% bonus</div>
+      <div class="pc-sc" id="p-gold-sc">1,000 SC monthly · ~$8.30 value · +10% bonus</div>
       <ul class="pc-list">
         <li class="on"><span class="ck">&#10003;</span>All games, free forever</li>
         <li class="on"><span class="ck">&#10003;</span>Universal Syllog ID</li>
         <li class="on"><span class="ck">&#10003;</span>Cross-title progression</li>
         <li class="on"><span class="ck">&#10003;</span>1,000 SC monthly gift</li>
-        <li class="on"><span class="ck">&#10003;</span>Ads removed &mdash; 3 games</li>
+        <li class="on"><span class="ck">&#10003;</span>Ads removed — 3 games</li>
         <li class="on"><span class="ck">&#10003;</span>Early game access</li>
         <li class="off"><span class="ck">&#8212;</span>Beta access</li>
       </ul>
@@ -470,16 +508,16 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
       <div class="pc-tier">Platinum Pass</div>
       <div style="min-height:52px;">
         <div class="pc-price" id="p-plat-price">$14.99 <span class="pc-per">/ month</span></div>
-        <div style="font-size:0.6rem;color:#555;margin-top:0.2rem;min-height:1rem;" id="p-plat-note">&nbsp;</div>
-        <div style="display:inline-block;background:rgba(192,192,192,0.08);border:1px solid rgba(192,192,192,0.15);color:#c0c0c0;font-size:0.52rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:0.15rem 0.5rem;border-radius:10px;margin-top:0.2rem;opacity:0;transition:opacity 0.3s;" id="p-plat-save">Save $29.89 &mdash; 2 months free</div>
+        <div style="font-size:0.6rem;color:rgba(255,255,255,0.28);margin-top:0.2rem;min-height:1rem;" id="p-plat-note">&nbsp;</div>
+        <div style="display:inline-block;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);color:rgba(255,255,255,0.7);font-size:0.52rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:0.15rem 0.5rem;border-radius:10px;margin-top:0.2rem;opacity:0;transition:opacity 0.3s;" id="p-plat-save">Save $29.89 — 2 months free</div>
       </div>
-      <div class="pc-sc" id="p-plat-sc">2,500 SC monthly &middot; ~$20.83 value &middot; +20% bonus</div>
+      <div class="pc-sc" id="p-plat-sc">2,500 SC monthly · ~$20.83 value · +20% bonus</div>
       <ul class="pc-list">
         <li class="on"><span class="ck">&#10003;</span>All games, free forever</li>
         <li class="on"><span class="ck">&#10003;</span>Universal Syllog ID</li>
         <li class="on"><span class="ck">&#10003;</span>Cross-title progression</li>
         <li class="on"><span class="ck">&#10003;</span>2,500 SC monthly gift</li>
-        <li class="on"><span class="ck">&#10003;</span>Ads removed &mdash; ALL games</li>
+        <li class="on"><span class="ck">&#10003;</span>Ads removed — ALL games</li>
         <li class="on"><span class="ck">&#10003;</span>Early game access</li>
         <li class="on"><span class="ck">&#10003;</span>Beta access + monthly skin</li>
         <li class="on"><span class="ck">&#10003;</span>Universe content included</li>
@@ -487,13 +525,22 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:0.8
       <button class="pc-btn pb-p" id="p-plat-btn" onclick="portalCheckout('price_1TLCP4GTo6XxsJZOGwxQbPGD')">Get Platinum Pass</button>
     </div>
   </div>
-</div>
+</section>
 
 <footer>
   <div class="fl">SYLLOG</div>
-  <div class="flinks"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="contact.html" style="font-size:0.58rem;color:#888;text-decoration:none;letter-spacing:1px;text-transform:uppercase;">Contact</a></div>
+  <div class="flinks">
+    <a href="games.html">Games</a>
+    <a href="universe.html">Universe</a>
+    <a href="leaderboards.html">Leaderboards</a>
+    <a href="credits.html">Credits</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="terms.html">Terms</a>
+    <a href="contact.html">Contact</a>
+  </div>
   <div class="fc">&copy; 2026 Syllog Games.</div>
 </footer>
+
 
 <div class="dash-overlay" id="dash-overlay" onclick="toggleDash()"></div>
 <div class="dash-panel" id="dash-panel">
@@ -927,114 +974,6 @@ fslides.addEventListener('touchstart', function(e) { fsx = e.touches[0].clientX;
 fslides.addEventListener('touchend', function(e) { var dx = e.changedTouches[0].clientX - fsx; if (Math.abs(dx) > 40) { dx < 0 ? fGoTo(fcur + 1) : fGoTo(fcur - 1); } }, {passive: true});
 fStartProgress();
 
-// 3D CAROUSEL
-var cur = 0, N = GAMES.length, busy = false;
-var carousel = document.getElementById('carousel');
-var cards = [];
-
-function buildCarousel() {
-  carousel.innerHTML = ''; cards = [];
-  GAMES.forEach(function(g, i) {
-    var wrap = document.createElement('div');
-    wrap.className = 'c-card';
-    var badgeClass = g.status === 'live' ? 'badge-live' : 'badge-soon';
-    var badgeText = g.status === 'live' ? 'Live' : g.status === 'soon' ? 'Soon' : 'Phase 2';
-    wrap.innerHTML =
-      '<div class="c-card-inner">' +
-        '<div class="c-thumb" style="background:' + g.color + ';">' +
-          '<div class="c-thumb-vignette"></div>' +
-          '<span class="c-thumb-icon">' + g.icon + '</span>' +
-        '</div>' +
-        '<div class="c-body">' +
-          '<div class="c-genre">' + g.genre + '</div>' +
-          '<div class="c-name">' + g.name + '</div>' +
-          '<div class="c-footer">' +
-            '<span class="cbadge ' + badgeClass + '">' + badgeText + '</span>' +
-            '<button class="c-details-btn" data-idx="' + i + '">Details</button>' +
-          '</div>' +
-        '</div>' +
-      '</div>' +
-      '<div class="c-reflection">' +
-        '<div class="c-refl-inner" style="background:linear-gradient(180deg,' + g.color + ' 0%,#050505 60%);"></div>' +
-        '<div class="c-refl-fade"></div>' +
-      '</div>';
-    wrap.querySelector('.c-details-btn').addEventListener('click', function(e) {
-      e.stopPropagation(); openDetail(parseInt(this.dataset.idx));
-    });
-    wrap.addEventListener('click', function() {
-      if (!busy && i === cur) openDetail(i);
-      else if (!busy) goTo(i);
-    });
-    carousel.appendChild(wrap);
-    cards.push(wrap);
-  });
-  buildCdots();
-  placeCards(true);
-}
-
-function placeCards(instant) {
-  var angleStep = 360 / N;
-  var radius = Math.max(180, N * 42);
-  if (instant) { cards.forEach(function(c) { c.style.transition = 'none'; }); }
-  cards.forEach(function(c, i) {
-    var delta = ((i - cur) % N + N) % N;
-    if (delta > N / 2) delta -= N;
-    var angle = angleStep * delta;
-    var rad = angle * Math.PI / 180;
-    var x = Math.sin(rad) * radius;
-    var z = (Math.cos(rad) - 1) * radius * 0.5;
-    var rotY = -angle * 0.7;
-    var absD = Math.abs(delta);
-    var scale = absD === 0 ? 1 : absD === 1 ? 0.88 : 0.76;
-    var opacity = absD === 0 ? 1 : absD === 1 ? 0.5 : absD === 2 ? 0.2 : 0;
-    var blur = absD === 0 ? 0 : absD === 1 ? 1.5 : 3;
-    c.style.transform = 'translateX(' + x.toFixed(1) + 'px) translateZ(' + z.toFixed(1) + 'px) rotateY(' + rotY.toFixed(1) + 'deg) scale(' + scale + ')';
-    c.style.opacity = opacity;
-    c.style.filter = blur > 0 ? 'blur(' + blur + 'px)' : 'none';
-    c.style.zIndex = 100 - absD * 10;
-    c.style.pointerEvents = absD === 0 ? 'auto' : 'none';
-    absD === 0 ? c.classList.add('is-active') : c.classList.remove('is-active');
-  });
-  if (instant) { requestAnimationFrame(function() { cards.forEach(function(c) { c.style.transition = ''; }); }); }
-  updateCdots();
-}
-
-function goTo(idx) {
-  if (busy) return;
-  busy = true;
-  cur = ((idx % N) + N) % N;
-  placeCards(false);
-  document.getElementById('cc-title').textContent = GAMES[cur].name;
-  document.getElementById('cc-genre').textContent = GAMES[cur].genre;
-  setTimeout(function() { busy = false; }, 750);
-}
-
-function buildCdots() {
-  var dc = document.getElementById('cc-dots'); dc.innerHTML = '';
-  GAMES.forEach(function(_, i) {
-    var d = document.createElement('div');
-    d.className = 'cc-dot' + (i === 0 ? ' active' : '');
-    d.addEventListener('click', function() { goTo(i); });
-    dc.appendChild(d);
-  });
-}
-
-function updateCdots() {
-  document.querySelectorAll('.cc-dot').forEach(function(d, i) { d.classList.toggle('active', i === cur); });
-}
-
-document.getElementById('cprev').addEventListener('click', function() { goTo(cur - 1); });
-document.getElementById('cnext').addEventListener('click', function() { goTo(cur + 1); });
-var msx = 0, mdragging = false;
-carousel.addEventListener('mousedown', function(e) { mdragging = true; msx = e.clientX; });
-window.addEventListener('mouseup', function(e) { if (!mdragging) return; mdragging = false; var dx = e.clientX - msx; if (Math.abs(dx) > 35) { dx < 0 ? goTo(cur + 1) : goTo(cur - 1); } });
-carousel.addEventListener('touchstart', function(e) { msx = e.touches[0].clientX; }, {passive: true});
-carousel.addEventListener('touchend', function(e) { var dx = e.changedTouches[0].clientX - msx; if (Math.abs(dx) > 35) { dx < 0 ? goTo(cur + 1) : goTo(cur - 1); } }, {passive: true});
-var cauto = setInterval(function() { goTo(cur + 1); }, 4000);
-carousel.addEventListener('mouseenter', function() { clearInterval(cauto); });
-carousel.addEventListener('mouseleave', function() { cauto = setInterval(function() { goTo(cur + 1); }, 4000); });
-buildCarousel();
-
 // GAME DETAIL
 function fillDetailShot(el, src, fallbackIcon) {
   if (!el) return;
@@ -1116,11 +1055,11 @@ var pAnnual = false;
 
 function switchBilling() {
   pAnnual = !pAnnual;
-  document.getElementById('ptoggle').style.background = pAnnual ? 'rgba(255,255,255,0.1)' : '#1a1a1a';
+  document.getElementById('ptoggle').style.background = pAnnual ? 'rgba(255,255,255,0.14)' : '#141414';
   document.getElementById('pthumb').style.left = pAnnual ? '23px' : '3px';
-  document.getElementById('pthumb').style.background = pAnnual ? '#fff' : '#444';
-  document.getElementById('lbl-m').style.color = pAnnual ? '#333' : '#fff';
-  document.getElementById('lbl-a').style.color = pAnnual ? '#fff' : '#333';
+  document.getElementById('pthumb').style.background = pAnnual ? '#fff' : '#555';
+  document.getElementById('lbl-m').classList.toggle('on', !pAnnual);
+  document.getElementById('lbl-a').classList.toggle('on', pAnnual);
   if (pAnnual) {
     document.getElementById('p-gold-price').innerHTML = '$79.99 <span class="pc-per">/ year</span>';
     document.getElementById('p-gold-note').textContent = '$6.67 / month \u00b7 billed annually';
