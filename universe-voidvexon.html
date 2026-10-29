@@ -4,246 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Syllog — Void Vexon Universe</title>
-<meta name="vv-uni" content="voidvexon-archive-20261028">
+<meta name="vv-uni" content="voidvexon-archive-story-1">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden;}
-
-/* STARS BACKGROUND */
-.stars{position:fixed;inset:0;pointer-events:none;z-index:0;}
-.stars::before,.stars::after{content:'';position:absolute;inset:0;background-image:radial-gradient(1px 1px at 20% 30%,rgba(255,255,255,0.4) 0%,transparent 100%),radial-gradient(1px 1px at 80% 10%,rgba(255,255,255,0.3) 0%,transparent 100%),radial-gradient(1px 1px at 50% 60%,rgba(255,255,255,0.35) 0%,transparent 100%),radial-gradient(1px 1px at 10% 80%,rgba(255,255,255,0.25) 0%,transparent 100%),radial-gradient(1px 1px at 90% 70%,rgba(255,255,255,0.3) 0%,transparent 100%),radial-gradient(1px 1px at 35% 45%,rgba(255,255,255,0.2) 0%,transparent 100%),radial-gradient(1px 1px at 65% 85%,rgba(255,255,255,0.25) 0%,transparent 100%),radial-gradient(1px 1px at 75% 25%,rgba(255,255,255,0.3) 0%,transparent 100%);background-size:400px 400px;animation:starsDrift 120s linear infinite;}
-.stars::after{background-size:600px 600px;animation-duration:180s;animation-direction:reverse;opacity:0.5;}
-@keyframes starsDrift{0%{transform:translateX(0) translateY(0);}100%{transform:translateX(-400px) translateY(-400px);}}
-
-/* NAV */
-nav{background:rgba(0,0,0,0.95);border-bottom:1px solid rgba(138,43,226,0.15);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:200;backdrop-filter:blur(10px);}
-.logo{font-size:1rem;font-weight:900;letter-spacing:6px;background:linear-gradient(135deg,#fff 0%,#c0c0c0 60%,#777 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;cursor:pointer;text-decoration:none;}
-.nav-links{display:flex;gap:1.75rem;list-style:none;}
-.nav-links a{color:rgba(255,255,255,0.28);text-decoration:none;font-size:0.68rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:color 0.2s;}
-.nav-links a:hover,.nav-links a.active{color:#fff;}
-.nav-btns{display:flex;gap:0.5rem;}
-.btn-g{background:transparent;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);padding:0.3rem 0.9rem;border-radius:4px;font-size:0.65rem;font-weight:600;letter-spacing:1px;cursor:pointer;text-transform:uppercase;font-family:'Inter',sans-serif;}
-.btn-w{background:#fff;border:none;color:#000;padding:0.3rem 0.9rem;border-radius:4px;font-size:0.65rem;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;font-family:'Inter',sans-serif;}
-.nav-user{display:flex;align-items:center;gap:0.5rem;cursor:pointer;padding:0.28rem 0.75rem;border-radius:5px;border:1px solid rgba(255,255,255,0.08);transition:all 0.2s;background:transparent;}
-.nav-user:hover{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.15);}
-.nav-dot{width:6px;height:6px;border-radius:50%;background:#c0c0c0;flex-shrink:0;}
-.nav-name{font-size:0.63rem;font-weight:700;color:rgba(255,255,255,0.65);letter-spacing:1px;text-transform:uppercase;}
-.nav-arrow{font-size:0.55rem;color:rgba(255,255,255,0.2);}
-
-/* HERO */
-.universe-hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6rem 2rem 4rem;overflow:hidden;z-index:1;}
-.void-glow{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(138,43,226,0.15) 0%,rgba(75,0,130,0.08) 40%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);animation:voidPulse 4s ease-in-out infinite;pointer-events:none;}
-.void-glow-2{position:absolute;width:800px;height:400px;border-radius:50%;background:radial-gradient(ellipse,rgba(0,100,255,0.06) 0%,transparent 70%);top:60%;left:50%;transform:translate(-50%,-50%);animation:voidPulse 6s ease-in-out infinite reverse;pointer-events:none;}
-@keyframes voidPulse{0%,100%{opacity:0.6;transform:translate(-50%,-50%) scale(1);}50%{opacity:1;transform:translate(-50%,-50%) scale(1.1);}}
-.hero-classified{font-size:0.55rem;letter-spacing:6px;text-transform:uppercase;color:rgba(138,43,226,0.6);border:1px solid rgba(138,43,226,0.2);padding:0.3rem 1rem;border-radius:2px;display:inline-block;margin-bottom:1.5rem;font-family:'Share Tech Mono',monospace;}
-.hero-title{font-size:clamp(3rem,10vw,7rem);font-weight:900;letter-spacing:-3px;line-height:0.9;margin-bottom:1rem;position:relative;}
-.hero-title .the{display:block;font-size:clamp(1rem,3vw,2rem);letter-spacing:8px;text-transform:uppercase;color:rgba(255,255,255,0.3);font-weight:300;margin-bottom:0.5rem;}
-.hero-title .universe-word{background:linear-gradient(160deg,#fff 0%,#c0c0c0 30%,#8a2be2 60%,#4b0082 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.hero-sub{font-size:0.85rem;color:rgba(255,255,255,0.35);line-height:1.8;max-width:560px;margin:0 auto 2rem;letter-spacing:0.5px;}
-.hero-era{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:rgba(138,43,226,0.5);letter-spacing:3px;margin-bottom:3rem;}
-.hero-scroll{display:flex;flex-direction:column;align-items:center;gap:0.5rem;margin-top:2rem;}
-.hero-scroll-line{width:1px;height:60px;background:linear-gradient(180deg,transparent,rgba(138,43,226,0.4),transparent);animation:scrollPulse 2s ease-in-out infinite;}
-.hero-scroll-txt{font-size:0.52rem;color:#333;letter-spacing:3px;text-transform:uppercase;}
-@keyframes scrollPulse{0%,100%{opacity:0.4;}50%{opacity:1;}}
-.hero-stats{display:flex;gap:3rem;justify-content:center;margin-top:2rem;}
-.hero-stat{text-align:center;}
-.hero-stat-num{font-size:1.8rem;font-weight:900;font-family:'Share Tech Mono',monospace;background:linear-gradient(135deg,#8a2be2,#4169e1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.hero-stat-lbl{font-size:0.52rem;color:#333;letter-spacing:3px;text-transform:uppercase;margin-top:0.2rem;}
-
-/* SECTION WRAPPER */
-.u-section{position:relative;z-index:1;padding:5rem 2rem;border-top:1px solid rgba(255,255,255,0.04);}
-.u-section::before{content:'';position:absolute;inset:0;pointer-events:none;}
-.u-eyebrow{font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:4px;text-transform:uppercase;color:rgba(138,43,226,0.5);margin-bottom:0.5rem;}
-.u-title{font-size:2.2rem;font-weight:900;letter-spacing:-1px;background:linear-gradient(135deg,#fff 0%,#c0c0c0 60%,#888 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:0.5rem;}
-.u-sub{font-size:0.8rem;color:#444;line-height:1.7;max-width:600px;margin-bottom:3rem;}
-.max-w{max-width:1100px;margin:0 auto;}
-
-/* CATACLYSM SECTION */
-.cataclysm-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;}
-.cataclysm-text{}
-.cataclysm-date{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:rgba(138,43,226,0.6);letter-spacing:3px;margin-bottom:1rem;border-left:2px solid rgba(138,43,226,0.3);padding-left:1rem;}
-.cataclysm-headline{font-size:1.4rem;font-weight:800;color:#fff;margin-bottom:1rem;line-height:1.3;letter-spacing:-0.5px;}
-.cataclysm-body{font-size:0.8rem;color:#555;line-height:1.9;}
-.cataclysm-body p{margin-bottom:1rem;}
-.cataclysm-body .highlight{color:#c0c0c0;font-style:italic;}
-.cataclysm-visual{position:relative;border-radius:16px;overflow:hidden;border:1px solid rgba(138,43,226,0.2);background:linear-gradient(135deg,#050010 0%,#0a0020 50%,#05001a 100%);min-height:380px;display:flex;align-items:center;justify-content:center;}
-.cataclysm-visual::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(138,43,226,0.2) 0%,transparent 60%);}
-.cataclysm-gate{font-size:8rem;opacity:0.15;animation:gateRotate 20s linear infinite;}
-@keyframes gateRotate{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
-.cataclysm-rune{position:absolute;font-size:2rem;color:rgba(138,43,226,0.4);font-family:'Share Tech Mono',monospace;animation:runeGlow 3s ease-in-out infinite;}
-@keyframes runeGlow{0%,100%{opacity:0.2;}50%{opacity:0.8;text-shadow:0 0 20px rgba(138,43,226,0.8);}}
-.void-rune-symbol{position:absolute;font-size:4rem;color:rgba(138,43,226,0.3);animation:runeGlow 4s ease-in-out infinite;}
-.prometheus-log{background:rgba(138,43,226,0.05);border:1px solid rgba(138,43,226,0.15);border-radius:8px;padding:1.25rem;margin-top:1.5rem;font-family:'Share Tech Mono',monospace;}
-.log-header{font-size:0.52rem;color:rgba(138,43,226,0.5);letter-spacing:3px;margin-bottom:0.5rem;}
-.log-text{font-size:0.7rem;color:#555;line-height:1.6;}
-.log-text .red{color:rgba(255,60,60,0.6);}
-
-/* PROTAGONIST */
-.protagonist-card{background:linear-gradient(135deg,#050010 0%,#080018 100%);border:1px solid rgba(138,43,226,0.15);border-radius:16px;padding:2.5rem;display:grid;grid-template-columns:200px 1fr;gap:2.5rem;align-items:start;}
-.proto-avatar{width:200px;height:200px;border-radius:12px;background:linear-gradient(135deg,#0a0020,#050010);border:1px solid rgba(138,43,226,0.2);display:flex;align-items:center;justify-content:center;font-size:5rem;position:relative;overflow:hidden;flex-shrink:0;}
-.proto-avatar::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 80%,rgba(138,43,226,0.2),transparent 60%);}
-.proto-callsign{font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:rgba(138,43,226,0.5);letter-spacing:4px;margin-bottom:0.35rem;}
-.proto-name{font-size:1.8rem;font-weight:900;color:#fff;letter-spacing:-0.5px;margin-bottom:0.25rem;}
-.proto-rank{font-size:0.7rem;color:#444;letter-spacing:2px;text-transform:uppercase;margin-bottom:1.25rem;}
-.proto-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1.25rem;}
-.proto-stat{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:8px;padding:0.75rem;text-align:center;}
-.proto-stat-val{font-size:1rem;font-weight:800;color:#8a2be2;font-family:'Share Tech Mono',monospace;}
-.proto-stat-lbl{font-size:0.48rem;color:#333;letter-spacing:2px;text-transform:uppercase;margin-top:0.2rem;}
-.proto-bio{font-size:0.78rem;color:#555;line-height:1.8;}
-.proto-bio p{margin-bottom:0.75rem;}
-.proto-quote{border-left:2px solid rgba(138,43,226,0.3);padding-left:1rem;font-style:italic;color:#444;font-size:0.75rem;margin-top:1rem;}
-
-/* ZONE MAP */
-.zones-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0.75rem;}
-.zone-card{border-radius:10px;padding:1.25rem 1rem;border:1px solid rgba(255,255,255,0.04);background:#060606;position:relative;overflow:hidden;cursor:pointer;transition:all 0.3s;}
-.zone-card:hover{border-color:rgba(138,43,226,0.3);transform:translateY(-2px);}
-.zone-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity 0.3s;}
-.zone-card:hover::before{opacity:1;}
-.zone-num{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:#1a1a1a;letter-spacing:3px;margin-bottom:0.4rem;}
-.zone-name{font-size:0.72rem;font-weight:800;color:#fff;margin-bottom:0.25rem;letter-spacing:-0.2px;}
-.zone-levels{font-size:0.55rem;color:#2a2a2a;letter-spacing:1px;font-family:'Share Tech Mono',monospace;margin-bottom:0.6rem;}
-.zone-desc{font-size:0.62rem;color:#333;line-height:1.5;}
-.zone-color{width:100%;height:2px;border-radius:1px;margin-bottom:0.75rem;}
-
-/* ENEMIES */
-.enemies-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;}
-.enemy-card{background:#060606;border:1px solid rgba(255,255,255,0.05);border-radius:14px;overflow:hidden;}
-.enemy-header{padding:1.5rem 1.25rem 1rem;position:relative;min-height:100px;display:flex;flex-direction:column;justify-content:flex-end;}
-.enemy-icon{font-size:3.5rem;position:absolute;top:1rem;right:1rem;opacity:0.15;}
-.enemy-class{font-size:0.5rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.25rem;font-family:'Share Tech Mono',monospace;}
-.enemy-name{font-size:1rem;font-weight:800;color:#fff;letter-spacing:-0.2px;}
-.enemy-aka{font-size:0.6rem;color:#333;margin-top:0.15rem;}
-.enemy-body{padding:1rem 1.25rem 1.25rem;border-top:1px solid rgba(255,255,255,0.04);}
-.enemy-desc{font-size:0.72rem;color:#444;line-height:1.7;}
-.enemy-lore{margin-top:0.75rem;background:rgba(255,255,255,0.02);border-radius:6px;padding:0.65rem;font-size:0.65rem;color:#2a2a2a;line-height:1.5;font-style:italic;}
-
-/* SHIPS */
-.ships-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;}
-.ship-card{background:#060606;border:1px solid rgba(255,255,255,0.05);border-radius:14px;overflow:hidden;transition:all 0.3s;}
-.ship-card:hover{border-color:rgba(138,43,226,0.2);transform:translateY(-3px);}
-.ship-visual{height:140px;display:flex;align-items:center;justify-content:center;font-size:4rem;position:relative;overflow:hidden;}
-.ship-visual::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,0.8) 100%);}
-.ship-class{font-size:0.5rem;letter-spacing:3px;text-transform:uppercase;color:#333;margin-bottom:0.2rem;font-family:'Share Tech Mono',monospace;}
-.ship-name{font-size:0.9rem;font-weight:800;color:#fff;margin-bottom:0.15rem;}
-.ship-designation{font-size:0.6rem;color:#2a2a2a;font-family:'Share Tech Mono',monospace;margin-bottom:0.75rem;}
-.ship-story{font-size:0.7rem;color:#444;line-height:1.6;}
-.ship-body{padding:1rem 1.25rem 1.25rem;}
-
-/* MEDIA STORE */
-.media-store{background:linear-gradient(135deg,#030010 0%,#05000a 100%);border-top:1px solid rgba(138,43,226,0.1);border-bottom:1px solid rgba(138,43,226,0.1);}
-.store-categories{display:flex;gap:0.5rem;margin-bottom:2rem;flex-wrap:wrap;}
-.store-cat{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);color:#444;padding:0.35rem 0.85rem;border-radius:20px;font-size:0.62rem;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
-.store-cat.active,.store-cat:hover{background:rgba(138,43,226,0.1);border-color:rgba(138,43,226,0.3);color:#c0c0c0;}
-.store-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.25rem;}
-.store-card{background:#060606;border:1px solid rgba(255,255,255,0.05);border-radius:14px;overflow:hidden;transition:all 0.3s;}
-.store-card:hover{border-color:rgba(138,43,226,0.2);transform:translateY(-3px);}
-.store-cover{height:160px;background:linear-gradient(135deg,#080020,#040010);display:flex;align-items:center;justify-content:center;font-size:3.5rem;position:relative;overflow:hidden;}
-.store-cover-img{width:100%;height:100%;object-fit:cover;}
-.store-cover-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,0.9) 100%);}
-.store-type-badge{position:absolute;top:0.75rem;left:0.75rem;background:rgba(0,0,0,0.7);border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:0.15rem 0.45rem;font-size:0.48rem;letter-spacing:2px;text-transform:uppercase;color:#888;}
-.store-body{padding:1rem 1.25rem 1.25rem;}
-.store-game{font-size:0.5rem;color:rgba(138,43,226,0.5);letter-spacing:3px;text-transform:uppercase;margin-bottom:0.2rem;font-family:'Share Tech Mono',monospace;}
-.store-title{font-size:0.88rem;font-weight:800;color:#fff;margin-bottom:0.4rem;letter-spacing:-0.2px;}
-.store-desc{font-size:0.68rem;color:#444;line-height:1.5;margin-bottom:1rem;}
-.store-footer{display:flex;align-items:center;justify-content:space-between;}
-.store-price{display:flex;align-items:center;gap:0.35rem;}
-.store-price-val{font-size:0.85rem;font-weight:800;color:#ffd700;font-family:'Share Tech Mono',monospace;}
-.store-price-lbl{font-size:0.52rem;color:#444;}
-.store-price-pass{font-size:0.58rem;color:#8a2be2;font-weight:600;}
-.store-btn{background:rgba(138,43,226,0.12);border:1px solid rgba(138,43,226,0.25);color:#c0c0c0;padding:0.35rem 0.85rem;border-radius:6px;font-size:0.6rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;}
-.store-btn:hover{background:rgba(138,43,226,0.25);border-color:rgba(138,43,226,0.5);color:#fff;}
-.store-btn.unlocked{background:rgba(0,200,100,0.08);border-color:rgba(0,200,100,0.2);color:rgba(0,200,100,0.7);cursor:default;}
-.store-coming{font-size:0.58rem;color:#1a1a1a;letter-spacing:2px;text-transform:uppercase;}
-
-/* LOCKED LORE */
-.locked-section{background:rgba(0,0,0,0.6);border:1px solid rgba(138,43,226,0.1);border-radius:16px;padding:3rem;text-align:center;position:relative;overflow:hidden;}
-.locked-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(138,43,226,0.05),transparent 70%);}
-.lock-icon{font-size:2.5rem;margin-bottom:1rem;opacity:0.4;}
-.lock-title{font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:0.5rem;}
-.lock-desc{font-size:0.75rem;color:#444;line-height:1.6;max-width:400px;margin:0 auto 1.5rem;}
-.lock-price{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.15);border-radius:20px;padding:0.35rem 1rem;margin-bottom:1.25rem;}
-.lock-price-val{font-size:0.85rem;font-weight:800;color:#ffd700;}
-.lock-price-lbl{font-size:0.58rem;color:#555;}
-.lock-btn{background:linear-gradient(135deg,rgba(138,43,226,0.2),rgba(75,0,130,0.2));border:1px solid rgba(138,43,226,0.3);color:#c0c0c0;padding:0.65rem 2rem;border-radius:8px;font-size:0.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;}
-.lock-btn:hover{background:linear-gradient(135deg,rgba(138,43,226,0.35),rgba(75,0,130,0.35));color:#fff;}
-.lock-pass-note{font-size:0.62rem;color:#333;margin-top:0.75rem;}
-.lock-pass-note span{color:#8a2be2;}
-.locked-content{display:none;}
-.locked-content.revealed{display:block;}
-
-/* LORE CARDS */
-.lore-cards{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:2rem;}
-.lore-card{background:#060606;border:1px solid rgba(255,255,255,0.05);border-radius:14px;padding:1.75rem;}
-.lore-card-eyebrow{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:rgba(138,43,226,0.4);letter-spacing:3px;margin-bottom:0.5rem;}
-.lore-card-title{font-size:1rem;font-weight:800;color:#fff;margin-bottom:0.75rem;letter-spacing:-0.2px;}
-.lore-card-text{font-size:0.75rem;color:#444;line-height:1.8;}
-
-/* TOAST */
-.universe-toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);background:#0a0a0a;border:1px solid rgba(138,43,226,0.3);border-radius:10px;padding:0.85rem 1.5rem;font-size:0.72rem;color:#c0c0c0;z-index:1000;transition:transform 0.3s;white-space:nowrap;}
-.universe-toast.show{transform:translateX(-50%) translateY(0);}
-.universe-toast.error{border-color:rgba(255,60,60,0.3);color:#ff6b6b;}
-.universe-toast.success{border-color:rgba(0,200,100,0.3);color:rgba(0,200,100,0.8);}
-
-/* FOOTER */
-footer{display:flex;align-items:center;justify-content:space-between;padding:0.8rem 2rem;border-top:1px solid rgba(255,255,255,0.04);margin-top:0;position:relative;z-index:1;}
-footer a{font-size:0.58rem;color:#888;text-decoration:none;letter-spacing:1px;text-transform:uppercase;}
-footer a:hover{color:#fff;}
-
-
-.nav-user{display:flex;align-items:center;gap:0.5rem;cursor:pointer;padding:0.28rem 0.75rem;border-radius:5px;border:1px solid rgba(255,255,255,0.08);transition:all 0.2s;background:transparent;}
-.nav-user:hover{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.15);}
-.nav-dot{width:6px;height:6px;border-radius:50%;background:#c0c0c0;flex-shrink:0;}
-.nav-name{font-size:0.63rem;font-weight:700;color:rgba(255,255,255,0.65);letter-spacing:1px;text-transform:uppercase;}
-.nav-arrow{font-size:0.55rem;color:rgba(255,255,255,0.2);}
-.dash-overlay{position:fixed;inset:0;background:rgba(0,0,0,0);transition:background 0.4s ease;pointer-events:none;z-index:300;}
-.dash-overlay.open{background:rgba(0,0,0,0.65);pointer-events:auto;}
-.dash-panel{position:fixed;top:0;right:0;bottom:0;width:320px;background:#060606;border-left:1px solid rgba(255,255,255,0.07);transform:translateX(100%);transition:transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94);z-index:400;display:flex;flex-direction:column;overflow-y:auto;}
-.dash-panel.open{transform:translateX(0);}
-.dash-header{padding:1.25rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.dash-header-title{font-size:0.58rem;letter-spacing:3px;text-transform:uppercase;color:#2a2a2a;}
-.dash-close{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);color:rgba(255,255,255,0.3);width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:0.75rem;display:flex;align-items:center;justify-content:center;transition:all 0.2s;font-family:'Inter',sans-serif;}
-.dash-close:hover{background:rgba(255,255,255,0.08);color:#fff;}
-.dash-avatar-section{padding:1.5rem;display:flex;flex-direction:column;align-items:center;gap:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05);}
-.dash-avatar-wrap{position:relative;width:80px;height:80px;}
-.dash-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#1a1a1a,#0a0a0a);border:2px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:2rem;overflow:hidden;}
-.dash-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
-.dash-avatar-upload{position:absolute;bottom:0;right:0;width:24px;height:24px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:2px solid #060606;transition:background 0.2s;}
-.dash-avatar-upload:hover{background:#c0c0c0;}
-.dash-avatar-upload svg{width:11px;height:11px;}
-.dash-upload-hint{font-size:0.55rem;color:#1e1e1e;letter-spacing:0.5px;}
-.dash-username{font-size:1.1rem;font-weight:900;letter-spacing:-0.3px;color:#fff;}
-.dash-id-label{font-size:0.55rem;color:#222;letter-spacing:2px;text-transform:uppercase;}
-.dash-founder{background:linear-gradient(135deg,rgba(192,192,192,0.1),rgba(255,255,255,0.05));border:1px solid rgba(192,192,192,0.2);color:#c0c0c0;font-size:0.52rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0.18rem 0.6rem;border-radius:20px;}
-.dash-pass-banner{margin:1rem 1.5rem 0;background:#0a0a0a;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:0.85rem 1rem;display:flex;align-items:center;justify-content:space-between;}
-.dash-pass-label{font-size:0.5rem;color:#666;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.2rem;}
-.dash-pass-name{font-size:0.85rem;font-weight:800;color:#fff;}
-.dash-upgrade-btn{font-size:0.55rem;color:#333;letter-spacing:1px;text-transform:uppercase;background:none;border:1px solid rgba(255,255,255,0.07);padding:0.22rem 0.6rem;border-radius:4px;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;}
-.dash-upgrade-btn:hover{border-color:rgba(255,255,255,0.2);color:#fff;}
-.dash-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:1rem 1.5rem;}
-.dash-stat{background:#0a0a0a;border:1px solid rgba(255,255,255,0.05);border-radius:8px;padding:0.85rem;}
-.dash-stat-label{font-size:0.5rem;color:#2a2a2a;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.3rem;}
-.dash-stat-value{font-size:1.3rem;font-weight:900;color:#c0c0c0;letter-spacing:-0.5px;}
-.dash-stat-sub{font-size:0.52rem;color:#1e1e1e;margin-top:0.15rem;}
-.dash-divider{height:1px;background:rgba(255,255,255,0.04);margin:0 1.5rem;}
-.dash-links{padding:1rem 1.5rem;display:flex;flex-direction:column;gap:2px;}
-.dash-links-label{font-size:0.5rem;color:#222;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.4rem;}
-.dash-link-item{display:flex;align-items:center;justify-content:space-between;padding:0.55rem 0.75rem;border-radius:6px;cursor:pointer;transition:background 0.15s;}
-.dash-link-item:hover{background:rgba(255,255,255,0.03);}
-.dash-link-left{display:flex;align-items:center;gap:0.6rem;font-size:0.72rem;color:rgba(255,255,255,0.4);}
-.dash-link-icon{width:22px;height:22px;background:#0d0d0d;border:1px solid rgba(255,255,255,0.05);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;}
-.dash-link-arrow{font-size:0.6rem;color:#1e1e1e;}
-.dash-footer{padding:1rem 1.5rem;border-top:1px solid rgba(255,255,255,0.04);margin-top:auto;flex-shrink:0;}
-.dash-signout{width:100%;padding:0.6rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:6px;color:#2a2a2a;font-size:0.63rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;}
-.dash-signout:hover{background:rgba(255,60,60,0.06);border-color:rgba(255,60,60,0.15);color:#ff6b6b;}
-.dash-member-since{font-size:0.5rem;color:#181818;text-align:center;margin-top:0.6rem;letter-spacing:1px;}
-
-/* ═══ VOID VEXON ARCHIVE — GRAND VISUAL LAYER ═══ */
-:root{--vv:#6ea8ff;--vv2:#8b7cff;--ink:#020208;}
-body{background:var(--ink)!important;}
+body{background:#020208;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden;}
+:root{--vv:#6ea8ff;--vv2:#8b7cff;--ink:#020208;--silver:#c8cdd8;}
 #cosmos{position:fixed;inset:0;z-index:0;pointer-events:none;}
 .nebula{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
 .nebula-orb{position:absolute;border-radius:50%;filter:blur(100px);opacity:0.2;animation:nebFloat 24s ease-in-out infinite;}
@@ -251,91 +19,236 @@ body{background:var(--ink)!important;}
 .nebula-orb.b{width:50vw;height:50vw;bottom:-18%;right:-10%;background:radial-gradient(circle,#3a1a6a,transparent 70%);animation-delay:-8s;}
 @keyframes nebFloat{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(30px,-24px) scale(1.06);}}
 .scanlines{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0.035;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,.05) 2px,rgba(255,255,255,.05) 4px);}
-.stars{display:none!important;}
 
-nav{background:rgba(2,2,8,0.85)!important;border-bottom:1px solid rgba(110,168,255,0.12)!important;backdrop-filter:blur(16px)!important;}
-.nav-links a.active{color:#fff!important;}
+nav{background:rgba(2,2,8,0.85);border-bottom:1px solid rgba(110,168,255,0.12);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:200;backdrop-filter:blur(16px);}
+.logo{font-size:1rem;font-weight:900;letter-spacing:6px;background:linear-gradient(135deg,#fff 0%,#c0c0c0 60%,#777 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none;}
+.nav-links{display:flex;gap:1.75rem;list-style:none;}
+.nav-links a{color:rgba(255,255,255,0.28);text-decoration:none;font-size:0.68rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:color 0.2s;}
+.nav-links a:hover,.nav-links a.active{color:#fff;}
+.nav-btns{display:flex;gap:0.5rem;}
+.btn-g,.btn-w{padding:0.3rem 0.9rem;border-radius:4px;font-size:0.65rem;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;font-family:'Inter',sans-serif;}
+.btn-g{background:transparent;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);}
+.btn-w{background:#fff;border:none;color:#000;}
+.nav-user{display:flex;align-items:center;gap:0.5rem;cursor:pointer;padding:0.28rem 0.75rem;border-radius:5px;border:1px solid rgba(255,255,255,0.08);background:transparent;}
+.nav-dot{width:6px;height:6px;border-radius:50%;background:#c0c0c0;}
+.nav-name{font-size:0.63rem;font-weight:700;color:rgba(255,255,255,0.65);letter-spacing:1px;text-transform:uppercase;}
+.nav-arrow{font-size:0.55rem;color:rgba(255,255,255,0.2);}
 
-.universe-hero{position:relative;z-index:2;min-height:100vh!important;isolation:isolate;}
+.universe-hero{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6rem 1.5rem 4rem;isolation:isolate;}
 .hero-orbit{position:absolute;left:50%;top:46%;width:min(680px,88vw);height:min(680px,88vw);transform:translate(-50%,-50%);pointer-events:none;z-index:0;}
 .hero-orbit i{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(255,255,255,0.06);animation:orbitSpin 42s linear infinite;}
 .hero-orbit i:nth-child(2){inset:10%;border-color:rgba(110,168,255,0.14);animation-duration:26s;animation-direction:reverse;}
 .hero-orbit i:nth-child(3){inset:22%;border-style:dashed;border-color:rgba(139,124,255,0.12);animation-duration:55s;}
 @keyframes orbitSpin{to{transform:rotate(360deg);}}
-.void-glow{background:radial-gradient(circle,rgba(110,168,255,0.2) 0%,rgba(80,60,180,0.08) 40%,transparent 70%)!important;z-index:0;}
-.void-glow-2{background:radial-gradient(ellipse,rgba(110,168,255,0.1) 0%,transparent 70%)!important;z-index:0;}
-.hero-classified{color:rgba(190,210,255,0.7)!important;border:1px solid rgba(110,168,255,0.25)!important;background:rgba(110,168,255,0.06);border-radius:999px!important;padding:0.4rem 1.15rem!important;box-shadow:0 0 40px rgba(110,168,255,0.08);position:relative;z-index:2;}
-.hero-title{position:relative;z-index:2;letter-spacing:-4px!important;font-weight:900!important;}
-.hero-title .the{letter-spacing:6px!important;color:rgba(200,215,255,0.45)!important;font-weight:300!important;font-size:clamp(0.85rem,2.2vw,1.15rem)!important;margin-bottom:0.65rem!important;}
-.hero-title .universe-word{background:linear-gradient(160deg,#fff 0%,#d0d0d0 25%,#a8c4ff 55%,#d0d0d0 80%,#fff 100%)!important;-webkit-background-clip:text!important;background-clip:text!important;filter:drop-shadow(0 0 50px rgba(110,168,255,0.22));}
-.hero-sub{position:relative;z-index:2;color:rgba(255,255,255,0.42)!important;max-width:580px!important;font-size:0.9rem!important;}
-.hero-era{position:relative;z-index:2;color:rgba(110,168,255,0.55)!important;}
-.hero-stats{position:relative;z-index:2;gap:1rem!important;flex-wrap:wrap;}
-.hero-stat{min-width:100px;padding:0.85rem 1rem;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(8px);}
-.hero-stat-num{background:linear-gradient(135deg,#fff,#9eb6d8)!important;-webkit-background-clip:text!important;background-clip:text!important;}
-.hero-stat-lbl{color:rgba(255,255,255,0.3)!important;}
-.hero-scroll{position:relative;z-index:2;}
-.hero-scroll-line{background:linear-gradient(180deg,transparent,rgba(110,168,255,0.65),transparent)!important;}
+.void-glow{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(110,168,255,0.2) 0%,rgba(80,60,180,0.08) 40%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:0;animation:voidPulse 4s ease-in-out infinite;}
+.void-glow-2{position:absolute;width:800px;height:400px;border-radius:50%;background:radial-gradient(ellipse,rgba(110,168,255,0.1) 0%,transparent 70%);top:60%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:0;}
+@keyframes voidPulse{0%,100%{opacity:0.6;transform:translate(-50%,-50%) scale(1);}50%{opacity:1;transform:translate(-50%,-50%) scale(1.1);}}
+.hero-classified{position:relative;z-index:2;font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:rgba(190,210,255,0.7);border:1px solid rgba(110,168,255,0.25);background:rgba(110,168,255,0.06);border-radius:999px;padding:0.4rem 1.15rem;margin-bottom:1.5rem;box-shadow:0 0 40px rgba(110,168,255,0.08);}
+.hero-title{position:relative;z-index:2;margin-bottom:1rem;}
+.hero-title .the{display:block;font-size:clamp(0.85rem,2.2vw,1.15rem);letter-spacing:6px;text-transform:uppercase;color:rgba(200,215,255,0.45);font-weight:300;margin-bottom:0.65rem;}
+.hero-title .universe-word{display:block;font-size:clamp(3.2rem,9vw,6rem);font-weight:900;letter-spacing:-4px;line-height:0.9;background:linear-gradient(160deg,#fff 0%,#d0d0d0 25%,#a8c4ff 55%,#d0d0d0 80%,#fff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 50px rgba(110,168,255,0.22));}
+.hero-sub{position:relative;z-index:2;max-width:580px;margin:0 auto;color:rgba(255,255,255,0.42);font-size:0.9rem;line-height:1.75;}
+.hero-era{position:relative;z-index:2;margin-top:1.25rem;font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:3px;color:rgba(110,168,255,0.55);}
+.hero-stats{position:relative;z-index:2;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1.75rem;}
+.hero-stat{min-width:100px;padding:0.85rem 1rem;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);}
+.hero-stat-num{font-size:1.4rem;font-weight:900;background:linear-gradient(135deg,#fff,#9eb6d8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-stat-lbl{font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-top:0.2rem;}
 .hero-cta-row{position:relative;z-index:2;display:flex;gap:0.65rem;justify-content:center;flex-wrap:wrap;margin-top:1.75rem;}
-.hero-cta-row a,.hero-cta-row button{text-decoration:none;font-family:'Inter',sans-serif;font-size:0.65rem;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;padding:0.85rem 1.3rem;border-radius:10px;cursor:pointer;}
-.hc-play{background:linear-gradient(135deg,#fff,#d7e0f0);color:#05070c;border:0;box-shadow:0 12px 36px rgba(110,168,255,0.22);}
+.hero-cta-row a{text-decoration:none;font-size:0.65rem;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;padding:0.85rem 1.3rem;border-radius:10px;}
+.hc-play{background:linear-gradient(135deg,#fff,#d7e0f0);color:#05070c;box-shadow:0 12px 36px rgba(110,168,255,0.22);}
 .hc-ghost{background:rgba(255,255,255,0.04);color:#fff;border:1px solid rgba(255,255,255,0.14);}
+.hero-scroll{position:relative;z-index:2;margin-top:2.5rem;display:flex;flex-direction:column;align-items:center;gap:0.5rem;opacity:0.5;}
+.hero-scroll-line{width:1px;height:48px;background:linear-gradient(180deg,transparent,rgba(110,168,255,0.65),transparent);}
+.hero-scroll-txt{font-family:'Share Tech Mono',monospace;font-size:0.48rem;letter-spacing:4px;text-transform:uppercase;}
 
-/* chapter rail */
 .chapter-rail{position:sticky;top:54px;z-index:150;display:flex;gap:0.35rem;overflow-x:auto;padding:0.65rem 1.25rem;background:rgba(2,2,8,0.88);border-bottom:1px solid rgba(255,255,255,0.06);backdrop-filter:blur(14px);scrollbar-width:none;}
 .chapter-rail::-webkit-scrollbar{display:none;}
-.chapter-rail a{flex:0 0 auto;text-decoration:none;font-size:0.55rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.35);padding:0.45rem 0.85rem;border-radius:999px;border:1px solid transparent;transition:all 0.2s;white-space:nowrap;}
+.chapter-rail a{flex:0 0 auto;text-decoration:none;font-size:0.55rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.35);padding:0.45rem 0.85rem;border-radius:999px;border:1px solid transparent;white-space:nowrap;}
 .chapter-rail a:hover,.chapter-rail a.on{color:#fff;border-color:rgba(110,168,255,0.3);background:rgba(110,168,255,0.08);}
 
-.u-section{position:relative;z-index:2!important;padding:5.5rem 2rem!important;border-top:1px solid rgba(110,168,255,0.08)!important;}
-.u-eyebrow{color:rgba(110,168,255,0.55)!important;}
-.u-title{letter-spacing:-1.5px!important;}
-.u-sub{color:rgba(255,255,255,0.38)!important;}
-.max-w{max-width:1120px!important;}
-
-.cataclysm-visual,.protagonist-card,.zone-card,.enemy-card,.ship-card,.store-card,.lore-card,.locked-section,.prometheus-log{
-  border-radius:18px!important;
-  border-color:rgba(255,255,255,0.08)!important;
-  box-shadow:0 20px 60px rgba(0,0,0,0.35);
-}
-.cataclysm-visual{border:1px solid rgba(110,168,255,0.22)!important;background:linear-gradient(135deg,#050818 0%,#0a1030 50%,#08051a 100%)!important;min-height:400px!important;}
-.cataclysm-visual::before{background:radial-gradient(circle at 50% 50%,rgba(110,168,255,0.22) 0%,transparent 60%)!important;}
-.cataclysm-date,.cataclysm-rune,.void-rune-symbol,.log-header,.proto-callsign,.proto-stat-val,.enemy-class,.ship-class,.store-game,.lore-card-eyebrow,.u-eyebrow{color:rgba(150,185,255,0.65)!important;}
-.prometheus-log{background:rgba(110,168,255,0.05)!important;border:1px solid rgba(110,168,255,0.18)!important;}
-.protagonist-card{background:linear-gradient(135deg,#050812 0%,#0a0c1c 100%)!important;border:1px solid rgba(110,168,255,0.16)!important;padding:2.75rem!important;}
-.proto-avatar{border:1px solid rgba(110,168,255,0.25)!important;background:linear-gradient(135deg,#0a1430,#050810)!important;box-shadow:0 0 40px rgba(110,168,255,0.12);}
-.proto-quote{border-left-color:rgba(110,168,255,0.4)!important;}
-.zone-card{background:linear-gradient(180deg,#0a0a12,#06060a)!important;transition:transform 0.3s,border-color 0.3s,box-shadow 0.3s;}
-.zone-card:hover{border-color:rgba(110,168,255,0.35)!important;box-shadow:0 16px 40px rgba(110,168,255,0.1)!important;}
-.enemy-card,.ship-card,.store-card,.lore-card{background:linear-gradient(180deg,#0b0b14,#06060a)!important;}
-.enemy-card:hover,.ship-card:hover,.store-card:hover{border-color:rgba(110,168,255,0.28)!important;transform:translateY(-4px);}
-.ship-card:hover{border-color:rgba(110,168,255,0.28)!important;}
-.media-store{background:linear-gradient(135deg,#030812 0%,#050510 100%)!important;border-top:1px solid rgba(110,168,255,0.12)!important;border-bottom:1px solid rgba(110,168,255,0.12)!important;}
-.store-cat.active,.store-cat:hover{background:rgba(110,168,255,0.12)!important;border-color:rgba(110,168,255,0.35)!important;color:#dce8ff!important;}
-.store-btn{background:rgba(110,168,255,0.12)!important;border-color:rgba(110,168,255,0.28)!important;color:#dce8ff!important;}
-.store-btn:hover{background:rgba(110,168,255,0.25)!important;border-color:rgba(110,168,255,0.5)!important;}
-.locked-section{border:1px solid rgba(110,168,255,0.18)!important;background:rgba(5,8,20,0.8)!important;}
-.locked-section::before{background:radial-gradient(ellipse at 50% 0%,rgba(110,168,255,0.1),transparent 70%)!important;}
-.lock-btn{background:linear-gradient(135deg,rgba(110,168,255,0.2),rgba(80,60,180,0.2))!important;border-color:rgba(110,168,255,0.35)!important;color:#e8f0ff!important;border-radius:10px!important;padding:0.75rem 1.75rem!important;}
-.lock-pass-note span{color:#9eb6d8!important;}
-.universe-toast{border-color:rgba(110,168,255,0.35)!important;background:#080a14!important;}
-
+.u-section{position:relative;z-index:2;padding:5rem 1.5rem;border-top:1px solid rgba(110,168,255,0.08);}
+.max-w{max-width:1120px;margin:0 auto;}
+.u-eyebrow{font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:rgba(110,168,255,0.55);margin-bottom:0.55rem;}
+.u-title{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:900;letter-spacing:-1.5px;margin-bottom:0.55rem;}
+.u-sub{font-size:0.88rem;color:rgba(255,255,255,0.38);line-height:1.7;max-width:640px;margin-bottom:2rem;}
 .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.8s ease,transform 0.8s cubic-bezier(0.22,1,0.36,1);}
 .reveal.in{opacity:1;transform:translateY(0);}
 
-footer{position:relative;z-index:2;border-top:1px solid rgba(255,255,255,0.06)!important;}
+.story-grid{display:grid;grid-template-columns:1.2fr 0.8fr;gap:1.25rem;}
+.story-main,.story-side,.season-card,.pilot-card,.final-card{border-radius:18px;border:1px solid rgba(255,255,255,0.08);background:linear-gradient(180deg,#0b0b14,#06060a);box-shadow:0 20px 60px rgba(0,0,0,0.35);}
+.story-main{padding:2rem;}
+.story-side{padding:1.5rem;display:flex;flex-direction:column;gap:1rem;}
+.story-kicker{font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:2px;color:rgba(110,168,255,0.6);margin-bottom:0.75rem;}
+.story-main h3{font-size:1.35rem;font-weight:800;margin-bottom:1rem;letter-spacing:-0.5px;}
+.story-main p{color:rgba(255,255,255,0.48);font-size:0.88rem;line-height:1.8;margin-bottom:0.9rem;}
+.story-main p strong{color:#dce8ff;font-weight:700;}
+.side-stat{padding:0.9rem 1rem;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);}
+.side-stat b{display:block;font-size:1.1rem;font-weight:800;margin-bottom:0.2rem;}
+.side-stat span{font-size:0.72rem;color:rgba(255,255,255,0.35);line-height:1.5;}
 
-@media(max-width:900px){
-  .cataclysm-grid,.protagonist-card{grid-template-columns:1fr!important;}
-  .zones-grid{grid-template-columns:repeat(2,1fr)!important;}
-  .enemies-grid,.ships-grid{grid-template-columns:1fr 1fr!important;}
-  .lore-cards{grid-template-columns:1fr!important;}
-  .hero-orbit{opacity:0.4;}
+.season-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}
+.season-card{padding:1.75rem;position:relative;overflow:hidden;}
+.season-card.live{border-color:rgba(110,168,255,0.28);}
+.season-card.sealed{border-color:rgba(180,40,50,0.28);background:linear-gradient(180deg,#12080c,#060406);}
+.season-badge{display:inline-block;font-size:0.5rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:0.35rem 0.7rem;border-radius:999px;margin-bottom:1rem;}
+.season-card.live .season-badge{background:rgba(110,168,255,0.12);color:#cfe0ff;border:1px solid rgba(110,168,255,0.3);}
+.season-card.sealed .season-badge{background:rgba(255,40,60,0.1);color:#ffb0b8;border:1px solid rgba(255,60,80,0.3);}
+.season-card h3{font-size:1.4rem;font-weight:900;margin-bottom:0.4rem;}
+.season-card .season-sub{font-size:0.72rem;color:rgba(255,255,255,0.35);margin-bottom:1rem;}
+.season-card p{font-size:0.85rem;color:rgba(255,255,255,0.48);line-height:1.75;}
+
+.pilot-card{padding:2rem;display:grid;grid-template-columns:160px 1fr;gap:1.75rem;align-items:start;}
+.pilot-avatar{width:160px;height:160px;border-radius:16px;border:1px solid rgba(110,168,255,0.25);background:linear-gradient(135deg,#0a1430,#050810);display:flex;align-items:center;justify-content:center;font-size:3.5rem;box-shadow:0 0 40px rgba(110,168,255,0.12);}
+.pilot-call{font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:2px;color:rgba(150,185,255,0.65);margin-bottom:0.4rem;}
+.pilot-card h3{font-size:1.5rem;font-weight:900;margin-bottom:0.5rem;}
+.pilot-card p{font-size:0.88rem;color:rgba(255,255,255,0.48);line-height:1.75;margin-bottom:0.85rem;}
+.pilot-quote{border-left:2px solid rgba(110,168,255,0.4);padding-left:1rem;font-size:0.85rem;color:rgba(220,230,255,0.7);line-height:1.7;font-style:italic;}
+
+.filters{display:flex;gap:0.45rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.filters button{appearance:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:0.58rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;padding:0.55rem 0.9rem;border-radius:999px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.03);color:rgba(255,255,255,0.4);}
+.filters button.on,.filters button:hover{color:#fff;border-color:rgba(110,168,255,0.35);background:rgba(110,168,255,0.1);}
+
+.zone-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.9rem;}
+.zone-card{padding:1.15rem;border-radius:16px;border:1px solid rgba(255,255,255,0.08);background:linear-gradient(180deg,#0a0a12,#06060a);transition:border-color .25s,transform .25s;}
+.zone-card:hover{border-color:rgba(110,168,255,0.3);transform:translateY(-2px);}
+.zone-top{display:flex;justify-content:space-between;gap:0.5rem;margin-bottom:0.55rem;}
+.zone-num,.zone-waves{font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:1.5px;color:rgba(150,185,255,0.55);}
+.zone-name{font-size:0.95rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:0.55rem;}
+.zone-lore{font-size:0.75rem;color:rgba(255,255,255,0.4);line-height:1.65;margin-bottom:0.9rem;min-height:4.2em;}
+.zone-boss{display:grid;gap:0.15rem;padding-top:0.75rem;border-top:1px solid rgba(255,255,255,0.06);}
+.zone-boss span{font-size:0.48rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.28);}
+.zone-boss strong{font-size:0.78rem;color:#dce8ff;}
+.zone-boss em{font-size:0.68rem;color:rgba(110,168,255,0.55);font-style:normal;}
+
+.boss-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;}
+.boss-card{padding:1.35rem;border-radius:16px;border:1px solid rgba(255,255,255,0.08);background:linear-gradient(180deg,#0b0b14,#06060a);}
+.boss-card.final{grid-column:1/-1;border-color:rgba(180,50,70,0.35);background:linear-gradient(135deg,#140810,#06040a 55%,#0a0818);}
+.boss-rank{font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:2px;color:rgba(150,185,255,0.55);margin-bottom:0.45rem;}
+.boss-card.final .boss-rank{color:#ff8a9a;}
+.boss-name{font-size:1.15rem;font-weight:900;letter-spacing:-0.4px;margin-bottom:0.25rem;}
+.boss-title{font-size:0.72rem;color:rgba(110,168,255,0.65);margin-bottom:0.45rem;}
+.boss-meta{font-size:0.62rem;color:rgba(255,255,255,0.3);margin-bottom:0.75rem;}
+.boss-lore{font-size:0.8rem;color:rgba(255,255,255,0.45);line-height:1.7;margin-bottom:0.85rem;}
+.boss-quote{font-size:0.78rem;color:rgba(220,230,255,0.72);line-height:1.55;border-left:2px solid rgba(110,168,255,0.35);padding-left:0.75rem;margin-bottom:0.55rem;}
+.boss-rage{font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:1px;color:rgba(255,120,100,0.7);}
+
+.enemy-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.9rem;}
+.enemy-card{padding:1.15rem;border-radius:16px;border:1px solid rgba(255,255,255,0.08);background:linear-gradient(180deg,#0b0b14,#06060a);position:relative;}
+.enemy-swatch{width:12px;height:12px;border-radius:50%;margin-bottom:0.75rem;}
+.enemy-meta{display:flex;justify-content:space-between;gap:0.5rem;margin-bottom:0.45rem;}
+.enemy-tag,.enemy-wave{font-size:0.48rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(150,185,255,0.55);font-family:'Share Tech Mono',monospace;}
+.enemy-name{font-size:0.92rem;font-weight:800;margin-bottom:0.45rem;}
+.enemy-lore{font-size:0.74rem;color:rgba(255,255,255,0.42);line-height:1.65;margin-bottom:0.65rem;}
+.enemy-tip{font-size:0.68rem;color:rgba(255,200,150,0.65);line-height:1.5;padding-top:0.55rem;border-top:1px solid rgba(255,255,255,0.06);}
+
+.final-card{padding:2.25rem;border-color:rgba(180,50,70,0.4);background:
+  radial-gradient(ellipse at 30% 0%,rgba(180,40,60,0.18),transparent 55%),
+  linear-gradient(135deg,#120810,#06040a 60%,#080818);}
+.final-kicker{font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:3px;color:#ff8a9a;margin-bottom:0.75rem;}
+.final-card h3{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;letter-spacing:-1.5px;margin-bottom:0.5rem;}
+.final-card .final-sub{font-size:0.85rem;color:rgba(255,180,190,0.55);margin-bottom:1.25rem;}
+.final-card p{font-size:0.9rem;color:rgba(255,255,255,0.5);line-height:1.8;margin-bottom:0.9rem;max-width:720px;}
+.final-card blockquote{margin-top:1.25rem;padding:1rem 1.15rem;border-radius:12px;background:rgba(0,0,0,0.35);border:1px solid rgba(255,80,100,0.2);font-size:0.95rem;color:#ffd0d6;line-height:1.6;}
+
+.ship-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.9rem;}
+.ship-card{padding:1.2rem;border-radius:16px;border:1px solid rgba(255,255,255,0.08);background:linear-gradient(180deg,#0b0b14,#06060a);}
+.ship-price{font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;color:rgba(150,185,255,0.55);margin-bottom:0.5rem;font-family:'Share Tech Mono',monospace;}
+.ship-name{font-size:0.95rem;font-weight:800;margin-bottom:0.3rem;}
+.ship-weapon{font-size:0.68rem;color:rgba(110,168,255,0.65);margin-bottom:0.65rem;}
+.ship-blurb{font-size:0.74rem;color:rgba(255,255,255,0.4);line-height:1.6;}
+
+.locked-section{border:1px solid rgba(110,168,255,0.18);background:rgba(5,8,20,0.8);border-radius:18px;padding:2.5rem;text-align:center;position:relative;}
+.lock-icon{font-size:2rem;margin-bottom:0.75rem;opacity:0.5;}
+.lock-title{font-size:1.2rem;font-weight:800;margin-bottom:0.5rem;}
+.lock-desc{font-size:0.85rem;color:rgba(255,255,255,0.4);max-width:480px;margin:0 auto 1.25rem;line-height:1.7;}
+.lock-btn{appearance:none;cursor:pointer;border:1px solid rgba(110,168,255,0.35);background:linear-gradient(135deg,rgba(110,168,255,0.2),rgba(80,60,180,0.2));color:#e8f0ff;border-radius:10px;padding:0.75rem 1.75rem;font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;}
+.lock-pass-note{margin-top:0.85rem;font-size:0.7rem;color:rgba(255,255,255,0.3);}
+.lock-pass-note span{color:#9eb6d8;}
+.locked-content{display:none;}
+.locked-content.revealed{display:block;}
+.lore-cards{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem;}
+.lore-card{padding:1.25rem;border-radius:16px;border:1px solid rgba(255,255,255,0.08);background:linear-gradient(180deg,#0b0b14,#06060a);}
+.lore-card-eyebrow{font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;color:rgba(150,185,255,0.55);margin-bottom:0.4rem;font-family:'Share Tech Mono',monospace;}
+.lore-card-title{font-size:1rem;font-weight:800;margin-bottom:0.55rem;}
+.lore-card-text{font-size:0.78rem;color:rgba(255,255,255,0.45);line-height:1.7;}
+
+.media-store{background:linear-gradient(135deg,#030812 0%,#050510 100%);border-top:1px solid rgba(110,168,255,0.12);border-bottom:1px solid rgba(110,168,255,0.12);}
+.store-categories{display:flex;gap:0.5rem;margin-bottom:2rem;flex-wrap:wrap;}
+.store-cat{cursor:pointer;font-size:0.58rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;padding:0.55rem 0.9rem;border-radius:999px;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);}
+.store-cat.active,.store-cat:hover{background:rgba(110,168,255,0.12);border-color:rgba(110,168,255,0.35);color:#dce8ff;}
+.store-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.25rem;}
+.store-card{border-radius:16px;border:1px solid rgba(255,255,255,0.08);background:linear-gradient(180deg,#0b0b14,#06060a);overflow:hidden;}
+.store-cover{height:140px;display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;}
+.store-type-badge{position:absolute;top:0.6rem;left:0.6rem;font-size:0.5rem;letter-spacing:1.5px;text-transform:uppercase;padding:0.25rem 0.5rem;border-radius:6px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.1);}
+.store-body{padding:1rem;}
+.store-game{font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;color:rgba(150,185,255,0.55);margin-bottom:0.35rem;font-family:'Share Tech Mono',monospace;}
+.store-title{font-size:0.9rem;font-weight:800;margin-bottom:0.4rem;}
+.store-desc{font-size:0.72rem;color:rgba(255,255,255,0.4);line-height:1.55;margin-bottom:0.85rem;min-height:3.2em;}
+.store-footer{display:flex;align-items:center;justify-content:space-between;gap:0.5rem;}
+.store-price{display:flex;align-items:center;gap:0.3rem;}
+.store-price-val{font-weight:800;}
+.store-price-lbl{font-size:0.6rem;color:rgba(255,255,255,0.35);}
+.store-price-pass{font-size:0.65rem;color:#d4af37;}
+.store-btn{appearance:none;cursor:pointer;border:1px solid rgba(110,168,255,0.28);background:rgba(110,168,255,0.12);color:#dce8ff;border-radius:8px;padding:0.45rem 0.8rem;font-size:0.62rem;font-weight:700;font-family:'Inter',sans-serif;}
+.store-btn.unlocked,.store-coming{opacity:0.7;cursor:default;}
+
+.universe-toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(20px);background:#080a14;border:1px solid rgba(110,168,255,0.35);color:#fff;padding:0.75rem 1.25rem;border-radius:10px;font-size:0.75rem;opacity:0;pointer-events:none;transition:all .3s;z-index:500;}
+.universe-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.universe-toast.error{border-color:rgba(255,80,80,0.5);}
+.universe-toast.success{border-color:rgba(80,200,120,0.5);}
+
+.dash-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);opacity:0;pointer-events:none;transition:opacity .3s;z-index:350;}
+.dash-overlay.open{opacity:1;pointer-events:auto;}
+.dash-panel{position:fixed;top:0;right:0;bottom:0;width:320px;background:#060606;border-left:1px solid rgba(255,255,255,0.07);transform:translateX(100%);transition:transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94);z-index:400;display:flex;flex-direction:column;overflow-y:auto;}
+.dash-panel.open{transform:translateX(0);}
+.dash-header{padding:1.25rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:space-between;}
+.dash-header-title{font-size:0.75rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;}
+.dash-close{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);color:rgba(255,255,255,0.3);width:26px;height:26px;border-radius:50%;cursor:pointer;}
+.dash-avatar-section{padding:1.5rem;display:flex;flex-direction:column;align-items:center;gap:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05);}
+.dash-avatar-wrap{position:relative;}
+.dash-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#1a1a1a,#0a0a0a);border:2px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:2rem;overflow:hidden;}
+.dash-avatar img{width:100%;height:100%;object-fit:cover;}
+.dash-avatar-upload{position:absolute;bottom:0;right:0;width:24px;height:24px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.dash-avatar-upload svg{width:12px;height:12px;}
+.dash-upload-hint{font-size:0.55rem;color:rgba(255,255,255,0.25);}
+.dash-username{font-size:0.95rem;font-weight:800;}
+.dash-id-label{font-size:0.55rem;color:rgba(255,255,255,0.3);letter-spacing:1px;text-transform:uppercase;}
+.dash-founder{font-size:0.6rem;color:#d4af37;margin-top:0.25rem;}
+.dash-pass-banner{margin:1rem 1.5rem 0;background:#0a0a0a;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:0.85rem 1rem;display:flex;align-items:center;justify-content:space-between;}
+.dash-pass-label{font-size:0.5rem;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:1px;}
+.dash-pass-name{font-size:0.8rem;font-weight:700;}
+.dash-upgrade-btn{appearance:none;border:0;background:#fff;color:#000;border-radius:6px;padding:0.4rem 0.7rem;font-size:0.6rem;font-weight:800;cursor:pointer;}
+.dash-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:1rem 1.5rem;}
+.dash-stat{background:#0a0a0a;border:1px solid rgba(255,255,255,0.05);border-radius:8px;padding:0.7rem;}
+.dash-stat-label{font-size:0.5rem;color:rgba(255,255,255,0.3);text-transform:uppercase;}
+.dash-stat-value{font-size:1rem;font-weight:800;margin:0.2rem 0;}
+.dash-stat-sub{font-size:0.5rem;color:rgba(255,255,255,0.25);}
+.dash-divider{height:1px;background:rgba(255,255,255,0.05);margin:0 1.5rem;}
+.dash-links{padding:1rem 1.5rem;display:flex;flex-direction:column;gap:2px;}
+.dash-links-label{font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:0.4rem;}
+.dash-link-item{display:flex;align-items:center;justify-content:space-between;padding:0.55rem 0.75rem;border-radius:6px;cursor:pointer;}
+.dash-link-item:hover{background:rgba(255,255,255,0.03);}
+.dash-link-left{display:flex;align-items:center;gap:0.6rem;font-size:0.72rem;color:rgba(255,255,255,0.4);}
+.dash-link-icon{width:22px;height:22px;background:#0d0d0d;border:1px solid rgba(255,255,255,0.05);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;}
+.dash-link-arrow{color:rgba(255,255,255,0.2);}
+.dash-footer{margin-top:auto;padding:1.25rem 1.5rem;border-top:1px solid rgba(255,255,255,0.05);}
+.dash-signout{width:100%;appearance:none;border:1px solid rgba(255,255,255,0.1);background:transparent;color:rgba(255,255,255,0.5);padding:0.65rem;border-radius:8px;cursor:pointer;font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:700;margin-bottom:0.6rem;}
+.dash-member-since{font-size:0.55rem;color:rgba(255,255,255,0.25);text-align:center;}
+
+footer{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;padding:0.8rem 2rem;border-top:1px solid rgba(255,255,255,0.06);}
+footer a{color:#555;text-decoration:none;font-size:0.65rem;}
+footer a:hover{color:#fff;}
+
+@media(max-width:980px){
+  .story-grid,.season-grid,.pilot-card,.lore-cards{grid-template-columns:1fr;}
+  .zone-grid,.enemy-grid{grid-template-columns:1fr 1fr;}
+  .boss-grid,.ship-grid{grid-template-columns:1fr;}
+  .pilot-avatar{width:120px;height:120px;}
 }
 @media(max-width:560px){
-  .zones-grid,.enemies-grid,.ships-grid{grid-template-columns:1fr!important;}
+  .zone-grid,.enemy-grid{grid-template-columns:1fr;}
+  .hero-orbit{opacity:0.35;}
 }
-
 </style>
 </head>
 <body>
@@ -343,7 +256,6 @@ footer{position:relative;z-index:2;border-top:1px solid rgba(255,255,255,0.06)!i
 <canvas id="cosmos"></canvas>
 <div class="nebula"><div class="nebula-orb a"></div><div class="nebula-orb b"></div></div>
 <div class="scanlines"></div>
-<div class="stars"></div>
 
 <nav>
   <a href="index.html" class="logo">SYLLOG</a>
@@ -359,7 +271,6 @@ footer{position:relative;z-index:2;border-top:1px solid rgba(255,255,255,0.06)!i
   </div>
 </nav>
 
-
 <div class="universe-hero">
   <div class="hero-orbit"><i></i><i></i><i></i></div>
   <div class="void-glow"></div>
@@ -369,450 +280,1264 @@ footer{position:relative;z-index:2;border-top:1px solid rgba(255,255,255,0.06)!i
     <span class="the">The World of</span>
     <span class="universe-word">Void Vexon</span>
   </h1>
-  <p class="hero-sub">2847 CE. The Age of Fractured Space. One pilot. One ship. The entire Void army between him and survival — the living archive of Commander Kael Voss.</p>
-  <div class="hero-era">&#9632;&nbsp; 2847 CE &mdash; The Age of Fractured Space &nbsp;&#9632;</div>
+  <p class="hero-sub">Year 2847. The universe is dying. One last pilot flies 150 waves toward The Eternal Void — Darkness itself — while Season Two waits behind the door the herald was holding shut.</p>
+  <div class="hero-era">&#9632;&nbsp; GAF Mission File · The Last Signal &nbsp;&#9632;</div>
   <div class="hero-stats">
-    <div class="hero-stat"><div class="hero-stat-num">10</div><div class="hero-stat-lbl">Zones</div></div>
-    <div class="hero-stat"><div class="hero-stat-num">150</div><div class="hero-stat-lbl">Levels</div></div>
-    <div class="hero-stat"><div class="hero-stat-num">4</div><div class="hero-stat-lbl">Enemy Types</div></div>
-    <div class="hero-stat"><div class="hero-stat-num">3</div><div class="hero-stat-lbl">Endings</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">30</div><div class="hero-stat-lbl">Zones</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">150</div><div class="hero-stat-lbl">Waves</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">30</div><div class="hero-stat-lbl">Bosses</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">2</div><div class="hero-stat-lbl">Seasons</div></div>
   </div>
   <div class="hero-cta-row">
     <a class="hc-play" href="Voidvexon.html">Play Void Vexon</a>
-    <a class="hc-ghost" href="#origin">Begin the Lore</a>
+    <a class="hc-ghost" href="#story">Read the Story</a>
   </div>
   <div class="hero-scroll">
     <div class="hero-scroll-line"></div>
-    <div class="hero-scroll-txt">Enter the Void</div>
+    <div class="hero-scroll-txt">Enter the Archive</div>
   </div>
 </div>
 
 <nav class="chapter-rail" aria-label="Archive chapters">
-  <a href="#origin">Origin</a>
+  <a href="#story">Story</a>
+  <a href="#seasons">Seasons</a>
   <a href="#pilot">Pilot</a>
-  <a href="#enemies">Armies</a>
-  <a href="#zones">Zones</a>
+  <a href="#campaign">Campaign</a>
+  <a href="#bosses">Bosses</a>
+  <a href="#enemies">Enemies</a>
+  <a href="#final">The Darkness</a>
   <a href="#ships">Ships</a>
   <a href="#deeplore">Deep Lore</a>
   <a href="#store">Store</a>
 </nav>
 
-
-<div class="u-section reveal" id="origin">
+<section class="u-section reveal" id="story">
   <div class="max-w">
-    <div class="u-eyebrow">&#9632; Void Vexon &mdash; Origin</div>
-    <div class="u-title">The Cataclysm</div>
-    <div class="u-sub">How humanity's greatest achievement became its greatest mistake.</div>
-    <div class="cataclysm-grid">
-      <div class="cataclysm-text">
-        <div class="cataclysm-date">&#9632; 2841 CE &mdash; Deep Space Research Vessel SYL-7 Prometheus</div>
-        <div class="cataclysm-headline">Someone opened the wrong gate.</div>
-        <div class="cataclysm-body">
-          <p>For 200 years, humanity used the <span class="highlight">Void Gates</span> — ancient technology discovered buried beneath a dying star — to travel between star systems in seconds. No one built them. No one knew how old they were. They simply existed, waiting.</p>
-          <p>The <span class="highlight">Galactic Annihilation Force (GAF)</span> was formed to protect the gate network. Ten thousand worlds connected. Civilization expanded. Everything was fine.</p>
-          <p>Until the Prometheus crew detected something impossible in the Kaelthar Belt — a gate that wasn't on any map, pulsing with deep violet energy unlike anything ever recorded.</p>
-          <p>Against orders, they activated it.</p>
-          <p>What came through was not a ship. Not a fleet. It was a <span class="highlight">sound</span> — a frequency that traveled through the gate, through space, through the hull, through the bodies of every crew member — and rewrote them at a molecular level.</p>
-          <p>The Prometheus went dark 11 seconds later.</p>
-        </div>
-        <div class="prometheus-log">
-          <div class="log-header">&#9632; GAF INCIDENT REPORT #7741 &mdash; CLASSIFIED &#9632;</div>
-          <div class="log-text">Three days after the incident, the Prometheus drifted back through the gate — empty. Every surface inside was covered in a crystalline black substance. At the center of the bridge, carved into the floor with surgical precision, was a single symbol.<br><br><span class="red">The Void Rune. Scientists still don't know what it means.</span></div>
-        </div>
+    <div class="u-eyebrow">&#9632; Mission Brief</div>
+    <div class="u-title">The Last Signal</div>
+    <div class="u-sub">For three centuries the Void consumed galaxies. The Galactic Annihilation Force burned. One transmission remains — coordinates to the wound where Darkness was born.</div>
+    <div class="story-grid">
+      <div class="story-main">
+        <div class="story-kicker">YEAR 2847 — OPENING CRAWL</div>
+        <h3>The universe is dying.</h3>
+        <p>An ancient force known only as <strong>THE VOID</strong> has consumed galaxy after galaxy — silent, absolute, without mercy. Stars extinguished. Civilisations erased. Realities folded into darkness and forgotten.</p>
+        <p>The great fleets of the <strong>Galactic Annihilation Force</strong> were assembled to hold the line. Two thousand warships. The finest pilots across twelve star systems. They fought. They burned. They fell.</p>
+        <p>Seventeen hours ago, a dying AI transmission named the place: <strong>VOID VEXON</strong> — the wound in reality where the darkness was born. One hundred fifty waves of void creatures. Thirty warlords. And at the end, <strong>THE ETERNAL VOID</strong> — Darkness older than stars.</p>
+        <p>The dead are watching. The stars are watching. Everything that ever lived is counting on the last pilot.</p>
       </div>
-      <div class="cataclysm-visual">
-        <div style="font-size:9rem;opacity:0.08;animation:gateRotate 20s linear infinite;">&#11835;</div>
-        <div class="void-rune-symbol" style="top:20%;left:20%;">&#10022;</div>
-        <div class="void-rune-symbol" style="bottom:20%;right:20%;animation-delay:1s;">&#10023;</div>
-        <div style="position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:rgba(138,43,226,0.3);letter-spacing:3px;white-space:nowrap;">GATE DESIGNATION: UNKNOWN &mdash; STATUS: OPEN</div>
+      <div class="story-side">
+        <div class="side-stat"><b>Season 1</b><span>Live now — fly the full 150-wave campaign to The Eternal Void.</span></div>
+        <div class="side-stat"><b>Season 2</b><span>Sealed — the herald falls, the door opens, and something older answers.</span></div>
+        <div class="side-stat"><b>Structure</b><span>30 zones · boss every 5 waves · Dark Army from wave 101.</span></div>
+        <div class="side-stat"><b>Truth</b><span>The Eternal Void was never the master. It was the herald holding the door shut.</span></div>
       </div>
     </div>
   </div>
-</div>
+</section>
 
-
-<div class="u-section reveal" id="pilot" style="background:linear-gradient(180deg,#000 0%,#030010 50%,#000 100%);">
+<section class="u-section reveal" id="seasons" style="background:linear-gradient(180deg,#000 0%,#030010 50%,#000 100%);">
   <div class="max-w">
-    <div class="u-eyebrow">&#9632; Void Vexon &mdash; The Pilot</div>
-    <div class="u-title">Commander Kael Voss</div>
-    <div class="u-sub">The last pilot. The accidental survivor. The key to everything.</div>
-    <div class="protagonist-card">
+    <div class="u-eyebrow">&#9632; Live Timeline</div>
+    <div class="u-title">Seasons of the War</div>
+    <div class="u-sub">Void Vexon is not one battle. It is a war told in seasons — the fall of Darkness, then whatever Darkness was guarding.</div>
+    <div class="season-grid">
+      <article class="season-card live">
+        <div class="season-badge">Season 01 · Live</div>
+        <h3>The Eternal Void</h3>
+        <div class="season-sub">150 waves · 30 bosses · The Darkness finale</div>
+        <p>Commander Vael Rhynn flies alone into Void Vexon. Frontline drones become dark army horrors. Thirty warlords stand between the last ship and The Eternal Void — Darkness made absolute. When it falls, light returns… for a moment.</p>
+      </article>
+      <article class="season-card sealed">
+        <div class="season-badge">Season 02 · Coming Soon</div>
+        <h3>The Door</h3>
+        <div class="season-sub">After the herald · The real war begins</div>
+        <p>The Void’s final cry was a signal. The Eternal Void was a sentinel chained to the edge of creation, holding a door shut since before time began. Its death opens that door. Something patient answers: <em>“We are coming.”</em></p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="u-section reveal" id="pilot">
+  <div class="max-w">
+    <div class="u-eyebrow">&#9632; The Last Pilot</div>
+    <div class="u-title">Commander Vael Rhynn</div>
+    <div class="u-sub">The last ship. The last hope. The name the rekindled stars will never learn — and must never forget.</div>
+    <div class="pilot-card">
+      <div class="pilot-avatar">&#128104;&#8205;&#9992;&#65039;</div>
       <div>
-        <div class="proto-avatar">&#128104;&#8205;&#9992;&#65039;</div>
-      </div>
-      <div>
-        <div class="proto-callsign">&#9632; Callsign: VOID VEXON</div>
-        <div class="proto-name">Commander Kael Voss</div>
-        <div class="proto-rank">Age 34 &nbsp;&middot;&nbsp; GAF Most Decorated Combat Pilot &nbsp;&middot;&nbsp; Last Survivor</div>
-        <div class="proto-stats">
-          <div class="proto-stat"><div class="proto-stat-val">34</div><div class="proto-stat-lbl">Age</div></div>
-          <div class="proto-stat"><div class="proto-stat-val">GAF-7</div><div class="proto-stat-lbl">Original Ship</div></div>
-          <div class="proto-stat"><div class="proto-stat-val">1</div><div class="proto-stat-lbl">Survivor</div></div>
-        </div>
-        <div class="proto-bio">
-          <p>Kael was not supposed to survive. When Void forces overran the Kaelthar Belt forward base, every other pilot launched to intercept. They were all destroyed or captured within minutes. Kael's ship had a catastrophic systems failure during launch — a mundane malfunction that kept him grounded while everyone else died.</p>
-          <p>He watched it all from the hangar. Alone. By the time his systems came back online, there was no one left to call. No command structure. No orders. No allies.</p>
-          <p>He launched anyway.</p>
-          <div class="proto-quote">"What drives Kael is not heroism. Not duty. Something simpler and more honest — he has nothing else. The fight is not about winning anymore. It's about making the Sovereign pay for every life it took, one enemy at a time, for as long as he can stay alive."</div>
-        </div>
+        <div class="pilot-call">CALLSIGN · VOID VEXON PILOT</div>
+        <h3>Commander Vael Rhynn</h3>
+        <p>Fleet gone. Home world ash. Seventeen hours after the last AI beacon, Rhynn sets course for the wound. No backup. No miracles. One chance to tear through 150 waves, shatter thirty warlords, and face The Eternal Void.</p>
+        <p>After victory, scanners scream again. The real war has only just begun. Season Two waits beyond the thank-you of a grateful universe.</p>
+        <div class="pilot-quote">“The universe has no armies left to send. No heroes left to call upon. No miracles left in reserve.”</div>
       </div>
     </div>
   </div>
-</div>
+</section>
 
-
-<div class="u-section reveal" id="enemies">
+<section class="u-section reveal" id="campaign" style="background:linear-gradient(180deg,#000 0%,#030010 50%,#000 100%);">
   <div class="max-w">
-    <div class="u-eyebrow">&#9632; Void Vexon &mdash; Enemy Codex</div>
-    <div class="u-title">The Void Armies</div>
-    <div class="u-sub">The Sovereign does not fight with ships or soldiers in any conventional sense. It corrupts. Every enemy was once something else.</div>
-    <div class="enemies-grid">
-      <div class="enemy-card">
-        <div class="enemy-header" style="background:linear-gradient(135deg,#0a0020,#050010);">
-          <div class="enemy-icon">&#11042;</div>
-          <div class="enemy-class" style="color:rgba(138,43,226,0.6);">&#9632; The Special</div>
-          <div class="enemy-name">Void Golems</div>
-          <div class="enemy-aka">Purple Hex Guardians</div>
+    <div class="u-eyebrow">&#9632; 30 Zones · Boss Every 5 Waves</div>
+    <div class="u-title">The Campaign Map</div>
+    <div class="u-sub">Three acts. Thirty sectors. Each zone hosts its warlord at the fifth wave. Filter by act to walk the road into Darkness.</div>
+    <div class="filters" id="zone-filters">
+      <button class="on" data-act="all">All Acts</button>
+      <button data-act="a1">Act I · Outer Wound</button>
+      <button data-act="a2">Act II · Deep March</button>
+      <button data-act="a3">Act III · Darkness</button>
+    </div>
+    <div class="zone-grid" id="zone-grid">
+      <article class="zone-card" data-act="a1">
+        <div class="zone-top">
+          <div class="zone-num">Zone 01</div>
+          <div class="zone-waves">Waves 1–5</div>
         </div>
-        <div class="enemy-body">
-          <div class="enemy-desc">Once the automated defense drones of humanity's earliest gate stations. Corrupted by Void Energy, their programming replaced with a single directive: destroy the desecrators. Their crystalline shells are nearly impenetrable.</div>
-          <div class="enemy-lore">&#9632; First appeared at Gate Station Kepler-7, three days after the Prometheus incident. Every drone simultaneously stopped, turned to face the gate, and walked into it. They came back wrong.</div>
+        <h3 class="zone-name">SENTINEL GATE</h3>
+        <p class="zone-lore">The outer wound. Automated gate-guards still stand watch over a silent corridor of dead beacons — the first place humanity tore reality open.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>DARK SENTINEL</strong>
+          <em>First guardian</em>
         </div>
-      </div>
-      <div class="enemy-card">
-        <div class="enemy-header" style="background:linear-gradient(135deg,#001a1a,#000f0f);">
-          <div class="enemy-icon">&#128081;</div>
-          <div class="enemy-class" style="color:rgba(0,200,200,0.6);">&#9632; The Elite</div>
-          <div class="enemy-name">Crystal Predators</div>
-          <div class="enemy-aka">Teal Hunters</div>
+      </article>
+      <article class="zone-card" data-act="a1">
+        <div class="zone-top">
+          <div class="zone-num">Zone 02</div>
+          <div class="zone-waves">Waves 6–10</div>
         </div>
-        <div class="enemy-body">
-          <div class="enemy-desc">Once the GAF's most advanced fighter pilots — ace soldiers captured during early engagements. The Bleaching process was only partial, preserving their tactical intelligence while overwriting their loyalty. They retained their skills. They lost everything else.</div>
-          <div class="enemy-lore">&#9632; GAF Command issued Order 77 — any pilot captured by Void forces is to be considered dead. No rescue missions. No negotiations.</div>
+        <h3 class="zone-name">PREDATOR EXPANSE</h3>
+        <p class="zone-lore">Open hunting grounds. Crystal packs circle dying light like sharks. Nothing that enters leaves the same shape.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>VOID PREDATOR</strong>
+          <em>Hunter of light</em>
         </div>
-      </div>
-      <div class="enemy-card">
-        <div class="enemy-header" style="background:linear-gradient(135deg,#0a0505,#050202);">
-          <div class="enemy-icon">&#128165;</div>
-          <div class="enemy-class" style="color:rgba(200,50,50,0.6);">&#9632; The Grunt</div>
-          <div class="enemy-name">Void Drones</div>
-          <div class="enemy-aka">Mass-Produced Shock Troops</div>
+      </article>
+      <article class="zone-card" data-act="a1">
+        <div class="zone-top">
+          <div class="zone-num">Zone 03</div>
+          <div class="zone-waves">Waves 11–15</div>
         </div>
-        <div class="enemy-body">
-          <div class="enemy-desc">Raw asteroid rock and salvaged ship debris, bleached and animated by Void Energy. No intelligence. No purpose beyond swarming. The Sovereign produces them by the millions — they are the tide that overwhelms by sheer numbers.</div>
-          <div class="enemy-lore">&#9632; After the fall of Arcturus Colony, a debris field 40,000 km wide began moving against orbital mechanics. 3 million strong — walking through space.</div>
+        <h3 class="zone-name">IRON FOUNDRY</h3>
+        <p class="zone-lore">A captured industrial moon hammered into a weapons foundry. Iron screams here. The Void learned to forge.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>IRON COLOSSUS</strong>
+          <em>The iron wall</em>
         </div>
-      </div>
-      <div class="enemy-card">
-        <div class="enemy-header" style="background:linear-gradient(135deg,#080015,#040008);">
-          <div class="enemy-icon">&#9889;</div>
-          <div class="enemy-class" style="color:rgba(100,100,255,0.6);">&#9632; The Zig</div>
-          <div class="enemy-name">Phase Reavers</div>
-          <div class="enemy-aka">Erratic Dimension-Hoppers</div>
+      </article>
+      <article class="zone-card" data-act="a1">
+        <div class="zone-top">
+          <div class="zone-num">Zone 04</div>
+          <div class="zone-waves">Waves 16–20</div>
         </div>
-        <div class="enemy-body">
-          <div class="enemy-desc">Once quantum research AIs designed to probe the void dimension. The Sovereign repurposed them as psychological weapons. They phase partially into the void dimension, making them appear to teleport unpredictably.</div>
-          <div class="enemy-lore">&#9632; GAF pilots who survived extended Zig combat reported nightmares for months. The patterns burned into their visual cortex. Some couldn't fly straight lines anymore.</div>
+        <h3 class="zone-name">NEBULA THRONE</h3>
+        <p class="zone-lore">A royal nebula twisted into a throne. Stars are crushed for fuel. Beauty and extinction share one sky.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>NEBULA TYRANT</strong>
+          <em>Star crusher</em>
         </div>
-      </div>
+      </article>
+      <article class="zone-card" data-act="a1">
+        <div class="zone-top">
+          <div class="zone-num">Zone 05</div>
+          <div class="zone-waves">Waves 21–25</div>
+        </div>
+        <h3 class="zone-name">CRIMSON ARMADA</h3>
+        <p class="zone-lore">The wreckage of a thousand fleets, painted crimson and still moving. The Armada never stopped fighting — it only changed sides.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>CRIMSON DREADNOUGHT</strong>
+          <em>Red death</em>
+        </div>
+      </article>
+      <article class="zone-card" data-act="a1">
+        <div class="zone-top">
+          <div class="zone-num">Zone 06</div>
+          <div class="zone-waves">Waves 26–30</div>
+        </div>
+        <h3 class="zone-name">CHRONO RIFT</h3>
+        <p class="zone-lore">Time folds here. Seconds are eaten. Pilots report fighting the same engagement before they arrive.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>CHRONO DEVOURER</strong>
+          <em>Eater of moments</em>
+        </div>
+      </article>
+      <article class="zone-card" data-act="a1">
+        <div class="zone-top">
+          <div class="zone-num">Zone 07</div>
+          <div class="zone-waves">Waves 31–35</div>
+        </div>
+        <h3 class="zone-name">CHAOS WASTES</h3>
+        <p class="zone-lore">Physics abandoned the Wastes. Gravity argues with itself. Chaos took the lease.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>CHAOS BEHEMOTH</strong>
+          <em>Living disaster</em>
+        </div>
+      </article>
+      <article class="zone-card" data-act="a1">
+        <div class="zone-top">
+          <div class="zone-num">Zone 08</div>
+          <div class="zone-waves">Waves 36–40</div>
+        </div>
+        <h3 class="zone-name">SOLAR CROWN</h3>
+        <p class="zone-lore">A dying sun crowned with void-fire. Heat enough to birth stars — and kill what they once warmed.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>SOLAR DESTROYER</strong>
+          <em>Star-killer</em>
+        </div>
+      </article>
+      <article class="zone-card" data-act="a1">
+        <div class="zone-top">
+          <div class="zone-num">Zone 09</div>
+          <div class="zone-waves">Waves 41–45</div>
+        </div>
+        <h3 class="zone-name">SHADOW DEPTHS</h3>
+        <p class="zone-lore">Depth without ocean. Darkness with appetite. Leviathans swim through pressure that would crush worlds.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>SHADOW LEVIATHAN</strong>
+          <em>Deep darkness</em>
+        </div>
+      </article>
+      <article class="zone-card" data-act="a1">
+        <div class="zone-top">
+          <div class="zone-num">Zone 10</div>
+          <div class="zone-waves">Waves 46–50</div>
+        </div>
+        <h3 class="zone-name">ENTROPY FORGE</h3>
+        <p class="zone-lore">Heat death made machinery. Everything that enters is sorted into ash, then recycled into more ending.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>ENTROPY ENGINE</strong>
+          <em>Heat death</em>
+        </div>
+      </article>
+      <article class="zone-card" data-act="a2">
+        <div class="zone-top">
+          <div class="zone-num">Zone 11</div>
+          <div class="zone-waves">Waves 51–55</div>
+        </div>
+        <h3 class="zone-name">SCRAP NEST</h3>
+        <p class="zone-lore">A junkyard of fallen GAF hulls. The scrap learned to bite. Your fleets feed what hunts you.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>SCRAP WYRM</strong>
+          <em>Junkyard devourer</em>
+        </div>
+      </article>
+      <article class="zone-card" data-act="a2">
+        <div class="zone-top">
+          <div class="zone-num">Zone 12</div>
+          <div class="zone-waves">Waves 56–60</div>
+        </div>
+        <h3 class="zone-name">NULL DOMAIN</h3>
+        <p class="zone-lore">A domain of absolute zero intention. Presence itself is treated as an error to erase.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>NULL SOVEREIGN</strong>
+          <em>Lord of nothing</em>
+        </div>
+      </article>
+      <article class="zone-card" data-act="a2">
+        <div class="zone-top">
+          <div class="zone-num">Zone 13</div>
+          <div class="zone-waves">Waves 61–65</div>
+        </div>
+        <h3 class="zone-name">ABYSSAL REACH</h3>
+        <p class="zone-lore">The Reach drops forever. Sensors fail in layers. Something deeper answers when you call.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>ABYSS COLOSSUS</strong>
+          <em>Depth incarnate</em>
+        </div>
+      </article>
+      <article class="zone-card" data-act="a2">
+        <div class="zone-top">
+          <div class="zone-num">Zone 14</div>
+          <div class="zone-waves">Waves 66–70</div>
+        </div>
+        <h3 class="zone-name">GHOST GALAXY</h3>
+        <p class="zone-lore">Galaxies that already died — still glowing as ghosts. Their light is a memory that wants you gone.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>GALACTIC WRAITH</strong>
+          <em>Galaxy ghost</em>
+        </div>
+      </article>
+      <article class="zone-card" data-act="a2">
+        <div class="zone-top">
+          <div class="zone-num">Zone 15</div>
+          <div class="zone-waves">Waves 71–75</div>
+        </div>
+        <h3 class="zone-name">VOID EMPIRE</h3>
+        <p class="zone-lore">Capital of the wound. Courts of silence. Laws written in absence. An empire of between-spaces.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>VOID EMPEROR</strong>
+          <em>Rules the void</em>
+        </div>
+      </article>
+      <article class="zone-card" data-act="a2">
+        <div class="zone-top">
+          <div class="zone-num">Zone 16</div>
+          <div class="zone-waves">Waves 76–80</div>
+        </div>
+        <h3 class="zone-name">DARK MATTER CORE</h3>
+        <p class="zone-lore">Compressed antimatter storms. Matter and anti-matter argue until neither remains.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>DARK MATTER TITAN</strong>
+          <em>Antimatter core</em>
+        </div>
+      </article>
+      <article class="zone-card" data-act="a2">
+        <div class="zone-top">
+          <div class="zone-num">Zone 17</div>
+          <div class="zone-waves">Waves 81–85</div>
+        </div>
+        <h3 class="zone-name">HELIOS COURT</h3>
+        <p class="zone-lore">A burning court of stolen suns. Crowns of fire. Judgments of plasma.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>HELIOS TYRANT</strong>
+          <em>The burning crown</em>
+        </div>
+      </article>
+      <article class="zone-card" data-act="a2">
+        <div class="zone-top">
+          <div class="zone-num">Zone 18</div>
+          <div class="zone-waves">Waves 86–90</div>
+        </div>
+        <h3 class="zone-name">COSMIC RUIN</h3>
+        <p class="zone-lore">Ruins older than star maps. Civilizations that died before language — still echoing.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>COSMIC ANNIHILATOR</strong>
+          <em>Universe-ender</em>
+        </div>
+      </article>
+      <article class="zone-card" data-act="a2">
+        <div class="zone-top">
+          <div class="zone-num">Zone 19</div>
+          <div class="zone-waves">Waves 91–95</div>
+        </div>
+        <h3 class="zone-name">OMEGA FIELD</h3>
+        <p class="zone-lore">The last letter of a cosmic alphabet. Fields that rewrite endings into beginnings that never start.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>OMEGA DESTROYER</strong>
+          <em>Omega force</em>
+        </div>
+      </article>
+      <article class="zone-card" data-act="a2">
+        <div class="zone-top">
+          <div class="zone-num">Zone 20</div>
+          <div class="zone-waves">Waves 96–100</div>
+        </div>
+        <h3 class="zone-name">VOID NEXUS</h3>
+        <p class="zone-lore">Where light dies by design. A convergence point. All roads of darkness meet here.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>VOID NEXUS</strong>
+          <em>Void convergence</em>
+        </div>
+      </article>
+      <article class="zone-card" data-act="a3">
+        <div class="zone-top">
+          <div class="zone-num">Zone 21</div>
+          <div class="zone-waves">Waves 101–105</div>
+        </div>
+        <h3 class="zone-name">SOUL HARVEST</h3>
+        <p class="zone-lore">Souls harvested like ore. Screams banked as fuel. The harvest never ends.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>SOUL COLOSSUS</strong>
+          <em>Harvester of souls</em>
+        </div>
+      </article>
+      <article class="zone-card" data-act="a3">
+        <div class="zone-top">
+          <div class="zone-num">Zone 22</div>
+          <div class="zone-waves">Waves 106–110</div>
+        </div>
+        <h3 class="zone-name">ECLIPSE VEIL</h3>
+        <p class="zone-lore">A veil of living eclipse. No dawn follows. Darkness wears a body.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>ECLIPSE DREAD</strong>
+          <em>Darkness made flesh</em>
+        </div>
+      </article>
+      <article class="zone-card" data-act="a3">
+        <div class="zone-top">
+          <div class="zone-num">Zone 23</div>
+          <div class="zone-waves">Waves 111–115</div>
+        </div>
+        <h3 class="zone-name">DECAY MARSH</h3>
+        <p class="zone-lore">Rot made landscape. Ships decay mid-flight. Entropy walks on two legs.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>ENTROPY WRAITH</strong>
+          <em>Decay incarnate</em>
+        </div>
+      </article>
+      <article class="zone-card" data-act="a3">
+        <div class="zone-top">
+          <div class="zone-num">Zone 24</div>
+          <div class="zone-waves">Waves 116–120</div>
+        </div>
+        <h3 class="zone-name">PLASMA SEA</h3>
+        <p class="zone-lore">An ocean of living plasma. Waves that burn thoughts. Shores that do not exist.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>PLASMA SOVEREIGN</strong>
+          <em>Living plasma star</em>
+        </div>
+      </article>
+      <article class="zone-card" data-act="a3">
+        <div class="zone-top">
+          <div class="zone-num">Zone 25</div>
+          <div class="zone-waves">Waves 121–125</div>
+        </div>
+        <h3 class="zone-name">ABYSSAL THRONE</h3>
+        <p class="zone-lore">The throne room of the deep. Floorless. Endless. Commanded by hunger.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>ABYSSAL OVERLORD</strong>
+          <em>Commands the abyss</em>
+        </div>
+      </article>
+      <article class="zone-card" data-act="a3">
+        <div class="zone-top">
+          <div class="zone-num">Zone 26</div>
+          <div class="zone-waves">Waves 126–130</div>
+        </div>
+        <h3 class="zone-name">PRIME VOID</h3>
+        <p class="zone-lore">The original tear. Before maps. Before names. The first wrongness.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>VOID TITAN PRIME</strong>
+          <em>Original destroyer</em>
+        </div>
+      </article>
+      <article class="zone-card" data-act="a3">
+        <div class="zone-top">
+          <div class="zone-num">Zone 27</div>
+          <div class="zone-waves">Waves 131–135</div>
+        </div>
+        <h3 class="zone-name">DREAD REALM</h3>
+        <p class="zone-lore">Fear given architecture. Dread as weather. Courage is taxed at the border.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>COSMIC DREAD-GOD</strong>
+          <em>Fear incarnate</em>
+        </div>
+      </article>
+      <article class="zone-card" data-act="a3">
+        <div class="zone-top">
+          <div class="zone-num">Zone 28</div>
+          <div class="zone-waves">Waves 136–140</div>
+        </div>
+        <h3 class="zone-name">SINGULARITY WELL</h3>
+        <p class="zone-lore">A well that drinks mass. Infinity compressed into a single fatal point.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>SINGULARITY LORD</strong>
+          <em>Black hole body</em>
+        </div>
+      </article>
+      <article class="zone-card" data-act="a3">
+        <div class="zone-top">
+          <div class="zone-num">Zone 29</div>
+          <div class="zone-waves">Waves 141–145</div>
+        </div>
+        <h3 class="zone-name">REAPER NIGHT</h3>
+        <p class="zone-lore">Night that reaps. Universes previous to this one died under the same scythe.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>UNIVERSAL REAPER</strong>
+          <em>Death of universes</em>
+        </div>
+      </article>
+      <article class="zone-card" data-act="a3">
+        <div class="zone-top">
+          <div class="zone-num">Zone 30</div>
+          <div class="zone-waves">Waves 146–150</div>
+        </div>
+        <h3 class="zone-name">THE LAST LIGHT</h3>
+        <p class="zone-lore">The final corridor. One light left. The Eternal Void waits beyond the last spark.</p>
+        <div class="zone-boss">
+          <span>Boss</span>
+          <strong>THE ETERNAL VOID</strong>
+          <em>End of all things</em>
+        </div>
+      </article>
     </div>
   </div>
-</div>
+</section>
 
-
-<div class="u-section reveal" id="zones" style="background:linear-gradient(180deg,#000 0%,#030010 50%,#000 100%);">
+<section class="u-section reveal" id="bosses">
   <div class="max-w">
-    <div class="u-eyebrow">&#9632; Void Vexon &mdash; The Journey</div>
-    <div class="u-title">10 Zones. 150 Levels.</div>
-    <div class="u-sub">A journey through dying space — from where it began to the heart of the wound itself.</div>
-    <div class="zones-grid">
-      <div class="zone-card" style="border-color:rgba(138,43,226,0.15);">
-        <div class="zone-color" style="background:linear-gradient(90deg,#8a2be2,#4b0082);"></div>
-        <div class="zone-num">Zone 01 &mdash; Levels 1-15</div>
-        <div class="zone-name">The Void</div>
-        <div class="zone-levels">The Kaelthar Belt</div>
-        <div class="zone-desc">Where it began. The asteroid field where the Prometheus made its fatal discovery. You are the last pilot. Everyone else is gone.</div>
-      </div>
-      <div class="zone-card">
-        <div class="zone-color" style="background:linear-gradient(90deg,#4169e1,#00008b);"></div>
-        <div class="zone-num">Zone 02 &mdash; Levels 16-30</div>
-        <div class="zone-name">Sentinel Station</div>
-        <div class="zone-levels">The Gate Network Hub</div>
-        <div class="zone-desc">The massive station that once coordinated all gate travel. Now it broadcasts Void frequency on all channels, converting ships remotely.</div>
-      </div>
-      <div class="zone-card">
-        <div class="zone-color" style="background:linear-gradient(90deg,#00ced1,#008b8b);"></div>
-        <div class="zone-num">Zone 03 &mdash; Levels 31-45</div>
-        <div class="zone-name">Comet Graveyard</div>
-        <div class="zone-levels">The Shattered Trails</div>
-        <div class="zone-desc">Comets caught in the initial Void wave, crystallized into massive drifting structures that refract Void Energy like prisms.</div>
-      </div>
-      <div class="zone-card">
-        <div class="zone-color" style="background:linear-gradient(90deg,#ff4500,#8b0000);"></div>
-        <div class="zone-num">Zone 04 &mdash; Levels 46-60</div>
-        <div class="zone-name">Molten Bastion</div>
-        <div class="zone-levels">The Forge Worlds</div>
-        <div class="zone-desc">Volcanic planets converted into Void Energy generators. The sky rains fire. The ground is lava. The Void armies march through unbothered.</div>
-      </div>
-      <div class="zone-card">
-        <div class="zone-color" style="background:linear-gradient(90deg,#9400d3,#2d0057);"></div>
-        <div class="zone-num">Zone 05 &mdash; Levels 61-75</div>
-        <div class="zone-name">Eldritch Void</div>
-        <div class="zone-levels">The Membrane</div>
-        <div class="zone-desc">The boundary between normal space and the void dimension becomes thin enough to see through. Reality warps. Physics becomes suggestions.</div>
-      </div>
-      <div class="zone-card">
-        <div class="zone-color" style="background:linear-gradient(90deg,#dc143c,#8b0000);"></div>
-        <div class="zone-num">Zone 06 &mdash; Levels 76-90</div>
-        <div class="zone-name">Crimson Warfront</div>
-        <div class="zone-levels">The Last Human Defense</div>
-        <div class="zone-desc">The GAF made their final stand here for three years. The battlefield is littered with thousands of ships — human and Void alike. Blood in space.</div>
-      </div>
-      <div class="zone-card">
-        <div class="zone-color" style="background:linear-gradient(90deg,#7b68ee,#483d8b);"></div>
-        <div class="zone-num">Zone 07 &mdash; Levels 91-105</div>
-        <div class="zone-name">Phase Rift</div>
-        <div class="zone-levels">The Quantum Maze</div>
-        <div class="zone-desc">A Void Gate overloaded and exploded in both dimensions simultaneously. The same location exists in six different states at once.</div>
-      </div>
-      <div class="zone-card">
-        <div class="zone-color" style="background:linear-gradient(90deg,#696969,#2f2f2f);"></div>
-        <div class="zone-num">Zone 08 &mdash; Levels 106-120</div>
-        <div class="zone-name">Ashen Cataclysm</div>
-        <div class="zone-levels">The Burned Worlds</div>
-        <div class="zone-desc">What remains of twelve human colonies after the Sovereign's initial purge. Gray ash. Dead stars. The cold silence of genocide.</div>
-      </div>
-      <div class="zone-card">
-        <div class="zone-color" style="background:linear-gradient(90deg,#4b0082,#1a0030);"></div>
-        <div class="zone-num">Zone 09 &mdash; Levels 121-135</div>
-        <div class="zone-name">Eternal Void</div>
-        <div class="zone-levels">The Sovereign's Realm</div>
-        <div class="zone-desc">Normal space barely exists here. Stars extinguished, replaced with crystalline void matter. The Sovereign's personal guard. The most ancient.</div>
-      </div>
-      <div class="zone-card" style="border-color:rgba(138,43,226,0.3);background:linear-gradient(135deg,#0a0020,#060010);">
-        <div class="zone-color" style="background:linear-gradient(90deg,#8a2be2,#ff00ff);"></div>
-        <div class="zone-num">Zone 10 &mdash; Levels 136-150</div>
-        <div class="zone-name">The Core</div>
-        <div class="zone-levels">Heart of the Wound</div>
-        <div class="zone-desc">The center of everything. The original tear. Here the pilot finally confronts the Void Sovereign directly. No stars. No planets. Just energy and the Sovereign.</div>
-      </div>
+    <div class="u-eyebrow">&#9632; 30 Warlords</div>
+    <div class="u-title">Boss Codex</div>
+    <div class="u-sub">Every fifth wave crowns a warlord. Their titles are warnings. Their enraged lines are last chances. The final name is Darkness.</div>
+    <div class="filters" id="boss-filters">
+      <button class="on" data-act="all">All Bosses</button>
+      <button data-act="a1">Act I</button>
+      <button data-act="a2">Act II</button>
+      <button data-act="a3">Act III · Darkness</button>
+    </div>
+    <div class="boss-grid" id="boss-grid">
+      <article class="boss-card" data-act="a1">
+        <div class="boss-rank">Warlord 01</div>
+        <h3 class="boss-name">DARK SENTINEL</h3>
+        <div class="boss-title">First guardian</div>
+        <div class="boss-meta">Zone · SENTINEL GATE · Waves 1–5</div>
+        <p class="boss-lore">Raised from gate-station defense AI, the Dark Sentinel was the first thing the Void taught to hate light. It does not chase. It blocks the road home.</p>
+        <blockquote class="boss-quote">“YOUR WEAPONS ARE USELESS AGAINST MY ARMOUR.”</blockquote>
+        <div class="boss-rage">Enraged · “ANNIHILATION MODE.”</div>
+      </article>
+      <article class="boss-card" data-act="a1">
+        <div class="boss-rank">Warlord 02</div>
+        <h3 class="boss-name">VOID PREDATOR</h3>
+        <div class="boss-title">Hunter of light</div>
+        <div class="boss-meta">Zone · PREDATOR EXPANSE · Waves 6–10</div>
+        <p class="boss-lore">Once a GAF hunt-pack commander. The bleaching kept the skill and deleted the mercy. Across galaxies, it learned one truth: light is prey.</p>
+        <blockquote class="boss-quote">“I HAVE HUNTED ACROSS GALAXIES. YOU ARE PREY.”</blockquote>
+        <div class="boss-rage">Enraged · “FASTER. I WILL CATCH YOU.”</div>
+      </article>
+      <article class="boss-card" data-act="a1">
+        <div class="boss-rank">Warlord 03</div>
+        <h3 class="boss-name">IRON COLOSSUS</h3>
+        <div class="boss-title">The iron wall</div>
+        <div class="boss-meta">Zone · IRON FOUNDRY · Waves 11–15</div>
+        <p class="boss-lore">A walking foundry wall. The Iron Colossus was built to hold lines that no longer exist. Its shell remembers every fleet that broke against it.</p>
+        <blockquote class="boss-quote">“NOTHING CAN BREAK MY IRON SHELL.”</blockquote>
+        <div class="boss-rage">Enraged · “CORE UNLOCKED. DIE.”</div>
+      </article>
+      <article class="boss-card" data-act="a1">
+        <div class="boss-rank">Warlord 04</div>
+        <h3 class="boss-name">NEBULA TYRANT</h3>
+        <div class="boss-title">Star crusher</div>
+        <div class="boss-meta">Zone · NEBULA THRONE · Waves 16–20</div>
+        <p class="boss-lore">A tyrant grown from nebula gas and royal arrogance. It crushes stars the way empires crush cities — slowly, for spectacle.</p>
+        <blockquote class="boss-quote">“YOUR LIGHT IS AN INSULT TO THE VOID.”</blockquote>
+        <div class="boss-rage">Enraged · “THE NEBULA DEVOURS ALL.”</div>
+      </article>
+      <article class="boss-card" data-act="a1">
+        <div class="boss-rank">Warlord 05</div>
+        <h3 class="boss-name">CRIMSON DREADNOUGHT</h3>
+        <div class="boss-title">Red death</div>
+        <div class="boss-meta">Zone · CRIMSON ARMADA · Waves 21–25</div>
+        <p class="boss-lore">Flagship of the Crimson Armada after the fleet turned. Its hull is painted in the blood of the pilots who once crewed it.</p>
+        <blockquote class="boss-quote">“PAINTED IN THE BLOOD OF A THOUSAND FLEETS.”</blockquote>
+        <div class="boss-rage">Enraged · “THE CRIMSON TIDE RISES.”</div>
+      </article>
+      <article class="boss-card" data-act="a1">
+        <div class="boss-rank">Warlord 06</div>
+        <h3 class="boss-name">CHRONO DEVOURER</h3>
+        <div class="boss-title">Eater of moments</div>
+        <div class="boss-meta">Zone · CHRONO RIFT · Waves 26–30</div>
+        <p class="boss-lore">It does not kill bodies first. It eats the seconds around them. Survivors age wrong. Clocks stop mid-tick.</p>
+        <blockquote class="boss-quote">“YOUR TIME IS MINE TO DEVOUR.”</blockquote>
+        <div class="boss-rage">Enraged · “TIME ENDS NOW.”</div>
+      </article>
+      <article class="boss-card" data-act="a1">
+        <div class="boss-rank">Warlord 07</div>
+        <h3 class="boss-name">CHAOS BEHEMOTH</h3>
+        <div class="boss-title">Living disaster</div>
+        <div class="boss-meta">Zone · CHAOS WASTES · Waves 31–35</div>
+        <p class="boss-lore">A disaster that learned to walk. Negotiation is a language Chaos never downloaded.</p>
+        <blockquote class="boss-quote">“CHAOS DOES NOT NEGOTIATE.”</blockquote>
+        <div class="boss-rage">Enraged · “FULL CHAOS MODE.”</div>
+      </article>
+      <article class="boss-card" data-act="a1">
+        <div class="boss-rank">Warlord 08</div>
+        <h3 class="boss-name">SOLAR DESTROYER</h3>
+        <div class="boss-title">Star-killer</div>
+        <div class="boss-meta">Zone · SOLAR CROWN · Waves 36–40</div>
+        <p class="boss-lore">Older than Sol. The Solar Destroyer remembers when your sun was dust — and intends to return it there.</p>
+        <blockquote class="boss-quote">“I AM OLDER THAN YOUR SUN.”</blockquote>
+        <div class="boss-rage">Enraged · “GOING NOVA.”</div>
+      </article>
+      <article class="boss-card" data-act="a1">
+        <div class="boss-rank">Warlord 09</div>
+        <h3 class="boss-name">SHADOW LEVIATHAN</h3>
+        <div class="boss-title">Deep darkness</div>
+        <div class="boss-meta">Zone · SHADOW DEPTHS · Waves 41–45</div>
+        <p class="boss-lore">A serpent of the deep dark. Pressure is its kingdom. Mercy is a surface myth.</p>
+        <blockquote class="boss-quote">“THE DEEP HAS NO MERCY.”</blockquote>
+        <div class="boss-rage">Enraged · “CRUSHING DEPTH.”</div>
+      </article>
+      <article class="boss-card" data-act="a1">
+        <div class="boss-rank">Warlord 10</div>
+        <h3 class="boss-name">ENTROPY ENGINE</h3>
+        <div class="boss-title">Heat death</div>
+        <div class="boss-meta">Zone · ENTROPY FORGE · Waves 46–50</div>
+        <p class="boss-lore">Entropy given engines. It does not rage. It processes. Everything ends on schedule.</p>
+        <blockquote class="boss-quote">“ENTROPY ALWAYS WINS.”</blockquote>
+        <div class="boss-rage">Enraged · “DISSOLUTION COMMENCING.”</div>
+      </article>
+      <article class="boss-card" data-act="a2">
+        <div class="boss-rank">Warlord 11</div>
+        <h3 class="boss-name">SCRAP WYRM</h3>
+        <div class="boss-title">Junkyard devourer</div>
+        <div class="boss-meta">Zone · SCRAP NEST · Waves 51–55</div>
+        <p class="boss-lore">Forged from the bones of GAF destroyers. Every plate is a name you used to salute.</p>
+        <blockquote class="boss-quote">“I AM FORGED FROM YOUR FALLEN FLEETS.”</blockquote>
+        <div class="boss-rage">Enraged · “FURNACE CORE: OVERDRIVE.”</div>
+      </article>
+      <article class="boss-card" data-act="a2">
+        <div class="boss-rank">Warlord 12</div>
+        <h3 class="boss-name">NULL SOVEREIGN</h3>
+        <div class="boss-title">Lord of nothing</div>
+        <div class="boss-meta">Zone · NULL DOMAIN · Waves 56–60</div>
+        <p class="boss-lore">Lord of a domain where existence is optional. The Null Sovereign files life as clutter.</p>
+        <blockquote class="boss-quote">“NOTHING EXISTS IN MY DOMAIN.”</blockquote>
+        <div class="boss-rage">Enraged · “SOVEREIGN COMMAND: ERASE.”</div>
+      </article>
+      <article class="boss-card" data-act="a2">
+        <div class="boss-rank">Warlord 13</div>
+        <h3 class="boss-name">ABYSS COLOSSUS</h3>
+        <div class="boss-title">Depth incarnate</div>
+        <div class="boss-meta">Zone · ABYSSAL REACH · Waves 61–65</div>
+        <p class="boss-lore">Depth incarnate. The Abyss Colossus does not rise to meet you — you fall until you find it.</p>
+        <blockquote class="boss-quote">“THE ABYSS IS MY HOME.”</blockquote>
+        <div class="boss-rage">Enraged · “ABYSSAL COLLAPSE.”</div>
+      </article>
+      <article class="boss-card" data-act="a2">
+        <div class="boss-rank">Warlord 14</div>
+        <h3 class="boss-name">GALACTIC WRAITH</h3>
+        <div class="boss-title">Galaxy ghost</div>
+        <div class="boss-meta">Zone · GHOST GALAXY · Waves 66–70</div>
+        <p class="boss-lore">A ghost stitched from dead galaxies. Its light is already gone; only the outline remains, hunting.</p>
+        <blockquote class="boss-quote">“I AM THE GHOST OF DEAD GALAXIES.”</blockquote>
+        <div class="boss-rage">Enraged · “NOWHERE TO HIDE.”</div>
+      </article>
+      <article class="boss-card" data-act="a2">
+        <div class="boss-rank">Warlord 15</div>
+        <h3 class="boss-name">VOID EMPEROR</h3>
+        <div class="boss-title">Rules the void</div>
+        <div class="boss-meta">Zone · VOID EMPIRE · Waves 71–75</div>
+        <p class="boss-lore">Emperor of the between. Realities are provinces. Your universe is late on tribute.</p>
+        <blockquote class="boss-quote">“I RULE THE VOID BETWEEN REALITIES.”</blockquote>
+        <div class="boss-rage">Enraged · “DECREE: ANNIHILATE.”</div>
+      </article>
+      <article class="boss-card" data-act="a2">
+        <div class="boss-rank">Warlord 16</div>
+        <h3 class="boss-name">DARK MATTER TITAN</h3>
+        <div class="boss-title">Antimatter core</div>
+        <div class="boss-meta">Zone · DARK MATTER CORE · Waves 76–80</div>
+        <p class="boss-lore">A titan pressed from dark matter. When its core speaks, atoms resign.</p>
+        <blockquote class="boss-quote">“BUILT FROM COMPRESSED DARK MATTER.”</blockquote>
+        <div class="boss-rage">Enraged · “CORE DETONATING.”</div>
+      </article>
+      <article class="boss-card" data-act="a2">
+        <div class="boss-rank">Warlord 17</div>
+        <h3 class="boss-name">HELIOS TYRANT</h3>
+        <div class="boss-title">The burning crown</div>
+        <div class="boss-meta">Zone · HELIOS COURT · Waves 81–85</div>
+        <p class="boss-lore">The burning crown of Helios Court. Fire that once birthed stars now sentences them.</p>
+        <blockquote class="boss-quote">“I AM THE FIRE THAT BIRTHED YOUR STARS.”</blockquote>
+        <div class="boss-rage">Enraged · “THE CROWN BURNS HOTTER!”</div>
+      </article>
+      <article class="boss-card" data-act="a2">
+        <div class="boss-rank">Warlord 18</div>
+        <h3 class="boss-name">COSMIC ANNIHILATOR</h3>
+        <div class="boss-title">Universe-ender</div>
+        <div class="boss-meta">Zone · COSMIC RUIN · Waves 86–90</div>
+        <p class="boss-lore">A counter of ended worlds. Your planet is already in its ledger, pending.</p>
+        <blockquote class="boss-quote">“I HAVE ENDED MORE WORLDS THAN YOU CAN COUNT.”</blockquote>
+        <div class="boss-rage">Enraged · “PROTOCOL: ENGAGE.”</div>
+      </article>
+      <article class="boss-card" data-act="a2">
+        <div class="boss-rank">Warlord 19</div>
+        <h3 class="boss-name">OMEGA DESTROYER</h3>
+        <div class="boss-title">Omega force</div>
+        <div class="boss-meta">Zone · OMEGA FIELD · Waves 91–95</div>
+        <p class="boss-lore">Omega — the last letter. When it arrives, alphabets of hope run out of symbols.</p>
+        <blockquote class="boss-quote">“OMEGA IS THE LAST LETTER.”</blockquote>
+        <div class="boss-rage">Enraged · “FINAL FORM.”</div>
+      </article>
+      <article class="boss-card" data-act="a2">
+        <div class="boss-rank">Warlord 20</div>
+        <h3 class="boss-name">VOID NEXUS</h3>
+        <div class="boss-title">Void convergence</div>
+        <div class="boss-meta">Zone · VOID NEXUS · Waves 96–100</div>
+        <p class="boss-lore">Convergence given will. Light ends here not by accident, but by appointment.</p>
+        <blockquote class="boss-quote">“I AM WHERE LIGHT DIES.”</blockquote>
+        <div class="boss-rage">Enraged · “CONSUMING.”</div>
+      </article>
+      <article class="boss-card" data-act="a3">
+        <div class="boss-rank">Warlord 21</div>
+        <h3 class="boss-name">SOUL COLOSSUS</h3>
+        <div class="boss-title">Harvester of souls</div>
+        <div class="boss-meta">Zone · SOUL HARVEST · Waves 101–105</div>
+        <p class="boss-lore">Harvester of what pilots call soul. Fuel for wars that outlive bodies.</p>
+        <blockquote class="boss-quote">“YOUR SOUL IS ALREADY MINE.”</blockquote>
+        <div class="boss-rage">Enraged · “HARVEST INITIATED.”</div>
+      </article>
+      <article class="boss-card" data-act="a3">
+        <div class="boss-rank">Warlord 22</div>
+        <h3 class="boss-name">ECLIPSE DREAD</h3>
+        <div class="boss-title">Darkness made flesh</div>
+        <div class="boss-meta">Zone · ECLIPSE VEIL · Waves 106–110</div>
+        <p class="boss-lore">Darkness made flesh. Eclipse Dread does not cast shadow — it is the shadow that learned to bite.</p>
+        <blockquote class="boss-quote">“I FEED ON DARKNESS ITSELF.”</blockquote>
+        <div class="boss-rage">Enraged · “NO DAWN FOLLOWS.”</div>
+      </article>
+      <article class="boss-card" data-act="a3">
+        <div class="boss-rank">Warlord 23</div>
+        <h3 class="boss-name">ENTROPY WRAITH</h3>
+        <div class="boss-title">Decay incarnate</div>
+        <div class="boss-meta">Zone · DECAY MARSH · Waves 111–115</div>
+        <p class="boss-lore">Decay wearing a face. Gifts of rust, silence, and unfinished last words.</p>
+        <blockquote class="boss-quote">“DECAY IS MY GIFT TO YOU.”</blockquote>
+        <div class="boss-rage">Enraged · “DISINTEGRATE.”</div>
+      </article>
+      <article class="boss-card" data-act="a3">
+        <div class="boss-rank">Warlord 24</div>
+        <h3 class="boss-name">PLASMA SOVEREIGN</h3>
+        <div class="boss-title">Living plasma star</div>
+        <div class="boss-meta">Zone · PLASMA SEA · Waves 116–120</div>
+        <p class="boss-lore">A living plasma star. Everything it touches becomes fuel for a brighter, crueler fire.</p>
+        <blockquote class="boss-quote">“I AM LIVING PLASMA.”</blockquote>
+        <div class="boss-rage">Enraged · “EVERYTHING BURNS.”</div>
+      </article>
+      <article class="boss-card" data-act="a3">
+        <div class="boss-rank">Warlord 25</div>
+        <h3 class="boss-name">ABYSSAL OVERLORD</h3>
+        <div class="boss-title">Commands the abyss</div>
+        <div class="boss-meta">Zone · ABYSSAL THRONE · Waves 121–125</div>
+        <p class="boss-lore">Commander of the floorless deep. The Abyssal Overlord does not sit a throne — it is the drop.</p>
+        <blockquote class="boss-quote">“THE ABYSS HAS NO FLOOR.”</blockquote>
+        <div class="boss-rage">Enraged · “CONSUME ALL.”</div>
+      </article>
+      <article class="boss-card" data-act="a3">
+        <div class="boss-rank">Warlord 26</div>
+        <h3 class="boss-name">VOID TITAN PRIME</h3>
+        <div class="boss-title">Original destroyer</div>
+        <div class="boss-meta">Zone · PRIME VOID · Waves 126–130</div>
+        <p class="boss-lore">The original destroyer. Present before the first star. Patient enough to wait for the last.</p>
+        <blockquote class="boss-quote">“I WAS HERE BEFORE THE FIRST STAR.”</blockquote>
+        <div class="boss-rage">Enraged · “REALITY ENDS.”</div>
+      </article>
+      <article class="boss-card" data-act="a3">
+        <div class="boss-rank">Warlord 27</div>
+        <h3 class="boss-name">COSMIC DREAD-GOD</h3>
+        <div class="boss-title">Fear incarnate</div>
+        <div class="boss-meta">Zone · DREAD REALM · Waves 131–135</div>
+        <p class="boss-lore">Fear incarnate. Your dread is not a side effect — it is its ammunition.</p>
+        <blockquote class="boss-quote">“YOUR DREAD GIVES ME STRENGTH.”</blockquote>
+        <div class="boss-rage">Enraged · “BOW OR BURN.”</div>
+      </article>
+      <article class="boss-card" data-act="a3">
+        <div class="boss-rank">Warlord 28</div>
+        <h3 class="boss-name">SINGULARITY LORD</h3>
+        <div class="boss-title">Black hole body</div>
+        <div class="boss-meta">Zone · SINGULARITY WELL · Waves 136–140</div>
+        <p class="boss-lore">A body of black-hole weight. Infinity folded into a single, hungry silhouette.</p>
+        <blockquote class="boss-quote">“I AM THE WEIGHT OF INFINITE NOTHING.”</blockquote>
+        <div class="boss-rage">Enraged · “COLLAPSE IMMINENT.”</div>
+      </article>
+      <article class="boss-card" data-act="a3">
+        <div class="boss-rank">Warlord 29</div>
+        <h3 class="boss-name">UNIVERSAL REAPER</h3>
+        <div class="boss-title">Death of universes</div>
+        <div class="boss-meta">Zone · REAPER NIGHT · Waves 141–145</div>
+        <p class="boss-lore">Death of universes previous. This war is not its first harvest. It is barely a warm-up.</p>
+        <blockquote class="boss-quote">“I HAVE REAPED EVERY UNIVERSE BEFORE THIS.”</blockquote>
+        <div class="boss-rage">Enraged · “REAPING COMMENCES.”</div>
+      </article>
+      <article class="boss-card final" data-act="a3">
+        <div class="boss-rank">FINAL BOSS</div>
+        <h3 class="boss-name">THE ETERNAL VOID</h3>
+        <div class="boss-title">End of all things</div>
+        <div class="boss-meta">Zone · THE LAST LIGHT · Waves 146–150</div>
+        <p class="boss-lore">The Darkness. Before the beginning. After the end. The Eternal Void is not a warlord — it is the wound that learned to speak. Season One ends when it falls. Season Two begins because it was only the herald.</p>
+        <blockquote class="boss-quote">“I AM BEFORE THE BEGINNING AND AFTER THE END.”</blockquote>
+        <div class="boss-rage">Enraged · “THERE IS NO VICTORY. ONLY THE VOID.”</div>
+      </article>
     </div>
   </div>
-</div>
+</section>
 
-
-<div class="u-section reveal" id="ships">
+<section class="u-section reveal" id="enemies" style="background:linear-gradient(180deg,#000 0%,#030010 50%,#000 100%);">
   <div class="max-w">
-    <div class="u-eyebrow">&#9632; Void Vexon &mdash; Arsenal</div>
-    <div class="u-title">The Four Ships</div>
-    <div class="u-sub">Each ship has a history. Each one was found somewhere in the wreckage of a dying galaxy.</div>
-    <div class="ships-grid">
-      <div class="ship-card">
-        <div class="ship-visual" style="background:linear-gradient(135deg,#050010,#0a0020);">&#128640;</div>
-        <div class="ship-body">
-          <div class="ship-class">&#9632; Standard Class</div>
-          <div class="ship-name">Void Fighter</div>
-          <div class="ship-designation">GAF-7 Sentinel</div>
-          <div class="ship-story">Kael's original ship. 40 years in service. Reliable, proven, unremarkable. The systems failure that saved Kael's life — caused by the Sovereign — happened here. He's never been able to decide if he loves it or hates it for that.</div>
+    <div class="u-eyebrow">&#9632; Enemy Codex</div>
+    <div class="u-title">What Hunts the Last Ship</div>
+    <div class="u-sub">Frontline swarms become mid-war horrors, then apex engines — until wave 101, when the Dark Army takes the field.</div>
+    <div class="filters" id="enemy-filters">
+      <button class="on" data-cat="all">All</button>
+      <button data-cat="front">Frontline</button>
+      <button data-cat="mid">Mid-War</button>
+      <button data-cat="apex">Apex</button>
+      <button data-cat="dark">Dark Army</button>
+    </div>
+    <div class="enemy-grid" id="enemy-grid">
+      <article class="enemy-card" data-cat="front">
+        <div class="enemy-swatch" style="background:#ff5530;box-shadow:0 0 24px #ff553066"></div>
+        <div class="enemy-meta">
+          <div class="enemy-tag">Frontline</div>
+          <div class="enemy-wave">From Wave 1</div>
         </div>
-      </div>
-      <div class="ship-card">
-        <div class="ship-visual" style="background:linear-gradient(135deg,#001520,#000a10);">&#9993;&#65039;</div>
-        <div class="ship-body">
-          <div class="ship-class">&#9632; Speed Class</div>
-          <div class="ship-name">Nova Interceptor</div>
-          <div class="ship-designation">GAF-X Phantom Strike</div>
-          <div class="ship-story">Only 12 built. The fastest human-made craft ever produced. Found drifting in Sentinel Station, its pilot converted to a Crystal Predator. Every time Kael pushes the engines to full, he thinks about the pilot who used to sit where he's sitting.</div>
+        <h3 class="enemy-name">ASSAULT DRONE</h3>
+        <p class="enemy-lore">Mass-produced shock craft. Cheap, fast, endless — the tide that makes heroes look small.</p>
+        
+      </article>
+      <article class="enemy-card" data-cat="front">
+        <div class="enemy-swatch" style="background:#c060ff;box-shadow:0 0 24px #c060ff66"></div>
+        <div class="enemy-meta">
+          <div class="enemy-tag">Frontline</div>
+          <div class="enemy-wave">From Wave 1</div>
         </div>
-      </div>
-      <div class="ship-card">
-        <div class="ship-visual" style="background:linear-gradient(135deg,#150500,#0a0200);">&#128308;</div>
-        <div class="ship-body">
-          <div class="ship-class">&#9632; Power Class</div>
-          <div class="ship-name">Dread Destroyer</div>
-          <div class="ship-designation">GAF-Omega Annihilator</div>
-          <div class="ship-story">Heavy assault ship designed to punch through Void shielding. Recovered from the Crimson Warfront debris field. Three days to get it operational. It runs hot. It runs loud. It's built for one thing. Kael calls it "the hammer."</div>
+        <h3 class="enemy-name">CRYSTAL PREDATOR</h3>
+        <p class="enemy-lore">Crystal hunters with stolen GAF tactics. Partial bleaching kept their aim and erased their names.</p>
+        
+      </article>
+      <article class="enemy-card" data-cat="front">
+        <div class="enemy-swatch" style="background:#3dff8a;box-shadow:0 0 24px #3dff8a66"></div>
+        <div class="enemy-meta">
+          <div class="enemy-tag">Frontline</div>
+          <div class="enemy-wave">From Wave 1</div>
         </div>
-      </div>
-      <div class="ship-card" style="border-color:rgba(138,43,226,0.2);">
-        <div class="ship-visual" style="background:linear-gradient(135deg,#0a0020,#050010);">&#9889;</div>
-        <div class="ship-body">
-          <div class="ship-class">&#9632; Stealth Class</div>
-          <div class="ship-name">Phantom Elite</div>
-          <div class="ship-designation">Void-Walker Mk.I</div>
-          <div class="ship-story">The only ship built using recovered Void technology. Partially corrupted but somehow stabilized. It shouldn't work. GAF scientists said it was impossible. Kael flies it anyway. Sometimes it whispers to him through the instruments. He's stopped trying to figure out what it's saying.</div>
+        <h3 class="enemy-name">SPEEDER HORNET</h3>
+        <p class="enemy-lore">Quantum-hornet skirmishers. Erratic paths burn into pilot vision long after the fight.</p>
+        
+      </article>
+      <article class="enemy-card" data-cat="front">
+        <div class="enemy-swatch" style="background:#3ecbff;box-shadow:0 0 24px #3ecbff66"></div>
+        <div class="enemy-meta">
+          <div class="enemy-tag">Frontline</div>
+          <div class="enemy-wave">From Wave 1</div>
         </div>
-      </div>
+        <h3 class="enemy-name">HEX GOLEM</h3>
+        <p class="enemy-lore">Hex-shell guardians from the earliest gate stations. Nearly impenetrable — until they are not.</p>
+        
+      </article>
+      <article class="enemy-card" data-cat="front">
+        <div class="enemy-swatch" style="background:#e060ff;box-shadow:0 0 24px #e060ff66"></div>
+        <div class="enemy-meta">
+          <div class="enemy-tag">Frontline</div>
+          <div class="enemy-wave">From Wave 7</div>
+        </div>
+        <h3 class="enemy-name">PHASE WRAITH</h3>
+        <p class="enemy-lore">Phase-skimmers that slip between frames of reality. Half here. Half hunting.</p>
+        
+      </article>
+      <article class="enemy-card" data-cat="front">
+        <div class="enemy-swatch" style="background:#ff7a2a;box-shadow:0 0 24px #ff7a2a66"></div>
+        <div class="enemy-meta">
+          <div class="enemy-tag">Frontline</div>
+          <div class="enemy-wave">From Wave 13</div>
+        </div>
+        <h3 class="enemy-name">IRON TITAN</h3>
+        <p class="enemy-lore">Iron siege-frames. Slow to arrive. Impossible to ignore.</p>
+        
+      </article>
+      <article class="enemy-card" data-cat="front">
+        <div class="enemy-swatch" style="background:#5dffd0;box-shadow:0 0 24px #5dffd066"></div>
+        <div class="enemy-meta">
+          <div class="enemy-tag">Frontline</div>
+          <div class="enemy-wave">From Wave 19</div>
+        </div>
+        <h3 class="enemy-name">PHANTOM CLOAKER</h3>
+        <p class="enemy-lore">Cloaked stalkers. You feel them before instruments admit they exist.</p>
+        
+      </article>
+      <article class="enemy-card" data-cat="mid">
+        <div class="enemy-swatch" style="background:#ff3d8a;box-shadow:0 0 24px #ff3d8a66"></div>
+        <div class="enemy-meta">
+          <div class="enemy-tag">Mid-War</div>
+          <div class="enemy-wave">From Wave 25</div>
+        </div>
+        <h3 class="enemy-name">VOID DEVOURER</h3>
+        <p class="enemy-lore">Maw-ships that eat hull and hope in the same bite.</p>
+        
+      </article>
+      <article class="enemy-card" data-cat="mid">
+        <div class="enemy-swatch" style="background:#3aa0ff;box-shadow:0 0 24px #3aa0ff66"></div>
+        <div class="enemy-meta">
+          <div class="enemy-tag">Mid-War</div>
+          <div class="enemy-wave">From Wave 31</div>
+        </div>
+        <h3 class="enemy-name">SPACE LEVIATHAN</h3>
+        <p class="enemy-lore">Space-rays large enough to cast continents in shadow.</p>
+        
+      </article>
+      <article class="enemy-card" data-cat="mid">
+        <div class="enemy-swatch" style="background:#b6ff3a;box-shadow:0 0 24px #b6ff3a66"></div>
+        <div class="enemy-meta">
+          <div class="enemy-tag">Mid-War</div>
+          <div class="enemy-wave">From Wave 37</div>
+        </div>
+        <h3 class="enemy-name">NECRON MACHINE</h3>
+        <p class="enemy-lore">War-machines that outlived their makers — and their makers' mercy.</p>
+        
+      </article>
+      <article class="enemy-card" data-cat="mid">
+        <div class="enemy-swatch" style="background:#ff5a1f;box-shadow:0 0 24px #ff5a1f66"></div>
+        <div class="enemy-meta">
+          <div class="enemy-tag">Mid-War</div>
+          <div class="enemy-wave">From Wave 43</div>
+        </div>
+        <h3 class="enemy-name">LAVA BEHEMOTH</h3>
+        <p class="enemy-lore">Lava-spiked brutes from forge worlds. Heat that hates you personally.</p>
+        
+      </article>
+      <article class="enemy-card" data-cat="mid">
+        <div class="enemy-swatch" style="background:#d9dcff;box-shadow:0 0 24px #d9dcff66"></div>
+        <div class="enemy-meta">
+          <div class="enemy-tag">Mid-War</div>
+          <div class="enemy-wave">From Wave 49</div>
+        </div>
+        <h3 class="enemy-name">RIFT SPECTER</h3>
+        <p class="enemy-lore">Rift-ghosts. Soft edges. Hard deaths.</p>
+        
+      </article>
+      <article class="enemy-card" data-cat="mid">
+        <div class="enemy-swatch" style="background:#b6ff4a;box-shadow:0 0 24px #b6ff4a66"></div>
+        <div class="enemy-meta">
+          <div class="enemy-tag">Mid-War</div>
+          <div class="enemy-wave">From Wave 55</div>
+        </div>
+        <h3 class="enemy-name">BIO CORRUPTOR</h3>
+        <p class="enemy-lore">Bio-weapons that rewrite allies into enemies mid-fight.</p>
+        
+      </article>
+      <article class="enemy-card" data-cat="mid">
+        <div class="enemy-swatch" style="background:#8a4dff;box-shadow:0 0 24px #8a4dff66"></div>
+        <div class="enemy-meta">
+          <div class="enemy-tag">Mid-War</div>
+          <div class="enemy-wave">From Wave 61</div>
+        </div>
+        <h3 class="enemy-name">VOID STALKER</h3>
+        <p class="enemy-lore">Hunters bred for the deep dark. They prefer the last ship in a formation.</p>
+        
+      </article>
+      <article class="enemy-card" data-cat="mid">
+        <div class="enemy-swatch" style="background:#ff2d2d;box-shadow:0 0 24px #ff2d2d66"></div>
+        <div class="enemy-meta">
+          <div class="enemy-tag">Mid-War</div>
+          <div class="enemy-wave">From Wave 67</div>
+        </div>
+        <h3 class="enemy-name">ANNIHILATOR</h3>
+        <p class="enemy-lore">Cross-framed kill engines. Built for endings, not battles.</p>
+        
+      </article>
+      <article class="enemy-card" data-cat="mid">
+        <div class="enemy-swatch" style="background:#ffd15a;box-shadow:0 0 24px #ffd15a66"></div>
+        <div class="enemy-meta">
+          <div class="enemy-tag">Mid-War</div>
+          <div class="enemy-wave">From Wave 73</div>
+        </div>
+        <h3 class="enemy-name">OMEGA REAPER</h3>
+        <p class="enemy-lore">Golden executioners. When they arrive, the wave has already decided your fate.</p>
+        
+      </article>
+      <article class="enemy-card" data-cat="apex">
+        <div class="enemy-swatch" style="background:#49d6ff;box-shadow:0 0 24px #49d6ff66"></div>
+        <div class="enemy-meta">
+          <div class="enemy-tag">Apex</div>
+          <div class="enemy-wave">From Wave 76</div>
+        </div>
+        <h3 class="enemy-name">VOID TITAN</h3>
+        <p class="enemy-lore">Apex siege-forms. Twenty hulls of void-iron wearing one will.</p>
+        
+      </article>
+      <article class="enemy-card" data-cat="apex">
+        <div class="enemy-swatch" style="background:#d9a6ff;box-shadow:0 0 24px #d9a6ff66"></div>
+        <div class="enemy-meta">
+          <div class="enemy-tag">Apex</div>
+          <div class="enemy-wave">From Wave 81</div>
+        </div>
+        <h3 class="enemy-name">DEATH ANGEL</h3>
+        <p class="enemy-lore">Beautiful and terminal. Wings that preach extinction.</p>
+        
+      </article>
+      <article class="enemy-card" data-cat="apex">
+        <div class="enemy-swatch" style="background:#f4f7ff;box-shadow:0 0 24px #f4f7ff66"></div>
+        <div class="enemy-meta">
+          <div class="enemy-tag">Apex</div>
+          <div class="enemy-wave">From Wave 86</div>
+        </div>
+        <h3 class="enemy-name">THE TERMINUS</h3>
+        <p class="enemy-lore">Reality-warping eldritch engines. Nine eyes. One maw. The Ω that should not fly.</p>
+        
+      </article>
+      <article class="enemy-card" data-cat="dark">
+        <div class="enemy-swatch" style="background:#b14dff;box-shadow:0 0 24px #b14dff66"></div>
+        <div class="enemy-meta">
+          <div class="enemy-tag">Dark Army</div>
+          <div class="enemy-wave">From Wave 101</div>
+        </div>
+        <h3 class="enemy-name">HEX WEAVER</h3>
+        <p class="enemy-lore">Dark weavers that aim where you are going, not where you are.</p>
+        <div class="enemy-tip">Charges up and aims where you are heading</div>
+      </article>
+      <article class="enemy-card" data-cat="dark">
+        <div class="enemy-swatch" style="background:#ff2a55;box-shadow:0 0 24px #ff2a5566"></div>
+        <div class="enemy-meta">
+          <div class="enemy-tag">Dark Army</div>
+          <div class="enemy-wave">From Wave 101</div>
+        </div>
+        <h3 class="enemy-name">SHADE WRAITH</h3>
+        <p class="enemy-lore">Vanishing claw-wraiths. Watch for the glinting eyes — then it is already too late.</p>
+        <div class="enemy-tip">Dodges your shots · vanishes, stalks closer and rakes with its claws · watch for the glinting eyes</div>
+      </article>
+      <article class="enemy-card" data-cat="dark">
+        <div class="enemy-swatch" style="background:#4d7dff;box-shadow:0 0 24px #4d7dff66"></div>
+        <div class="enemy-meta">
+          <div class="enemy-tag">Dark Army</div>
+          <div class="enemy-wave">From Wave 106</div>
+        </div>
+        <h3 class="enemy-name">ABYSS WARDEN</h3>
+        <p class="enemy-lore">Bubble-shield shepherds. Break the wards or die to the flock.</p>
+        <div class="enemy-tip">Shields nearby allies · break the bubbles first</div>
+      </article>
+      <article class="enemy-card" data-cat="dark">
+        <div class="enemy-swatch" style="background:#00e5ff;box-shadow:0 0 24px #00e5ff66"></div>
+        <div class="enemy-meta">
+          <div class="enemy-tag">Dark Army</div>
+          <div class="enemy-wave">From Wave 111</div>
+        </div>
+        <h3 class="enemy-name">RIFT STALKER</h3>
+        <p class="enemy-lore">Rift-jumpers that revive the fallen. Priority target. Always.</p>
+        <div class="enemy-tip">Blinks in close and fires a spread · tears open rifts to bring fallen allies back · take it out first</div>
+      </article>
+      <article class="enemy-card" data-cat="dark">
+        <div class="enemy-swatch" style="background:#9dff2a;box-shadow:0 0 24px #9dff2a66"></div>
+        <div class="enemy-meta">
+          <div class="enemy-tag">Dark Army</div>
+          <div class="enemy-wave">From Wave 116</div>
+        </div>
+        <h3 class="enemy-name">PLAGUE SOWER</h3>
+        <p class="enemy-lore">Plague gardeners. Pods bloom into shards and toxic weather.</p>
+        <div class="enemy-tip">Sows plague seeds that root into pods and bloom into shards and toxic clouds · shoot the pods down before they burst</div>
+      </article>
+      <article class="enemy-card" data-cat="dark">
+        <div class="enemy-swatch" style="background:#ff3b1f;box-shadow:0 0 24px #ff3b1f66"></div>
+        <div class="enemy-meta">
+          <div class="enemy-tag">Dark Army</div>
+          <div class="enemy-wave">From Wave 121</div>
+        </div>
+        <h3 class="enemy-name">DOOM LANCER</h3>
+        <p class="enemy-lore">Horned executioners. Leave the crimson kill-line or become it.</p>
+        <div class="enemy-tip">Horned executioner · leave the crimson kill-line</div>
+      </article>
+      <article class="enemy-card" data-cat="dark">
+        <div class="enemy-swatch" style="background:#e0457b;box-shadow:0 0 24px #e0457b66"></div>
+        <div class="enemy-meta">
+          <div class="enemy-tag">Dark Army</div>
+          <div class="enemy-wave">From Wave 126</div>
+        </div>
+        <h3 class="enemy-name">BROOD MOTHER</h3>
+        <p class="enemy-lore">Mother of diving broodlings. Kill the eggs. She births twins in death.</p>
+        <div class="enemy-tip">Spits incubating eggs that hatch into diving broodlings · shoot the eggs · she still births twins when she dies</div>
+      </article>
+      <article class="enemy-card" data-cat="dark">
+        <div class="enemy-swatch" style="background:#c9b6ff;box-shadow:0 0 24px #c9b6ff66"></div>
+        <div class="enemy-meta">
+          <div class="enemy-tag">Dark Army</div>
+          <div class="enemy-wave">From Wave 131</div>
+        </div>
+        <h3 class="enemy-name">VEIL PHANTOM</h3>
+        <p class="enemy-lore">Phantoms that fade from reality. Strike while the veil thins.</p>
+        <div class="enemy-tip">Fades out of reality · hit it while visible</div>
+      </article>
+      <article class="enemy-card" data-cat="dark">
+        <div class="enemy-swatch" style="background:#3dffb0;box-shadow:0 0 24px #3dffb066"></div>
+        <div class="enemy-meta">
+          <div class="enemy-tag">Dark Army</div>
+          <div class="enemy-wave">From Wave 136</div>
+        </div>
+        <h3 class="enemy-name">SOUL LEECH</h3>
+        <p class="enemy-lore">Healers of the dark army. Cut the leech or fight forever.</p>
+        <div class="enemy-tip">Heals wounded allies · take it out first</div>
+      </article>
+      <article class="enemy-card" data-cat="dark">
+        <div class="enemy-swatch" style="background:#ff1a1a;box-shadow:0 0 24px #ff1a1a66"></div>
+        <div class="enemy-meta">
+          <div class="enemy-tag">Dark Army</div>
+          <div class="enemy-wave">From Wave 141</div>
+        </div>
+        <h3 class="enemy-name">DREAD HERALD</h3>
+        <p class="enemy-lore">Dread announcers. Seeking soul-skulls carry their sermon.</p>
+        <div class="enemy-tip">Summons seeking soul skulls</div>
+      </article>
     </div>
   </div>
-</div>
+</section>
 
-
-<div class="u-section reveal" id="deeplore" style="background:linear-gradient(180deg,#000 0%,#030010 50%,#000 100%);">
+<section class="u-section reveal" id="final">
   <div class="max-w">
-    <div class="u-eyebrow">&#9632; Void Vexon &mdash; Classified Files</div>
+    <div class="final-card">
+      <div class="final-kicker">WAVE 150 · ZONE 30 · THE LAST LIGHT</div>
+      <h3>THE ETERNAL VOID</h3>
+      <div class="final-sub">Final Boss · Darkness · End of Season One</div>
+      <p>The Darkness. Before the beginning. After the end. The Eternal Void is not a warlord — it is the wound that learned to speak. Season One ends when it falls. Season Two begins because it was only the herald.</p>
+      <p>Before the beginning. After the end. It does not wage war for territory — territory is a surface idea. It unmakes. When Commander Vael Rhynn finally breaks it, stars rekindle… and its dying scream travels outward as a signal to whatever it was guarding against.</p>
+      <p>Season One ends in silence. Season Two begins with four words from the other side of the door:</p>
+      <blockquote>“The herald has fallen.<br>The door is open.<br>We are coming.”</blockquote>
+    </div>
+  </div>
+</section>
+
+<section class="u-section reveal" id="ships" style="background:linear-gradient(180deg,#000 0%,#030010 50%,#000 100%);">
+  <div class="max-w">
+    <div class="u-eyebrow">&#9632; Arsenal</div>
+    <div class="u-title">Ships of the Last War</div>
+    <div class="u-sub">Four hulls. Four ways to refuse extinction.</div>
+    <div class="ship-grid">
+      <article class="ship-card">
+        <div class="ship-price">Starter</div>
+        <h3 class="ship-name">VOID FIGHTER</h3>
+        <div class="ship-weapon">Standard cannon</div>
+        <p class="ship-blurb">Balanced fighter. Center lance plus wing guns. Wider spread from wave 10.</p>
+      </article>
+      <article class="ship-card">
+        <div class="ship-price">500 SC</div>
+        <h3 class="ship-name">NOVA INTERCEPTOR</h3>
+        <div class="ship-weapon">Dual plasma</div>
+        <p class="ship-blurb">Fast hull, twin plasma lances that burn through light craft.</p>
+      </article>
+      <article class="ship-card">
+        <div class="ship-price">1,200 SC</div>
+        <h3 class="ship-name">DREAD DESTROYER</h3>
+        <div class="ship-weapon">Void cannon</div>
+        <p class="ship-blurb">Heavy and brutal. Three heavy void orbs crush anything they hit.</p>
+      </article>
+      <article class="ship-card">
+        <div class="ship-price">2,500 SC</div>
+        <h3 class="ship-name">PHANTOM ELITE</h3>
+        <div class="ship-weapon">Quantum beam</div>
+        <p class="ship-blurb">Gold beams that pierce a line of enemies.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="u-section reveal" id="deeplore">
+  <div class="max-w">
+    <div class="u-eyebrow">&#9632; Classified Files</div>
     <div class="u-title">Deep Lore</div>
-    <div class="u-sub">The full truth about the Void Sovereign, the three endings, and what Kael doesn't know yet. Unlock with SC Credits.</div>
-
-    <div id="deep-lore-locked" class="locked-section">
+    <div class="u-sub">What the Eternal Void was guarding — and why Rhynn was spared long enough to reach the door.</div>
+    <div class="locked-section" id="deep-lore-locked">
       <div class="lock-icon">&#128274;</div>
       <div class="lock-title">Classified — Access Restricted</div>
-      <div class="lock-desc">The Void Sovereign's true nature. The identity of every boss. The three endings to Kael's story. Dr. Mira Solen's classified skin technology files. All locked in the GAF archive.</div>
-      <div class="lock-price"><span class="lock-price-val">500</span><span class="lock-price-lbl">SC Credits to unlock</span></div>
-      <br>
-      <button class="lock-btn" onclick="unlockDeepLore()">&#128275; Unlock Deep Lore &mdash; 500 SC</button>
+      <div class="lock-desc">The herald truth. The door beyond Darkness. Season Two fragments. Unlock with SC Credits or Platinum Pass.</div>
+      <button class="lock-btn" onclick="unlockDeepLore()">Unlock Deep Lore · 500 SC</button>
       <div class="lock-pass-note">Included free with <span>Platinum Pass</span></div>
     </div>
-
-    <div id="deep-lore-content" class="locked-content">
+    <div class="locked-content" id="deep-lore-content">
       <div class="lore-cards">
         <div class="lore-card">
-          <div class="lore-card-eyebrow">&#9632; Primary Antagonist</div>
-          <div class="lore-card-title">The Void Sovereign</div>
-          <div class="lore-card-text">An entity of incomprehensible age and power that exists simultaneously in normal space and in the dimension between dimensions. It is a consciousness woven into the fabric of void energy itself — ancient beyond measurement, patient beyond human comprehension. It has watched galaxies form and collapse.<br><br>The gates were never technology. They are wounds — tears in the membrane between dimensions caused by a catastrophe so ancient that no living being remembers it. The Sovereign has spent millions of years as their guardian.<br><br>Humanity ripped them open. Used them as subway stations. The Sovereign's response is not rage. It is correction.</div>
+          <div class="lore-card-eyebrow">The Herald Doctrine</div>
+          <div class="lore-card-title">Why the Eternal Void Fought</div>
+          <div class="lore-card-text">GAF believed the Void was conquest. Classified cosmography says otherwise: The Eternal Void was a chained sentinel, burning galaxies as fuel to keep a older door sealed. Every warlord was a symptom. Darkness was the lock.</div>
         </div>
         <div class="lore-card">
-          <div class="lore-card-eyebrow">&#9632; Classified &mdash; Dr. Mira Solen Files</div>
-          <div class="lore-card-title">The Four Skins — What They Really Are</div>
-          <div class="lore-card-text"><strong style="color:#c0c0c0;">Aurora Skin</strong> — Prismatic Deflection Array. Crystallized light-refraction particles that make the ship's outline unpredictable to Void targeting. "The one beautiful thing I made during the war." — Dr. Solen<br><br><strong style="color:#c0c0c0;">Inferno Skin</strong> — Thermal Aggression Plating. Superheated ablative armor burning at 4,000 degrees. Void Energy has difficulty binding to extreme heat sources.<br><br><strong style="color:#c0c0c0;">Nebula Skin</strong> — Void-Resonance Dampener. Hull frequency that mimics the energy signature of dead matter — cosmic debris. The ship becomes harder to detect.<br><br><strong style="color:#c0c0c0;">Celestial Wraith</strong> — Void-Phase Integration. Void Energy integrated directly into the hull matrix. The ship exists partially in the void dimension at all times. The Sovereign can sense it. But nothing hits harder.</div>
+          <div class="lore-card-eyebrow">The Last Pilot</div>
+          <div class="lore-card-title">Why Rhynn Survived</div>
+          <div class="lore-card-text">The malfunction that spared the Commander was not luck. Something on both sides of the wound needed a human will at the threshold — a key that could choose. Season One ends when that key turns. Season Two begins when the door answers.</div>
         </div>
         <div class="lore-card">
-          <div class="lore-card-eyebrow">&#9632; Story Truth &mdash; Classified</div>
-          <div class="lore-card-title">What Kael Doesn't Know</div>
-          <div class="lore-card-text">Kael's ship malfunction wasn't random. The Sovereign caused it. The Sovereign let him live on purpose.<br><br>Because it needs something from him. The catastrophe that created the gates — the wound the Sovereign has guarded for millions of years — it can only be healed by a human.<br><br>The Sovereign didn't spare Kael to be merciful. It spared him because he's the key.</div>
+          <div class="lore-card-eyebrow">Dark Army</div>
+          <div class="lore-card-title">Wave 101 Protocol</div>
+          <div class="lore-card-text">From wave 101 the Dark Army replaces conventional void packs: Weavers, Shade Wraiths, Abyss Wardens, Rift Stalkers, Plague Sowers, Doom Lancers, Brood Mothers, Veil Phantoms, Soul Leeches, and Dread Heralds. They are not soldiers. They are lockpicks for reality.</div>
         </div>
         <div class="lore-card">
-          <div class="lore-card-eyebrow">&#9632; Three Endings &mdash; Classified</div>
-          <div class="lore-card-title">How Kael's Story Ends</div>
-          <div class="lore-card-text"><strong style="color:#ffd700;">Ending 1 — The Sacrifice (True Ending)</strong><br>Kael's human life force — willingly given — seals the original wound. The Void armies dissolve. The gates go dark. Humanity is safe. Kael is gone. Somewhere in Zone 8, Dr. Solen receives one last transmission — just static, and beneath it, something that might be his voice saying "it's done."<br><br><strong style="color:#c0c0c0;">Ending 2 — The Defiance</strong><br>Kael destroys the Sovereign's physical manifestation and escapes. The wound remains open. The Void will return. But humanity has time. Maybe enough.<br><br><strong style="color:#8a2be2;">Ending 3 — The Corruption (Secret)</strong><br>Fly the Celestial Wraith into the final battle. The Void doesn't fight him — it offers. Kael can become what the Sovereign is. Guardian of the wound. Immortal. Alone. The Void armies stop. All of them. Simultaneously.</div>
+          <div class="lore-card-eyebrow">Season Two</div>
+          <div class="lore-card-title">What Comes Through</div>
+          <div class="lore-card-text">After the thank-you of the universe, the scanners scream. Newest stars flicker dark again. The transmission is not grateful. It is arrival. The archive will open further when Season Two launches.</div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</section>
 
-
-<div class="u-section reveal media-store" id="store">
+<section class="u-section reveal media-store" id="store">
   <div class="max-w">
-    <div class="u-eyebrow">&#9632; Syllog Universe &mdash; Media Store</div>
+    <div class="u-eyebrow">&#9632; Media Store</div>
     <div class="u-title">The Store</div>
-    <div class="u-sub">Comics, music, episodes, books — the Syllog Universe beyond the game. Unlock with SC Credits or included with Platinum Pass.</div>
+    <div class="u-sub">Comics, music, episodes, books — expand the Void Vexon story beyond the cockpit.</div>
     <div class="store-categories">
       <div class="store-cat active" onclick="filterStore('all',this)">All</div>
-      <div class="store-cat" onclick="filterStore('comic',this)">&#128214; Comics</div>
-      <div class="store-cat" onclick="filterStore('music',this)">&#127925; Music</div>
-      <div class="store-cat" onclick="filterStore('episode',this)">&#127916; Episodes</div>
-      <div class="store-cat" onclick="filterStore('book',this)">&#128218; Books</div>
-      <div class="store-cat" onclick="filterStore('merch',this)">&#128978; Merch</div>
+      <div class="store-cat" onclick="filterStore('comic',this)">Comics</div>
+      <div class="store-cat" onclick="filterStore('music',this)">Music</div>
+      <div class="store-cat" onclick="filterStore('episode',this)">Episodes</div>
+      <div class="store-cat" onclick="filterStore('book',this)">Books</div>
+      <div class="store-cat" onclick="filterStore('merch',this)">Merch</div>
     </div>
     <div class="store-grid" id="store-grid">
-
       <div class="store-card" data-type="comic">
-        <div class="store-cover" style="background:linear-gradient(135deg,#050010,#0a0030);">
-          <div style="font-size:4rem;">&#127756;</div>
-          <div class="store-cover-overlay"></div>
-          <div class="store-type-badge">Comic</div>
-        </div>
+        <div class="store-cover" style="background:linear-gradient(135deg,#050010,#0a0030);"><div>&#127756;</div><div class="store-type-badge">Comic</div></div>
         <div class="store-body">
           <div class="store-game">Void Vexon</div>
-          <div class="store-title">Void Vexon: Issue #1 — The Prometheus</div>
-          <div class="store-desc">The origin story. The crew of the SYL-7 Prometheus and the gate that should never have been opened.</div>
-          <div class="store-footer">
-            <div class="store-price"><span class="store-price-val">200</span><span class="store-price-lbl">SC</span></div>
-            <button class="store-btn" onclick="purchaseItem('comic_vr_001',200,'Void Vexon: Issue #1')">Unlock</button>
-          </div>
+          <div class="store-title">Issue #1 — The Last Signal</div>
+          <div class="store-desc">The AI beacon. The dead fleet. The moment Vael Rhynn turns toward Void Vexon.</div>
+          <div class="store-footer"><div class="store-price"><span class="store-price-val">200</span><span class="store-price-lbl">SC</span></div>
+          <button class="store-btn" onclick="purchaseItem('comic_vr_001',200,'Void Vexon: Issue #1')">Unlock</button></div>
         </div>
       </div>
-
       <div class="store-card" data-type="comic">
-        <div class="store-cover" style="background:linear-gradient(135deg,#100000,#200010);">
-          <div style="font-size:4rem;">&#128081;</div>
-          <div class="store-cover-overlay"></div>
-          <div class="store-type-badge">Comic</div>
-        </div>
+        <div class="store-cover" style="background:linear-gradient(135deg,#100000,#200010);"><div>&#128081;</div><div class="store-type-badge">Comic</div></div>
         <div class="store-body">
           <div class="store-game">Void Vexon</div>
-          <div class="store-title">Void Vexon: Issue #2 — Order 77</div>
-          <div class="store-desc">The story of the Crystal Predators — the GAF's best pilots, lost to the Void. Who they were before the bleaching.</div>
-          <div class="store-footer">
-            <div class="store-price"><span class="store-price-val">200</span><span class="store-price-lbl">SC</span></div>
-            <button class="store-btn" onclick="purchaseItem('comic_vr_002',200,'Void Vexon: Issue #2')">Unlock</button>
-          </div>
+          <div class="store-title">Issue #2 — Dark Army</div>
+          <div class="store-desc">Wave 101. The bleaching ends. The Dark Army begins.</div>
+          <div class="store-footer"><div class="store-price"><span class="store-price-val">200</span><span class="store-price-lbl">SC</span></div>
+          <button class="store-btn" onclick="purchaseItem('comic_vr_002',200,'Void Vexon: Issue #2')">Unlock</button></div>
         </div>
       </div>
-
       <div class="store-card" data-type="music">
-        <div class="store-cover" style="background:linear-gradient(135deg,#000520,#000a30);">
-          <div style="font-size:4rem;">&#127926;</div>
-          <div class="store-cover-overlay"></div>
-          <div class="store-type-badge">Music</div>
-        </div>
+        <div class="store-cover" style="background:linear-gradient(135deg,#000520,#000a30);"><div>&#127926;</div><div class="store-type-badge">Music</div></div>
         <div class="store-body">
           <div class="store-game">Void Vexon</div>
-          <div class="store-title">Void Vexon OST — Volume 1</div>
-          <div class="store-desc">The complete Zone 1-5 soundtrack. 12 tracks of deep space atmosphere and combat intensity.</div>
-          <div class="store-footer">
-            <div class="store-price"><span class="store-price-val">350</span><span class="store-price-lbl">SC</span></div>
-            <button class="store-btn" onclick="purchaseItem('music_vr_ost1',350,'Void Vexon OST Vol.1')">Unlock</button>
-          </div>
+          <div class="store-title">OST — Season One</div>
+          <div class="store-desc">Zone themes, boss combat, and The Eternal Void finale.</div>
+          <div class="store-footer"><div class="store-price"><span class="store-price-val">350</span><span class="store-price-lbl">SC</span></div>
+          <button class="store-btn" onclick="purchaseItem('music_vr_ost1',350,'Void Vexon OST Vol.1')">Unlock</button></div>
         </div>
       </div>
-
       <div class="store-card" data-type="episode">
-        <div class="store-cover" style="background:linear-gradient(135deg,#100010,#080008);">
-          <div style="font-size:4rem;">&#127916;</div>
-          <div class="store-cover-overlay"></div>
-          <div class="store-type-badge">Episode</div>
-        </div>
+        <div class="store-cover" style="background:linear-gradient(135deg,#100010,#080008);"><div>&#127916;</div><div class="store-type-badge">Episode</div></div>
         <div class="store-body">
           <div class="store-game">Void Vexon</div>
-          <div class="store-title">Void Vexon: Episode 1 — Last Pilot</div>
-          <div class="store-desc">The animated origin. Kael Voss watches the world end from a broken cockpit. The moment everything changed.</div>
-          <div class="store-footer">
-            <div class="store-price"><span class="store-price-pass">&#9733; Platinum Pass</span></div>
-            <button class="store-btn store-coming">Coming Soon</button>
-          </div>
+          <div class="store-title">Episode 1 — Last Pilot</div>
+          <div class="store-desc">Animated origin. Rhynn alone in the wreckage of a dead fleet.</div>
+          <div class="store-footer"><div class="store-price"><span class="store-price-pass">&#9733; Platinum Pass</span></div>
+          <button class="store-btn store-coming">Coming Soon</button></div>
         </div>
       </div>
-
       <div class="store-card" data-type="book">
-        <div class="store-cover" style="background:linear-gradient(135deg,#050510,#0a0a20);">
-          <div style="font-size:4rem;">&#128218;</div>
-          <div class="store-cover-overlay"></div>
-          <div class="store-type-badge">Book</div>
-        </div>
+        <div class="store-cover" style="background:linear-gradient(135deg,#050510,#0a0a20);"><div>&#128218;</div><div class="store-type-badge">Book</div></div>
         <div class="store-body">
           <div class="store-game">Void Vexon</div>
-          <div class="store-title">The Void Bible — Complete Lore Book</div>
-          <div class="store-desc">Every zone, every enemy, every ship, every ending. The complete story bible of the Void Vexon universe in full detail.</div>
-          <div class="store-footer">
-            <div class="store-price"><span class="store-price-val">500</span><span class="store-price-lbl">SC</span></div>
-            <button class="store-btn" onclick="purchaseItem('book_vr_bible',500,'The Void Bible')">Unlock</button>
-          </div>
+          <div class="store-title">The Void Bible</div>
+          <div class="store-desc">All 30 zones, 30 bosses, enemy codex, and the herald doctrine.</div>
+          <div class="store-footer"><div class="store-price"><span class="store-price-val">500</span><span class="store-price-lbl">SC</span></div>
+          <button class="store-btn" onclick="purchaseItem('book_vr_bible',500,'The Void Bible')">Unlock</button></div>
         </div>
       </div>
-
       <div class="store-card" data-type="merch">
-        <div class="store-cover" style="background:linear-gradient(135deg,#0a0000,#150000);">
-          <div style="font-size:4rem;">&#128978;</div>
-          <div class="store-cover-overlay"></div>
-          <div class="store-type-badge">Merch</div>
-        </div>
+        <div class="store-cover" style="background:linear-gradient(135deg,#0a0000,#150000);"><div>&#128978;</div><div class="store-type-badge">Merch</div></div>
         <div class="store-body">
           <div class="store-game">Void Vexon</div>
-          <div class="store-title">Void Vexon Merch Store</div>
-          <div class="store-desc">Posters, hoodies, shirts and more. Physical Void Vexon merchandise — ships direct to your door.</div>
-          <div class="store-footer">
-            <div class="store-price"><span class="store-price-lbl" style="color:#888;">External Store</span></div>
-            <button class="store-btn" onclick="alert('Merch store coming soon!')">Visit Store</button>
-          </div>
+          <div class="store-title">Merch Store</div>
+          <div class="store-desc">Posters, hoodies, and Last Light prints.</div>
+          <div class="store-footer"><div class="store-price"><span class="store-price-lbl" style="color:#888;">External</span></div>
+          <button class="store-btn" onclick="alert('Merch store coming soon!')">Visit Store</button></div>
         </div>
       </div>
-
     </div>
   </div>
-</div>
-
+</section>
 
 <footer>
   <div style="font-size:0.7rem;font-weight:900;letter-spacing:5px;color:#444;">SYLLOG</div>
@@ -870,14 +1595,13 @@ footer{position:relative;z-index:2;border-top:1px solid rgba(255,255,255,0.06)!i
     <div class="dash-member-since" id="dash-since">Syllog Games</div>
   </div>
 </div>
+
 <script>
 (function(){
   var _u='https://mlstrkqefyqoczusewrm.supabase.co';
   var _k='sb_publishable_g7_BTnT_cTqaIk19Kx9FEw_iP1I7Df7';
   var _sb=supabase.createClient(_u,_k);
-  var _user=null;
-  var _player=null;
-
+  var _user=null,_player=null;
   function showNav(p){
     var nb=document.getElementById('nav-btns');
     if(!nb)return;
@@ -900,11 +1624,7 @@ footer{position:relative;z-index:2;border-top:1px solid rgba(255,255,255,0.06)!i
     _user=r.data.session.user;
     _sb.from('players').select('*').eq('id',_user.id).single().then(function(res){
       if(!res.data)return;
-      _player=res.data;
-      showNav(res.data);
-      fillDash(res.data);
-      // Check if deep lore already unlocked
-      checkUnlocks(res.data);
+      _player=res.data; showNav(res.data); fillDash(res.data); checkUnlocks(res.data);
     });
   });
   var _open=false;
@@ -917,127 +1637,86 @@ footer{position:relative;z-index:2;border-top:1px solid rgba(255,255,255,0.06)!i
   window.signOut=function(){_sb.auth.signOut().then(function(){window.location.reload();});};
   window.uploadAvatar=async function(input){
     if(!input.files||!input.files[0]||!_user)return;
-    var file=input.files[0];
-    var ext=file.name.split('.').pop();
-    var path='avatars/'+_user.id+'.'+ext;
+    var file=input.files[0], ext=file.name.split('.').pop(), path='avatars/'+_user.id+'.'+ext;
     var reader=new FileReader();
     reader.onload=function(e){document.getElementById('dash-avatar').innerHTML='<img src="'+e.target.result+'" alt="avatar">';};
     reader.readAsDataURL(file);
     var up=await _sb.storage.from('player-avatars').upload(path,file,{upsert:true});
     if(!up.error){var url=_sb.storage.from('player-avatars').getPublicUrl(path).data.publicUrl;await _sb.from('players').update({avatar_url:url}).eq('id',_user.id);}
   };
-
-  // TOAST
   function showToast(msg,type){
     var t=document.getElementById('universe-toast');
-    t.textContent=msg;
-    t.className='universe-toast '+(type||'');
-    t.classList.add('show');
+    t.textContent=msg; t.className='universe-toast '+(type||''); t.classList.add('show');
     setTimeout(function(){t.classList.remove('show');},3000);
   }
-
-  // CHECK UNLOCKS
   function checkUnlocks(player){
     var unlocks=player.unlocked_items||[];
-    if(player.pass_tier==='platinum'||unlocks.indexOf('deep_lore')>-1){
-      revealDeepLore();
-    }
-    // Check store items
+    if(player.pass_tier==='platinum'||unlocks.indexOf('deep_lore')>-1) revealDeepLore();
     document.querySelectorAll('.store-btn').forEach(function(btn){
-      var card=btn.closest('.store-card');
-      if(!card)return;
-      var itemId=btn.getAttribute('onclick');
-      if(!itemId)return;
+      var itemId=btn.getAttribute('onclick'); if(!itemId)return;
       var match=itemId.match(/purchaseItem\('([^']+)'/);
-      if(match&&unlocks.indexOf(match[1])>-1){
-        btn.textContent='&#10003; Unlocked';
-        btn.className='store-btn unlocked';
-        btn.onclick=null;
-      }
+      if(match&&unlocks.indexOf(match[1])>-1){ btn.textContent='\u2713 Unlocked'; btn.className='store-btn unlocked'; btn.onclick=null; }
     });
   }
-
   function revealDeepLore(){
     var locked=document.getElementById('deep-lore-locked');
     var content=document.getElementById('deep-lore-content');
     if(locked)locked.style.display='none';
     if(content)content.classList.add('revealed');
   }
-
-  // UNLOCK DEEP LORE
   window.unlockDeepLore=async function(){
-    if(!_user||!_player){
-      showToast('Sign in to unlock content','error');
-      return;
-    }
-    if(_player.sc_balance<500){
-      showToast('Not enough SC Credits — need 500 SC','error');
-      return;
-    }
+    if(!_user||!_player){ showToast('Sign in to unlock content','error'); return; }
+    if(_player.sc_balance<500){ showToast('Not enough SC Credits — need 500 SC','error'); return; }
     try{
       var unlocks=_player.unlocked_items||[];
       if(unlocks.indexOf('deep_lore')>-1){revealDeepLore();return;}
       unlocks.push('deep_lore');
-      await _sb.from('players').update({
-        sc_balance:_player.sc_balance-500,
-        unlocked_items:unlocks
-      }).eq('id',_user.id);
-      _player.sc_balance-=500;
-      _player.unlocked_items=unlocks;
+      await _sb.from('players').update({sc_balance:_player.sc_balance-500,unlocked_items:unlocks}).eq('id',_user.id);
+      _player.sc_balance-=500; _player.unlocked_items=unlocks;
       document.getElementById('dash-sc').textContent=_player.sc_balance.toLocaleString();
-      revealDeepLore();
-      showToast('Deep Lore unlocked! Welcome to the classified archive.','success');
-    }catch(e){
-      showToast('Error unlocking — try again','error');
-    }
+      revealDeepLore(); showToast('Deep Lore unlocked! Welcome to the classified archive.','success');
+    }catch(e){ showToast('Error unlocking — try again','error'); }
   };
-
-  // PURCHASE STORE ITEM
   window.purchaseItem=async function(itemId,price,name){
-    if(!_user||!_player){
-      showToast('Sign in to purchase','error');
-      return;
-    }
-    if(_player.sc_balance<price){
-      showToast('Not enough SC Credits — need '+price+' SC','error');
-      return;
-    }
+    if(!_user||!_player){ showToast('Sign in to purchase','error'); return; }
+    if(_player.sc_balance<price){ showToast('Not enough SC Credits — need '+price+' SC','error'); return; }
     try{
       var unlocks=_player.unlocked_items||[];
-      if(unlocks.indexOf(itemId)>-1){
-        showToast('Already unlocked!','success');
-        return;
-      }
+      if(unlocks.indexOf(itemId)>-1){ showToast('Already unlocked!','success'); return; }
       unlocks.push(itemId);
-      await _sb.from('players').update({
-        sc_balance:_player.sc_balance-price,
-        unlocked_items:unlocks
-      }).eq('id',_user.id);
-      _player.sc_balance-=price;
-      _player.unlocked_items=unlocks;
+      await _sb.from('players').update({sc_balance:_player.sc_balance-price,unlocked_items:unlocks}).eq('id',_user.id);
+      _player.sc_balance-=price; _player.unlocked_items=unlocks;
       document.getElementById('dash-sc').textContent=_player.sc_balance.toLocaleString();
-      showToast(name+' unlocked!','success');
-      checkUnlocks(_player);
-    }catch(e){
-      showToast('Error — try again','error');
-    }
+      showToast(name+' unlocked!','success'); checkUnlocks(_player);
+    }catch(e){ showToast('Error — try again','error'); }
   };
-
-  // STORE FILTER
   window.filterStore=function(type,el){
     document.querySelectorAll('.store-cat').forEach(function(c){c.classList.remove('active');});
     el.classList.add('active');
     document.querySelectorAll('.store-card').forEach(function(c){
-      if(type==='all'||c.dataset.type===type){
-        c.style.display='';
-      }else{
-        c.style.display='none';
-      }
+      c.style.display=(type==='all'||c.dataset.type===type)?'':'none';
     });
   };
+  function wireFilters(id, attr){
+    var box=document.getElementById(id); if(!box)return;
+    box.addEventListener('click', function(e){
+      var btn=e.target.closest('button'); if(!btn)return;
+      box.querySelectorAll('button').forEach(function(b){b.classList.remove('on');});
+      btn.classList.add('on');
+      var val=btn.getAttribute('data-'+attr);
+      var grid=box.parentElement.querySelector('[id$="-grid"]');
+      if(!grid)return;
+      grid.querySelectorAll('article').forEach(function(card){
+        var ok=val==='all'||card.getAttribute('data-'+attr)===val;
+        card.style.display=ok?'':'none';
+      });
+    });
+  }
+  wireFilters('zone-filters','act');
+  wireFilters('boss-filters','act');
+  wireFilters('enemy-filters','cat');
 })();
 </script>
-
 <script>
 (function(){
   var canvas=document.getElementById('cosmos');
@@ -1064,7 +1743,7 @@ footer{position:relative;z-index:2;border-top:1px solid rgba(255,255,255,0.06)!i
   }
   var io=new IntersectionObserver(function(entries){
     entries.forEach(function(en){ if(en.isIntersecting) en.target.classList.add('in'); });
-  },{threshold:0.12});
+  },{threshold:0.1});
   document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
   var links=[].slice.call(document.querySelectorAll('.chapter-rail a'));
   var sections=links.map(function(a){ return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
@@ -1077,6 +1756,5 @@ footer{position:relative;z-index:2;border-top:1px solid rgba(255,255,255,0.06)!i
   syncRail();
 })();
 </script>
-
 </body>
 </html>
