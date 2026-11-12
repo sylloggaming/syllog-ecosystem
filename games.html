@@ -191,6 +191,16 @@ footer a:hover{color:#fff;}
 .gd-stat span{font-size:0.48rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.3);}
 .gc-btn-view{flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#fff;padding:0.75rem;border-radius:10px;font-size:0.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;}
 .gc-btn-view:hover{border-color:rgba(255,255,255,0.28);background:rgba(255,255,255,0.09);}
+.star-slot{display:flex;align-items:center;gap:0.35rem;min-height:1.1rem;margin:0.2rem 0 0.55rem;flex-wrap:wrap;}
+.star-slot .star{color:rgba(255,255,255,0.18);font-size:0.92rem;letter-spacing:1px;line-height:1;}
+.star-slot .star.on{color:#ffd700;text-shadow:0 0 8px rgba(255,215,0,0.35);}
+.star-slot .star-count{font-size:0.62rem;color:rgba(255,255,255,0.45);}
+.star-row{display:flex;gap:0.15rem;margin:0.2rem 0 0.35rem;}
+.star-row button{background:none;border:none;color:rgba(255,255,255,0.28);font-size:1.45rem;cursor:pointer;padding:0 0.12rem;line-height:1;font-family:inherit;}
+.star-row button.on{color:#ffd700;text-shadow:0 0 10px rgba(255,215,0,0.35);}
+.star-row button:hover{color:#ffe9a0;}
+.gd-rate .star-count{font-size:0.62rem;color:rgba(255,255,255,0.45);line-height:1.4;}
+.gd-board-rule{font-size:0.62rem;color:rgba(255,255,255,0.38);line-height:1.45;margin:-0.15rem 0 0.75rem;}
 
 </style></head><body><div class="ambient"><div class="ambient-orb ambient-orb-1"></div><div class="ambient-orb ambient-orb-2"></div><div class="ambient-orb ambient-orb-3"></div></div><nav><a href="index.html" class="logo">SYLLOG</a><ul class="nav-links"><li><a href="games.html" class="active">Games</a></li><li><a href="universe.html">Universe</a></li><li><a href="credits.html">Credits &amp; Passes</a></li><li><a href="leaderboards.html">Leaderboards</a></li></ul><div class="nav-btns" id="nav-btns"><button class="btn-g" onclick="window.location.href='auth.html?tab=signin'">Sign In</button><button class="btn-w" onclick="window.location.href='auth.html?tab=signup'">Create Account</button></div></nav><div class="games-hero"><div class="games-hero-tag">&#9632; Syllog Games Library</div><h1 class="games-hero-title"><span class="word-library">Every game. Every genre.</span><span class="word-games">Games</span></h1><p class="games-hero-sub">Every title free to play. Every world built to last. Choose your game â€” the universe is waiting.</p><div class="games-hero-stats"><div class="gh-stat"><div class="gh-stat-num">2</div><div class="gh-stat-lbl">Titles</div></div><div class="gh-stat"><div class="gh-stat-num">2</div><div class="gh-stat-lbl">Live Now</div></div><div class="gh-stat"><div class="gh-stat-num">17</div><div class="gh-stat-lbl">Genres</div></div><div class="gh-stat"><div class="gh-stat-num">âˆž</div><div class="gh-stat-lbl">Free</div></div></div></div><div class="genre-section"><div class="genre-section-inner"><div class="genre-section-hdr"><div class="genre-section-title">&#9632; Browse by Genre</div><div class="genre-section-sub">17 categories</div></div><div class="genre-grid"><div class="genre-card active" data-genre="all" onclick="filterGenre('all',this)"><div class="genre-card-glow" style="background:radial-gradient(circle at 50% 50%,#fff,transparent 70%);opacity:0;"></div><div class="genre-card-icon">&#127918;</div><div class="genre-card-name">All</div><div class="genre-card-count">2 games</div></div>
 <div class="genre-card" data-genre="action" onclick="filterGenre('action',this)"><div class="genre-card-glow" style="background:radial-gradient(circle at 50% 50%,#ef4444,transparent 70%);opacity:0;"></div><div class="genre-card-icon">&#9876;&#65039;</div><div class="genre-card-name">Action</div><div class="genre-card-count">1 game</div></div>
@@ -209,7 +219,7 @@ footer a:hover{color:#fff;}
 <div class="genre-card" data-genre="idle" onclick="filterGenre('idle',this)"><div class="genre-card-glow" style="background:radial-gradient(circle at 50% 50%,#a78bfa,transparent 70%);opacity:0;"></div><div class="genre-card-icon">&#9203;</div><div class="genre-card-name">Idle</div><div class="genre-card-count">0 games</div></div>
 <div class="genre-card" data-genre="religion" onclick="filterGenre('religion',this)"><div class="genre-card-glow" style="background:radial-gradient(circle at 50% 50%,#fbbf24,transparent 70%);opacity:0;"></div><div class="genre-card-icon">&#10013;&#65039;</div><div class="genre-card-name">Religion</div><div class="genre-card-count">0 games</div></div>
 <div class="genre-card" data-genre="kids" onclick="filterGenre('kids',this)"><div class="genre-card-glow" style="background:radial-gradient(circle at 50% 50%,#fb7185,transparent 70%);opacity:0;"></div><div class="genre-card-icon">&#11088;</div><div class="genre-card-name">Kids</div><div class="genre-card-count">0 games</div></div>
-</div></div></div><div class="games-section"><div class="games-toolbar"><div class="games-toolbar-left"><div class="games-active-genre" id="active-genre-label">All Games</div><div class="games-count-badge"><span id="visible-count">2</span> titles</div></div><input type="text" class="games-search" id="games-search" placeholder="&#128269; Search games..."></div><div class="games-grid" id="games-grid"><div class="game-card" data-genres="action shooter" data-game="void-vexon" onclick="openGameDetail('void-vexon')"><div class="game-card-cover"><div class="game-card-cover-bg" style="background:#050818 url('https://syllog-cdn.b-cdn.net/Void-Rift/Banners/Games%20library%20card.png') center/cover no-repeat;position:absolute;inset:0;"></div><div class="game-card-cover-overlay"></div><div class="game-card-status status-live"><span class="status-dot"></span>Live Now</div><div class="game-card-genres"><span class="game-genre-tag">action</span><span class="game-genre-tag">shooter</span></div><div class="game-card-cover-accent" style="background:linear-gradient(90deg,rgba(65,105,225,0.4),transparent);"></div></div><div class="game-card-body"><div class="game-card-title">Void Vexon</div><div class="game-card-tagline">The last pilot. The entire Void army. Survive.</div><div class="game-card-desc">A relentless space shooter set in 2847 CE. Fight through 10 zones across 150 levels as Commander Kael Voss â€” the last GAF pilot standing against the Void Sovereign.</div><div class="game-card-meta"><div class="gcm-item">Difficulty <span>Hard</span></div><div class="gcm-item">Rating <span>4.9</span></div></div><div class="game-card-footer"><button class="gc-btn-play" onclick="event.stopPropagation();window.location.href='Voidvexon.html'">&#9654; Play Now</button><button class="gc-btn-view" onclick="event.stopPropagation();openGameDetail('void-vexon')">View Details</button></div></div></div>
+</div></div></div><div class="games-section"><div class="games-toolbar"><div class="games-toolbar-left"><div class="games-active-genre" id="active-genre-label">All Games</div><div class="games-count-badge"><span id="visible-count">2</span> titles</div></div><input type="text" class="games-search" id="games-search" placeholder="&#128269; Search games..."></div><div class="games-grid" id="games-grid"><div class="game-card" data-genres="action shooter" data-game="void-vexon" onclick="openGameDetail('void-vexon')"><div class="game-card-cover"><div class="game-card-cover-bg" style="background:#050818 url('https://syllog-cdn.b-cdn.net/Void-Rift/Banners/Games%20library%20card.png') center/cover no-repeat;position:absolute;inset:0;"></div><div class="game-card-cover-overlay"></div><div class="game-card-status status-live"><span class="status-dot"></span>Live Now</div><div class="game-card-genres"><span class="game-genre-tag">action</span><span class="game-genre-tag">shooter</span></div><div class="game-card-cover-accent" style="background:linear-gradient(90deg,rgba(65,105,225,0.4),transparent);"></div></div><div class="game-card-body"><div class="game-card-title">Void Vexon</div><div class="game-card-tagline">The last pilot. The entire Void army. Survive.</div><div class="game-card-desc">A relentless space shooter set in 2847 CE. Fight through 10 zones across 150 levels as Commander Kael Voss â€” the last GAF pilot standing against the Void Sovereign.</div><div class="game-card-meta"><div class="gcm-item">Difficulty <span>Hard</span></div><div class="gcm-item">Rating <span class="star-num" data-game="void-vexon">—</span></div></div><div class="game-card-footer"><button class="gc-btn-play" onclick="event.stopPropagation();window.location.href='Voidvexon.html'">&#9654; Play Now</button><button class="gc-btn-view" onclick="event.stopPropagation();openGameDetail('void-vexon')">View Details</button></div></div></div>
 <div class="game-card" data-genres="narrative casino story card" data-game="vegas-reckoning" onclick="openGameDetail('vegas-reckoning')"><div class="game-card-cover"><div class="game-card-cover-bg" style="background:#1a0a08 url('https://syllog-cdn.b-cdn.net/Vegas-Reckoning/Banners%20and%20Cards/Vegas%20Reckoning%20Library%20Games%20Card.png') center/cover no-repeat;position:absolute;inset:0;"></div><div class="game-card-cover-overlay"></div><div class="game-card-status status-live"><span class="status-dot"></span>Live Now</div><div class="game-card-genres"><span class="game-genre-tag">narrative</span><span class="game-genre-tag">casino</span></div><div class="game-card-cover-accent" style="background:linear-gradient(90deg,rgba(212,175,55,0.55),transparent);"></div></div><div class="game-card-body"><div class="game-card-title">Vegas Reckoning</div><div class="game-card-tagline">One broke ex-analyst. One corrupt casino. One reckoning.</div><div class="game-card-desc">A cinematic casino narrative set in the HAL Grand Hotel & Casino. Broke ex-analyst Maddox Cross arrives with $700 and a score to settle — six playable games, sixty-five story events, one reckoning.</div><div class="game-card-meta"><div class="game-meta-item"><div class="game-meta-val">Live</div><div class="game-meta-lbl">Status</div></div><div class="game-meta-item"><div class="game-meta-val">6</div><div class="game-meta-lbl">Casino Games</div></div><div class="game-meta-item"><div class="game-meta-val">65</div><div class="game-meta-lbl">Story Events</div></div></div><div class="game-card-footer"><button class="gc-btn-play" onclick="event.stopPropagation();window.location.href='Vegasreckoning.html'">&#9654; Play Now</button><button class="gc-btn-view" onclick="event.stopPropagation();openGameDetail('vegas-reckoning')">View Details</button></div></div></div></div><div class="no-results" id="no-results" style="display:none;"><div class="no-results-icon">&#127918;</div>No games in this genre yet â€” check back soon!</div></div>
 <div class="detail-overlay" id="detail-overlay">
   <div class="gd-panel" id="gd-panel">
@@ -254,7 +264,12 @@ footer a:hover{color:#fff;}
           <div class="gd-stats" id="gd-stats"></div>
         </div>
         <div class="gd-card">
-          <div class="gd-h">Top Players</div>
+          <div class="gd-h">Player Rating</div>
+          <div id="gd-rate"></div>
+        </div>
+        <div class="gd-card">
+          <div class="gd-h" id="gd-board-title">Top Players</div>
+          <div class="gd-board-rule" id="gd-board-rule"></div>
           <div class="gd-players" id="gd-players"><div class="gd-empty">Loading standings…</div></div>
         </div>
       </div>
@@ -270,6 +285,7 @@ footer a:hover{color:#fff;}
     <div class="shot-lb-count" id="shot-lb-count"></div>
   </div>
 </div>
+<script src="syllog-boards.js"></script>
 <footer><div style="font-size:0.7rem;font-weight:900;letter-spacing:5px;color:rgba(255,255,255,0.2);">SYLLOG</div><div style="display:flex;gap:1.25rem;"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="contact.html">Contact</a></div><div style="font-size:0.58rem;color:rgba(255,255,255,0.2);">&copy; 2026 Syllog Games.</div></footer><script>var _sb=supabase.createClient("https://mlstrkqefyqoczusewrm.supabase.co","sb_publishable_g7_BTnT_cTqaIk19Kx9FEw_iP1I7Df7");var _user=null,activeGenre="all";function goProfile(){window.location.href="profile.html";}function showNav(p){var nb=document.getElementById("nav-btns");if(!nb)return;nb.innerHTML='<button class="nav-user" onclick="goProfile();"><div class="nav-dot"></div><div class="nav-name">'+p.username+'</div><div class="nav-arrow">&#9660;</div></button>';}_sb.auth.getSession().then(function(r){if(!r.data||!r.data.session)return;_user=r.data.session.user;_sb.from("players").select("username").eq("id",_user.id).single().then(function(res){if(res.data)showNav(res.data);});});function filterGenre(genre,btn){activeGenre=genre;document.querySelectorAll(".genre-card").forEach(function(t){t.classList.remove("active");});btn.classList.add("active");var label=btn.querySelector(".genre-card-name").textContent;document.getElementById("active-genre-label").textContent=label;applyFilters();}function applyFilters(){var search=document.getElementById("games-search").value.toLowerCase().trim();var cards=document.querySelectorAll(".game-card");var visible=0;cards.forEach(function(card){var genres=card.dataset.genres||"";var title=card.querySelector(".game-card-title").textContent.toLowerCase();var desc=card.querySelector(".game-card-desc").textContent.toLowerCase();var gm=activeGenre==="all"||genres.indexOf(activeGenre)>-1;var sm=!search||title.indexOf(search)>-1||desc.indexOf(search)>-1;if(gm&&sm){card.style.display="";visible++;}else{card.style.display="none";}});var nr=document.getElementById("no-results");if(nr)nr.style.display=visible===0?"block":"none";document.getElementById("visible-count").textContent=visible;}document.getElementById("games-search").addEventListener("input",applyFilters);
 var GAME_PROFILES={
   'void-vexon':{
@@ -324,13 +340,13 @@ var GAME_PROFILES={
     ],
     color:'#d4af37',
     coverUrl:'https://syllog-cdn.b-cdn.net/Vegas-Reckoning/Banners%20and%20Cards/Vegas%20Reckoning%20Library%20Games%20Card.png',
-    hasLeaderboard:false
+    hasLeaderboard:true
   }
 };
 
 function monthKeyNow(){
   var d=new Date();
-  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+  return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0');
 }
 
 function statusClass(s){return s==='live'?'live':(s==='soon'?'soon':'dev');}
@@ -345,7 +361,7 @@ function fillTopPlayers(rows, emptyMsg){
     var rank=i+1;
     var rc=rank===1?'r1':(rank===2?'r2':(rank===3?'r3':''));
     var name=r.username||r.player_name||'Pilot';
-    var score=Number(r._score||r.score||0).toLocaleString();
+    var score=(r._money?'$':'')+Number(r._score||r.score||0).toLocaleString();
     var sub=r._label||'Score';
     return '<div class="gd-player"><div class="gd-rank '+rc+'">'+rank+'</div><div><div class="gd-pname">'+name+'</div><div class="gd-psub">'+sub+'</div></div><div class="gd-pscore">'+score+'</div></div>';
   }).join('');
@@ -353,9 +369,26 @@ function fillTopPlayers(rows, emptyMsg){
 
 async function loadTopPlayers(profile){
   var box=document.getElementById('gd-players');
+  var rule=document.getElementById('gd-board-rule');
+  var title=document.getElementById('gd-board-title');
+  var meta=window.SyllogBoards&&SyllogBoards.game(profile.id);
+  if(title) title.textContent=meta?'This Month':'Top Players';
+  if(rule) rule.textContent=meta?meta.rule:(profile.hasLeaderboard?'':'');
+  if(window.SyllogBoards) SyllogBoards.paintRater(document.getElementById('gd-rate'), profile.id);
   if(!profile.hasLeaderboard){
     fillTopPlayers([], 'Competitive boards unlock at launch.');
     return;
+  }
+  if(window.SyllogBoards){
+    box.innerHTML='<div class="gd-empty">Loading standings…</div>';
+    var rows=await SyllogBoards.standings(profile.id);
+    if(rows){
+      var mapped=rows.filter(function(r){return (r.score||0)>0;}).map(function(r){
+        return {username:(r.players&&r.players.username)||'Player',_score:r.score,_label:'This month',_money:!!(meta&&meta.money)};
+      });
+      fillTopPlayers(mapped.slice(0,5), 'No scores yet this month. Sign in and play.');
+      return;
+    }
   }
   if(typeof _sb==='undefined'||!_sb){
     fillTopPlayers([], 'Standings unavailable right now.');

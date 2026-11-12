@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="ship-preview.js"></script>
+<script src="syllog-boards.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden;}
@@ -60,6 +61,10 @@ nav{background:rgba(0,0,0,0.96);border-bottom:1px solid rgba(255,255,255,0.06);p
 .tag-phase{background:rgba(192,192,192,0.12);color:#c0c0c0;border:1px solid rgba(192,192,192,0.2);}
 .fslide-label{font-size:11px;color:rgba(255,255,255,0.25);letter-spacing:2px;text-transform:uppercase;}
 .fslide-title{font-size:56px;font-weight:900;letter-spacing:-1.6px;line-height:1;color:#fff;max-width:100%;}
+.fslide-stars{display:flex;align-items:center;gap:0.4rem;margin:0.7rem 0 0.15rem;}
+.fslide-stars .star{color:rgba(255,255,255,0.22);font-size:1.05rem;letter-spacing:1px;}
+.fslide-stars .star.on{color:#ffd700;text-shadow:0 0 10px rgba(255,215,0,0.4);}
+.fslide-stars .star-count{font-size:13px;color:rgba(255,255,255,0.62);letter-spacing:0.3px;}
 .fslide-title .silver{background:linear-gradient(135deg,#fff 0%,#c0c0c0 60%,#888 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .fslide-desc{font-size:15px;color:rgba(255,255,255,0.38);line-height:1.55;max-width:480px;}
 .fslide-ftags{display:flex;gap:8px;flex-wrap:wrap;}
@@ -356,6 +361,7 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:1.1
           <div class="fslide-content"><div class="fslide-meta">
             <div class="fslide-eyebrow"><span class="fslide-tag tag-live">&#9654; Live Now</span><span class="fslide-label">Game 01 &nbsp;&middot;&nbsp; Action / Space</span></div>
             <div class="fslide-title"><span class="silver">Void</span> Vexon</div>
+            <div class="fslide-stars star-slot" data-game="void-vexon"></div>
             <div class="fslide-desc">Navigate the collapsing edges of reality. High-intensity browser action built natively in HTML5 â€” no download, instant play, full intensity.</div>
             <div class="fslide-ftags"><span class="fftag">Action</span><span class="fftag">Space</span><span class="fftag">HTML5</span><span class="fftag">Instant Play</span></div>
             <div class="fslide-actions">
@@ -371,6 +377,7 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:1.1
           <div class="fslide-content"><div class="fslide-meta">
             <div class="fslide-eyebrow"><span class="fslide-tag tag-live">&#9654; Live Now</span><span class="fslide-label">Game 02 &nbsp;&middot;&nbsp; Narrative Casino</span></div>
             <div class="fslide-title"><span class="silver">Vegas</span> Reckoning</div>
+            <div class="fslide-stars star-slot" data-game="vegas-reckoning"></div>
             <div class="fslide-desc">A cinematic casino narrative set in the HAL Grand Hotel & Casino. Broke ex-analyst Maddox Cross arrives with $700 and a score to settle — six playable games, sixty-five story events, one reckoning.</div>
             <div class="fslide-ftags"><span class="fftag">Narrative</span><span class="fftag">Casino</span><span class="fftag">Story</span><span class="fftag">HTML5</span></div>
             <div class="fslide-actions">

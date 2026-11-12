@@ -8,7 +8,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="ship-preview.js"></script>
+<script src="syllog-boards.js"></script>
 <style>
+.board-rule{max-width:720px;color:rgba(255,255,255,0.55);font-size:0.82rem;line-height:1.5;margin:0.35rem 0 1rem;}
+#extra-boards .fc-play{display:inline-flex;align-items:center;text-decoration:none;padding:0.72rem 1.2rem;border-radius:8px;font-size:0.65rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;}
+#extra-boards .prize-row{margin-bottom:0.5rem;}
 
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden;}
@@ -629,7 +633,7 @@ body{background:#020203!important;}
         <span class="featured-month" id="champ-month-label">—</span>
       </div>
       <div class="featured-game-title"><span>Void</span> Vexon</div>
-      <div class="featured-desc">Top 3 players by highest single-run score this month win Syllog Credits. Every run is your shot at the top.</div>
+      <div class="featured-desc">Top 3 players by highest single-run score this month win Syllog Credits. 2,000, 1,000, and 500 SC are added to those accounts when the month closes at 00:00 UTC.</div>
       <div class="prize-row">
         <div class="prize-chip"><span class="medal m-gold" aria-hidden="true"><span class="medal-bail"></span><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">1</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span><span class="prize-chip-val">2,000 SC</span><span class="prize-chip-lbl">1st Place</span></div>
         <div class="prize-chip"><span class="medal m-silver" aria-hidden="true"><span class="medal-bail"></span><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">2</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span><span class="prize-chip-val">1,000 SC</span><span class="prize-chip-lbl">2nd Place</span></div>
@@ -640,7 +644,7 @@ body{background:#020203!important;}
         <a class="fc-ghost" href="games.html">All Games</a>
       </div>
       <div class="countdown-wrap">
-        <span class="countdown-label">Ends in</span>
+        <span class="countdown-label">Ends 00:00 UTC</span>
         <div class="countdown-timer">
           <div class="cd-block"><span class="cd-num" id="cd-d">00</span><span class="cd-lbl">Days</span></div>
           <span class="cd-sep">:</span>
@@ -745,8 +749,23 @@ body{background:#020203!important;}
         </div>
       </div>
     </div>
+    <div class="champion-card">
+      <div class="champion-card-header">
+        <div class="champion-game-bg" style="background:linear-gradient(135deg,#2a1a08,#000);"></div>
+        <div class="champion-game-icon">&#127920;</div>
+        <div class="champion-game-label">Game 02</div>
+        <div class="champion-game-name">Vegas Reckoning</div>
+      </div>
+      <div class="champion-card-body">
+        <div class="champion-player" id="vegas-reckoning-champion">
+          <div class="champion-empty">Loading...</div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+
+<div class="monthly-section" id="extra-boards"></div>
 
 <!-- GLOBAL TOP 10 -->
 <div class="top10-section">
@@ -895,11 +914,11 @@ body{background:#020203!important;}
 
   function champMonthInfo(now){
     now=now||new Date();
-    var y=now.getFullYear(), m=now.getMonth();
+    var y=now.getUTCFullYear(), m=now.getUTCMonth();
     return {
       label: MONTHS[m]+' '+y,
       key: y+'-'+String(m+1).padStart(2,'0'),
-      end: new Date(y, m+1, 1, 0, 0, 0)
+      end: new Date(Date.UTC(y, m+1, 1, 0, 0, 0))
     };
   }
 
