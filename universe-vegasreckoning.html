@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Syllog — Vegas Reckoning Universe</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:#07060a;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden;}
+:root{--gold:#d4af37;--gold2:#f0d78c;--ink:#07060a;}
+#cosmos{position:fixed;inset:0;z-index:0;pointer-events:none;}
+.nebula{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.nebula-orb{position:absolute;border-radius:50%;filter:blur(110px);opacity:0.22;animation:nebFloat 26s ease-in-out infinite;}
+.nebula-orb.a{width:60vw;height:60vw;top:-20%;right:-8%;background:radial-gradient(circle,#6a4a12,transparent 70%);}
+.nebula-orb.b{width:48vw;height:48vw;bottom:-16%;left:-12%;background:radial-gradient(circle,#3a120c,transparent 70%);animation-delay:-9s;}
+@keyframes nebFloat{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-24px,18px) scale(1.05);}}
+nav{background:rgba(7,6,10,0.88);border-bottom:1px solid rgba(212,175,55,0.14);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:200;backdrop-filter:blur(16px);}
+.logo{font-size:1rem;font-weight:900;letter-spacing:6px;background:linear-gradient(135deg,#fff 0%,#c0c0c0 60%,#777 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none;}
+.nav-links{display:flex;gap:1.75rem;list-style:none;}
+.nav-links a{color:rgba(255,255,255,0.28);text-decoration:none;font-size:0.68rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:color 0.2s;}
+.nav-links a:hover,.nav-links a.active{color:#fff;}
+.nav-btns{display:flex;gap:0.5rem;}
+.btn-g,.btn-w{padding:0.3rem 0.9rem;border-radius:4px;font-size:0.65rem;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;font-family:'Inter',sans-serif;}
+.btn-g{background:transparent;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);}
+.btn-w{background:#fff;border:none;color:#000;}
+.nav-user{display:flex;align-items:center;gap:0.5rem;cursor:pointer;padding:0.28rem 0.75rem;border-radius:5px;border:1px solid rgba(255,255,255,0.08);background:transparent;}
+.nav-dot{width:6px;height:6px;border-radius:50%;background:#f0d78c;}
+.nav-name{font-size:0.63rem;font-weight:700;color:rgba(255,255,255,0.65);letter-spacing:1px;text-transform:uppercase;}
+.nav-arrow{font-size:0.55rem;color:rgba(255,255,255,0.2);}
+
+.universe-hero{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6rem 1.5rem 4rem;}
+.hero-glow{position:absolute;width:640px;height:640px;border-radius:50%;background:radial-gradient(circle,rgba(212,175,55,0.16) 0%,rgba(90,30,12,0.08) 42%,transparent 70%);top:48%;left:50%;transform:translate(-50%,-50%);pointer-events:none;animation:glowPulse 5s ease-in-out infinite;}
+@keyframes glowPulse{0%,100%{opacity:0.7;transform:translate(-50%,-50%) scale(1);}50%{opacity:1;transform:translate(-50%,-50%) scale(1.08);}}
+.hero-classified{position:relative;z-index:2;font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:rgba(240,215,140,0.75);border:1px solid rgba(212,175,55,0.28);background:rgba(212,175,55,0.06);border-radius:999px;padding:0.4rem 1.15rem;margin-bottom:1.5rem;}
+.hero-title{position:relative;z-index:2;margin-bottom:1rem;}
+.hero-title .the{display:block;font-size:clamp(0.85rem,2.2vw,1.15rem);letter-spacing:6px;text-transform:uppercase;color:rgba(240,215,140,0.45);font-weight:300;margin-bottom:0.65rem;}
+.hero-title .universe-word{display:block;font-size:clamp(2.6rem,7.4vw,5.2rem);font-weight:900;letter-spacing:-3px;line-height:0.92;background:linear-gradient(160deg,#fff 0%,#f6e7b2 40%,#d4af37 70%,#fff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{position:relative;z-index:2;max-width:640px;margin:0 auto;color:rgba(255,255,255,0.46);font-size:0.92rem;line-height:1.75;}
+.hero-era{position:relative;z-index:2;margin-top:1.25rem;font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:3px;color:rgba(212,175,55,0.6);}
+.hero-stats{position:relative;z-index:2;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1.75rem;}
+.hero-stat{min-width:100px;padding:0.85rem 1rem;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);}
+.hero-stat-num{font-size:1.4rem;font-weight:900;background:linear-gradient(135deg,#fff,#f0d78c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-stat-lbl{font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-top:0.2rem;}
+.hero-cta-row{position:relative;z-index:2;display:flex;gap:0.65rem;justify-content:center;flex-wrap:wrap;margin-top:1.75rem;}
+.hero-cta-row a{text-decoration:none;font-size:0.65rem;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;padding:0.85rem 1.3rem;border-radius:10px;}
+.hc-play{background:linear-gradient(135deg,#fff6d8,#d4af37);color:#1a1208;box-shadow:0 12px 36px rgba(212,175,55,0.22);}
+.hc-ghost{background:rgba(255,255,255,0.04);color:#fff;border:1px solid rgba(255,255,255,0.14);}
+.hero-scroll{position:relative;z-index:2;margin-top:2.5rem;display:flex;flex-direction:column;align-items:center;gap:0.5rem;opacity:0.5;}
+.hero-scroll-line{width:1px;height:48px;background:linear-gradient(180deg,transparent,rgba(212,175,55,0.7),transparent);}
+.hero-scroll-txt{font-family:'Share Tech Mono',monospace;font-size:0.48rem;letter-spacing:4px;text-transform:uppercase;}
+
+.chapter-rail{position:sticky;top:54px;z-index:150;display:flex;gap:0.35rem;overflow-x:auto;padding:0.65rem 1.25rem;background:rgba(7,6,10,0.9);border-bottom:1px solid rgba(255,255,255,0.06);backdrop-filter:blur(14px);scrollbar-width:none;}
+.chapter-rail::-webkit-scrollbar{display:none;}
+.chapter-rail a{flex:0 0 auto;text-decoration:none;font-size:0.55rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.35);padding:0.45rem 0.85rem;border-radius:999px;border:1px solid transparent;white-space:nowrap;}
+.chapter-rail a:hover,.chapter-rail a.on{color:#fff;border-color:rgba(212,175,55,0.35);background:rgba(212,175,55,0.1);}
+
+.u-section{position:relative;z-index:2;padding:5rem 1.5rem;border-top:1px solid rgba(212,175,55,0.1);}
+.max-w{max-width:1120px;margin:0 auto;}
+.u-eyebrow{font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:rgba(212,175,55,0.62);margin-bottom:0.55rem;}
+.u-title{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:900;letter-spacing:-1.5px;margin-bottom:0.55rem;}
+.u-sub{font-size:0.88rem;color:rgba(255,255,255,0.4);line-height:1.7;max-width:680px;margin-bottom:2rem;}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.8s ease,transform 0.8s cubic-bezier(0.22,1,0.36,1);}
+.reveal.in{opacity:1;transform:translateY(0);}
+
+.story-grid{display:grid;grid-template-columns:1.25fr 0.75fr;gap:1.25rem;}
+.story-main,.story-side,.cast-card,.turn-card,.end-card,.floor-card{border-radius:18px;border:1px solid rgba(255,255,255,0.08);background:linear-gradient(180deg,#120e0a,#080706);box-shadow:0 20px 60px rgba(0,0,0,0.35);}
+.story-main{padding:2rem;}
+.story-side{padding:1.5rem;display:flex;flex-direction:column;gap:0.85rem;}
+.story-kicker{font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:2px;color:rgba(212,175,55,0.7);margin-bottom:0.75rem;}
+.story-main h3{font-size:1.45rem;font-weight:800;margin-bottom:1rem;letter-spacing:-0.5px;}
+.story-main p,.cast-card p,.turn-card p,.end-card p,.floor-card p{color:rgba(255,255,255,0.5);font-size:0.88rem;line-height:1.8;margin-bottom:0.9rem;}
+.story-main p strong,.cast-card strong{color:#f6e7b2;font-weight:700;}
+.side-stat{padding:0.9rem 1rem;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);}
+.side-stat b{display:block;font-size:1.05rem;font-weight:800;margin-bottom:0.2rem;}
+.side-stat span{font-size:0.72rem;color:rgba(255,255,255,0.38);line-height:1.5;}
+
+.chapter-grid,.cast-grid,.turn-grid,.end-grid,.floor-grid{display:grid;gap:0.9rem;}
+.chapter-grid{grid-template-columns:repeat(5,1fr);}
+.cast-grid{grid-template-columns:repeat(3,1fr);}
+.turn-grid,.end-grid{grid-template-columns:1fr 1fr;}
+.floor-grid{grid-template-columns:repeat(3,1fr);}
+.chapter-card,.cast-card,.turn-card,.end-card,.floor-card{padding:1.2rem 1.15rem;}
+.chapter-card{border-radius:16px;border:1px solid rgba(212,175,55,0.16);background:linear-gradient(180deg,#14110c,#090807);}
+.ch-num{font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:2px;color:rgba(212,175,55,0.65);margin-bottom:0.45rem;}
+.chapter-card h3,.cast-card h3,.turn-card h3,.end-card h3,.floor-card h3{font-size:1rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:0.4rem;}
+.chapter-card p,.floor-card p{font-size:0.75rem;min-height:0;margin:0;}
+.role{font-family:'Share Tech Mono',monospace;font-size:0.48rem;letter-spacing:1.6px;text-transform:uppercase;color:rgba(240,215,140,0.55);margin-bottom:0.45rem;}
+.end-card .req{font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;color:rgba(212,175,55,0.7);margin-bottom:0.55rem;}
+.end-card.true{border-color:rgba(212,175,55,0.4);box-shadow:0 0 40px rgba(212,175,55,0.08);}
+
+footer{position:relative;z-index:2;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:center;padding:1.4rem 1.5rem;border-top:1px solid rgba(255,255,255,0.06);color:rgba(255,255,255,0.28);font-size:0.62rem;}
+footer a{color:rgba(255,255,255,0.35);text-decoration:none;}
+footer a:hover{color:#fff;}
+@media(max-width:980px){
+  .story-grid,.cast-grid,.turn-grid,.end-grid,.floor-grid{grid-template-columns:1fr;}
+  .chapter-grid{grid-template-columns:1fr 1fr;}
+  .nav-links{display:none;}
+}
+@media(max-width:560px){.chapter-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<canvas id="cosmos"></canvas>
+<div class="nebula"><div class="nebula-orb a"></div><div class="nebula-orb b"></div></div>
+
+<nav>
+  <a href="index.html" class="logo">SYLLOG</a>
+  <ul class="nav-links">
+    <li><a href="games.html">Games</a></li>
+    <li><a href="universe.html" class="active">&#8592; Universe</a></li>
+    <li><a href="credits.html">Credits &amp; Passes</a></li>
+    <li><a href="leaderboards.html">Leaderboards</a></li>
+  </ul>
+  <div class="nav-btns" id="nav-btns">
+    <button class="btn-g" onclick="window.location.href='auth.html?tab=signin'">Sign In</button>
+    <button class="btn-w" onclick="window.location.href='auth.html?tab=signup'">Create Account</button>
+  </div>
+</nav>
+
+<div class="universe-hero">
+  <div class="hero-glow"></div>
+  <div class="hero-classified">Syllog Universe · Vegas Reckoning Archive</div>
+  <h1 class="hero-title">
+    <span class="the">The World of</span>
+    <span class="universe-word">Vegas Reckoning</span>
+  </h1>
+  <p class="hero-sub">Las Vegas, 11:47 at night. Maddox Cross drove to the HAL Grand with seven hundred dollars and the name of the man who ended two hundred careers. The chips are the war. The building is the prize.</p>
+  <div class="hero-era">&#9632;&nbsp; HAL Grand Hotel &amp; Casino · Dominic Marchetti &nbsp;&#9632;</div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-num">5</div><div class="hero-stat-lbl">Chapters</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">65</div><div class="hero-stat-lbl">Nights</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">6</div><div class="hero-stat-lbl">Tables</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">5</div><div class="hero-stat-lbl">Endings</div></div>
+  </div>
+  <div class="hero-cta-row">
+    <a class="hc-play" href="Vegasreckoning.html">Play Vegas Reckoning</a>
+    <a class="hc-ghost" href="#story">Read the Story</a>
+  </div>
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    <div class="hero-scroll-txt">Enter the Archive</div>
+  </div>
+</div>
+
+<nav class="chapter-rail" aria-label="Archive chapters">
+  <a href="#story">Story</a>
+  <a href="#chapters">Chapters</a>
+  <a href="#cast">The Room</a>
+  <a href="#floor">The Floor</a>
+  <a href="#turns">Turns</a>
+  <a href="#elena">Elena</a>
+  <a href="#endings">Endings</a>
+</nav>
+
+<section class="u-section reveal" id="story">
+  <div class="max-w">
+    <div class="u-eyebrow">&#9632; Opening Night</div>
+    <div class="u-title">Seven Hundred Dollars</div>
+    <div class="u-sub">Three years before the doors, Maddox Cross was good at a job that no longer exists. Marchetti Enterprises bought the firm, gutted it, and left the floor holding boxes.</div>
+    <div class="story-grid">
+      <div class="story-main">
+        <div class="story-kicker">NEW YORK · THEN LAS VEGAS</div>
+        <h3>He drove here on fumes.</h3>
+        <p>Maddox was thirty-one when he managed a hedge fund above the city. The screens stayed green. The floor trusted him. Then <strong>Marchetti Enterprises</strong> bought the firm and cut it open. Two hundred people walked out without jobs. Maddox walked out with a cardboard box and a name he would not forget.</p>
+        <p>Three years later he is thirty-four. Seven hundred dollars is all that is left. At 11:47 he is on the road into Las Vegas, and the <strong>HAL Grand</strong> rises out of the desert like a monument to other people’s luck. Gold glass. Fountain light. Bigger than the drive that brought him.</p>
+        <p>Inside, the air smells like money and secrets. The dealers move like priests. He straightens a wrinkled charcoal collar and walks to the nearest blackjack table. He did not come to get rich. He came to take the building away from the man who took his life.</p>
+        <p>Every chip after that is a sentence. Win long enough and the floor learns his name. Win longer and <strong>Dominic Marchetti</strong> starts asking who he is. The reckoning is not a single hand. It is the whole night, told in five chapters, until the books, the building, or both change hands.</p>
+      </div>
+      <div class="story-side">
+        <div class="side-stat"><b>$700</b><span>What he walks in with. The cage does not care about the rest of the story.</span></div>
+        <div class="side-stat"><b>200</b><span>Careers ended when Marchetti bought the firm. Maddox was one of them.</span></div>
+        <div class="side-stat"><b>Dominic Marchetti</b><span>Owner of the HAL Grand. Silver temples. Black suit. No tie. He has not sat a hand himself in seven years.</span></div>
+        <div class="side-stat"><b>The truth under the felt</b><span>Marchetti arrived in this city the same way. Broke. He never once asked if the empire was right.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="u-section reveal" id="chapters">
+  <div class="max-w">
+    <div class="u-eyebrow">&#9632; Five Nights That Become One</div>
+    <div class="u-title">The Chapters</div>
+    <div class="u-sub">The story climbs with the money. Reputation opens doors. Net worth opens chapters. The floor does not promote a man who is still a rumor.</div>
+    <div class="chapter-grid">
+      <article class="chapter-card">
+        <div class="ch-num">Chapter I · $0</div>
+        <h3>The Arrival</h3>
+        <p>A nobody in a wrinkled suit. Napkins with numbers. A crying woman in red. A loan with dice for cufflinks. The HAL Grand has not decided he matters.</p>
+      </article>
+      <article class="chapter-card">
+        <div class="ch-num">Chapter II · $3,000</div>
+        <h3>First Blood</h3>
+        <p>Dealers say his name on their break. Reyes shadows his tables. Dario names the mistake he makes every time he is ahead. The myth starts without his permission.</p>
+      </article>
+      <article class="chapter-card">
+        <div class="ch-num">Chapter III · $15,000</div>
+        <h3>High Roller</h3>
+        <p>Ms. Delacroix stops at the chair. Marchetti sends the Obsidian Lounge as a compliment. Marcus Webb, the man who signed the firing, is across the poker room with a short stack.</p>
+      </article>
+      <article class="chapter-card">
+        <div class="ch-num">Chapter IV · $75,000</div>
+        <h3>The Reckoning</h3>
+        <p>A man in a black suit says progress should stay modest. Chen slides a drive across the bar. Dinner with Marchetti is war under a white tablecloth. Sal has been talking.</p>
+      </article>
+      <article class="chapter-card">
+        <div class="ch-num">Chapter V · $250,000</div>
+        <h3>Endgame</h3>
+        <p>The city is watching. Delacroix chooses a side. Rowe wants out. Marchetti sits a hand himself. One way or another, tonight the building changes.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="u-section reveal" id="cast">
+  <div class="max-w">
+    <div class="u-eyebrow">&#9632; Who Holds the Room</div>
+    <div class="u-title">The People</div>
+    <div class="u-sub">The HAL Grand is a building full of faces that only appear once, and a smaller number who keep coming back until the night has to answer them.</div>
+    <div class="cast-grid">
+      <article class="cast-card">
+        <div class="role">The man who drove in</div>
+        <h3>Maddox Cross</h3>
+        <p>Thirty-four. Tired brown eyes. A wrinkled charcoal suit that used to be a career. He was good at the fund. He is better at not forgetting. The dealers will turn him into a myth before he asks them to.</p>
+      </article>
+      <article class="cast-card">
+        <div class="role">The owner</div>
+        <h3>Dominic Marchetti</h3>
+        <p>Fifty-eight. Silver at the temples. Black suit, open collar, no tie. He owns the HAL Grand and the company that erased the fund. He built the empire from nothing, the same nothing Maddox brought through the doors, and he never looked back to see who it cost.</p>
+      </article>
+      <article class="cast-card">
+        <div class="role">Eleven years on the floor</div>
+        <h3>Ms. Delacroix</h3>
+        <p>Forty-six. The casino manager. Low twist, black suit, a gold pin. She is not his wife and not his family. She has worked for him for eleven years, and she knows where every body is buried. When she knocks at 7am, the composure is gone.</p>
+      </article>
+      <article class="cast-card">
+        <div class="role">The woman at the bar</div>
+        <h3>Elena</h3>
+        <p>Thirty-two. Not a showgirl and not part of the scam. She reads a paperback at a casino bar and does not look away. She already knows what Maddox is trying to do to Marchetti. The chapel, if it happens, is at 1am. Eight people. Elias cries in the back row.</p>
+      </article>
+      <article class="cast-card">
+        <div class="role">Already in the fight</div>
+        <h3>Vivienne</h3>
+        <p>Forty. Auburn hair, violet silk, diamonds. An heiress who has watched Marchetti for two years and kept the photographs. She can offer a ring, a calendar, or a gambit that uses Maddox’s winning streak as cover. She was here before he arrived.</p>
+      </article>
+      <article class="cast-card">
+        <div class="role">The books</div>
+        <h3>Chen</h3>
+        <p>Thirty-eight. Glasses, gray suit, a wrinkled jacket when he is afraid. The accountant, not the woman who reads the news. He slides eight years of accounts across a bar and later vanishes for two days. The note under the door says don’t stop.</p>
+      </article>
+      <article class="cast-card">
+        <div class="role">Head of security</div>
+        <h3>Rowe</h3>
+        <p>Forty-four. A former heavyweight. Scarred eyebrow, an earpiece when he is working. He blocks the parking structure and says Marchetti sees everything. Off duty, he drinks bourbon and asks how long Maddox plans to keep going. Later he may want out.</p>
+      </article>
+      <article class="cast-card">
+        <div class="role">Thirty-one years of nights</div>
+        <h3>Elias</h3>
+        <p>Sixty-seven. Night porter. Burgundy vest. He has watched the HAL Grand break twelve men who thought they were different. He stops Maddox at 3am and tells him not to let the building decide what he is.</p>
+      </article>
+      <article class="cast-card">
+        <div class="role">The signature</div>
+        <h3>Marcus Webb</h3>
+        <p>Fifty-two. Thinning brown hair, navy suit, a loosened tie. He signed Maddox’s termination when the firm was sold. He turns up in the poker room with a short stack and does not see Maddox first.</p>
+      </article>
+      <article class="cast-card">
+        <div class="role">No personal name</div>
+        <h3>The Journalist</h3>
+        <p>Thirty-eight. Jaw-length dark hair, a charcoal blazer, a recorder on a lanyard. She wants the profile of the man quietly dismantling the house. She finds the real name. Marchetti reads it over breakfast.</p>
+      </article>
+      <article class="cast-card">
+        <div class="role">The other player</div>
+        <h3>Reyes</h3>
+        <p>Thirty-six. Black suit, collar open, a steel watch. Not Diana Reyes, who reads the news. This Reyes shadows the tables for three nights and watches decisions the way Maddox watches cards. She may be better.</p>
+      </article>
+      <article class="cast-card">
+        <div class="role">The ones who circle</div>
+        <h3>Dario, Danny, Torres, Sal</h3>
+        <p>Dario has a quiet reputation and names the tell. Danny knew Maddox when there was nothing to prove. Torres loses with grace and asks for a tab. Sal smiles at the table and has been feeding the organization the whole time.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="u-section reveal" id="floor">
+  <div class="max-w">
+    <div class="u-eyebrow">&#9632; Where the Money Sits</div>
+    <div class="u-title">The Floor</div>
+    <div class="u-sub">Six games. Three rooms. The house staff do not join the plot. They keep the night moving while it happens around them.</div>
+    <div class="floor-grid">
+      <article class="floor-card">
+        <div class="role">Open to anyone</div>
+        <h3>The Grand Floor</h3>
+        <p>Blackjack, roulette, slots, keno, video poker, craps. Five dollars to twenty-five hundred. This is where a man with seven hundred dollars is allowed to begin.</p>
+      </article>
+      <article class="floor-card">
+        <div class="role">Chapter III · his compliment</div>
+        <h3>Obsidian Lounge</h3>
+        <p>Private. Serious. A camera over the bar points at the chairs, not the tables. The invitation arrives from Marchetti. Declining it is also a move.</p>
+      </article>
+      <article class="floor-card">
+        <div class="role">Chapter V · no ceiling</div>
+        <h3>The Penthouse</h3>
+        <p>Invitation only. Marchetti’s private game. One chair at the high-stakes table stays empty. Staff say his father died in it in 1987. Sitting there gets reported upstairs.</p>
+      </article>
+    </div>
+    <div class="story-main" style="margin-top:1rem;">
+      <div class="story-kicker">THE HOUSE · AND THE DESK</div>
+      <h3>They are not the plot. They carry it.</h3>
+      <p>The dealer, the croupier, the slot attendant, the keno caller, and the craps stickman run the tables. Upstairs, HAL News puts Diana Reyes, Marcus Bell, and Sophia Chen on the desk. Sophia is not Chen the accountant. Roland Price still has no face the building will show. When the power fails for eleven seconds, the ticker will say it was nothing. It is never nothing.</p>
+      <p>Reputation climbs from Unknown to Legend. The floor pays more when it knows the face: Known, Regular, VIP, High Roller, Inner Circle, Elite, Magnate, Icon, and at last a name the HAL Grand pays double to hear. Going broke does not end the night in silence. A house chip is set on the glass. One last pull. If it fails, the staff walk him to the apron, and the last flight leaves with the city behind the wing.</p>
+    </div>
+  </div>
+</section>
+
+<section class="u-section reveal" id="turns">
+  <div class="max-w">
+    <div class="u-eyebrow">&#9632; What the Night Refuses to Stay</div>
+    <div class="u-title">The Turns</div>
+    <div class="u-sub">None of these are random color. Each one bends who Maddox is allowed to be by morning.</div>
+    <div class="turn-grid">
+      <article class="turn-card">
+        <div class="role">The loan</div>
+        <h3>Vincent’s dice</h3>
+        <p>A compact man offers five thousand at friendly rates. The cufflinks are dice. The eyes are not. Take it and the clock starts. His men collect eight thousand. Decline, and he walks away too slowly.</p>
+      </article>
+      <article class="turn-card">
+        <div class="role">The old colleague</div>
+        <h3>Webb’s short stack</h3>
+        <p>The man who signed the termination is in the poker room and has not seen Maddox yet. A confrontation, a drink, or a walk past while winning: all three move the power. None of them give the job back.</p>
+      </article>
+      <article class="turn-card">
+        <div class="role">The warning</div>
+        <h3>The man in the black suit</h3>
+        <p>He does not look up. Mr. Marchetti hopes the progress stays modest. He finishes the drink and leaves at exactly the right pace. Betting double after that is how the ticker learns there is friction in the building.</p>
+      </article>
+      <article class="turn-card">
+        <div class="role">The books</div>
+        <h3>Chen’s drive</h3>
+        <p>Eight years. Shell companies. A prosecutor in a pocket. Enough to bury Marchetti or get both of them killed. Chen will not meet his eyes. Later the suite phone crackles, and small things in the room have been moved.</p>
+      </article>
+      <article class="turn-card">
+        <div class="role">The smile</div>
+        <h3>Sal</h3>
+        <p>A friendly regular. Trusted. He has been feeding the organization the whole time and does not know he has been found out. Confront him, cut him off, or hand him a lie and let Marchetti move on it.</p>
+      </article>
+      <article class="turn-card">
+        <div class="role">The white tablecloth</div>
+        <h3>Dinner</h3>
+        <p>A gold envelope. Private dining. Just the two of them. Marchetti calls it a courtesy. It lasts two hours. HAL News will say neither man commented. Sending regrets is a move he understands.</p>
+      </article>
+      <article class="turn-card">
+        <div class="role">Eleven percent</div>
+        <h3>The investors</h3>
+        <p>Three independent holders of Marchetti Enterprises want to back the man whose numbers they have been watching. Together they are eleven percent of the company. Going alone is its own kind of leverage.</p>
+      </article>
+      <article class="turn-card">
+        <div class="role">The line</div>
+        <h3>The daughter</h3>
+        <p>The dossier, if it is opened all the way, names a nineteen-year-old in Portland under her mother’s name. Estranged. Almost nobody in Vegas knew she existed. The archive of this story is clear: some lines define a man by not being crossed. Delete it. Do not use it.</p>
+      </article>
+      <article class="turn-card">
+        <div class="role">7am</div>
+        <h3>Delacroix chooses</h3>
+        <p>She has the composure of the whole hotel until the morning she doesn’t. Eleven years. She wants to show someone where the bodies are. Let her in, or send her to the Gaming Board before noon. Either way the file gets heavier.</p>
+      </article>
+      <article class="turn-card">
+        <div class="role">Seven years</div>
+        <h3>The last hand</h3>
+        <p>Marchetti will play the Penthouse himself. No proxies. Staff whisper he has not taken a chair in seven years. Ask for the seat and the hand lasts forty minutes. Wait, and he spends the night wondering when it is coming.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="u-section reveal" id="elena">
+  <div class="max-w">
+    <div class="u-eyebrow">&#9632; Not Part of the Scam</div>
+    <div class="u-title">Elena</div>
+    <div class="story-main">
+      <div class="story-kicker">THE BAR · THE TERRACE · THE CHAPEL</div>
+      <h3>She is the only person in the building who asks what happens after.</h3>
+      <p>She is at the bar, not gambling, watching the room with the calm of someone who has already seen it. Maddox can look away and lose the moment. If he doesn’t, her name is Elena. She laughs easily and asks questions that land.</p>
+      <p>She comes back to the same stool with a paperback, which is somehow the most disarming thing on the floor. She already knows who he is. She has read the press. She says she thinks he is going to do it to Marchetti. On the 34th-floor terrace at 2am she asks the question he has not allowed himself: when Marchetti is gone, what then?</p>
+      <p>At midnight she sets a room key on the felt. The note says this is not the moment, and to ask anyway. If he does, the HAL Grand chapel is open at 1am. She bought the dress that afternoon. He wears what he always wears. Eight people attend. Elias, the night porter, cries quietly in the back row. They dance in the Obsidian Lounge until 4. HAL News calls it the first time he has looked happy.</p>
+      <p>Vivienne’s ring is a different offer, from a woman who was already hunting Marchetti. Elena’s question is the one the revenge does not know how to answer.</p>
+    </div>
+  </div>
+</section>
+
+<section class="u-section reveal" id="endings">
+  <div class="max-w">
+    <div class="u-eyebrow">&#9632; How the Night Can Close</div>
+    <div class="u-title">The Endings</div>
+    <div class="u-sub">Most of them can be refused. Staying means the building is still his, and the next ending is still out on the floor. Taking one ends the run.</div>
+    <div class="end-grid">
+      <article class="end-card">
+        <div class="req">$1,000,000</div>
+        <h3>The Millionaire</h3>
+        <p>The cage counts it twice. Delacroix says Marchetti’s people have started asking who he is. The penthouse key is on the desk, and so is the door. He can cash out and leave the key, or leave the check and keep the night.</p>
+      </article>
+      <article class="end-card">
+        <div class="req">The books leave the room</div>
+        <h3>The Reckoning</h3>
+        <p>Chen’s eight years and Delacroix’s testimony. If the file goes to the board tonight, Marchetti does not get it back. The Gaming Control Board opens a formal investigation. He can also keep the drive in his pocket and give the man one more night.</p>
+      </article>
+      <article class="end-card">
+        <div class="req">$5,000,000</div>
+        <h3>The Owner</h3>
+        <p>Maddox walks into the office with a number and a drive. Five million, or the books go to the board in the morning. Marchetti does not look up. The pen is there. Sign, and the man who owned the HAL Grand walks out of it.</p>
+      </article>
+      <article class="end-card">
+        <div class="req">$10,000,000</div>
+        <h3>The Legend</h3>
+        <p>Ten million. Marchetti is gone. The building is his. At the penthouse bar he pours two glasses: one for himself, and one for the man who arrived with seven hundred dollars and nothing to lose. He does not come back down.</p>
+      </article>
+      <article class="end-card true">
+        <div class="req">All of it · and the dossier</div>
+        <h3>True Reckoning</h3>
+        <p>The money, the building, and Marchetti’s own life on a desk. The dossier has to be opened. The other endings have to have been earned. There is nothing left to win. He sets the file down, and the era ends.</p>
+      </article>
+      <article class="end-card">
+        <div class="req">When the felt goes cold</div>
+        <h3>The last flight</h3>
+        <p>Bust out and the house still offers one pull. A floor attendant sets a chip on the glass. Hit it and the night continues. Miss it and they walk him out. On the apron the last flight is boarding, and Las Vegas falls in behind the wing.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div style="font-weight:900;letter-spacing:5px;">SYLLOG</div>
+  <div style="display:flex;gap:1.1rem;flex-wrap:wrap;">
+    <a href="universe.html">Universe</a>
+    <a href="games.html">Games</a>
+    <a href="Vegasreckoning.html">Play</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="terms.html">Terms</a>
+  </div>
+  <div>&copy; 2026 Syllog Games.</div>
+</footer>
+
+<script>
+(function(){
+  var canvas=document.getElementById('cosmos');
+  var ctx=canvas.getContext('2d');
+  var stars=[], w=0, h=0, mx=0.5, my=0.5;
+  function resize(){
+    w=canvas.width=window.innerWidth;
+    h=canvas.height=window.innerHeight;
+    var n=Math.min(140, Math.floor((w*h)/14000));
+    stars=[];
+    for(var i=0;i<n;i++) stars.push({x:Math.random()*w,y:Math.random()*h,z:0.2+Math.random()*0.8,r:0.3+Math.random()*1.2,tw:Math.random()*6.28,sp:0.2+Math.random()*0.6});
+  }
+  function draw(t){
+    ctx.clearRect(0,0,w,h);
+    var ox=(mx-0.5)*14, oy=(my-0.5)*8;
+    for(var i=0;i<stars.length;i++){
+      var s=stars[i], a=0.15+0.45*Math.abs(Math.sin(t*0.001*s.sp+s.tw));
+      ctx.fillStyle='rgba(255,236,190,'+a+')';
+      ctx.beginPath();
+      ctx.arc(s.x+ox*s.z, s.y+oy*s.z, s.r*s.z, 0, Math.PI*2);
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize', resize);
+  window.addEventListener('pointermove', function(e){ mx=e.clientX/Math.max(1,w); my=e.clientY/Math.max(1,h); }, {passive:true});
+  resize();
+  requestAnimationFrame(draw);
+
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if(en.isIntersecting) en.target.classList.add('in'); });
+  },{threshold:0.12});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  var links=[].slice.call(document.querySelectorAll('.chapter-rail a'));
+  var sections=links.map(function(a){ return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+  function syncRail(){
+    var y=window.scrollY+120, cur=sections[0];
+    sections.forEach(function(s){ if(s.offsetTop<=y) cur=s; });
+    links.forEach(function(a){ a.classList.toggle('on', cur && a.getAttribute('href')==='#'+cur.id); });
+  }
+  window.addEventListener('scroll', syncRail, {passive:true});
+  syncRail();
+
+  var sb=supabase.createClient('https://mlstrkqefyqoczusewrm.supabase.co','sb_publishable_g7_BTnT_cTqaIk19Kx9FEw_iP1I7Df7');
+  function showNav(name){
+    var nb=document.getElementById('nav-btns');
+    if(!nb) return;
+    nb.innerHTML='<button class="nav-user" onclick="window.location.href=\'profile.html\'"><div class="nav-dot"></div><div class="nav-name"></div><div class="nav-arrow">&#9660;</div></button>';
+    nb.querySelector('.nav-name').textContent=name;
+  }
+  sb.auth.getSession().then(function(r){
+    if(!r.data||!r.data.session) return;
+    sb.from('players').select('username').eq('id', r.data.session.user.id).single().then(function(res){
+      if(res.data&&res.data.username) showNav(res.data.username);
+    });
+  });
+})();
+</script>
+</body>
+</html>
