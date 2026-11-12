@@ -369,12 +369,12 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:1.1
           <div class="fslide-icon">&#127920;</div>
           <div class="fslide-overlay-l"></div><div class="fslide-overlay-b"></div>
           <div class="fslide-content"><div class="fslide-meta">
-            <div class="fslide-eyebrow"><span class="fslide-tag tag-coming">Coming Soon</span><span class="fslide-label">Game 02 &nbsp;&middot;&nbsp; Narrative Casino</span></div>
+            <div class="fslide-eyebrow"><span class="fslide-tag tag-live">&#9654; Live Now</span><span class="fslide-label">Game 02 &nbsp;&middot;&nbsp; Narrative Casino</span></div>
             <div class="fslide-title"><span class="silver">Vegas</span> Reckoning</div>
             <div class="fslide-desc">A cinematic casino narrative set in the HAL Grand Hotel & Casino. Broke ex-analyst Maddox Cross arrives with $700 and a score to settle — six playable games, sixty-five story events, one reckoning.</div>
             <div class="fslide-ftags"><span class="fftag">Narrative</span><span class="fftag">Casino</span><span class="fftag">Story</span><span class="fftag">HTML5</span></div>
             <div class="fslide-actions">
-              <button class="fslide-inactive">Coming Soon</button>
+              <button class="fslide-play" onclick="window.location.href='Vegasreckoning.html'"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Play Now &mdash; Free</button>
               <button class="fslide-trailer" onclick="window.location.href='games.html'">View Details</button>
             </div>
           </div></div>
@@ -624,13 +624,13 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:1.1
 </div>
 
 <script>
-var LIVE_TITLE_COUNT = 1;
+var LIVE_TITLE_COUNT = 2;
 var SUPABASE_URL = 'https://mlstrkqefyqoczusewrm.supabase.co';
 var SUPABASE_KEY = 'sb_publishable_g7_BTnT_cTqaIk19Kx9FEw_iP1I7Df7';
 
 var GAMES = [
   {name:'Void Vexon', icon:'🌌', genre:'Action · Space', desc:'Navigate the collapsing edges of reality. High-intensity browser action built natively in HTML5.', status:'live', color:'#0a0f1e', url:'Voidvexon.html', screenshots:['https://syllog-cdn.b-cdn.net/Void-Rift/Screenshots/Screenshot%202.png','https://syllog-cdn.b-cdn.net/Void-Rift/Screenshots/Screenshot%203.png','https://syllog-cdn.b-cdn.net/Void-Rift/Screenshots/Screenshot%204.png']},
-  {name:'Vegas Reckoning', icon:'🎰', genre:'Narrative Casino · Story', desc:"A cinematic casino narrative set in the HAL Grand Hotel & Casino. Broke ex-analyst Maddox Cross arrives with $700 and a score to settle — six playable games, sixty-five story events, one reckoning.", status:'soon', color:'#1a0a08', screenshots:[]}
+  {name:'Vegas Reckoning', icon:'🎰', genre:'Narrative Casino · Story', desc:"A cinematic casino narrative set in the HAL Grand Hotel & Casino. Broke ex-analyst Maddox Cross arrives with $700 and a score to settle — six playable games, sixty-five story events, one reckoning.", status:'live', color:'#1a0a08', url:'Vegasreckoning.html', screenshots:[]}
 ];
 
 document.getElementById('live-count').textContent = LIVE_TITLE_COUNT;
