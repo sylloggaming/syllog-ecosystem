@@ -13,6 +13,16 @@
 .board-rule{max-width:720px;color:rgba(255,255,255,0.55);font-size:0.82rem;line-height:1.5;margin:0.35rem 0 1rem;}
 #extra-boards .fc-play{display:inline-flex;align-items:center;text-decoration:none;padding:0.72rem 1.2rem;border-radius:8px;font-size:0.65rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;}
 #extra-boards .prize-row{margin-bottom:0.5rem;}
+.board-close{margin:0 0 1.5rem;padding:1rem 1.15rem;border-radius:14px;border:1px solid rgba(255,215,0,0.22);background:rgba(255,215,0,0.05);max-width:720px;}
+.board-close-kicker{font-size:0.58rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,230,150,0.7);margin-bottom:0.35rem;}
+.board-close-when{font-size:1.05rem;font-weight:800;color:#fff;line-height:1.35;}
+.board-close-local{margin-top:0.35rem;font-size:0.78rem;color:rgba(255,255,255,0.62);line-height:1.45;}
+.comp-card{margin:0 0 2rem;padding-bottom:0.5rem;border-bottom:1px solid rgba(255,255,255,0.06);}
+.comp-card:last-child{border-bottom:none;}
+.comp-head{display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;margin-bottom:0.35rem;}
+.comp-name{font-size:1.15rem;font-weight:800;color:#fff;}
+.comp-flag{font-size:0.58rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:800;color:#111;background:linear-gradient(135deg,#ffe9a0,#d4af37);border-radius:999px;padding:0.28rem 0.6rem;}
+.champ-close{margin-top:0.85rem;max-width:420px;font-size:0.78rem;line-height:1.45;color:rgba(255,255,255,0.72);}
 
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden;}
@@ -622,7 +632,7 @@ body{background:#020203!important;}
 
 <!-- MONTHLY CHAMPIONSHIP BANNER -->
 <div class="monthly-section">
-  <div class="section-eyebrow">Monthly Competition</div>
+  <div class="section-eyebrow">Monthly Featured</div>
   <div class="section-title" id="champ-section-title">Featured Game <span>&middot; Championship</span></div>
   <div class="featured-banner">
     <div class="featured-overlay"></div>
@@ -633,7 +643,7 @@ body{background:#020203!important;}
         <span class="featured-month" id="champ-month-label">—</span>
       </div>
       <div class="featured-game-title"><span>Void</span> Vexon</div>
-      <div class="featured-desc">Top 3 players by highest single-run score this month win Syllog Credits. 2,000, 1,000, and 500 SC are added to those accounts when the month closes at 00:00 UTC.</div>
+      <div class="featured-desc">One featured game each month. Top 3 players by highest single-run score win 2,000, 1,000, and 500 SC. The clock is the moment those credits are paid.</div>
       <div class="prize-row">
         <div class="prize-chip"><span class="medal m-gold" aria-hidden="true"><span class="medal-bail"></span><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">1</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span><span class="prize-chip-val">2,000 SC</span><span class="prize-chip-lbl">1st Place</span></div>
         <div class="prize-chip"><span class="medal m-silver" aria-hidden="true"><span class="medal-bail"></span><span class="medal-ring"></span><span class="medal-face"><span class="medal-shine"></span><span class="medal-num">2</span></span><span class="medal-ribbon r-l"></span><span class="medal-ribbon r-r"></span></span><span class="prize-chip-val">1,000 SC</span><span class="prize-chip-lbl">2nd Place</span></div>
@@ -644,7 +654,7 @@ body{background:#020203!important;}
         <a class="fc-ghost" href="games.html">All Games</a>
       </div>
       <div class="countdown-wrap">
-        <span class="countdown-label">Ends 00:00 UTC</span>
+        <span class="countdown-label" id="champ-close-label">Closes</span>
         <div class="countdown-timer">
           <div class="cd-block"><span class="cd-num" id="cd-d">00</span><span class="cd-lbl">Days</span></div>
           <span class="cd-sep">:</span>
@@ -655,6 +665,7 @@ body{background:#020203!important;}
           <div class="cd-block"><span class="cd-num" id="cd-s">00</span><span class="cd-lbl">Sec</span></div>
         </div>
       </div>
+      <div class="champ-close" id="champ-close">Loading the close time…</div>
     </div>
   </div>
 </div>
@@ -663,8 +674,8 @@ body{background:#020203!important;}
 <div class="standings-section">
   <div class="standings-header">
     <div class="standings-title-wrap">
-      <div class="section-eyebrow">Monthly Competition</div>
-      <div class="section-title" style="margin-bottom:0;">Live Standings
+      <div class="section-eyebrow">Featured Game</div>
+      <div class="section-title" style="margin-bottom:0;">Void Vexon · Live Standings
         <span class="live-badge"><span class="live-dot"></span><span class="live-txt">Live</span></span>
       </div>
     </div>
@@ -679,7 +690,7 @@ body{background:#020203!important;}
 <!-- CHAMPIONSHIP PODIUM -->
 <div class="podium-section">
   <div class="section-eyebrow">Hall of Champions</div>
-  <div class="section-title">Championship Podium <span>&middot; Top 3</span></div>
+  <div class="section-title">Featured Podium <span>&middot; Void Vexon</span></div>
   <div class="podium-arena">
     <div class="podium-crown">
       <svg width="36" height="28" viewBox="0 0 36 28" fill="none" aria-hidden="true"><path d="M3 22 L6 8 L13 16 L18 4 L23 16 L30 8 L33 22 Z" fill="url(#cg)" stroke="#ffe9a0" stroke-width="1"/><rect x="3" y="20" width="30" height="5" rx="1" fill="url(#cg2)"/><defs><linearGradient id="cg" x1="18" y1="4" x2="18" y2="22"><stop stop-color="#fff6c8"/><stop offset="1" stop-color="#d4a017"/></linearGradient><linearGradient id="cg2" x1="18" y1="20" x2="18" y2="25"><stop stop-color="#ffe9a0"/><stop offset="1" stop-color="#b8860b"/></linearGradient></defs></svg>

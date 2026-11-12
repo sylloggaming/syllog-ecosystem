@@ -12,7 +12,7 @@
       unit: 'pts',
       money: false,
       play: 'Voidvexon.html',
-      rule: 'Best single run this month. First, second, and third win 2,000, 1,000, and 500 SC when the month closes.'
+      rule: 'Best single run this month. First, second, and third win 2,000, 1,000, and 500 SC.'
     },
     {
       id: 'vegas-reckoning',
@@ -21,7 +21,7 @@
       unit: 'won',
       money: true,
       play: 'Vegasreckoning.html',
-      rule: 'Best night of money won at the tables. Story gifts, loans, and chips bought with SC do not count. First, second, and third win 2,000, 1,000, and 500 SC when the month closes.'
+      rule: 'Best night of money won at the tables. Story gifts, loans, and chips bought with SC do not count. First, second, and third win 2,000, 1,000, and 500 SC.'
     }
   ];
   var summaryMap = null;
@@ -31,6 +31,24 @@
   function monthKey(now) {
     now = now || new Date();
     return now.getUTCFullYear() + '-' + String(now.getUTCMonth() + 1).padStart(2, '0');
+  }
+
+  function closeInfo(now) {
+    now = now || new Date();
+    var end = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 1, 0, 0, 0));
+    var utc = end.toLocaleString('en-US', {
+      weekday: 'long', month: 'long', day: 'numeric', year: 'numeric',
+      hour: 'numeric', minute: '2-digit', timeZone: 'UTC'
+    }) + ' UTC';
+    var local = end.toLocaleString('en-US', {
+      weekday: 'long', month: 'long', day: 'numeric', year: 'numeric',
+      hour: 'numeric', minute: '2-digit', timeZoneName: 'short'
+    });
+    return {
+      end: end,
+      utc: utc,
+      localLine: 'On your clock, that is ' + local + '.'
+    };
   }
 
   function esc(s) {
@@ -95,6 +113,7 @@
     var rateBox = document.getElementById('gd-rate');
     if (rateBox && rateBox.getAttribute('data-game')) paintRater(rateBox, rateBox.getAttribute('data-game'));
     if (document.getElementById('extra-boards')) paintBoards();
+    else paintFeaturedClose();
     settle();
   }
 
@@ -155,20 +174,41 @@
   function paintBoards() {
     var host = document.getElementById('extra-boards');
     if (!host) return;
-    var games = GAMES.filter(function (g) { return !g.featured; });
-    host.innerHTML = games.map(function (g) {
-      return '<div class="section-eyebrow">Monthly Competition</div>' +
-        '<div class="section-title">' + g.name + ' <span>&middot; Championship</span></div>' +
-        '<p class="board-rule">' + g.rule + ' The month ends at 00:00 UTC.</p>' +
-        '<div class="prize-row">' +
-          '<div class="prize-chip"><span class="prize-chip-val">2,000 SC</span><span class="prize-chip-lbl">1st</span></div>' +
-          '<div class="prize-chip"><span class="prize-chip-val">1,000 SC</span><span class="prize-chip-lbl">2nd</span></div>' +
-          '<div class="prize-chip"><span class="prize-chip-val">500 SC</span><span class="prize-chip-lbl">3rd</span></div>' +
-          '<a class="fc-play" href="' + g.play + '" style="text-decoration:none;">Play Now — Free</a>' +
-        '</div>' +
-        '<div class="standings-grid" id="board-' + g.id + '" style="margin-top:1.25rem;"><div class="standings-empty">Loading standings...</div></div>';
-    }).join('');
+    var close = closeInfo();
+    var games = GAMES.slice();
+    host.innerHTML =
+      '<div class="section-eyebrow">Monthly Competition</div>' +
+      '<div class="section-title">Every Game <span>&middot; This Month</span></div>' +
+      '<div class="board-close">' +
+        '<div class="board-close-kicker">Scores lock and prizes are paid</div>' +
+        '<div class="board-close-when">' + esc(close.utc) + '</div>' +
+        '<div class="board-close-local">' + esc(close.localLine) + '</div>' +
+      '</div>' +
+      games.map(function (g) {
+        return '<article class="comp-card">' +
+          '<div class="comp-head"><div class="comp-name">' + esc(g.name) + '</div>' +
+          (g.featured ? '<span class="comp-flag">Monthly Featured</span>' : '') +
+          '</div>' +
+          '<p class="board-rule">' + esc(g.rule) + '</p>' +
+          '<div class="prize-row">' +
+            '<div class="prize-chip"><span class="prize-chip-val">2,000 SC</span><span class="prize-chip-lbl">1st</span></div>' +
+            '<div class="prize-chip"><span class="prize-chip-val">1,000 SC</span><span class="prize-chip-lbl">2nd</span></div>' +
+            '<div class="prize-chip"><span class="prize-chip-val">500 SC</span><span class="prize-chip-lbl">3rd</span></div>' +
+            '<a class="fc-play" href="' + g.play + '">Play Now — Free</a>' +
+          '</div>' +
+          '<div class="standings-grid" id="board-' + g.id + '" style="margin-top:1.25rem;"><div class="standings-empty">Loading standings...</div></div>' +
+          '</article>';
+      }).join('');
     games.forEach(function (g) { fillBoard(g); });
+    paintFeaturedClose();
+  }
+
+  function paintFeaturedClose() {
+    var close = closeInfo();
+    var line = document.getElementById('champ-close');
+    var label = document.getElementById('champ-close-label');
+    if (label) label.textContent = 'Closes';
+    if (line) line.textContent = close.utc + ' · ' + close.localLine;
   }
 
   async function fillBoard(game) {
@@ -209,6 +249,8 @@
   window.SyllogBoards = {
     games: GAMES,
     monthKey: monthKey,
+    closeInfo: closeInfo,
+    paintFeaturedClose: paintFeaturedClose,
     refresh: refresh,
     paintRater: paintRater,
     standings: standings,

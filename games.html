@@ -373,7 +373,10 @@ async function loadTopPlayers(profile){
   var title=document.getElementById('gd-board-title');
   var meta=window.SyllogBoards&&SyllogBoards.game(profile.id);
   if(title) title.textContent=meta?'This Month':'Top Players';
-  if(rule) rule.textContent=meta?meta.rule:(profile.hasLeaderboard?'':'');
+  if(rule){
+    var close=window.SyllogBoards&&SyllogBoards.closeInfo&&SyllogBoards.closeInfo();
+    rule.textContent=meta?(meta.rule+(close?' Scores lock '+close.utc+'. '+close.localLine:'')):(profile.hasLeaderboard?'':'');
+  }
   if(window.SyllogBoards) SyllogBoards.paintRater(document.getElementById('gd-rate'), profile.id);
   if(!profile.hasLeaderboard){
     fillTopPlayers([], 'Competitive boards unlock at launch.');
