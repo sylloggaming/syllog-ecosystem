@@ -375,7 +375,7 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:1.1
             <div class="fslide-ftags"><span class="fftag">Narrative</span><span class="fftag">Casino</span><span class="fftag">Story</span><span class="fftag">HTML5</span></div>
             <div class="fslide-actions">
               <button class="fslide-play" onclick="window.location.href='Vegasreckoning.html'"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Play Now &mdash; Free</button>
-              <button class="fslide-trailer" onclick="window.location.href='games.html'">View Details</button>
+              <button class="fslide-trailer" onclick="openTrailer('Vegas Reckoning','&#127920;')">Watch Trailer</button>
             </div>
           </div></div>
         </div>
@@ -1011,7 +1011,8 @@ document.getElementById('detail-overlay').addEventListener('click', function(e) 
 
 // TRAILER
 var TRAILERS = {
-  'Void Vexon': 'https://syllog-cdn.b-cdn.net/Void-Rift/Trailer/VoidVexon%20Trailer.mp4'
+  'Void Vexon': 'https://syllog-cdn.b-cdn.net/Void-Rift/Trailer/VoidVexon%20Trailer.mp4',
+  'Vegas Reckoning': 'https://syllog-cdn.b-cdn.net/Vegas-Reckoning/Videos/Vegas%20Reckoning%20Trailer.mp4'
 };
 function openTrailer(name, icon) {
   var frame = document.getElementById('video-frame');
