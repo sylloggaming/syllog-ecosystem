@@ -291,6 +291,7 @@
     var byCode = {};
     var universe = [];
     owned.unlocks.forEach(function (id) {
+      if (String(id).indexOf(':@') !== -1) return;
       var meta = describeUnlock(id);
       if (meta.code) {
         if (!byCode[meta.code]) {
