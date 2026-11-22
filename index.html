@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -61,6 +61,7 @@ nav{background:rgba(0,0,0,0.96);border-bottom:1px solid rgba(255,255,255,0.06);p
 .tag-phase{background:rgba(192,192,192,0.12);color:#c0c0c0;border:1px solid rgba(192,192,192,0.2);}
 .fslide-label{font-size:11px;color:rgba(255,255,255,0.25);letter-spacing:2px;text-transform:uppercase;}
 .fslide-title{font-size:56px;font-weight:900;letter-spacing:-1.6px;line-height:1;color:#fff;max-width:100%;}
+.fslide-logo-temp{object-fit:contain;object-position:78% center;padding:28px 64px 28px 36%;filter:drop-shadow(0 12px 40px rgba(201,168,76,0.25));}
 .fslide-stars{display:flex;align-items:center;gap:0.4rem;margin:0.7rem 0 0.15rem;}
 .fslide-stars .star{color:rgba(255,255,255,0.22);font-size:1.05rem;letter-spacing:1px;}
 .fslide-stars .star.on{color:#ffd700;text-shadow:0 0 10px rgba(255,215,0,0.4);}
@@ -386,12 +387,28 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:1.1
             </div>
           </div></div>
         </div>
+        <div class="fslide">
+          <div class="fslide-bg" style="background:radial-gradient(ellipse at 70% 40%,rgba(201,168,76,0.22),transparent 50%),radial-gradient(ellipse at 20% 80%,rgba(120,30,20,0.25),transparent 45%),linear-gradient(135deg,#0a0800 0%,#140c02 50%,#080604 100%);"></div>
+          <img class="fslide-bg-img fslide-logo-temp" src="https://syllog-cdn.b-cdn.net/district-warriors/District%20Warriors%20Official%20Logo.png" alt="District Warriors" decoding="async">
+          <div class="fslide-overlay-l"></div><div class="fslide-overlay-b"></div>
+          <div class="fslide-content"><div class="fslide-meta">
+            <div class="fslide-eyebrow"><span class="fslide-tag tag-coming">Coming Soon</span><span class="fslide-label">Game 03 &nbsp;&middot;&nbsp; Fighting</span></div>
+            <div class="fslide-title"><span class="silver">District</span> Warriors</div>
+            <div class="fslide-stars star-slot" data-game="district-warriors"></div>
+            <div class="fslide-desc">A visceral fighting game of Light and Darkened Sin. Legendary warriors clash in cosmic arenas to reclaim a fractured multiverse. Official banner art arriving with launch.</div>
+            <div class="fslide-ftags"><span class="fftag">Fighting</span><span class="fftag">PvP</span><span class="fftag">Story</span><span class="fftag">Coming Soon</span></div>
+            <div class="fslide-actions">
+              <button class="fslide-inactive" disabled>Coming Soon</button>
+              <button class="fslide-trailer" onclick="window.location.href='games.html'">View in Games</button>
+            </div>
+          </div></div>
+        </div>
       </div>
     </div>
   </div>
   <div class="fnav-l"><button class="fnav-btn" id="fprev">&#8592;</button></div>
   <div class="fnav-r"><button class="fnav-btn" id="fnext">&#8594;</button></div>
-  <div class="fcounter"><span id="fcur-num">01</span> / <span id="ftot-num">02</span></div>
+  <div class="fcounter"><span id="fcur-num">01</span> / <span id="ftot-num">03</span></div>
   <div class="fdots" id="fdots"></div>
   <div class="fprog-bar"><div class="fprog-fill" id="fprog"></div></div>
 </div>
@@ -637,7 +654,8 @@ var SUPABASE_KEY = 'sb_publishable_g7_BTnT_cTqaIk19Kx9FEw_iP1I7Df7';
 
 var GAMES = [
   {name:'Void Vexon', icon:'🌌', genre:'Action · Space', desc:'Navigate the collapsing edges of reality. High-intensity browser action built natively in HTML5.', status:'live', color:'#0a0f1e', url:'Voidvexon.html', screenshots:['https://syllog-cdn.b-cdn.net/Void-Rift/Screenshots/Screenshot%202.png','https://syllog-cdn.b-cdn.net/Void-Rift/Screenshots/Screenshot%203.png','https://syllog-cdn.b-cdn.net/Void-Rift/Screenshots/Screenshot%204.png']},
-  {name:'Vegas Reckoning', icon:'🎰', genre:'Narrative Casino · Story', desc:"A cinematic casino narrative set in the HAL Grand Hotel & Casino. Broke ex-analyst Maddox Cross arrives with $700 and a score to settle — six playable games, sixty-five story events, one reckoning.", status:'live', color:'#1a0a08', url:'Vegasreckoning.html', screenshots:['https://syllog-cdn.b-cdn.net/Vegas-Reckoning/Screen%20Shots/Screenshot%2001.png','https://syllog-cdn.b-cdn.net/Vegas-Reckoning/Screen%20Shots/Screenshot%2002.png','https://syllog-cdn.b-cdn.net/Vegas-Reckoning/Screen%20Shots/Screenshot%2003.png']}
+  {name:'Vegas Reckoning', icon:'🎰', genre:'Narrative Casino · Story', desc:"A cinematic casino narrative set in the HAL Grand Hotel & Casino. Broke ex-analyst Maddox Cross arrives with $700 and a score to settle — six playable games, sixty-five story events, one reckoning.", status:'live', color:'#1a0a08', url:'Vegasreckoning.html', screenshots:['https://syllog-cdn.b-cdn.net/Vegas-Reckoning/Screen%20Shots/Screenshot%2001.png','https://syllog-cdn.b-cdn.net/Vegas-Reckoning/Screen%20Shots/Screenshot%2002.png','https://syllog-cdn.b-cdn.net/Vegas-Reckoning/Screen%20Shots/Screenshot%2003.png']},
+  {name:'District Warriors', icon:'🥊', genre:'Fighting · Arena', desc:'Legendary warriors of Light and Darkened Sin clash in visceral arena combat to reclaim a fractured multiverse. Coming soon.', status:'soon', color:'#1a1200', url:null, screenshots:['https://syllog-cdn.b-cdn.net/district-warriors/District%20Warriors%20Official%20Logo.png']}
 ];
 
 document.getElementById('live-count').textContent = LIVE_TITLE_COUNT;
@@ -921,7 +939,7 @@ function signOut() {
 }
 
 // FEATURED BANNER — always authored at 1920×480, then scaled to the section width
-var fcur = 0, ftotal = 2, fbusy = false, fTimer, FDURATION = 6000;
+var fcur = 0, ftotal = 3, fbusy = false, fTimer, FDURATION = 6000;
 var fslides = document.getElementById('fslides');
 var fprog = document.getElementById('fprog');
 var fSection = document.getElementById('featured-section');
