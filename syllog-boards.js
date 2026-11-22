@@ -71,13 +71,34 @@
     return avg.toFixed(1) + ' · ' + n + (n === 1 ? ' rating' : ' ratings');
   }
 
+  function isLiveGame(gameId) {
+    if (window.GAME_PROFILES && window.GAME_PROFILES[gameId]) {
+      return window.GAME_PROFILES[gameId].status === 'live';
+    }
+    // Homepage / boards fallback when profiles are not loaded
+    for (var i = 0; i < GAMES.length; i++) {
+      if (GAMES[i].id === gameId) return true;
+    }
+    return false;
+  }
+
   function paintSlots() {
     document.querySelectorAll('.star-slot[data-game]').forEach(function (el) {
-      var row = summaryMap && summaryMap[el.getAttribute('data-game')];
+      var id = el.getAttribute('data-game');
+      if (!isLiveGame(id)) {
+        el.innerHTML = starsHTML(0) + '<span class="star-count">Ratings unlock at launch</span>';
+        return;
+      }
+      var row = summaryMap && summaryMap[id];
       el.innerHTML = starsHTML(row && row.average) + '<span class="star-count">' + countText(row) + '</span>';
     });
     document.querySelectorAll('.star-num[data-game]').forEach(function (el) {
-      var row = summaryMap && summaryMap[el.getAttribute('data-game')];
+      var id = el.getAttribute('data-game');
+      if (!isLiveGame(id)) {
+        el.textContent = '—';
+        return;
+      }
+      var row = summaryMap && summaryMap[id];
       el.textContent = row && row.votes ? Number(row.average).toFixed(1) : '—';
     });
   }
@@ -120,6 +141,16 @@
   function paintRater(box, gameId) {
     if (!box) return;
     box.setAttribute('data-game', gameId);
+    if (!isLiveGame(gameId)) {
+      box.classList.add('is-locked');
+      box.innerHTML =
+        '<div class="star-row rate locked" aria-disabled="true">' +
+        '<span class="star">☆</span><span class="star">☆</span><span class="star">☆</span><span class="star">☆</span><span class="star">☆</span>' +
+        '</div>' +
+        '<div class="star-count">Ratings unlock when this game goes live</div>';
+      return;
+    }
+    box.classList.remove('is-locked');
     var row = summaryMap && summaryMap[gameId];
     var mine = mineMap[gameId] || 0;
     var buttons = '';
@@ -140,6 +171,10 @@
 
   async function rate(gameId, stars, box) {
     if (!sb) return;
+    if (!isLiveGame(gameId)) {
+      paintRater(box, gameId);
+      return;
+    }
     if (!userId) {
       window.location.href = 'auth.html?tab=signin';
       return;
@@ -253,6 +288,7 @@
     paintFeaturedClose: paintFeaturedClose,
     refresh: refresh,
     paintRater: paintRater,
+    isLiveGame: isLiveGame,
     standings: standings,
     paintBoards: paintBoards,
     settle: settle,

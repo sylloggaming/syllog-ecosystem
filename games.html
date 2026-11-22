@@ -199,6 +199,9 @@ footer a:hover{color:#fff;}
 .star-row button{background:none;border:none;color:rgba(255,255,255,0.28);font-size:1.45rem;cursor:pointer;padding:0 0.12rem;line-height:1;font-family:inherit;}
 .star-row button.on{color:#ffd700;text-shadow:0 0 10px rgba(255,215,0,0.35);}
 .star-row button:hover{color:#ffe9a0;}
+.star-row.rate.locked{pointer-events:none;opacity:0.45;cursor:default;}
+.star-row.rate.locked .star{color:rgba(255,255,255,0.22);font-size:1.45rem;padding:0 0.12rem;line-height:1;}
+#gd-rate.is-locked{opacity:0.9;}
 .gd-rate .star-count{font-size:0.62rem;color:rgba(255,255,255,0.45);line-height:1.4;}
 .gd-board-rule{font-size:0.62rem;color:rgba(255,255,255,0.38);line-height:1.45;margin:-0.15rem 0 0.75rem;}
 
@@ -288,7 +291,7 @@ footer a:hover{color:#fff;}
 </div>
 <script src="syllog-boards.js"></script>
 <footer><div style="font-size:0.7rem;font-weight:900;letter-spacing:5px;color:rgba(255,255,255,0.2);">SYLLOG</div><div style="display:flex;gap:1.25rem;"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="contact.html">Contact</a></div><div style="font-size:0.58rem;color:rgba(255,255,255,0.2);">&copy; 2026 Syllog Games.</div></footer><script>var _sb=supabase.createClient("https://mlstrkqefyqoczusewrm.supabase.co","sb_publishable_g7_BTnT_cTqaIk19Kx9FEw_iP1I7Df7");var _user=null,activeGenre="all";function goProfile(){window.location.href="profile.html";}function showNav(p){var nb=document.getElementById("nav-btns");if(!nb)return;nb.innerHTML='<button class="nav-user" onclick="goProfile();"><div class="nav-dot"></div><div class="nav-name">'+p.username+'</div><div class="nav-arrow">&#9660;</div></button>';}_sb.auth.getSession().then(function(r){if(!r.data||!r.data.session)return;_user=r.data.session.user;_sb.from("players").select("username").eq("id",_user.id).single().then(function(res){if(res.data)showNav(res.data);});});function filterGenre(genre,btn){activeGenre=genre;document.querySelectorAll(".genre-card").forEach(function(t){t.classList.remove("active");});btn.classList.add("active");var label=btn.querySelector(".genre-card-name").textContent;document.getElementById("active-genre-label").textContent=label;applyFilters();}function applyFilters(){var search=document.getElementById("games-search").value.toLowerCase().trim();var cards=document.querySelectorAll(".game-card");var visible=0;cards.forEach(function(card){var genres=card.dataset.genres||"";var title=card.querySelector(".game-card-title").textContent.toLowerCase();var desc=card.querySelector(".game-card-desc").textContent.toLowerCase();var gm=activeGenre==="all"||genres.indexOf(activeGenre)>-1;var sm=!search||title.indexOf(search)>-1||desc.indexOf(search)>-1;if(gm&&sm){card.style.display="";visible++;}else{card.style.display="none";}});var nr=document.getElementById("no-results");if(nr)nr.style.display=visible===0?"block":"none";document.getElementById("visible-count").textContent=visible;}document.getElementById("games-search").addEventListener("input",applyFilters);
-var GAME_PROFILES={
+var GAME_PROFILES=window.GAME_PROFILES={
   'void-vexon':{
     id:'void-vexon',status:'live',badge:'Live Now',name:'Void Vexon',
     tagline:'The last pilot. The entire Void army. Survive.',
